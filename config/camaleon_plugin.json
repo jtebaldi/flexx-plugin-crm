@@ -6,6 +6,7 @@
     "Plugins::FlexxPluginCrm::MainHelper"
   ],
   "hooks": {
+    "admin_before_load": ["flexx_plugin_admin_before_load"],
     "on_active": ["flexx_plugin_crm_on_active"],
     "on_inactive": ["flexx_plugin_crm_on_inactive"],
     "plugin_options": ["flexx_plugin_crm_on_plugin_options"],

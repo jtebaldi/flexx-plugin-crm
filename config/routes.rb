@@ -16,6 +16,7 @@ Rails.application.routes.draw do
           namespace 'flexx_plugin_crm' do
             controller :admin do
               get :index
+              get :new_contact
               get :settings
               post :save_settings
             end

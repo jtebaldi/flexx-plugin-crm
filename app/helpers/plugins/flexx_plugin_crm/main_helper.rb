@@ -2,6 +2,10 @@ module Plugins::FlexxPluginCrm::MainHelper
   def self.included(klass)
   end
 
+  def flexx_plugin_admin_before_load
+    admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_plugins_flexx_plugin_crm_index_path})
+  end
+
   def flexx_plugin_crm_on_active(plugin)
     if plugin.site.get_option("flexx_crm_list_id").blank?
       list_name = "#{Digest::MD5.hexdigest(plugin.site.slug)}#{SecureRandom.hex(5)}"

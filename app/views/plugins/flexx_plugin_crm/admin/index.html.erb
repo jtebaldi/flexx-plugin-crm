@@ -1,9 +1,30 @@
-<%#= javascript_include_tag plugin_asset("my_file.js") %>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>My Title</h4>
-    </div>
-    <div class="panel-body">
-        <p>Plugin ready to use in admin panel!.</p>
-    </div>
+  <div class="panel-heading">
+    <h4>Contacts</h4>
+    <a class="btn btn-primary pull-right" href="">
+      <i class="fa fa-plus"></i> Add Contact
+    </a>
+  </div>
+  <div class="panel-body">
+    <table class="table table-responsive table-hover table-striped">
+      <thead>
+        <tr>
+          <td>First Name</td>
+          <td>Last Name</td>
+          <td>Email</td>
+          <td>Stage</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @active_contacts.each do |contact| %>
+          <tr>
+            <td><%= contact.first_name %></td>
+            <td><%= contact.last_name %></td>
+            <td><%= contact.email %></td>
+            <td><span class="label label-success label-form"><%= contact.sales_stage %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

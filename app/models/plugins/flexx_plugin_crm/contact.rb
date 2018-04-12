@@ -5,6 +5,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   self.table_name = 'contacts'
 
+  scope :active, -> { where.not(sales_stage: :archived) }
+
   after_create :create_sendgrid_record
 
   aasm('sales_stage') do
