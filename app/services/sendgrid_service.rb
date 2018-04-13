@@ -13,6 +13,12 @@ class SendgridService
     JSON.parse(response.body)['persisted_recipients'][0] if (200..299).include?(response.status_code.to_i)
   end
 
+  def update_contact(contact_details:)
+    response = sg.client.contactdb.recipients.patch(request_body: contact_details)
+
+    JSON.parse(response.body)['persisted_recipients'][0] if (200..299).include?(response.status_code.to_i)
+  end
+
   private
 
   def sg

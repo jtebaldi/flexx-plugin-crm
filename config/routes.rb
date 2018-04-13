@@ -18,7 +18,10 @@ Rails.application.routes.draw do
               get :index
               get :new_contact
               get :settings
+              get '/view_contact/:id', action: :view_contact, as: :view_contact
+              post :create_contact
               post :save_settings
+              post '/update_contact/:id', action: :update_contact, as: :update_contact
             end
           end
         end

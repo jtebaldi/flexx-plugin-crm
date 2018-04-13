@@ -2,12 +2,15 @@ PATH
   remote: .
   specs:
     flexx_plugin_crm (0.0.1)
+      aasm (~> 4.12.3)
       rails (~> 4.2.10)
       sendgrid-ruby (~> 5.2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.12.3)
+      concurrent-ruby (~> 1.0)
     actionmailer (4.2.10)
       actionpack (= 4.2.10)
       actionview (= 4.2.10)
