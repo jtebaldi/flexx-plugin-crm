@@ -5,6 +5,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   self.table_name = 'contacts'
 
+  has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
+
   scope :active, -> { where.not(sales_stage: :archived) }
 
   after_commit :create_sendgrid_record, on: :create
@@ -43,7 +45,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
       update_column(:sendgrid_id, sg_id)
     else
-      SendgridService.new.update_contact(contact_detail: details)
+      SendgridService.new.update_contact(contact_details: details)
     end
   end
 end

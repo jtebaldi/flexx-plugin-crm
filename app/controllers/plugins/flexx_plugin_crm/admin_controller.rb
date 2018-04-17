@@ -21,6 +21,12 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :view_contact, id: params[:id]
     end
 
+    def create_task
+      current_site.contacts.find(params[:id]).tasks.create(new_task_params)
+
+      redirect_to action: :view_contact, id: params[:id]
+    end
+
     def settings
       @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil).as_json
       @available_lists = ContactsManagerService.new.contact_lists
@@ -30,7 +36,6 @@ module Plugins::FlexxPluginCrm
       @list_details = ContactsManagerService.new.list_details(id: params[:list_id])
     end
 
-    # save values from settings form
     def save_settings
       @plugin.set_options(params[:options]) if params[:options].present? # save option values
       @plugin.set_metas(params[:metas]) if params[:metas].present? # save meta values
@@ -46,6 +51,14 @@ module Plugins::FlexxPluginCrm
 
     def contact_params
       params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email)
+    end
+
+    def new_task_params
+      params[:new_task].merge!(site_id: current_site.id)
+      params[:new_task].merge!(created_by: current_user.id)
+      params[:new_task].merge!(updated_by: current_user.id)
+
+      params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end
   end
 end

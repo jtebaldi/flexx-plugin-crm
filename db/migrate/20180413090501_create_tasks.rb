@@ -8,6 +8,8 @@ class CreateTasks < ActiveRecord::Migration
       t.string :details
       t.datetime :due_date
       t.string :aasm_state
+      t.integer :created_by
+      t.integer :updated_by
 
       t.timestamps null: false
     end
