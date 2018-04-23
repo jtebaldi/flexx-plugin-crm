@@ -22,9 +22,16 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_task
-      current_site.contacts.find(params[:id]).tasks.create(new_task_params)
+      current_site.contacts.find(params[:contact_id]).tasks.create(new_task_params)
 
       redirect_to action: :view_contact, id: params[:id]
+    end
+
+    def update_task
+      task = current_site.tasks.find(params[:task_id])
+      task.update(task_params)
+
+      redirect_to action: :view_contact, id: task.contact_id
     end
 
     def settings
@@ -59,6 +66,12 @@ module Plugins::FlexxPluginCrm
       params[:new_task].merge!(updated_by: current_user.id)
 
       params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
+    end
+
+    def task_params
+      params[:task].merge!(updated_by: current_user.id)
+
+      params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
     end
   end
 end

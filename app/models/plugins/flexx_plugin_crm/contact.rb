@@ -5,6 +5,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   self.table_name = 'contacts'
 
+  has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent
   has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
 
   scope :active, -> { where.not(sales_stage: :archived) }

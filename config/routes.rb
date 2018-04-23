@@ -13,7 +13,8 @@ Rails.application.routes.draw do
             post :create_contact
             post '/update_contact/:id', action: :update_contact, as: :update_contact
 
-            post '/create_task/:id', action: :create_task, as: :create_task
+            post '/create_task/:contact_id', action: :create_task, as: :create_task
+            post '/update_task/:task_id', action: :update_task, as: :update_task
           end
         end
       end
