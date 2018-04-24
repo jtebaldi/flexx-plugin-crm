@@ -1,6 +1,7 @@
 module Plugins::FlexxPluginCrm
   class AdminController < CamaleonCms::Apps::PluginsAdminController
     include Plugins::FlexxPluginCrm::MainHelper
+
     def index
       @active_contacts = current_site.contacts.active
     end
@@ -35,12 +36,14 @@ module Plugins::FlexxPluginCrm
     end
 
     def settings
+      add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
+
       @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil).as_json
       @available_lists = ContactsManagerService.new.contact_lists
     end
 
-    def list_details
-      @list_details = ContactsManagerService.new.list_details(id: params[:list_id])
+    def create_task_recipe
+
     end
 
     def save_settings

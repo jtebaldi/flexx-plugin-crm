@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4>New Task Recipe</h4>
+  </div>
+  <div class="panel-body">
+    <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_path, method: :post do %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group col-md-12">
+            <label for="new_task_title">Title</label> <em class="text-danger">*</em><br>
+            <input class="form-control required sluged valid" type="text" name="new_task[title]" id="new_task_title" aria-required="true" aria-invalid="false">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="new_task_title">Details</label> <em class="text-danger">*</em><br>
+          <textarea class="form-control required sluged valid" type="text" name="new_task[details]" id="new_task_details" aria-required="true" aria-invalid="false"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label>&nbsp;</label>
+          <input type="submit" class="btn btn-success pull-right" value="Create" />
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

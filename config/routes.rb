@@ -15,6 +15,9 @@ Rails.application.routes.draw do
 
             post '/create_task/:contact_id', action: :create_task, as: :create_task
             post '/update_task/:task_id', action: :update_task, as: :update_task
+
+            get :new_task_recipe
+            post :create_task_recipe
           end
         end
       end

@@ -4,6 +4,7 @@ module Plugins::FlexxPluginCrm::MainHelper
 
   def flexx_plugin_admin_before_load
     admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_plugins_flexx_plugin_crm_index_path})
+    admin_menu_append_menu_item("settings", {icon: "briefcase", title: "CRM Settings", url: admin_plugins_flexx_plugin_crm_settings_path})
   end
 
   def flexx_plugin_crm_on_active(plugin)
