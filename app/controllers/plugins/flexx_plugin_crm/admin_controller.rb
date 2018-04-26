@@ -38,12 +38,28 @@ module Plugins::FlexxPluginCrm
     def settings
       add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
 
-      @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil).as_json
-      @available_lists = ContactsManagerService.new.contact_lists
+      # @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil).as_json
+      # @available_lists = ContactsManagerService.new.contact_lists
+
+      @task_recipes = current_site.task_recipes
     end
 
     def create_task_recipe
+      params[:new_task_recipe].merge!(created_by: current_user.id)
 
+      new_task_recipe = current_site.task_recipes.create(params.require(:new_task_recipe).permit(:title, :created_by))
+
+      redirect_to action: :view_task_recipe, id: new_task_recipe.id
+    end
+
+    def view_task_recipe
+      @task_recipe = current_site.task_recipes.find(params[:id])
+    end
+
+    def create_task_recipe_direction
+      current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
+
+      redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
     end
 
     def save_settings
@@ -75,6 +91,12 @@ module Plugins::FlexxPluginCrm
       params[:task].merge!(updated_by: current_user.id)
 
       params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
+    end
+
+    def new_task_recipe_direction_params
+      params[:new_task_recipe_direction].merge!(created_by: current_user.id)
+
+      params.require(:new_task_recipe_direction).permit(:task_type, :due_on_value, :due_on_unit, :title, :details, :created_by)
     end
   end
 end

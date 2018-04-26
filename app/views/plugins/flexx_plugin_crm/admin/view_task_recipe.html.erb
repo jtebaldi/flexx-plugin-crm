@@ -2,28 +2,56 @@
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
+        <h4><%= @task_recipe.title %> Directions</h4>
+      </div>
+      <div class="panel-body">
+        <% @task_recipe.ordered_directions.each do |direction| %>
+          <div class="row">
+            <div class="col-md-6">
+              <label>Task type</label><br>
+              <%= direction.task_type.humanize %>
+            </div>
+            <div class="col-md-6">
+              <label>Due after</label><br>
+              <%= direction.due_on_value %> <%= direction.due_on_unit %>
+            </div>
+            <div class="col-md-12">
+              <label>Title</label><br>
+              <%= direction.title %><p/>
+              <label>Details</label><br>
+              <%= direction.details %>
+            </div>
+          </div>
+          <hr/>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
         <h4>New Task Recipe Direction</h4>
       </div>
       <div class="panel-body">
-        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_path, method: :post do %>
+        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_direction_path(task_recipe_id: @task_recipe.id), method: :post do %>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group col-md-6">
-                <label for="task_recipe_task_type">Type</label> <em class="text-danger">*</em><br>
-                <select id="task_recipe_task_type" name="task_recipe[task_type]" class="form-control select">
+                <label for="new_task_recipe_direction_task_type">Type</label> <em class="text-danger">*</em><br>
+                <select id="new_task_recipe_direction_task_type" name="new_task_recipe_direction[task_type]" class="form-control select">
                   <option value="phone_call">Phone call</option>
                   <option value="message">Message</option>
                   <option value="email">Email</option>
                   <option value="other">Other</option>
                 </select>
               </div>
-              <div class="form-group col-md-1">
-                <label for="task_recipe_due_on_value">Due after</label> <em class="text-danger">*</em><br>
-                <input class="form-control required sluged valid" type="number" name="task_recipe[due_on_value]" id="task_recipe_due_on_value" aria-required="true" aria-invalid="false">
+              <div class="form-group col-md-3">
+                <label for="new_task_recipe_direction_due_on_value">Due after</label> <em class="text-danger">*</em><br>
+                <input class="form-control required sluged valid" type="number" name="new_task_recipe_direction[due_on_value]" id="new_task_recipe_direction_due_on_value" aria-required="true" aria-invalid="false">
               </div>
-              <div class="form-group col-md-2">
+              <div class="form-group col-md-3">
                 <label>&nbsp;</label>
-                <select id="task_recipe_due_on_unit" name="task_recipe[due_on_unit]" class="form-control select">
+                <select id="new_task_recipe_direction_due_on_unit" name="new_task_recipe_direction[due_on_unit]" class="form-control select">
                   <option value="hours">hour(s)</option>
                   <option value="days">day(s)</option>
                   <option value="months">month(s)</option>
@@ -34,16 +62,16 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group col-md-12">
-                <label for="new_task_title">Title</label> <em class="text-danger">*</em><br>
-                <input class="form-control required sluged valid" type="text" name="new_task[title]" id="new_task_title" aria-required="true" aria-invalid="false">
+                <label for="new_task_recipe_direction_title">Title</label> <em class="text-danger">*</em><br>
+                <input class="form-control required sluged valid" type="text" name="new_task_recipe_direction[title]" id="new_task_recipe_direction_title" aria-required="true" aria-invalid="false">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group col-md-12">
-                <label for="new_task_title">Details</label> <em class="text-danger">*</em><br>
-                <textarea class="form-control required sluged valid" type="text" name="new_task[details]" id="new_task_details" aria-required="true" aria-invalid="false"></textarea>
+                <label for="new_task_recipe_direction_details">Details</label><br>
+                <textarea class="form-control required sluged valid" type="text" name="new_task_recipe_direction[details]" id="new_task_recipe_direction_details" aria-required="true" aria-invalid="false"></textarea>
               </div>
             </div>
           </div>

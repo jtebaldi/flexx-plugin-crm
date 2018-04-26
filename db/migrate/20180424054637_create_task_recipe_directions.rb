@@ -7,6 +7,7 @@ class CreateTaskRecipeDirections < ActiveRecord::Migration
       t.string :due_on_unit
       t.string :title
       t.string :details
+      t.integer :created_by
 
       t.timestamps null: false
     end

@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-md-10 form-group">
               <label for="task_recipe_title">Title</label> <em class="text-danger">*</em><br>
-              <input class="form-control required sluged valid" type="text" name="task_recipe[title]" id="task_recipe_title" aria-required="true" aria-invalid="false">
+              <input class="form-control required sluged valid" type="text" name="new_task_recipe[title]" id="task_recipe_title" aria-required="true" aria-invalid="false">
             </div>
             <div class="col-md-2 form-group">
               <label>&nbsp;</label>
@@ -28,7 +28,11 @@
         <h4>Task recipes</h4>
       </div>
       <div class="panel-body">
-
+        <% @task_recipes.each do |row| %>
+          <div class="col-md-12">
+            <a href="<%= admin_plugins_flexx_plugin_crm_view_task_recipe_path(row.id) %>"><%= row.title %></a>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
