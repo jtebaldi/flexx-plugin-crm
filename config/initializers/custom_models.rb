@@ -4,5 +4,7 @@ Rails.application.config.to_prepare do
     include Plugins::FlexxPluginCrm::Concerns::HasTasks
 
     has_many :task_recipes, class_name: "Plugins::FlexxPluginCrm::TaskRecipe"
+    has_many :automated_campaigns, class_name: "Plugins::FlexxPluginCrm::AutomatedCampaign"
+    has_many :automated_campaign_jobs, class_name: "Plugins::FlexxPluginCrm::AutomatedCampaignJob"
   end
 end

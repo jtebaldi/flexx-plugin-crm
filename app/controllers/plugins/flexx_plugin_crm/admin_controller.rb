@@ -42,6 +42,7 @@ module Plugins::FlexxPluginCrm
       # @available_lists = ContactsManagerService.new.contact_lists
 
       @task_recipes = current_site.task_recipes
+      @automated_campaigns = current_site.automated_campaigns.active
     end
 
     def create_task_recipe
@@ -54,12 +55,32 @@ module Plugins::FlexxPluginCrm
 
     def view_task_recipe
       @task_recipe = current_site.task_recipes.find(params[:id])
+      @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil)
     end
 
     def create_task_recipe_direction
       current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
 
       redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
+    end
+
+    def create_automated_campaign
+      params[:new_automated_campaign].merge!(created_by: current_user.id)
+
+      new_automated_campaign = current_site.automated_campaigns.create(params.require(:new_automated_campaign).permit(:name, :created_by))
+
+      redirect_to action: :view_automated_campaign, id: new_automated_campaign.id
+    end
+
+    def view_automated_campaign
+      @automated_campaign = current_site.automated_campaigns.find(params[:id])
+      @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil)
+    end
+
+    def create_automated_campaign_step
+      current_site.automated_campaigns.find(params[:automated_campaign_id]).steps.create(new_automated_campaign_step_params)
+
+      redirect_to action: :view_automated_campaign, id: params[:automated_campaign_id]
     end
 
     def save_settings
@@ -97,6 +118,12 @@ module Plugins::FlexxPluginCrm
       params[:new_task_recipe_direction].merge!(created_by: current_user.id)
 
       params.require(:new_task_recipe_direction).permit(:task_type, :due_on_value, :due_on_unit, :title, :details, :created_by)
+    end
+
+    def new_automated_campaign_step_params
+      params[:new_automated_campaign_step].merge!(created_by: current_user.id)
+
+      params.require(:new_automated_campaign_step).permit(:name, :due_on_value, :due_on_unit, :message, :created_by)
     end
   end
 end

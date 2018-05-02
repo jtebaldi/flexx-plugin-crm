@@ -17,9 +17,12 @@ Rails.application.routes.draw do
             post '/update_task/:task_id', action: :update_task, as: :update_task
 
             get 'view_task_recipe/:id', action: :view_task_recipe, as: :view_task_recipe
-            get :new_task_recipe
             post :create_task_recipe
             post 'create_task_recipe_direction/:task_recipe_id', action: :create_task_recipe_direction, as: :create_task_recipe_direction
+
+            get 'view_automated_campaign/:id', action: :view_automated_campaign, as: :view_automated_campaign
+            post :create_automated_campaign
+            post 'create_automated_campaign_step/:automated_campaign_id', action: :create_automated_campaign_step, as: :create_automated_campaign_step
           end
         end
       end
