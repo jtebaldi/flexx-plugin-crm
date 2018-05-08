@@ -38,9 +38,6 @@ module Plugins::FlexxPluginCrm
     def settings
       add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
 
-      # @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil).as_json
-      # @available_lists = ContactsManagerService.new.contact_lists
-
       @task_recipes = current_site.task_recipes
       @automated_campaigns = current_site.automated_campaigns.active
     end
@@ -55,7 +52,18 @@ module Plugins::FlexxPluginCrm
 
     def view_task_recipe
       @task_recipe = current_site.task_recipes.find(params[:id])
-      @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil)
+      @available_contact_forms = current_site.
+                                  contact_forms.
+                                  select(:id, :name).
+                                  where(parent_id: nil).
+                                  where.not(id: @task_recipe.cama_contact_forms.pluck(:id)).
+                                  order(:name)
+    end
+
+    def associate_recipe_to_form
+      current_site.task_recipes.find(params[:task_recipe_id]).cama_contact_forms << current_site.contact_forms.find(params[:cama_contact_form_id])
+
+      redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
     end
 
     def create_task_recipe_direction

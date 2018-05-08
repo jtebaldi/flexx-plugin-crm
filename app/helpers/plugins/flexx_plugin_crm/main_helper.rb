@@ -44,5 +44,7 @@ module Plugins::FlexxPluginCrm::MainHelper
 
     contact.source = "Form - #{args[:form][:name]}" if contact.source.blank?
     contact.save
+
+    TaskRecipeService.apply_recipes(contact: contact, form: args[:form])
   end
 end

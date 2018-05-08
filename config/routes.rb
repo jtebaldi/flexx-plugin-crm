@@ -19,6 +19,7 @@ Rails.application.routes.draw do
             get 'view_task_recipe/:id', action: :view_task_recipe, as: :view_task_recipe
             post :create_task_recipe
             post 'create_task_recipe_direction/:task_recipe_id', action: :create_task_recipe_direction, as: :create_task_recipe_direction
+            post 'associate_recipe_to_form/:task_recipe_id', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
             get 'view_automated_campaign/:id', action: :view_automated_campaign, as: :view_automated_campaign
             post :create_automated_campaign
