@@ -37,14 +37,16 @@ module Plugins::FlexxPluginCrm::MainHelper
       cids[:email] = f["cid"] if f["field_type"] == "email"
     end
 
-    contact = Plugins::FlexxPluginCrm::Contact.find_or_create_by(
-      site_id: current_site.id,
-      email: args[:values][cids[:email]]
-    )
+    unless Plugins::FlexxPluginCrm::Contact.exists?(site_id: current_site.id, email: args[:values][cids[:email]])
+      contact = Plugins::FlexxPluginCrm::Contact.create(
+        site_id: current_site.id,
+        email: args[:values][cids[:email]],
+        source: "Form - #{args[:form][:name]}",
+        cama_contact_form_id: args[:form].id
+      )
 
-    contact.source = "Form - #{args[:form][:name]}" if contact.source.blank?
-    contact.save
-
-    TaskRecipeService.apply_recipes(contact: contact, form: args[:form])
+      TaskRecipeService.apply_recipes(contact: contact)
+      AutomatedCampaignService.apply_campaigns(contact: contact)
+    end
   end
 end

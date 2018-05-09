@@ -99,6 +99,36 @@
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
+        <h4>Automated Tasks</h4>
+      </div>
+      <div class="panel-body">
+        <% @contact.automated_campaign_jobs.order(:send_at).each do |job| %>
+          <div class="row">
+            <div class="col-md-4">
+              <label>Status</label><br>
+              <%= job.status.humanize %>
+            </div>
+            <div class="col-md-4">
+              <label>Scheduled for</label><br>
+              <%= job.send_at.to_date.to_formatted_s(:long) %>
+            </div>
+            <div class="col-md-4">
+              <label>Last modified at</label><br>
+              <%= job.status_changed_at.to_date.to_formatted_s(:long) %>
+            </div>
+            <div class="col-md-12">
+              <label>Message</label><br>
+              <%= job.message %>
+            </div>
+          </div>
+          <hr/>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
         <h4>Tasks done</h4>
       </div>
       <div class="panel-body">

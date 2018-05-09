@@ -5,6 +5,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   self.table_name = 'contacts'
 
+  belongs_to :cama_contact_form, class_name: 'Plugins::CamaContactForm::CamaContactForm'
+  has_many :automated_campaign_jobs, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignJob'
   has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent
   has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
 
