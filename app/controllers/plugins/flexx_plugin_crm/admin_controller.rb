@@ -85,6 +85,12 @@ module Plugins::FlexxPluginCrm
       @available_contact_forms = current_site.contact_forms.select(:id, :name).where(parent_id: nil)
     end
 
+    def associate_campaign_to_form
+      current_site.automated_campaigns.find(params[:automated_campaign_id]).cama_contact_forms << current_site.contact_forms.find(params[:cama_contact_form_id])
+
+      redirect_to action: :view_automated_campaign, id: params[:automated_campaign_id]
+    end
+
     def create_automated_campaign_step
       current_site.automated_campaigns.find(params[:automated_campaign_id]).steps.create(new_automated_campaign_step_params)
 

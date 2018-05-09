@@ -24,6 +24,7 @@ Rails.application.routes.draw do
             get 'view_automated_campaign/:id', action: :view_automated_campaign, as: :view_automated_campaign
             post :create_automated_campaign
             post 'create_automated_campaign_step/:automated_campaign_id', action: :create_automated_campaign_step, as: :create_automated_campaign_step
+            post 'associate_campaign_to_form/:automated_campaign_id', action: :associate_campaign_to_form, as: :associate_campaign_to_form
           end
         end
       end
