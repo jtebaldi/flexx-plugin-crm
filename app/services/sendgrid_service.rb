@@ -19,6 +19,29 @@ class SendgridService
     JSON.parse(response.body)['persisted_recipients'][0] if (200..299).include?(response.status_code.to_i)
   end
 
+  def send_email(to:, body:, send_at:)
+    params = {
+      personalizations: [{
+        to: [{
+          email: to
+        }]
+      }],
+      from: {
+        email: 'contact@flexx.co'
+      },
+      subject: 'Flexx Automated Campaign',
+      content: [
+        {
+          type: 'text/plain',
+          value: body
+        }
+      ],
+      send_at: send_at
+    }
+
+    response = sg.client.mail._("send").post(request_body: params)
+  end
+
   private
 
   def sg
