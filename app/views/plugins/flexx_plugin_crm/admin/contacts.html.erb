@@ -53,7 +53,7 @@
     <div id="contact-list" class="media-list-body bg-white b-1">
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
-          <a class="flexbox align-items-center flex-grow gap-items" href="#qv-user-details" data-toggle="quickview">
+          <a class="flexbox align-items-center flex-grow gap-items" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>">
             <span class="avatar avatar-lg status-success bg-dark"><%= contact.initials %></span>
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %><small>&nbsp;<em>Added on <%= contact.created_at.strftime('%d %B %Y') %></em></small></h6>
@@ -157,65 +157,7 @@
   </div>
 </div>
 
-
-<!-- QUICKVIEW - User detail -->
-<div id="qv-user-details" class="quickview">
-  <div class="quickview-body">
-
-    <div class="card card-inverse">
-
-      <div class="card-body text-center pb-50">
-        <a href="/admin/next/contacts/paulo">
-          <span class="avatar avatar-xxl avatar-bordered status-success">pc</span>
-        </a>
-        <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#">Paulo Castro</a></h4>
-        <span>Prospect</span>
-      </div>
-    </div>
-
-    <div class="quickview-block">
-
-      <div class="media-grid media-grid-bordered media-grid-hover row">
-        <a href="#" class="media w-100 ml-15">
-          <span class="fa fa-envelope fa-2x lead text-info"></span>
-          <div class="media-body">
-            <p><strong>paulo@flexx.co</strong></p>
-            <p>Email</p>
-          </div>
-        </a>
-
-        <a href="#" class="media w-100 ml-15">
-          <span class="fa fa-phone fa-2x lead text-info"></span>
-          <div class="media-body">
-            <p><strong>(650) 555 - 1234</strong></p>
-            <p>Call</p>
-          </div>
-        </a>
-
-        <a href="#" class="media w-100 ml-15">
-          <span class="fa fa-comment fa-2x lead text-info"></span>
-          <div class="media-body">
-            <p><strong>(650) 555 - 1234</strong></p>
-            <p>Text</p>
-          </div>
-        </a>
-
-        <a href="#" class="media w-100 ml-15">
-          <span class="fa fa-list-alt fa-2x lead text-info"></span>
-          <div class="media-body">
-            <p><strong>Add Task</strong></p>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </div>
-
-  <footer class="p-12 text-right">
-    <button class="btn btn-flat btn-secondary" type="button" data-toggle="quickview">Close</button>
-    <a class="btn btn-flat btn-primary" href="/admin/next/contacts/paulo">View profile <i class="ti-arrow-right"></i></a>
-  </footer>
-</div>
+<div id="qv-user-details" class="quickview"></div>
 
 <!-- QUICKVIEW: New Contact Form -->
 <div id="qv_new_contact" class="quickview quickview-lg">

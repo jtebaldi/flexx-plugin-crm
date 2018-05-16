@@ -18,6 +18,12 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :view_contact, id: new_contact.id
     end
 
+    def contact_card
+      @contact = current_site.contacts.find(params[:id])
+
+      render partial: "contact_card"
+    end
+
     def view_contact
       @contact = current_site.contacts.find(params[:id])
     end

@@ -1,0 +1,54 @@
+<div class="quickview-body">
+  <div class="card card-inverse">
+
+    <div class="card-body text-center pb-50">
+      <a href="/admin/next/contacts/paulo">
+        <span class="avatar avatar-xxl avatar-bordered status-success"><%= @contact.initials %></span>
+      </a>
+      <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
+      <span><%= @contact.sales_stage.humanize %></span>
+    </div>
+  </div>
+
+  <div class="quickview-block">
+
+    <div class="media-grid media-grid-bordered media-grid-hover row">
+      <a href="#" class="media w-100 ml-15">
+        <span class="fa fa-envelope fa-2x lead text-info"></span>
+        <div class="media-body">
+          <p><strong><%= @contact.email %></strong></p>
+          <p>Email</p>
+        </div>
+      </a>
+
+      <a href="#" class="media w-100 ml-15">
+        <span class="fa fa-phone fa-2x lead text-info"></span>
+        <div class="media-body">
+          <p><strong>TO BE DONE</strong></p>
+          <p>Call</p>
+        </div>
+      </a>
+
+      <a href="#" class="media w-100 ml-15">
+        <span class="fa fa-comment fa-2x lead text-info"></span>
+        <div class="media-body">
+          <p><strong>TO BE DONE</strong></p>
+          <p>Text</p>
+        </div>
+      </a>
+
+      <a href="#" class="media w-100 ml-15">
+        <span class="fa fa-list-alt fa-2x lead text-info"></span>
+        <div class="media-body">
+          <p><strong>Add Task</strong></p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer class="p-12 text-right">
+  <button class="btn btn-flat btn-secondary" type="button" data-toggle="quickview">Close</button>
+  <a class="btn btn-flat btn-primary" href="/admin/next/contacts/paulo">View profile <i class="ti-arrow-right"></i></a>
+</footer>
