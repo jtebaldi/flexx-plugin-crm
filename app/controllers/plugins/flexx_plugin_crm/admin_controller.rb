@@ -2,8 +2,14 @@ module Plugins::FlexxPluginCrm
   class AdminController < CamaleonCms::Apps::PluginsAdminController
     include Plugins::FlexxPluginCrm::MainHelper
 
+    layout "layouts/flexx_next_admin"
+
     def index
       @active_contacts = current_site.contacts.active
+    end
+
+    def contacts
+      @active_contacts = current_site.contacts.active.order(:first_name, :email)
     end
 
     def create_contact

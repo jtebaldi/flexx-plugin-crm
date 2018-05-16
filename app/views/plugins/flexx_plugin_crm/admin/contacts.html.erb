@@ -1,0 +1,256 @@
+<style>
+  @media (max-width: 576px) {
+    #contact_list .media-body h6 small { display: none; }
+    #contact_list .media-body h6 { font-size: 15px; }
+
+    .header .right { display: none; }
+  }
+</style>
+
+<header class="header">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title">Your <strong>Contacts</strong></h2>
+    </div>
+    <div class="right gap-items-2">
+      <a class="btn btn-secondary btn-square btn-round" href="#" data-provide="tooltip" title="Import Contacts"><i class="ti-import"></i></a>
+      <a class="btn btn-secondary btn-square btn-round" href="#" data-provide="tooltip" title="Export Contacts"><i class="ti-export"></i></a>
+    </div>
+  </div>
+  <div class="header-action">
+    <div class="buttons">
+
+      <button class="btn btn-primary btn-float" data-toggle="quickview" href="#qv_new_contact"><i class="ti-plus"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+  <div class="card card-shadowed">
+    <form class="lookup lookup-huge">
+      <input class="no-radius no-border" type="text" placeholder="Try searching for names, tags...">
+    </form>
+  </div>
+
+  <div id="contact_list" class="media-list media-list-divided media-list-hover">
+
+    <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16">
+      <div class="flexbox align-items-center">
+
+        <span class="divider-line mx-1"></span>
+
+        <div class="dropdown">
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-name', 'asc')">Name</a>
+            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'desc')">Newest</a>
+            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'asc')">Oldest</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="contact-list" class="media-list-body bg-white b-1">
+      <% @active_contacts.each do |contact| %>
+        <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
+          <a class="flexbox align-items-center flex-grow gap-items" href="#qv-user-details" data-toggle="quickview">
+            <span class="avatar avatar-lg status-success bg-dark"><%= contact.initials %></span>
+            <div class="media-body text-truncate">
+              <h6><%= contact.print_name %><small>&nbsp;<em>Added on <%= contact.created_at.strftime('%d %B %Y') %></em></small></h6>
+              <small class="contact-detail">
+                <span>Last activity: </span>
+                <time datetime="2018-07-14 20:00">*** TO BE DONE ***</time>
+                <span class="divider-dash"><span class="text-info">
+                  <%=
+                    case contact.pending_tasks_count
+                    when 0
+                      'No pending tasks'
+                    when 1
+                      '1 pending task'
+                    else
+                      "#{contact.pending_tasks_count} pending tasks"
+                    end
+                  %>
+                </span></span>
+              </small>
+            </div>
+          </a>
+          <div class="media-right gap-items">
+            <a class="media-action lead fs-26" href="/admin/next/contacts/paulo" data-provide="tooltip" title="" data-original-title="View Profile"><i class="ti-angle-double-right"></i></a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+</div>
+
+<!------------------------------------- MODALS ---------------------------------------->
+
+<!-- Modal - Add new group -->
+<div class="modal modal-top fade" id="modal-add-group" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body pt-30">
+        <input class="form-control" type="text" placeholder="Group name">
+        <br>
+        <div class="text-center">
+          <div class="color-selector color-selector-sm">
+            <label>
+              <input type="radio" name="color-group" checked>
+              <span class="bg-primary"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-success"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-info"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-warning"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-danger"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-purple"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-pink"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-yellow"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-brown"></span>
+            </label>
+
+            <label>
+              <input type="radio" name="color-group">
+              <span class="bg-dark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-bold btn-pure btn-primary">Add group</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- QUICKVIEW - User detail -->
+<div id="qv-user-details" class="quickview">
+  <div class="quickview-body">
+
+    <div class="card card-inverse">
+
+      <div class="card-body text-center pb-50">
+        <a href="/admin/next/contacts/paulo">
+          <span class="avatar avatar-xxl avatar-bordered status-success">pc</span>
+        </a>
+        <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#">Paulo Castro</a></h4>
+        <span>Prospect</span>
+      </div>
+    </div>
+
+    <div class="quickview-block">
+
+      <div class="media-grid media-grid-bordered media-grid-hover row">
+        <a href="#" class="media w-100 ml-15">
+          <span class="fa fa-envelope fa-2x lead text-info"></span>
+          <div class="media-body">
+            <p><strong>paulo@flexx.co</strong></p>
+            <p>Email</p>
+          </div>
+        </a>
+
+        <a href="#" class="media w-100 ml-15">
+          <span class="fa fa-phone fa-2x lead text-info"></span>
+          <div class="media-body">
+            <p><strong>(650) 555 - 1234</strong></p>
+            <p>Call</p>
+          </div>
+        </a>
+
+        <a href="#" class="media w-100 ml-15">
+          <span class="fa fa-comment fa-2x lead text-info"></span>
+          <div class="media-body">
+            <p><strong>(650) 555 - 1234</strong></p>
+            <p>Text</p>
+          </div>
+        </a>
+
+        <a href="#" class="media w-100 ml-15">
+          <span class="fa fa-list-alt fa-2x lead text-info"></span>
+          <div class="media-body">
+            <p><strong>Add Task</strong></p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="p-12 text-right">
+    <button class="btn btn-flat btn-secondary" type="button" data-toggle="quickview">Close</button>
+    <a class="btn btn-flat btn-primary" href="/admin/next/contacts/paulo">View profile <i class="ti-arrow-right"></i></a>
+  </footer>
+</div>
+
+<!-- QUICKVIEW: New Contact Form -->
+<div id="qv_new_contact" class="quickview quickview-lg">
+  <header class="quickview-header">
+    <p class="quickview-title lead">New Contact</p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+
+    <div class="quickview-block form-type-material">
+      <div class="form-group">
+        <input type="text" class="form-control">
+        <label>First Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" class="form-control">
+        <label>Last Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" class="form-control">
+        <label>Email Address</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" class="form-control">
+        <label>Phone Number</label>
+      </div>
+    </div>
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-primary" type="submit">Add</button>
+    <button class="btn btn-secondary" type="button">Cancel</button>
+  </footer>
+</div>

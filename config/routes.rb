@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   scope PluginRoutes.system_info["relative_url_root"] do
     scope :admin, as: 'admin', path: PluginRoutes.system_info['admin_path_name'] do
+      scope :next do
+        get :contacts, controller: 'plugins/flexx_plugin_crm/admin', action: :contacts
+      end
+
       namespace 'plugins' do
         namespace 'flexx_plugin_crm' do
           controller :admin do

@@ -20,6 +20,25 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     state :lead, :prospect, :customer, :archived
   end
 
+  def print_name
+    result = [first_name, last_name].join(' ')
+    result.blank? ? email : result
+  end
+
+  def initials
+    result = if first_name.present? && last_name.present?
+      "#{first_name[0]}#{last_name[0]}"
+    else
+      "#{email[0]}#{email[1]}"
+    end
+
+    result.upcase
+  end
+
+  def pending_tasks_count
+    tasks.pending.count
+  end
+
   private
 
   def create_sendgrid_record
