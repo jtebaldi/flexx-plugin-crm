@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       scope :next do
         get :contacts, controller: 'plugins/flexx_plugin_crm/admin', action: :contacts
         get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
+        get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact
       end
 
       namespace 'plugins' do

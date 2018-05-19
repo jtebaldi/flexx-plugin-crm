@@ -26,6 +26,9 @@ module Plugins::FlexxPluginCrm
 
     def view_contact
       @contact = current_site.contacts.find(params[:id])
+      @automated_campaigns = current_site.automated_campaigns.active
+      @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
+      @available_recipes = TaskRecipe.all.order(:title)
     end
 
     def update_contact
@@ -51,7 +54,7 @@ module Plugins::FlexxPluginCrm
       add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
 
       @task_recipes = current_site.task_recipes
-      @automated_campaigns = current_site.automated_campaigns.active
+      @automated_campaigns = current_site.automated_campaigns.active.order(:name)
     end
 
     def create_task_recipe

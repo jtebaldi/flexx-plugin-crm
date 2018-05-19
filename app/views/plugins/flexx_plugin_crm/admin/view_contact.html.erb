@@ -1,255 +1,462 @@
-<div class="row">
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4><%= "#{@contact.first_name} #{@contact.last_name}" %> details</h4>
+<style>
+  input[type=radio].hide-control { display: none; }
+</style>
+<script>
+  $('document').ready(function(){
+    $("#timing_detail").hide();
+    var rad = document.createTask.timingOptions;
+    $(rad).on('click change', function(e) {
+      if (rad.value == 2) {
+        $("#timing_detail").show();
+      } else {
+        $("#timing_detail").hide();
+      }
+    });
+
+  });
+</script>
+<div class="main-content">
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card no-margin">
+
+        <div class="card-body card-inverse text-center pb-50">
+          <a href="/admin/next/contacts/paulo">
+            <span class="avatar avatar-xxl avatar-bordered status-success"><%= @contact.initials %></span>
+          </a>
+          <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
+          <span><%= @contact.sales_stage.humanize %></span>
+        </div>
+        <ul class="flexbox flex-justified text-center p-20">
+          <li class="br-1 border-light">
+            <span class="text-muted">Email</span><br>
+            <span class="fs-22"><i class="fa fa-envelope"></i></span>
+          </li>
+          <li class="br-1 border-light">
+            <span class="text-muted">Call</span><br>
+            <span class="fs-22"><i class="fa fa-phone"></i></span>
+          </li>
+          <li>
+            <span class="text-muted">Text</span><br>
+            <span class="fs-22"><i class="fa fa-comment"></i></span>
+          </li>
+        </ul>
       </div>
-      <div class="panel-body">
-        <%= form_tag admin_plugins_flexx_plugin_crm_update_contact_path, method: :post do %>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-12">
-                <label for="contact_sales_stage">Sales stage</label> <em class="text-danger">*</em><br>
-                <select id="contact_sales_stage" name="contact[sales_stage]" class="form-control select">
-                  <option class="" value="lead" <%= "selected" if @contact.lead? %>>Lead</option>
-                  <option value="prospect" <%= "selected" if @contact.prospect? %>>Prospect</option>
-                  <option value="customer" <%= "selected" if @contact.customer? %>>Customer</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-6">
-                <label for="contact_first_name">First name</label> <em class="text-danger">*</em><br>
-                <input value="<%= @contact.first_name %>" class="form-control required sluged valid" type="text" name="contact[first_name]" id="contact_first_name" aria-required="true" aria-invalid="false">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="contact_last_name">Last name</label> <em class="text-danger">*</em><br>
-                <input value="<%= @contact.last_name %>" class="form-control required sluged valid" type="text" name="contact[last_name]" id="contact_last_name" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-12">
-                <label for="contact_email">E-mail</label> <em class="text-danger">*</em><br>
-                <input value="<%= @contact.email %>" class="form-control required sluged valid" type="text" name="contact[email]" id="contact_email" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <input type="submit" class="btn btn-success pull-right" value="Update" />
-            </div>
-          </div>
-        <% end %>
+
+      <div class="card">
+        <ul class="nav nav-lg nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#tab_tasks" data-toggle="tab">Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab_contact_details" data-toggle="tab">User Details</a>
+          </li>
+        </ul>
       </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Create a new task</h4>
-      </div>
-      <div class="panel-body">
-        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_path(contact_id: @contact.id), method: :post do %>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-6">
-                <label for="new_task_task_type">Type</label> <em class="text-danger">*</em><br>
-                <select id="new_task_task_type" name="new_task[task_type]" class="form-control select">
-                  <option value="phone_call">Phone call</option>
-                  <option value="message">Message</option>
-                  <option value="email">Email</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="new_task_due_date">Due date</label> <em class="text-danger">*</em><br>
-                <input class="form-control required sluged valid" type="text" name="new_task[due_date]" id="new_task_due_date" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-12">
-                <label for="new_task_title">Title</label> <em class="text-danger">*</em><br>
-                <input class="form-control required sluged valid" type="text" name="new_task[title]" id="new_task_title" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group col-md-12">
-                <label for="new_task_title">Details</label> <em class="text-danger">*</em><br>
-                <textarea class="form-control required sluged valid" type="text" name="new_task[details]" id="new_task_details" aria-required="true" aria-invalid="false"></textarea>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <input type="submit" class="btn btn-success pull-right" value="Create" />
-            </div>
-          </div>
-        <% end %>
+
+      <div class="text-center">
+        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Add task</a>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Automated Tasks</h4>
-      </div>
-      <div class="panel-body">
-        <% @contact.automated_campaign_jobs.order(:send_at).each do |job| %>
-          <div class="row">
-            <div class="col-md-4">
-              <label>Status</label><br>
-              <%= job.status.humanize %>
-            </div>
-            <div class="col-md-4">
-              <label>Scheduled for</label><br>
-              <%= job.send_at.to_date.to_formatted_s(:long) %>
-            </div>
-            <div class="col-md-4">
-              <label>Last modified at</label><br>
-              <%= job.status_changed_at.to_date.to_formatted_s(:long) %>
-            </div>
-            <div class="col-md-12">
-              <label>Message</label><br>
-              <%= job.message %>
-            </div>
-          </div>
-          <hr/>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Tasks done</h4>
-      </div>
-      <div class="panel-body">
-        <% @contact.tasks.done.order(:due_date).each do |task| %>
-          <div class="row">
-            <div class="col-md-4">
-              <label>Type</label><br>
-              <%= task.task_type.humanize %>
-            </div>
-            <div class="col-md-4">
-              <label>Done at</label><br>
-              <%= task.updated_at.to_date.to_formatted_s(:long) %>
-            </div>
-            <div class="col-md-4">
-              <label>Done by</label><br>
-              <%= task.updated_by_user.first_name %>
-            </div>
-            <div class="col-md-12">
-              <label>Title</label><br>
-              <%= task.title %>
-            </div>
-            <div class="col-md-12">
-              <label>Details</label><br>
-              <%= task.details %>
-            </div>
-            <% if task.notes.present? %>
-              <div class="col-md-12">
-                <br/>
-                <label>Notes</label>
-              </div>
-              <% task.notes.each do |note| %>
-                <div class="col-md-6">
-                <label>At</label><br>
-                <%= note.created_at.to_date.to_formatted_s(:long) %>
-              </div>
-              <div class="col-md-6">
-                <label>By</label><br>
-                <%= note.created_by_user.first_name %>
-              </div>
-              <div class="col-md-12">
-                <br/>
-                <%= note.details %>
-                <p/>
-              </div>
-              <% end %>
-            <% end %>
-          </div>
-          <hr/>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Pending tasks</h4>
-      </div>
-      <div class="panel-body">
+
+    <div class="col-md-8 tab-content">
+      <div class="tab-pane fade active show" id="tab_tasks">
+        <p class="lead text-center text-fade">Open tasks</p>
         <% @contact.tasks.pending.order(:due_date).each do |task| %>
-          <div class="row">
-            <div class="col-md-6">
-              <label>Type</label><br>
-              <%= task.task_type.humanize %>
-            </div>
-            <div class="col-md-6">
-              <label>Due date</label><br>
-              <%= task.due_date.to_formatted_s(:long) %>
-            </div>
-            <div class="col-md-12">
-              <label>Title</label><br>
-              <%= task.title %>
-            </div>
-            <div class="col-md-12">
-              <label>Details</label><br>
-              <%= task.details %>
-            </div>
-            <% if task.notes.present? %>
-              <div class="col-md-12">
-                <br/>
-                <label>Notes</label>
+          <div class="card b-1 hover-shadow-2 mb-20">
+            <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
+              <div class="media-left pr-12">
+                <span class="avatar avatar-xl no-radius">
+                <%
+                  icon = case task.task_type
+                    when 'phone_call'
+                      'phone'
+                    when 'email'
+                      'envelope'
+                    when 'message'
+                      'comment'
+                    else
+                      'list'
+                  end
+                %>
+                <i class="fa fa-<%= icon %>"></i></span>
               </div>
-              <% task.notes.each do |note| %>
-                <div class="col-md-6">
-                <label>At</label><br>
-                <%= note.created_at.to_date.to_formatted_s(:long) %>
+              <div class="media-body">
+                <div class="mb-2">
+                  <span class="fs-20 pr-16"><%= task.title %></span>
+                </div>
+                <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
               </div>
-              <div class="col-md-6">
-                <label>By</label><br>
-                <%= note.created_by_user.first_name %>
+
+              <div class="media-right text-right d-none d-md-block">
+                <p class="fs-14 text-fade mb-12">
+                  <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
+                </p>
+                <span class="text-fade fs-12"><em>Note added</em></span>
               </div>
-              <div class="col-md-12">
-                <br/>
-                <%= note.details %>
-                <p/>
+            </a>
+            <footer class="card-footer flexbox align-items-center">
+              <div>
+                <strong>Due by:</strong>
+                <span><%= task.due_date.to_formatted_s(:long) %></span>
               </div>
-              <% end %>
+              <div class="card-hover-show">
+                <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+              </div>
+            </footer>
+          </div>
+        <% end %>
+        <br>
+        <div class="divider text-uppercase fw-500">Timeline</div>
+
+        <div class="card">
+          <header class="card-header">
+            <h4 class="card-title"><strong>History</strong></h4>
+            <div class="card-header-actions">
+              <label class="switch switch-border switch-info">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+                <span class="switch-description">Include automated</span>
+              </label>
+              <button class="btn btn-sm btn-primary">View</button>
+            </div>
+          </header>
+
+          <ol class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
+            <% @contact.tasks.done.order(updated_at: :desc).each do |task| %>
+              <li class="timeline-block">
+                <div class="timeline-point">
+                  <%
+                    icon = case task.task_type
+                      when 'phone_call'
+                        'phone'
+                      when 'email'
+                        'envelope'
+                      when 'message'
+                        'comment'
+                      else
+                        'list'
+                    end
+                  %>
+                  <span class="avatar bg-info"><i class="fa fa-<%= icon %>"></i></span>
+                </div>
+                <div class="timeline-content">
+                  <time><%= time_ago_in_words(task.updated_at) %> ago</time>
+                  <p><span class="h6"><a href="#"><%= task.task_type.humanize %></a></span> completed by <strong><%= task.updated_by_user.first_name %></strong></p>
+
+                  <blockquote class="blockquote ml-0 my-2">
+                    <% task.notes.each do |note| %>
+                      <p class="fs-14"><%= note.details %></p>
+                    <% end %>
+                  </blockquote>
+
+                  <hr>
+                </div>
+              </li>
+            <% end %>
+          </ol>
+
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="tab_recipes_campaigns">
+        <div class="card">
+          <h5 class="card-title">Active <strong>Campaigns</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <% @automated_campaigns.each do |campaign| %>
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p><strong><%= campaign.name %></strong></p>
+                </div>
+                <div>
+                  <% if @subscribed_campaigns.include?(campaign.id) %>
+                    <a class="btn btn-sm btn-twitter" href="#">Added</a>
+                  <% else %>
+                    <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
+                  <% end %>
+                </div>
+              </div>
             <% end %>
           </div>
-          <%= form_tag admin_plugins_flexx_plugin_crm_update_task_path(task_id: task.id), method: :post do %>
-            <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
-            <div class="row">
-              <div class="col-md-12">
-                <label for="task_notes">Add Notes</label><br>
-                <textarea class="form-control sluged valid" type="text" name="task[notes_attributes][][details]" id="task_notes"></textarea>
+        </div>
+
+        <div class="card">
+          <h5 class="card-title">Available <strong>Recipes</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <% @available_recipes.each do |recipe| %>
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p><strong><%= recipe.title %></strong></p>
+                </div>
+                <div>
+                  <a class="btn btn-sm btn-twitter btn-outline" href="#">Add tasks</a>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+
+      <form class="card form-type-material tab-pane fade" id="tab_contact_details">
+        <h4 class="card-title fw-400">Contact Details</h4>
+
+        <div class="card-body">
+          <div class="flexbox gap-items-4">
+            <span class="avatar avatar-xl">pc</span>
+
+            <div class="flex-grow">
+              <h5>Paulo Castro</h5>
+              <div class="d-felx flex-column flex-sm-row gap-y gap-items-2 mt-16">
+                <div class="file-group file-group-inline">
+                  <button class="btn btn-sm btn-w-lg btn-outline btn-round btn-secondary file-browser" type="button">Change Picture</button>
+                  <input type="file">
+                </div>
+
+                <a class="btn btn-sm btn-w-lg btn-outline btn-round btn-danger align-top" href="#">Delete Picture</a>
+              </div>
+
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>First name</label>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label for="task_status">Status</label><br>
-                <select id="task_status" name="task[aasm_state]" class="form-control select">
-                  <option value="pending">Pending</option>
-                  <option value="done">Done</option>
-                </select>
-              </div>
-              <div class="col-md-6"><br/>
-                <input type="submit" class="btn btn-success pull-right" value="Update" />
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Last name</label>
               </div>
             </div>
-          <% end %>
-          <hr/>
-        <% end %>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+              <input class="form-control" type="text">
+              <label>Email</label>
+            </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Phone</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Birthday</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Address</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Source</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>Status</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input class="form-control" type="text">
+            <label>Tags</label>
+          </div>
+
+          <div class="form-group">
+            <textarea class="form-control" rows="6"></textarea>
+            <label>Highlights</label>
+          </div>
+        </div>
+
+        <footer class="card-footer text-right">
+          <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
+        </footer>
+      </form>
+
+    </div>
+
+
+  </div>
+</div>
+
+<!-- QUICKVIEW - View task -->
+<div id="qv_view_task" class="quickview quickview-lg backdrop-dark">
+  <header class="quickview-header">
+    <p class="quickview-title lead">Complete: <strong>Task title</strong></p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <div class="card no-margin">
+
+      <div class="card-body card-inverse text-center pb-50">
+        <span class="avatar avatar-xxl avatar-bordered"><i class="fa fa-phone fs-30"></i></span>
+        <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#">Paulo Castro</a></h4>
+        <span>Phone Call</span>
+      </div>
+      <ul class="flexbox flex-justified text-center p-20">
+        <li class="br-1 border-light">
+          <span class="text-muted">Date</span><br>
+          <span>05/01/2018</span>
+        </li>
+        <li>
+          <span class="text-muted">Time</span><br>
+          <span>3:00 PM EST</span>
+        </li>
+      </ul>
+      <form class="quickview-block form-type-combine">
+        <div class="form-group">
+          <label>Outcome / Notes</label>
+          <textarea class="form-control" rows="6"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-success" type="submit">Done</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
+    <button class="btn btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+  </footer>
+</div>
+
+<!-- QUICKVIEW - Add task -->
+<div id="qv-add-task" class="quickview quickview-lg backdrop-dark">
+  <header class="quickview-header">
+    <p class="quickview-title lead">New <strong>Task</strong></p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <form class="quickview-block form-type-combine" name="createTask">
+
+      <div class="card-body">
+        <div class="form-group">
+          <label for="select">Type</label>
+          <select class="form-control" id="step_type">
+            <option>Phone call</option>
+            <option>Email</option>
+            <option>Text</option>
+            <option>General</option>
+          </select>
+        </div>
+
+        <h6 class="text-light fw-300">Timing</h6>
+        <div class="no-border text-center">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-lg btn-info active" style="width: 100%;">
+              <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</i>
+            </label>
+            <label class="btn btn-lg btn-info" style="width: 100%;">
+              <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
+            </label>
+          </div>
+        </div>
+
+        <div id="timing_detail" class="form-groups-attached">
+
+          <div class="row">
+            <div class="form-group col-6">
+              <label>After</label>
+              <input class="form-control" type="text" placeholder="1">
+            </div>
+
+            <div class="form-group col-6">
+              <label for="select">Time unit</label>
+              <select class="form-control" id="step_time_unit">
+                <option>minutes</option>
+                <option>hours</option>
+                <option>days</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <br>
+        <h6 class="text-light fw-300">Details</h6>
+        <div class="form-groups-attached">
+
+          <div class="form-group">
+            <label>Task title</label>
+            <input class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-success" type="submit">Add</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
+  </footer>
+</div>
+
+<!-- MODAL: Defer task -->
+<div class="modal modal-center fade" id="modal-defer-task" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Defer: Task title</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Current due date</label>
+            <input type="text" class="form-control" value="04/12/2018" readonly="">
+          </div>
+          <div class="form-group">
+            <label>Defer until</label>
+            <input type="text" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-bold btn-pure btn-primary">Save changes</button>
       </div>
     </div>
   </div>
