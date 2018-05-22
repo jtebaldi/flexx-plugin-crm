@@ -122,11 +122,11 @@ module Plugins::FlexxPluginCrm
     private
 
     def new_contact_params
-      params.require(:new_contact).permit(:sales_stage, :first_name, :last_name, :email)
+      params.require(:new_contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumbers_attributes: [:number, :phone_type])
     end
 
     def contact_params
-      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email)
+      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumber_attributes: [:number, :phone_type])
     end
 
     def new_task_params
