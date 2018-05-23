@@ -59,7 +59,7 @@
     <div id="contact-list" class="media-list-body bg-white b-1">
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
-          <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_plugins_flexx_plugin_crm_view_contact_path(contact.id) %>">
+          <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_view_contact_path(contact.id) %>">
             <span class="avatar avatar-lg status-success bg-dark"><%= contact.initials %></span>
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %><small>&nbsp;<em>Added on <%= contact.created_at.strftime('%d %B %Y') %></em></small></h6>
@@ -104,12 +104,12 @@
     <span class="close"><i class="ti-close"></i></span>
   </header>
 
-  
+
   <div class="quickview-body">
     <%= form_tag admin_plugins_flexx_plugin_crm_create_contact_path, method: :post, id: 'new-contact-form' do %>
 
       <div class="quickview-block form-type-material">
-        
+
         <div class="form-group">
           <input type="text" class="form-control" name="new_contact[first_name]">
           <label>First Name</label>
@@ -124,7 +124,7 @@
           <input type="text" class="form-control" name="new_contact[email]">
           <label>Email Address</label>
         </div>
-        
+
         <div class="form-row">
           <div class="col-sm-6">
             <div class="form-group">
@@ -135,7 +135,7 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <select class="form-control" data-provide="selectpicker">
+              <select class="form-control" data-provide="selectpicker" name="new_contact[phonenumbers_attributes][][phone_type]">
                 <option>Type</option>
                 <option>Mobile</option>
                 <option>Home</option>
@@ -143,13 +143,13 @@
                 <option>Other</option>
               </select>
             </div>
-          </div>    
+          </div>
         </div>
 
         <div class="form-row">
           <div class="col-sm-6">
             <div class="form-group">
-              <select class="form-control" data-provide="selectpicker" title="Status">
+              <select class="form-control" data-provide="selectpicker" title="Status" name="new_contact[sales_stage]">
                 <option>Lead</option>
                 <option>Prospect</option>
                 <option>Customer</option>
@@ -175,7 +175,7 @@
         </div>
 
         <label>Tags *need to connect Typeahead for all current tags</label>
-        <div class="form-group">                   
+        <div class="form-group">
           <input type="text" id="tags-typeahead">
           <small class="form-text">Press enter after typing tag</small>
         </div>
@@ -184,11 +184,11 @@
           <textarea class="form-control" rows="6"></textarea>
           <label>Highlights</label>
         </div>
-        
+
       </div>
     <% end %>
   </div>
-  
+
   <footer class="quickview-footer flex-row-reverse">
     <button id="new-contact-add" class="btn btn-primary" onclick="submitNewContactForm()">Add</button>
     <button id="new-contact-cancel" class="btn btn-secondary" type="button">Cancel</button>

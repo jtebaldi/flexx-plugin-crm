@@ -1,0 +1,127 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/recipes' %>
+<% end %>
+
+<header class="header">
+  <div class="header-info">
+    <h2 class="header-title">Your <strong>Recipes</strong></h2>
+  </div>
+  <div class="header-action">
+    <div class="buttons">
+      <button class="btn btn-primary btn-float" data-toggle="modal" data-target="#modal_new_recipe"><i class="ti-plus"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+
+  <p class="lead text-center text-fade">Active recipes</p>
+  <% @active_task_recipes.each do |recipe| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <a class="media card-body" href="<%= admin_view_recipe_path(recipe.id) %>">
+
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= recipe.title %></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><% recipe.description %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+            <% recipe.cama_contact_forms.each do |form| %>
+              <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+            <% end %>
+          </p>
+          <span class="text-fade fs-12">Total tasks: <strong><%= recipe.directions.count %></strong></span>
+        </div>
+      </a>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Created on:</strong>
+          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+        </div>
+        <div class="card-hover-show">
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="#">Delete</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+  <br>
+  <div class="divider text-uppercase fw-500">Drafts</div>
+
+  <% @paused_task_recipes.each do |recipe| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <a class="media card-body" href="<%= admin_view_recipe_path(recipe.id) %>">
+
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= recipe.title %></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><% recipe.description %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+            <% recipe.cama_contact_forms.each do |form| %>
+              <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+            <% end %>
+          </p>
+          <span class="text-fade fs-12">Total tasks: <strong><%= recipe.directions.count %></strong></span>
+        </div>
+      </a>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Created on:</strong>
+          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+        </div>
+        <div class="card-hover-show">
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="#">Delete</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+</div>
+
+<div id="qv-recipe-overview" class="quickview quickview-lg backdrop-light"></div>
+
+<!-- MODAL: New recipe modal -->
+<div class="modal modal-top fade" id="modal_new_recipe" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New recipe</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_path, method: :post, id: "new-task-recipe-form", class: "card form-type-combine" do %>
+          <div class="card-body">
+            <div class="form-groups-attached">
+              <div class="form-group">
+                <label>Recipe Name</label>
+                <input class="form-control" type="text" name="new_task_recipe[title]">
+              </div>
+              <div class="form-group">
+                <label for="textarea">Recipe description</label>
+                <textarea class="form-control" id="textarea" rows="6" name="new_task_recipe[description]"></textarea>
+              </div>
+
+            </div>
+          </div>
+        <% end %>
+        <div class="text-center">
+          <p>(You can update this later)</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div id="new-task-recipe-spinner" class="spinner-circle-shadow invisible"></div>
+        <button id="new-task-recipe-cancel" type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="new-task-recipe-continue" class="btn btn-primary" onclick="submitNewTaskRecipeForm()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

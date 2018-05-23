@@ -57,15 +57,24 @@ module Plugins::FlexxPluginCrm
       @automated_campaigns = current_site.automated_campaigns.active.order(:name)
     end
 
-    def create_task_recipe
-      params[:new_task_recipe].merge!(created_by: current_user.id)
-
-      new_task_recipe = current_site.task_recipes.create(params.require(:new_task_recipe).permit(:title, :created_by))
-
-      redirect_to action: :view_task_recipe, id: new_task_recipe.id
+    def recipes
+      @active_task_recipes = current_site.task_recipes.active.order(:title)
+      @paused_task_recipes = current_site.task_recipes.paused.order(:title)
     end
 
-    def view_task_recipe
+    def recipe_card
+      @task_recipe = current_site.task_recipes.find(params[:id])
+
+      render partial: "recipe_card"
+    end
+
+    def create_recipe
+      new_task_recipe = current_site.task_recipes.create(new_task_recipe_params)
+
+      redirect_to action: :view_recipe, id: new_task_recipe.id
+    end
+
+    def view_recipe
       @task_recipe = current_site.task_recipes.find(params[:id])
       @available_contact_forms = current_site.
                                   contact_forms.
@@ -141,6 +150,12 @@ module Plugins::FlexxPluginCrm
       params[:task].merge!(updated_by: current_user.id)
 
       params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
+    end
+
+    def new_task_recipe_params
+      params[:new_task_recipe].merge!(created_by: current_user.id)
+
+      params.require(:new_task_recipe).permit(:title, :description, :created_by)
     end
 
     def new_task_recipe_direction_params

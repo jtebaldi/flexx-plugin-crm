@@ -4,7 +4,12 @@ Rails.application.routes.draw do
       scope :next do
         get :contacts, controller: 'plugins/flexx_plugin_crm/admin', action: :contacts
         get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
-        get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact
+        get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact, as: :view_contact
+
+        get  :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
+        get  'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card
+        get  'recipes/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_recipe, as: :view_recipe
+        post :create_recipe, controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe, as: :create_recipe
       end
 
       namespace 'plugins' do
@@ -15,14 +20,12 @@ Rails.application.routes.draw do
             post :save_settings
 
             get :new_contact
-            get '/view_contact/:id', action: :view_contact, as: :view_contact
             post :create_contact
             post '/update_contact/:id', action: :update_contact, as: :update_contact
 
             post '/create_task/:contact_id', action: :create_task, as: :create_task
             post '/update_task/:task_id', action: :update_task, as: :update_task
 
-            get 'view_task_recipe/:id', action: :view_task_recipe, as: :view_task_recipe
             post :create_task_recipe
             post 'create_task_recipe_direction/:task_recipe_id', action: :create_task_recipe_direction, as: :create_task_recipe_direction
             post 'associate_recipe_to_form/:task_recipe_id', action: :associate_recipe_to_form, as: :associate_recipe_to_form
