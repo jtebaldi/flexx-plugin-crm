@@ -117,12 +117,7 @@
           <header class="card-header">
             <h4 class="card-title"><strong>History</strong></h4>
             <div class="card-header-actions">
-              <label class="switch switch-border switch-info">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-                <span class="switch-description">Include automated</span>
-              </label>
-              <button class="btn btn-sm btn-primary">View</button>
+              <button class="btn btn-sm btn-primary">Filter</button>
             </div>
           </header>
 
@@ -210,7 +205,21 @@
             <span class="avatar avatar-xl">pc</span>
 
             <div class="flex-grow">
-              <h5>Paulo Castro</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input class="form-control" type="text" value="<%= @contact.first_name %>">
+                    <label>First name</label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input class="form-control" type="text" value="<%= @contact.last_name %>">
+                    <label>Last name</label>
+                  </div>
+                </div>
+              </div>
               <div class="d-felx flex-column flex-sm-row gap-y gap-items-2 mt-16">
                 <div class="file-group file-group-inline">
                   <button class="btn btn-sm btn-w-lg btn-outline btn-round btn-secondary file-browser" type="button">Change Picture</button>
@@ -228,23 +237,39 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text">
-                <label>First name</label>
+              <label>Status</label>
+                <select class="form-control" data-provide="selectpicker" title="Status">
+                  <option>Lead</option>
+                  <option selected>Prospect</option>
+                  <option>Customer</option>
+                </select>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text">
-                <label>Last name</label>
+                <label>Lead source</label>
+                <select class="form-control" data-provide="selectpicker" title="Choose Source">
+                  <option>Referral</option>
+                  <option>Social Media</option>
+                  <option>Web Search</option>
+                  <option selected>Website Form</option>
+                  <option>PR / Advertising</option>
+                  <option>Email</option>
+                  <option>Word of mouth</option>
+                  <option>Partner</option>
+                  <option>Other</option>
+                </select>
               </div>
             </div>
           </div>
 
+          <hr>
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-              <input class="form-control" type="text">
+              <input class="form-control" type="text" value="<%= @contact.email %>">
               <label>Email</label>
             </div>
             </div>
@@ -261,14 +286,14 @@
             <div class="col-md-6">
               <div class="form-group">
                 <input class="form-control" type="text">
-                <label>Birthday</label>
+                <label>Street Address</label>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
                 <input class="form-control" type="text">
-                <label>Address</label>
+                <label>Line 2</label>
               </div>
             </div>
           </div>
@@ -277,21 +302,48 @@
             <div class="col-md-6">
               <div class="form-group">
                 <input class="form-control" type="text">
-                <label>Source</label>
+                <label>City</label>
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <input class="form-control" type="text">
-                <label>Status</label>
+                <label>State / Province / Region</label>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <input class="form-control" type="text">
+                <label>ZIP / Postal Code</label>
               </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <input class="form-control" type="text">
-            <label>Tags</label>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Country</label>
+                <select class="form-control" data-provide="selectpicker" title="Select country">
+                  <option selected>United States</option>
+                  <option>Australia</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group do-float">
+                <input type="text" class="form-control" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
+                <label>Birthday</label>
+              </div>
+            </div>
+          </div>
+
+          <label>Tags</label>
+          <div class="form-group">                   
+            <input type="text" value="Grand Opening,Injury,Mother" data-provide="tagsinput">
+            <small class="form-text">Press enter after typing tag</small>
           </div>
 
           <div class="form-group">
