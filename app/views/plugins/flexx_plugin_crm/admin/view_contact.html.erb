@@ -23,24 +23,43 @@
 
         <div class="card-body card-inverse text-center pb-50">
           <a href="/admin/next/contacts/paulo">
-            <span class="avatar avatar-xxl avatar-bordered status-success"><%= @contact.initials %></span>
+            <span class="avatar avatar-xxl avatar-bordered status-<%= @contact.sales_stage %>"><%= @contact.initials %></span>
           </a>
           <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
           <span><%= @contact.sales_stage.humanize %></span>
+          <p class="mt-20"><button class="btn btn-label btn-info" data-toggle="modal" data-target="#update_status_modal"><label><i class="ti-bolt"></i></label> Update Status</button></p>
         </div>
         <ul class="flexbox flex-justified text-center p-20">
-          <li class="br-1 border-light">
-            <span class="text-muted">Email</span><br>
-            <span class="fs-22"><i class="fa fa-envelope"></i></span>
-          </li>
-          <li class="br-1 border-light">
-            <span class="text-muted">Call</span><br>
-            <span class="fs-22"><i class="fa fa-phone"></i></span>
-          </li>
-          <li>
-            <span class="text-muted">Text</span><br>
-            <span class="fs-22"><i class="fa fa-comment"></i></span>
-          </li>
+          <% if @contact.email.nil? %>
+            <li class="br-1 border-light">
+              <span class="text-muted">Email</span><br>
+              <span class="fs-22"><i class="fa fa-envelope"></i></span>
+            </li>
+          <% else %>
+            <a href="#" class="br-1 border-light text-info">
+              <span class="text-muted">Email</span><br>
+              <span class="fs-22"><i class="fa fa-envelope"></i></span>
+            </a>
+          <% end %>
+          <% if !@contact.phonenumbers.present? %>
+            <li class="br-1 border-light">
+              <span class="text-muted">Call</span><br>
+              <span class="fs-22"><i class="fa fa-phone"></i></span>
+            </li>
+            <li>
+              <span class="text-muted">Text</span><br>
+              <span class="fs-22"><i class="fa fa-comment"></i></span>
+            </li>
+          <% else %>
+            <a href="#" class="br-1 border-light text-info">
+              <span class="text-muted">Call</span><br>
+              <span class="fs-22"><i class="fa fa-phone"></i></span>
+            </a>
+            <a href="#" class="text-info">
+              <span class="text-muted text-info">Text</span><br>
+              <span class="fs-22"><i class="fa fa-comment"></i></span>
+            </a>
+          <% end %>
         </ul>
       </div>
 
@@ -50,15 +69,15 @@
             <a class="nav-link active" href="#tab_tasks" data-toggle="tab">Tasks</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
+            <a class="nav-link" href="#tab_contact_details" data-toggle="tab">User Details</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#tab_contact_details" data-toggle="tab">User Details</a>
+            <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
           </li>
         </ul>
       </div>
 
-      <div class="text-center">
+      <div class="text-center mb-20">
         <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Add task</a>
       </div>
     </div>
@@ -66,49 +85,62 @@
     <div class="col-md-8 tab-content">
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
-        <% @contact.tasks.pending.order(:due_date).each do |task| %>
-          <div class="card b-1 hover-shadow-2 mb-20">
-            <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
-              <div class="media-left pr-12">
-                <span class="avatar avatar-xl no-radius">
-                <%
-                  icon = case task.task_type
-                    when 'phone_call'
-                      'phone'
-                    when 'email'
-                      'envelope'
-                    when 'message'
-                      'comment'
-                    else
-                      'list'
-                  end
-                %>
-                <i class="fa fa-<%= icon %>"></i></span>
-              </div>
-              <div class="media-body">
-                <div class="mb-2">
-                  <span class="fs-20 pr-16"><%= task.title %></span>
+        <% if @contact.tasks.pending.empty? %>
+          <div class="row justify-content-md-center">
+            <div class="col-md-offset-2 col-md-8">
+              <div class="card card-transparent b-1" style="border-style:dotted !important;">
+                <div class="card-body text-center">
+                  <h5 class="center-vh"><em>No pending tasks</em></h5>
+                  <a href="#" class="btn btn-outline btn-primary btn-xs">Add a task</a>
                 </div>
-                <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
               </div>
-
-              <div class="media-right text-right d-none d-md-block">
-                <p class="fs-14 text-fade mb-12">
-                  <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
-                </p>
-                <span class="text-fade fs-12"><em>Note added</em></span>
-              </div>
-            </a>
-            <footer class="card-footer flexbox align-items-center">
-              <div>
-                <strong>Due by:</strong>
-                <span><%= task.due_date.to_formatted_s(:long) %></span>
-              </div>
-              <div class="card-hover-show">
-                <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
-              </div>
-            </footer>
+            </div>
           </div>
+        <% else %>  
+          <% @contact.tasks.pending.order(:due_date).each do |task| %>
+            <div class="card b-1 hover-shadow-2 mb-20">
+              <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
+                <div class="media-left pr-12">
+                  <span class="avatar avatar-xl no-radius">
+                  <%
+                    icon = case task.task_type
+                      when 'phone_call'
+                        'phone'
+                      when 'email'
+                        'envelope'
+                      when 'message'
+                        'comment'
+                      else
+                        'list'
+                    end
+                  %>
+                  <i class="fa fa-<%= icon %>"></i></span>
+                </div>
+                <div class="media-body">
+                  <div class="mb-2">
+                    <span class="fs-20 pr-16"><%= task.title %></span>
+                  </div>
+                  <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
+                </div>
+
+                <div class="media-right text-right d-none d-md-block">
+                  <p class="fs-14 text-fade mb-12">
+                    <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
+                  </p>
+                  <span class="text-fade fs-12"><em>Note added</em></span>
+                </div>
+              </a>
+              <footer class="card-footer flexbox align-items-center">
+                <div>
+                  <strong>Due by:</strong>
+                  <span><%= task.due_date.to_formatted_s(:long) %></span>
+                </div>
+                <div class="card-hover-show">
+                  <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+                </div>
+              </footer>
+            </div>
+          <% end %>
         <% end %>
         <br>
         <div class="divider text-uppercase fw-500">Timeline</div>
@@ -158,45 +190,6 @@
         </div>
       </div>
 
-      <div class="tab-pane fade" id="tab_recipes_campaigns">
-        <div class="card">
-          <h5 class="card-title">Active <strong>Campaigns</strong></h5>
-          <div class="media-list media-list-hover media-list-divided">
-            <% @automated_campaigns.each do |campaign| %>
-              <div class="media align-items-center">
-                <div class="media-body">
-                  <p><strong><%= campaign.name %></strong></p>
-                </div>
-                <div>
-                  <% if @subscribed_campaigns.include?(campaign.id) %>
-                    <a class="btn btn-sm btn-twitter" href="#">Added</a>
-                  <% else %>
-                    <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="card">
-          <h5 class="card-title">Available <strong>Recipes</strong></h5>
-          <div class="media-list media-list-hover media-list-divided">
-            <% @available_recipes.each do |recipe| %>
-              <div class="media align-items-center">
-                <div class="media-body">
-                  <p><strong><%= recipe.title %></strong></p>
-                </div>
-                <div>
-                  <a class="btn btn-sm btn-twitter btn-outline" href="#">Add tasks</a>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-      </div>
-
       <form class="card form-type-material tab-pane fade" id="tab_contact_details">
         <h4 class="card-title fw-400">Contact Details</h4>
 
@@ -236,30 +229,35 @@
 
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
-              <label>Status</label>
-                <select class="form-control" data-provide="selectpicker" title="Status">
-                  <option>Lead</option>
-                  <option selected>Prospect</option>
-                  <option>Customer</option>
-                </select>
+              <div class="form-group ">
+                <div class="input-group">
+                  <div class="input-group-input">
+                    <input class="form-control" type="text" value="<%= @contact.sales_stage.capitalize %>" readonly>
+                    <label>Status</label>
+                  </div>
+                  <span class="input-group-append">
+                    <button class="btn btn-sm btn-info btn-outline" type="button" data-toggle="modal" data-target="#update_status_modal">Update</button>
+                  </span>
+                </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Lead source</label>
-                <select class="form-control" data-provide="selectpicker" title="Choose Source">
-                  <option>Referral</option>
-                  <option>Social Media</option>
-                  <option>Web Search</option>
-                  <option selected>Website Form</option>
-                  <option>PR / Advertising</option>
-                  <option>Email</option>
-                  <option>Word of mouth</option>
-                  <option>Partner</option>
-                  <option>Other</option>
-                </select>
+                <div class="input-group">
+                  <label>Lead source</label>
+                  <select class="form-control" data-provide="selectpicker" title="Choose Source">
+                    <option>Referral</option>
+                    <option>Social Media</option>
+                    <option>Web Search</option>
+                    <option selected>Website Form</option>
+                    <option>PR / Advertising</option>
+                    <option>Email</option>
+                    <option>Word of mouth</option>
+                    <option>Partner</option>
+                    <option>Other</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -356,6 +354,47 @@
           <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
         </footer>
       </form>
+
+      <div class="tab-pane fade" id="tab_recipes_campaigns">
+        <div class="card">
+          <h5 class="card-title">Active <strong>Campaigns</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <% @automated_campaigns.each do |campaign| %>
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p><strong><%= campaign.name %></strong></p>
+                </div>
+                <div>
+                  <% if @subscribed_campaigns.include?(campaign.id) %>
+                    <a class="btn btn-sm btn-twitter" href="#">Added</a>
+                  <% else %>
+                    <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="card">
+          <h5 class="card-title">Available <strong>Recipes</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <% @available_recipes.each do |recipe| %>
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p><strong><%= recipe.title %></strong></p>
+                </div>
+                <div>
+                  <a class="btn btn-sm btn-twitter btn-outline" href="#">Add tasks</a>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+
+      
 
     </div>
 
@@ -509,6 +548,34 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-bold btn-pure btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Update Status -->
+<div class="modal modal-center fade" id="update_status_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Status</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <a href="#" class="btn btn-block btn-bold btn-lead btn-lg">Lead</a>
+        </p>
+        <p>
+          <a href="#" class="btn btn-block btn-bold btn-prospect btn-lg">Prospect</a>
+        </p>
+        <p>
+          <a href="#" disabled class="btn btn-block btn-bold btn-customer btn-lg">Customer</a>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
