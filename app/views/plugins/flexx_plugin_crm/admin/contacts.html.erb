@@ -2,21 +2,54 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
 <% end %>
 
-<style>
-  @media (max-width: 576px) {
-    #contact_list .media-body h6 small { display: none; }
-    #contact_list .media-body h6 { font-size: 15px; }
+<!-- Page aside -->
+<aside class="aside aside-expand-md">
+  <div class="aside-body">
 
-    .header .right { display: none; }
-  }
+    <div class="aside-block">
+      <h6 class="aside-title">Actions</h6>
+    </div>
 
-  .bootstrap-tagsinput { display: block; }
-</style>
+    <div class="media-list media-list-sm media-list-hover media-list-divided">
+
+      <a class="media flex-column px-20" href="/admin/next/actions">
+        <p>Send a message</p>
+        <small>Send an email to a group or single contact</small>
+      </a>
+
+      <a class="media flex-column px-20" href="/admin/next/recipes">
+        <p>Recipes</p>
+        <small>View, create and manage your recipes</small>
+      </a>
+
+      <a class="media flex-column px-20" href="/admin/next/campaigns">
+        <p>Automated campaigns</p>
+        <small>View, create and manage your automated campaigns</small>
+      </a>
+
+    </div>
+
+
+    <hr class="hr-sm">
+
+
+    <div class="media-list media-list-sm media-list-hover media-list-divided">
+      <a class="media flex-column px-20" href="aside-doc.html">
+        <p>Support</p>
+        <small>Learn more about the features in your CRM</small>
+      </a>
+    </div>
+
+  </div>
+
+  <button class="aside-toggler"></button>
+</aside>
+<!-- END Page aside -->
 
 <header class="header">
   <div class="header-info">
     <div class="left">
-      <h2 class="header-title">Your <strong>Contacts</strong></h2>
+      <h2 class="header-title">CRM <strong>Contacts</strong></h2>
     </div>
     <div class="right gap-items-2">
       <a class="btn btn-secondary btn-square btn-round" href="#" data-provide="tooltip" title="Import Contacts"><i class="ti-import"></i></a>
@@ -60,9 +93,9 @@
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
           <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_view_contact_path(contact.id) %>">
-            <span class="avatar avatar-lg status-success bg-dark"><%= contact.initials %></span>
+            <span class="avatar avatar-lg status-<%= contact.sales_stage %>"><%= contact.initials %></span>
             <div class="media-body text-truncate">
-              <h6><%= contact.print_name %><small>&nbsp;<em>Added on <%= contact.created_at.strftime('%d %B %Y') %></em></small></h6>
+              <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
               <small class="contact-detail">
                 <span>Last activity: </span>
                 <time datetime="2018-07-14 20:00">*** TO BE DONE ***</time>
@@ -79,6 +112,9 @@
                   %>
                 </span></span>
               </small>
+            </div>
+            <div class="media-right text-right d-none d-md-block">
+              <p class="fs-14 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
             </div>
           </a>
           <div class="media-right gap-items">
@@ -150,9 +186,9 @@
           <div class="col-sm-6">
             <div class="form-group">
               <select class="form-control" data-provide="selectpicker" title="Status" name="new_contact[sales_stage]">
-                <option>Lead</option>
-                <option>Prospect</option>
-                <option>Customer</option>
+                <option value="lead">Lead</option>
+                <option value="prospect">Prospect</option>
+                <option value="customer">Customer</option>
               </select>
             </div>
           </div>
