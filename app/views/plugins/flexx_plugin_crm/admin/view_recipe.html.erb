@@ -52,58 +52,55 @@
         </ol>
         <div class="card-footer text-center">
           <div class="fab">
-            <button id="btn_add_step" class="btn btn-float" title="Add new step" data-provide="tooltip" data-placement="top"><i class="ti-plus"></i></button>
+            <button id="new-recipe-direction-add-button" class="btn btn-float" title="Add new step" data-provide="tooltip" data-placement="top"><i class="ti-plus"></i></button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6" id="new_step_form">
+    <div class="col-md-6" id="new-recipe-direction-panel">
       <div id="step_placeholder" class="card card-transparent">
         <div class="card-body text-center">
           <h3 class="text-muted">Add a new step</h3>
         </div>
       </div>
-      <div class="card">
-        <form name="recipeStep" class="form-type-combine">
-          <h4 class="card-title"><strong>New step</strong></h4>
 
+      <div class="card">
+        <h4 class="card-title"><strong>New step</strong></h4>
+        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_direction_path(task_recipe_id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
           <div class="card-body">
             <div class="form-group">
               <label for="select">Type</label>
-              <select class="form-control" data-provide="selectpicker" id="step_type">
-                <option>Phone call</option>
-                <option>Email</option>
-                <option>Text</option>
-                <option>General</option>
+              <select class="form-control" name="new_task_recipe_direction[task_type]">
+                <option value="phone_call">Phone call</option>
+                <option value="message">Email</option>
+                <option value="email">Text</option>
+                <option value="other">General</option>
               </select>
             </div>
 
             <h6 class="text-light fw-300">Timing</h6>
             <div class="no-border text-center">
               <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-lg btn-info active">
-                  <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</i>
-                </label>
-                <label class="btn btn-lg btn-info">
-                  <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
-                </label>
+                <button class="btn btn-lg btn-info" id="new-recipe-direction-immediate-button">Immediate</button>
+                <button class="btn btn-lg" id="new-recipe-direction-schedule-button">Schedule</button>
               </div>
             </div>
 
-            <div id="timing_detail" class="form-groups-attached">
+            <div id="new-recipe-direction-timming-panel" class="form-groups-attached" style="display: none">
+              <br/>
               <div class="row">
                 <div class="form-group col-6">
                   <label>After</label>
-                  <input class="form-control" type="text" placeholder="1">
+                  <input class="form-control" type="text" name="new_task_recipe_direction[due_on_value]">
                 </div>
 
                 <div class="form-group col-6">
                   <label for="select">Time unit</label>
-                  <select class="form-control" id="select">
-                    <option>minutes</option>
-                    <option>hours</option>
-                    <option>days</option>
+                  <select class="form-control" name="new_task_recipe_direction[due_on_unit]">
+                    <option value="minutes">minute(s)</option>
+                    <option value="hours">hour(s)</option>
+                    <option value="days">day(s)</option>
                   </select>
                 </div>
               </div>
@@ -114,23 +111,23 @@
 
               <div class="form-group">
                 <label>Title for reference</label>
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="new_task_recipe_direction[title]">
               </div>
 
               <div class="form-group">
                 <label>Description</label>
-                <textarea class="form-control" rows="6"></textarea>
+                <textarea class="form-control" rows="6" name="new_task_recipe_direction[details]"></textarea>
               </div>
 
             </div>
           </div>
-        </form>
-        <footer class="card-footer text-right">
-            <button class="btn btn-secondary" type="reset">Cancel</button>
-            <button class="btn btn-primary" type="submit">Add</button>
-          </footer>
+        <% end %>
+        <footer class="card-footer modal-footer text-right">
+          <div id="new-recipe-direction-spinner" class="spinner-circle-shadow invisible"></div>
+          <button class="btn btn-secondary" id="new-recipe-direction-cancel">Cancel</button>
+          <button class="btn btn-primary" id="new-recipe-direction-add" onclick="addNewRecipeDirection()">Add</button>
+        </footer>
       </div>
-      
     </div>
 
   </div>

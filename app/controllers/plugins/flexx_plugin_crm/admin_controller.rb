@@ -91,9 +91,12 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_task_recipe_direction
-      current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
+      respond_to do |format|
+        format.js   { }
+      end
+      # current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
 
-      redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
+      # redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
     end
 
     def create_automated_campaign

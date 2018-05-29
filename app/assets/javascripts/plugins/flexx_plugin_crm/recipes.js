@@ -6,26 +6,59 @@ function submitNewTaskRecipeForm() {
   $('#new-task-recipe-form').submit();
 }
 
+function addNewRecipeDirection() {
+  $('#new-recipe-direction-add').toggleClass('disabled');
+  $('#new-recipe-direction-cancel').toggleClass('disabled');
+  $('#new-recipe-direction-spinner').toggleClass('invisible');
+
+  if($("#new-recipe-direction-form input[name='timingOptions']:checked").val() == 'immediate') {
+    $("#new-recipe-direction-form input[name='new_task_recipe_direction[due_on_value]']").val('0');
+  }
+
+  $('#new-recipe-direction-form').trigger('submit.rails');
+}
+
+function clearNewRecipeDirectionForm() {
+  $('#new-recipe-direction-form')[0].reset();
+
+  $('#new-recipe-direction-add').toggleClass('disabled');
+  $('#new-recipe-direction-cancel').toggleClass('disabled');
+  $('#new-recipe-direction-spinner').toggleClass('invisible');
+  $("#new-recipe-direction-add-button").toggleClass('btn-primary btn-warning disabled');
+  $("#new-recipe-direction-add-button > i").toggleClass('ti-plus ti-more');
+
+  $('#new-recipe-direction-panel').fadeOut();
+}
+
 $('document').ready(function(){
-  $("#timing_detail").hide();
-  var rad = document.recipeStep.timingOptions;
-  $(rad).on('click change', function(e) {
-    if (rad.value == 2) {
-      $("#timing_detail").show();
-    } else {
-      $("#timing_detail").hide();
-    }
-  });
+
+  $('#new-recipe-direction-schedule-button').length &&
+    $('#new-recipe-direction-schedule-button').on('click', function(e) {
+      $('#new-recipe-direction-immediate-button').removeClass('btn-info');
+      $('#new-recipe-direction-schedule-button').addClass('btn-info');
+      $('#new-recipe-direction-timming-panel').show();
+
+      e.preventDefault();
+    });
+
+  $('#new-recipe-direction-immediate-button').length &&
+    $('#new-recipe-direction-immediate-button').on('click', function(e) {
+      $('#new-recipe-direction-immediate-button').addClass('btn-info');
+      $('#new-recipe-direction-schedule-button').removeClass('btn-info');
+      $('#new-recipe-direction-timming-panel').hide();
+
+      e.preventDefault();
+    });
 
   var stepFormPlaceholder = $("#step_placeholder");
-  var stepForm = $("#new_step_form");
-  var addStepBtn = $("#btn_add_step");
+  var stepForm = $("#new-recipe-direction-panel");
+  var addStepBtn = $("#new-recipe-direction-add-button");
   stepForm.hide();
   addStepBtn.addClass('btn-primary');
   $(addStepBtn).on('click', function(e) {
     stepFormPlaceholder.toggle();
     stepForm.toggle();
     addStepBtn.toggleClass('btn-primary btn-warning disabled');
-    $("#btn_add_step > i").toggleClass('ti-plus ti-more');
+    $("#new-recipe-direction-add-button > i").toggleClass('ti-plus ti-more');
   });
 });
