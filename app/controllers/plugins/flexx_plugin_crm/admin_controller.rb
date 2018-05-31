@@ -80,23 +80,25 @@ module Plugins::FlexxPluginCrm
                                   contact_forms.
                                   select(:id, :name).
                                   where(parent_id: nil).
-                                  where.not(id: @task_recipe.cama_contact_forms.pluck(:id)).
                                   order(:name)
     end
 
-    def associate_recipe_to_form
-      current_site.task_recipes.find(params[:task_recipe_id]).cama_contact_forms << current_site.contact_forms.find(params[:cama_contact_form_id])
+    def update_recipe
+      @task_recipe = current_site.task_recipes.find(params[:task_recipe_id])
 
-      redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
+      @task_recipe.update(task_recipe_params)
+
+      head :ok
     end
 
     def create_task_recipe_direction
-      respond_to do |format|
-        format.js   { }
-      end
-      # current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
+      @task_recipe = current_site.task_recipes.find(params[:task_recipe_id])
 
-      # redirect_to action: :view_task_recipe, id: params[:task_recipe_id]
+      current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
+
+      respond_to do |format|
+        format.js
+      end
     end
 
     def create_automated_campaign
@@ -159,6 +161,12 @@ module Plugins::FlexxPluginCrm
       params[:new_task_recipe].merge!(created_by: current_user.id)
 
       params.require(:new_task_recipe).permit(:title, :description, :created_by)
+    end
+
+    def task_recipe_params
+      params[:task_recipe].merge!(updated_by: current_user.id)
+
+      params.require(:task_recipe).permit(:cama_contact_form_ids, :updated_by)
     end
 
     def new_task_recipe_direction_params
