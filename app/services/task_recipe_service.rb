@@ -1,6 +1,6 @@
 class TaskRecipeService
   def self.apply_recipes(contact:)
-    contact.cama_contact_form.task_recipes.each { |recipe| apply_recipe(contact: contact, recipe: recipe) }
+    contact.cama_contact_form.task_recipes.active.each { |recipe| apply_recipe(contact: contact, recipe: recipe) }
   end
 
   def self.apply_recipe(contact:, recipe:)

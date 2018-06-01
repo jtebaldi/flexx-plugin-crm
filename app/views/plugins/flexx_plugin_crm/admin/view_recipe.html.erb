@@ -21,11 +21,8 @@
     </div>
   </div>
 
-  <div class="header-action">
-    <div class="buttons">
-      <a class="btn btn-warning btn-float btn-sm" href="#" title="Edit title or description" data-provide="tooltip" data-placement="top"><i class="ti-pencil"></i></a>
-      <a class="btn btn-success btn-float" href="#" title="Activate recipe" data-provide="tooltip" data-placement="top"><i class="ti-control-play"></i></a>
-    </div>
+  <div id="recipe-header-actions" class="header-action">
+    <%= render partial: 'recipe_header_actions' %>
   </div>
 </header>
 
@@ -55,7 +52,7 @@
 
       <div class="card">
         <h4 class="card-title"><strong>New step</strong></h4>
-        <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_direction_path(task_recipe_id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
+        <%= form_tag admin_create_recipe_direction_path(id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
           <div class="card-body">
             <div class="form-group">
               <label for="select">Type</label>
@@ -63,6 +60,7 @@
                 <option value="phone_call">Phone call</option>
                 <option value="message">Email</option>
                 <option value="email">Text</option>
+                <option value="meeting">Meeting</option>
                 <option value="other">General</option>
               </select>
             </div>
@@ -133,7 +131,7 @@
               <hr class="d-md-none">
               <div class="form-group">
                 <h5>Forms</h5>
-                <%= form_tag admin_plugins_flexx_plugin_crm_create_task_recipe_direction_path(task_recipe_id: @task_recipe.id, format: :js), method: :post, remote: true, id: 'update-recipe-form', class: 'form-type-combine' do %>
+                <%= form_tag admin_associate_recipe_to_form_path(id: @task_recipe.id, format: :js), method: :post, remote: true, id: 'update-recipe-form', class: 'form-type-combine' do %>
                   <select id="update-recipe-associated-forms" name="task_recipe[cama_contact_form_ids]" data-provide="selectpicker" data-width="100%" multiple title="Choose one or more forms...">
                     <%= options_from_collection_for_select(@available_contact_forms, 'id', 'name', @task_recipe.cama_contact_form_ids) %>
                   </select>

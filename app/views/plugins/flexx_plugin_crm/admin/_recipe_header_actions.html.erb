@@ -1,0 +1,7 @@
+<div class="buttons">
+  <a class="btn btn-warning btn-float btn-sm" href="#" title="Edit title or description" data-provide="tooltip" data-placement="top"><i class="ti-pencil"></i></a>
+  <a class="btn btn-<%= @task_recipe.paused ? 'success' : 'secondary' %> btn-float" href="<%= admin_toggle_recipe_path(@task_recipe.id) %>" data-remote="true">
+    <i class="ti-control-<%= @task_recipe.paused ? 'play' : 'pause' %>"></i>
+  </a>
+</div>
+

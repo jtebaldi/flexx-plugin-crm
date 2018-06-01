@@ -91,7 +91,17 @@ module Plugins::FlexxPluginCrm
       head :ok
     end
 
-    def create_task_recipe_direction
+    def toggle_recipe
+      @task_recipe = current_site.task_recipes.find(params[:id])
+
+      @task_recipe.update(paused: !@task_recipe.paused, paused_by: !@task_recipe.paused ? current_user.id : nil)
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
+    def create_recipe_direction
       @task_recipe = current_site.task_recipes.find(params[:task_recipe_id])
 
       current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
