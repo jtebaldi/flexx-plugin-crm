@@ -5,9 +5,7 @@
     </div>
     <div class="timeline-content">
       <time datetime="2018"><%= direction.distance_of_time_from_now() %></time>
-      <p><%= direction.task_type.humanize %></p>
-      <%= direction.title %>
-      <br/><%= direction.details %>
+      <p><%= direction.task_type.humanize %> (<%= direction.title %>)</p>
     </div>
   </li>
 <% end %>

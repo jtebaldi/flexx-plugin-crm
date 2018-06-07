@@ -1,0 +1,32 @@
+<header class="quickview-header">
+  <p class="quickview-title lead">Complete: <strong><%= @task.title %></strong></p>
+  <span class="close"><i class="ti-close"></i></span>
+</header>
+
+<div class="quickview-body">
+  <div class="card no-margin">
+    <ul class="flexbox flex-left text-left p-20">
+      <li class="br-1 border-light">
+        <span class="text-muted">Description</span><br>
+        <span><%= @task.details %></span>
+      </li>
+    </ul>
+    <ul class="flexbox flex-justified text-center p-20">
+      <li class="br-1 border-light">
+        <span class="text-muted">Date</span><br>
+        <span><%= @task.due_date.strftime('%m/%d/%Y') %></span>
+      </li>
+      <li>
+        <span class="text-muted">Time</span><br>
+        <span><%= @task.due_date.strftime('%I:%M %p') %></span>
+      </li>
+    </ul>
+    <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}" %>
+  </div>
+</div>
+
+<footer class="quickview-footer flex-row-reverse">
+  <button class="btn btn-success" type="submit">Done</button>
+  <button class="btn btn-danger" type="reset">Cancel</button>
+  <button class="btn btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+</footer>

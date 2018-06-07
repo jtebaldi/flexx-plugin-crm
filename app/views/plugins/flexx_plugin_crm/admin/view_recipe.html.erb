@@ -44,12 +44,6 @@
     </div>
 
     <div class="col-md-6" id="new-recipe-direction-panel">
-      <div id="step_placeholder" class="card card-transparent">
-        <div class="card-body text-center">
-          <h3 class="text-muted">Add a new step</h3>
-        </div>
-      </div>
-
       <div class="card">
         <h4 class="card-title"><strong>New step</strong></h4>
         <%= form_tag admin_create_recipe_direction_path(id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
@@ -61,7 +55,7 @@
                 <option value="message">Email</option>
                 <option value="email">Text</option>
                 <option value="meeting">Meeting</option>
-                <option value="other">General</option>
+                <option value="general">General</option>
               </select>
             </div>
 

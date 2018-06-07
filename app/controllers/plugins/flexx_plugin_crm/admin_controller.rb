@@ -50,6 +50,12 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :view_contact, id: task.contact_id
     end
 
+    def task_card
+      @task = current_site.tasks.find(params[:id])
+
+      render partial: "task_card"
+    end
+
     def settings
       add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
 
@@ -102,9 +108,9 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_recipe_direction
-      @task_recipe = current_site.task_recipes.find(params[:task_recipe_id])
+      @task_recipe = current_site.task_recipes.find(params[:id])
 
-      current_site.task_recipes.find(params[:task_recipe_id]).directions.create(new_task_recipe_direction_params)
+      @task_recipe.directions.create(new_task_recipe_direction_params)
 
       respond_to do |format|
         format.js

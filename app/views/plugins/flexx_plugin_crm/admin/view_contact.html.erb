@@ -96,10 +96,10 @@
               </div>
             </div>
           </div>
-        <% else %>  
+        <% else %>
           <% @contact.tasks.pending.order(:due_date).each do |task| %>
             <div class="card b-1 hover-shadow-2 mb-20">
-              <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
+              <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id) %>">
                 <div class="media-left pr-12">
                   <span class="avatar avatar-xl no-radius">
                   <%
@@ -339,7 +339,7 @@
           </div>
 
           <label>Tags</label>
-          <div class="form-group">                   
+          <div class="form-group">
             <input type="text" value="Grand Opening,Injury,Mother" data-provide="tagsinput">
             <small class="form-text">Press enter after typing tag</small>
           </div>
@@ -394,7 +394,7 @@
 
       </div>
 
-      
+
 
     </div>
 
@@ -403,45 +403,7 @@
 </div>
 
 <!-- QUICKVIEW - View task -->
-<div id="qv_view_task" class="quickview quickview-lg backdrop-dark">
-  <header class="quickview-header">
-    <p class="quickview-title lead">Complete: <strong>Task title</strong></p>
-    <span class="close"><i class="ti-close"></i></span>
-  </header>
-
-  <div class="quickview-body">
-    <div class="card no-margin">
-
-      <div class="card-body card-inverse text-center pb-50">
-        <span class="avatar avatar-xxl avatar-bordered"><i class="fa fa-phone fs-30"></i></span>
-        <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#">Paulo Castro</a></h4>
-        <span>Phone Call</span>
-      </div>
-      <ul class="flexbox flex-justified text-center p-20">
-        <li class="br-1 border-light">
-          <span class="text-muted">Date</span><br>
-          <span>05/01/2018</span>
-        </li>
-        <li>
-          <span class="text-muted">Time</span><br>
-          <span>3:00 PM EST</span>
-        </li>
-      </ul>
-      <form class="quickview-block form-type-combine">
-        <div class="form-group">
-          <label>Outcome / Notes</label>
-          <textarea class="form-control" rows="6"></textarea>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <footer class="quickview-footer flex-row-reverse">
-    <button class="btn btn-success" type="submit">Done</button>
-    <button class="btn btn-danger" type="reset">Cancel</button>
-    <button class="btn btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
-  </footer>
-</div>
+<div id="qv_view_task" class="quickview quickview-lg backdrop-dark"></div>
 
 <!-- QUICKVIEW - Add task -->
 <div id="qv-add-task" class="quickview quickview-lg backdrop-dark">

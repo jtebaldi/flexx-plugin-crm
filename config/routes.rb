@@ -6,6 +6,8 @@ Rails.application.routes.draw do
         get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
         get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact, as: :view_contact
 
+        get 'task_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
+
         get  :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
         get  'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card
         get  'recipes/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_recipe, as: :view_recipe
