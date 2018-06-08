@@ -46,6 +46,9 @@ module Plugins::FlexxPluginCrm::MainHelper
       )
 
       TaskRecipeService.apply_recipes(contact: contact)
+
+      Rails.logger.warn('RECIPES')
+
       AutomatedCampaignService.apply_campaigns(contact: contact)
     end
   end
