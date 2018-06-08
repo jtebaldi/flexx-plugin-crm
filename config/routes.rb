@@ -15,6 +15,8 @@ Rails.application.routes.draw do
         post :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe, as: :create_recipe
         post 'recipes/:id/directions', controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe_direction, as: :create_recipe_direction
         post 'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
+
+        resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: :index
       end
 
       namespace 'plugins' do

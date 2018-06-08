@@ -1,0 +1,32 @@
+<% tasks.each do |row| %>
+  <div class="card b-1 hover-shadow-2 mb-20">
+    <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id) %>">
+      <div class="media-left pr-12">
+        <span class="avatar avatar-xl no-radius"><i class="fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></span>
+      </div>
+      <div class="media-body">
+        <div class="mb-2">
+          <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
+        </div>
+        <small class="fs-16 fw-300 ls-1"><%= row.details %></small>
+      </div>
+      <div class="media-right text-right d-none d-md-block">
+      </div>
+    </a>
+    <footer class="card-footer flexbox align-items-center">
+      <div>
+        <strong>Due:</strong>
+        <span><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%b, %d %Y') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></span>
+        <span class="card-hover-show pl-20">
+          <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+        </span>
+      </div>
+      <div class="pull-right">
+        <div class="avatar-list">
+          <span class="avatar bg-dark">pc</span>
+          <button class="avatar avatar-add" data-toggle="modal" data-target="#assign_staff_modal"></button>
+        </div>
+      </div>
+    </footer>
+  </div>
+<% end %>

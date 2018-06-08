@@ -102,19 +102,7 @@
               <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id) %>">
                 <div class="media-left pr-12">
                   <span class="avatar avatar-xl no-radius">
-                  <%
-                    icon = case task.task_type
-                      when 'phone_call'
-                        'phone'
-                      when 'email'
-                        'envelope'
-                      when 'message'
-                        'comment'
-                      else
-                        'list'
-                    end
-                  %>
-                  <i class="fa fa-<%= icon %>"></i></span>
+                  <i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
                 </div>
                 <div class="media-body">
                   <div class="mb-2">
@@ -157,19 +145,7 @@
             <% @contact.tasks.done.order(updated_at: :desc).each do |task| %>
               <li class="timeline-block">
                 <div class="timeline-point">
-                  <%
-                    icon = case task.task_type
-                      when 'phone_call'
-                        'phone'
-                      when 'email'
-                        'envelope'
-                      when 'message'
-                        'comment'
-                      else
-                        'list'
-                    end
-                  %>
-                  <span class="avatar bg-info"><i class="fa fa-<%= icon %>"></i></span>
+                  <span class="avatar bg-info"><i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
                 </div>
                 <div class="timeline-content">
                   <time><%= time_ago_in_words(task.updated_at) %> ago</time>

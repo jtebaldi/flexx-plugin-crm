@@ -12,8 +12,10 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
 
   accepts_nested_attributes_for :notes
 
-  scope :pending, -> { where(aasm_state: :pending) }
   scope :done, -> { where(aasm_state: :done) }
+  scope :due_today, -> { where(due_date: DateTime.now.beginning_of_day..DateTime.now.end_of_day) }
+  scope :pending, -> { where(aasm_state: :pending) }
+  scope :upcoming, -> { where('due_date > ?', DateTime.now.end_of_day) }
 
   aasm do
     state :pending, initial: true

@@ -53,7 +53,7 @@ module Plugins::FlexxPluginCrm
     def task_card
       @task = current_site.tasks.find(params[:id])
 
-      render partial: "task_card"
+      render partial: "plugins/flexx_plugin_crm/tasks/task_card"
     end
 
     def settings

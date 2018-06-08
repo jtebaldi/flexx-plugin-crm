@@ -1,0 +1,399 @@
+<script>
+  $('document').ready(function(){
+    $("#timing_detail").hide();
+    var rad = document.createTask.timingOptions;
+    $(rad).on('click change', function(e) {
+      if (rad.value == 2) {
+        $("#timing_detail").show();
+      } else {
+        $("#timing_detail").hide();
+      }
+    });
+
+    // Temp Contact Dataset
+    var contacts = ['John Doe', 'James Oneil', 'Martha Washington', 'Paulo Castro', 'Mike Dent',
+      'Ashley Simmons', 'Jim Crowell'
+    ];
+
+    var substringMatcher = function(strs) {
+      return function findMatches(q, cb) {
+        var matches, substringRegex;
+
+        // an array that will be populated with substring matches
+        matches = [];
+
+        // regex used to determine if a string contains the substring `q`
+        substrRegex = new RegExp(q, 'i');
+
+        // iterate through the pool of strings and for any string that
+        // contains the substring `q`, add it to the `matches` array
+        $.each(strs, function(i, str) {
+          if (substrRegex.test(str)) {
+            matches.push(str);
+          }
+        });
+
+        cb(matches);
+      };
+    };
+
+    $('#typeahead-contacts').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: 'contacts',
+      source: substringMatcher(contacts)
+    });
+  });
+</script>
+<style>
+  input[type=radio].hide-control { display: none; }
+</style>
+
+<header class="header">
+  <div class="header-info">
+    <h2 class="header-title"><strong>Tasks</strong></h2>
+  </div>
+  <div class="header-action">
+    <nav class="nav">
+      <a class="nav-link active" data-toggle="tab" href="#tab-task-view">Task View</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-calendar-view">Calendar View</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-completed">Completed</a>
+    </nav>
+    <div class="buttons">
+      <button class="btn btn-primary btn-float" data-toggle="quickview" data-target="#qv-add-task"><i class="ti-plus"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+  <div class="tab-content">
+
+    <div class="tab-pane fade active show" id="tab-task-view">
+      <div class="row">
+        <div class="col-md-12">
+          <p class="lead text-center text-fade">Today's tasks</p>
+          <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks } %>
+
+          <br>
+          <div class="divider text-uppercase fw-500">Upcoming</div>
+
+          <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-calendar-view">
+      <header class="header header-inverse">
+        <div class="header-action">
+          <div class="flexbox align-items-center gap-items-4">
+            <a class="text-white" href="#" data-calendar="prev"><i class="ti-angle-left"></i></a>
+            <span class="text-white fs-16" id="calendar-title"></span>
+            <a class="text-white" href="#" data-calendar="next"><i class="ti-angle-right"></i></a>
+          </div>
+
+          <nav class="nav">
+            <a class="nav-link" href="#" data-calendar="today">Today</a>
+            <a class="nav-link active" href="#" data-calendar-view="month">Month</a>
+            <a class="nav-link" href="#" data-calendar-view="basicWeek">Week</a>
+            <a class="nav-link" href="#" data-calendar-view="basicDay">Day</a>
+            <div class="dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">More</a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#" data-calendar-view="agendaWeek">Agenda week</a>
+                <a class="dropdown-item" href="#" data-calendar-view="agendaDay">Agenda day</a>
+                <a class="dropdown-item" href="#" data-calendar-view="listYear">List year</a>
+                <a class="dropdown-item" href="#" data-calendar-view="listMonth">List month</a>
+                <a class="dropdown-item" href="#" data-calendar-view="listWeek">List week</a>
+                <a class="dropdown-item" href="#" data-calendar-view="listDay">List day</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <div class="card card-body">
+        <div id="calendar" data-provide="fullcalendar"></div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-completed">
+      <div class="row">
+
+        <div class="col-md-12">
+          <p class="lead text-center text-fade">Today's tasks</p>
+          <div class="card b-1 hover-shadow-2 mb-20">
+            <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
+              <div class="media-left pr-12">
+                <span class="avatar avatar-xl no-radius"><i class="fa fa-phone"></i></span>
+              </div>
+              <div class="media-body">
+                <div class="mb-2">
+                  <span class="fs-20 pr-16">Follow-up Call</span>
+                </div>
+                <small class="fs-16 fw-300 ls-1">Reach out to see if the prospect has any more questions</small>
+              </div>
+
+              <div class="media-right text-right d-none d-md-block">
+                <p class="fs-14 text-fade mb-12">
+
+                </p>
+              </div>
+            </a>
+            <footer class="card-footer flexbox align-items-center">
+              <div>
+                <strong>Completed:</strong>
+                <span>Today by Joe Tebaldi</span>
+              </div>
+            </footer>
+          </div>
+
+          <br>
+          <div class="divider text-uppercase fw-500">Previous</div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUICKVIEW - View task -->
+<div id="qv_view_task" class="quickview quickview-lg backdrop-dark"></div>
+
+<!-- QUICKVIEW - Add task -->
+<div id="qv-add-task" class="quickview quickview-lg backdrop-dark">
+  <header class="quickview-header">
+    <p class="quickview-title lead">New <strong>Task</strong></p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <form class="quickview-block form-type-combine" name="createTask">
+
+      <div class="card-body">
+        <div class="input-group">
+          <div class="input-group-input">
+            <label>Contact</label>
+            <input class="form-control" type="text" id="typeahead-contacts" placeholder="Start typing name...">
+          </div>
+          <span class="input-group-append">
+            <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#search_contacts_modal"><i class="ti-search"></i></button>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="select">Type</label>
+          <select class="form-control" id="step_type">
+            <option>Phone call</option>
+            <option>Email</option>
+            <option>Text</option>
+            <option>General</option>
+          </select>
+        </div>
+
+        <h6 class="text-light fw-300">Timing</h6>
+        <div class="no-border text-center">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-lg btn-info active" style="width: 100%;">
+              <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</i>
+            </label>
+            <label class="btn btn-lg btn-info" style="width: 100%;">
+              <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
+            </label>
+          </div>
+        </div>
+
+        <div id="timing_detail" class="form-groups-attached">
+
+          <div class="row">
+            <div class="form-group col-6">
+              <label>After</label>
+              <input class="form-control" type="text" placeholder="1">
+            </div>
+
+            <div class="form-group col-6">
+              <label for="select">Time unit</label>
+              <select class="form-control" id="step_time_unit">
+                <option>minutes</option>
+                <option>hours</option>
+                <option>days</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <br>
+        <h6 class="text-light fw-300">Details</h6>
+        <div class="form-groups-attached">
+
+          <div class="form-group">
+            <label>Task title</label>
+            <input class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-success" type="submit">Add</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
+  </footer>
+</div>
+
+<!-- MODAL: Defer task -->
+<div class="modal modal-center fade" id="modal-defer-task" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Defer: Task title</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Current due date</label>
+            <input type="text" class="form-control" value="05/23/2018" readonly="">
+          </div>
+          <div class="form-group">
+            <label>Defer until</label>
+            <input type="text" class="form-control" data-provide="datepicker">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-bold btn-pure btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Assign Staff -->
+<div class="modal fade" tabindex="-1" id="assign_staff_modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Assign Staff</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="modal-body p-0">
+        <div class="media-list media-list-xs media-list-divided media-list-hover" data-provide="selectable">
+          <a class="media media-single" href="#">
+            <span class="avatar">jt</span>
+            <span class="title">Joe Tebaldi</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="avatar">ms</span>
+            <span class="title">Mitch Somer</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="avatar">sd</span>
+            <span class="title">Sarah Doner</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-secondary" data-dismiss="modal" data-perform="cancel">Cancel</button>
+        <button type="button" class="btn btn-flat btn-primary" data-dismiss="modal" data-perform="confirm">Add selected</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Search Contacts -->
+<div class="modal fade" tabindex="-1" id="search_contacts_modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Select contact</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body p-0">
+        <div class="media-list media-list-xs media-list-divided media-list-hover" data-provide="selectable">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <a class="media media-single" href="#">
+            <span class="avatar">pt</span>
+            <span class="title">Paulo Castro</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="avatar">md</span>
+            <span class="title">Mike Dent</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="avatar">jd</span>
+            <span class="title">Jane Doe</span>
+            <div class="custom-control no-border custom-control-lg custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-secondary" data-dismiss="modal" data-perform="cancel">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
