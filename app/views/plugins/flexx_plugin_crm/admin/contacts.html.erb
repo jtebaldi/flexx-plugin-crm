@@ -114,12 +114,12 @@
               </small>
             </div>
             <div class="media-right text-right d-none d-md-block">
-              <p class="fs-14 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
+              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
             </div>
           </a>
-          <div class="media-right gap-items">
-            <a class="media-action lead fs-26" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>" data-provide="tooltip" title="" data-original-title="Quick actions"><i class="ti-bolt"></i></a>
-          </div>
+          <!-- <div class="media-right gap-items">
+            <a class="media-action lead fs-26" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>" data-provide="tooltip" title="" data-original-title="Quick actions"><i class="ti-bolt-alt"></i></a>
+          </div> -->
         </div>
       <% end %>
     </div>
