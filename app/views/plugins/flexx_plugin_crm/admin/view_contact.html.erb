@@ -91,7 +91,7 @@
               <div class="card card-transparent b-1" style="border-style:dotted !important;">
                 <div class="card-body text-center">
                   <h5 class="center-vh"><em>No pending tasks</em></h5>
-                  <a href="#" class="btn btn-outline btn-primary btn-xs">Add a task</a>
+                  <a href="#qv-add-task" data-toggle="quickview" class="btn btn-outline btn-primary btn-xs">Add a task</a>
                 </div>
               </div>
             </div>
@@ -125,6 +125,7 @@
                 </div>
                 <div class="card-hover-show">
                   <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+                  <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
                 </div>
               </footer>
             </div>
@@ -510,6 +511,9 @@
         </p>
         <p>
           <a href="#" disabled class="btn btn-block btn-bold btn-customer btn-lg">Customer</a>
+        </p>
+        <p>
+          <a href="#" disabled class="btn btn-block btn-bold btn-lg">Archived</a>
         </p>
       </div>
       <div class="modal-footer">

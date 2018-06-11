@@ -19,6 +19,7 @@
         <span><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%b, %d %Y') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></span>
         <span class="card-hover-show pl-20">
           <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
         </span>
       </div>
       <div class="pull-right">
