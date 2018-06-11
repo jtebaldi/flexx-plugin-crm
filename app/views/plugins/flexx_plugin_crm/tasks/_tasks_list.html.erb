@@ -23,8 +23,10 @@
       </div>
       <div class="pull-right">
         <div class="avatar-list">
-          <span class="avatar bg-dark">pc</span>
-          <button class="avatar avatar-add" data-toggle="modal" data-target="#assign_staff_modal"></button>
+          <% row.owners.each do |owner| %>
+            <span class="avatar bg-dark"><%= owner.initials %></span>
+          <% end %>
+          <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id) %>"></button>
         </div>
       </div>
     </footer>

@@ -1,0 +1,12 @@
+<div class="media-list media-list-xs media-list-divided media-list-hover" data-provide="selectable">
+  <% current_site.users.order(:username).each do |user| %>
+    <a class="media media-single" href="#">
+      <span class="avatar"><%= user.initials %></span>
+      <span class="title"><%= user.print_name %></span>
+      <div class="custom-control no-border custom-control-lg custom-checkbox">
+        <input name="task[owner_ids]" type="checkbox" value="<%= user.id %>" class="custom-control-input" <%= @current_owners.include?(user.id) ? 'checked' : '' %>>
+        <label class="custom-control-label"></label>
+      </div>
+    </a>
+  <% end %>
+</div>
