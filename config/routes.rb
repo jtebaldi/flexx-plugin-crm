@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         get :contacts, controller: 'plugins/flexx_plugin_crm/admin', action: :contacts
         get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
         get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact, as: :view_contact
+        get 'contacts/:id/remove_contact_task/:task_id', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_contact_task, as: :remove_contact_task
 
         get 'task_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
 

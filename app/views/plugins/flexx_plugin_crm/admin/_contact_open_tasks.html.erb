@@ -1,0 +1,46 @@
+<% if @contact.tasks.pending.empty? %>
+  <div class="row justify-content-md-center">
+    <div class="col-md-offset-2 col-md-8">
+      <div class="card card-transparent b-1" style="border-style:dotted !important;">
+        <div class="card-body text-center">
+          <h5 class="center-vh"><em>No pending tasks</em></h5>
+          <a href="#qv-add-task" data-toggle="quickview" class="btn btn-outline btn-primary btn-xs">Add a task</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <% @contact.tasks.pending.order(:due_date).each do |task| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id) %>">
+        <div class="media-left pr-12">
+          <span class="avatar avatar-xl no-radius">
+          <i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
+        </div>
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= task.title %></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+            <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
+          </p>
+          <span class="text-fade fs-12"><em>Note added</em></span>
+        </div>
+      </a>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Due by:</strong>
+          <span><%= task.due_date.to_formatted_s(:long) %></span>
+        </div>
+        <div class="card-hover-show">
+          <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+<% end %>
