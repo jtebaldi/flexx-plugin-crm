@@ -46,6 +46,15 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :view_contact, id: params[:id]
     end
 
+    def update_contact_status
+      @contact = current_site.contacts.find(params[:id])
+      @contact.update(contact_params)
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
     def create_task
       current_site.contacts.find(params[:contact_id]).tasks.create(new_task_params)
 

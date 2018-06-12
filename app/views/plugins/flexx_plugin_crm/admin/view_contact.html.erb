@@ -1,3 +1,7 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
+<% end %>
+
 <style>
   input[type=radio].hide-control { display: none; }
 </style>
@@ -26,7 +30,7 @@
             <span class="avatar avatar-xxl avatar-bordered status-<%= @contact.sales_stage %>"><%= @contact.initials %></span>
           </a>
           <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
-          <span><%= @contact.sales_stage.humanize %></span>
+          <span id="sales-stage-label"><%= @contact.sales_stage.humanize %></span>
           <p class="mt-20"><button class="btn btn-label btn-info" data-toggle="modal" data-target="#update_status_modal"><label><i class="ti-bolt"></i></label> Update Status</button></p>
         </div>
         <ul class="flexbox flex-justified text-center p-20">
@@ -166,7 +170,7 @@
               <div class="form-group ">
                 <div class="input-group">
                   <div class="input-group-input">
-                    <input class="form-control" type="text" value="<%= @contact.sales_stage.capitalize %>" readonly>
+                    <%= @contact.sales_stage.capitalize %>
                     <label>Status</label>
                   </div>
                   <span class="input-group-append">
@@ -456,18 +460,21 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <%= form_tag admin_update_contact_status_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'update-sales-stage-form' do %>
+        <input type="hidden" name="contact[sales_stage]" id="update-sales-stage-field" value="">
+      <% end %>
       <div class="modal-body">
         <p>
-          <a href="#" class="btn btn-block btn-bold btn-lead btn-lg">Lead</a>
+          <button class="btn btn-block btn-bold btn-lead btn-lg" onclick="updateSalesStage('lead')">Lead</button>
         </p>
         <p>
-          <a href="#" class="btn btn-block btn-bold btn-prospect btn-lg">Prospect</a>
+          <button class="btn btn-block btn-bold btn-prospect btn-lg" onclick="updateSalesStage('prospect')">Prospect</button>
         </p>
         <p>
-          <a href="#" disabled class="btn btn-block btn-bold btn-customer btn-lg">Customer</a>
+          <button class="btn btn-block btn-bold btn-customer btn-lg" onclick="updateSalesStage('customer')">Customer</button>
         </p>
         <p>
-          <a href="#" disabled class="btn btn-block btn-bold btn-lg">Archived</a>
+          <button class="btn btn-block btn-bold btn-lg" onclick="updateSalesStage('archived')">Archived</button>
         </p>
       </div>
       <div class="modal-footer">
