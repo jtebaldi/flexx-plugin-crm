@@ -76,6 +76,9 @@
             <a class="nav-link" href="#tab_contact_details" data-toggle="tab">User Details</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="#tab_conversations" data-toggle="tab">Conversations</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
           </li>
         </ul>
@@ -293,6 +296,13 @@
         </footer>
       </form>
 
+      <div class="tab-pane fade" id="tab_conversations">
+        <div class="card">
+          <h5 class="card-title"><strong>Conversations</strong></h5>
+        </div>
+
+      </div>
+      
       <div class="tab-pane fade" id="tab_recipes_campaigns">
         <div class="card">
           <h5 class="card-title">Active <strong>Campaigns</strong></h5>
@@ -474,7 +484,7 @@
           <button class="btn btn-block btn-bold btn-customer btn-lg" onclick="updateSalesStage('customer')">Customer</button>
         </p>
         <p>
-          <button class="btn btn-block btn-bold btn-lg" onclick="updateSalesStage('archived')">Archived</button>
+          <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('archived')">Archive Contact</button>
         </p>
       </div>
       <div class="modal-footer">
