@@ -15,7 +15,7 @@ function addNewRecipeDirection() {
     $("#new-recipe-direction-form input[name='new_task_recipe_direction[due_on_value]']").val('0');
   }
 
-  $('#new-recipe-direction-form').trigger('submit.rails');
+  $('#new-recipe-direction-form').submit();
 }
 
 function clearNewRecipeDirectionForm() {
@@ -51,9 +51,9 @@ $('document').ready(function(){
     });
 
 
-    $(document).on('rendered.bs.select', '#update-recipe-associated-forms', function(e) {
-      $('#update-recipe-form').trigger('submit.rails');
-    });
+    // $(document).on('rendered.bs.select', '#update-recipe-associated-forms', function(e) {
+    //   $('#update-recipe-form').trigger('submit.rails');
+    // });
 
   var stepFormPlaceholder = $("#step_placeholder");
   var stepForm = $("#new-recipe-direction-panel");

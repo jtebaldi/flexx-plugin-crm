@@ -24,6 +24,15 @@ module Plugins::FlexxPluginCrm
       render partial: "contact_card"
     end
 
+    def remove_contact_task
+      @contact = current_site.contacts.find(params[:id])
+      @contact.tasks.find(params[:task_id]).destroy
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
     def view_contact
       @contact = current_site.contacts.find(params[:id])
       @automated_campaigns = current_site.automated_campaigns.active
@@ -35,6 +44,15 @@ module Plugins::FlexxPluginCrm
       current_site.contacts.find(params[:id]).update(contact_params)
 
       redirect_to action: :view_contact, id: params[:id]
+    end
+
+    def update_contact_status
+      @contact = current_site.contacts.find(params[:id])
+      @contact.update(contact_params)
+
+      respond_to do |format|
+        format.js
+      end
     end
 
     def create_task

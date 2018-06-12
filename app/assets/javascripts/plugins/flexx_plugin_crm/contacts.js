@@ -6,6 +6,12 @@ function submitNewContactForm() {
   $('#new-contact-form').submit();
 }
 
+function updateSalesStage(stage) {
+  $('#update-sales-stage-field').val(stage);
+
+  $('#update-sales-stage-form').submit();
+}
+
 app.ready(function() {
   var sample_tags = ['Event', 'Facebook', 'Cancelled'];
 
@@ -15,7 +21,7 @@ app.ready(function() {
     local: sample_tags
   });
 
-  $('#tags-typeahead').tagsinput({
+  $('#tags-typeahead').length > 0 && $('#tags-typeahead').tagsinput({
     typeaheadjs: {
       name: 'contact_tags',
       source: sample_tags

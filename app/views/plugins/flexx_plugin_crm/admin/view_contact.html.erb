@@ -1,3 +1,7 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
+<% end %>
+
 <style>
   input[type=radio].hide-control { display: none; }
 </style>
@@ -26,7 +30,7 @@
             <span class="avatar avatar-xxl avatar-bordered status-<%= @contact.sales_stage %>"><%= @contact.initials %></span>
           </a>
           <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
-          <span><%= @contact.sales_stage.humanize %></span>
+          <span id="sales-stage-label"><%= @contact.sales_stage.humanize %></span>
           <p class="mt-20"><button class="btn btn-label btn-info" data-toggle="modal" data-target="#update_status_modal"><label><i class="ti-bolt"></i></label> Update Status</button></p>
         </div>
         <ul class="flexbox flex-justified text-center p-20">
@@ -88,52 +92,9 @@
     <div class="col-md-8 tab-content">
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
-        <% if @contact.tasks.pending.empty? %>
-          <div class="row justify-content-md-center">
-            <div class="col-md-offset-2 col-md-8">
-              <div class="card card-transparent b-1" style="border-style:dotted !important;">
-                <div class="card-body text-center">
-                  <h5 class="center-vh"><em>No pending tasks</em></h5>
-                  <a href="#qv-add-task" data-toggle="quickview" class="btn btn-outline btn-primary btn-xs">Add a task</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% else %>
-          <% @contact.tasks.pending.order(:due_date).each do |task| %>
-            <div class="card b-1 hover-shadow-2 mb-20">
-              <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id) %>">
-                <div class="media-left pr-12">
-                  <span class="avatar avatar-xl no-radius">
-                  <i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
-                </div>
-                <div class="media-body">
-                  <div class="mb-2">
-                    <span class="fs-20 pr-16"><%= task.title %></span>
-                  </div>
-                  <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
-                </div>
-
-                <div class="media-right text-right d-none d-md-block">
-                  <p class="fs-14 text-fade mb-12">
-                    <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
-                  </p>
-                  <span class="text-fade fs-12"><em>Note added</em></span>
-                </div>
-              </a>
-              <footer class="card-footer flexbox align-items-center">
-                <div>
-                  <strong>Due by:</strong>
-                  <span><%= task.due_date.to_formatted_s(:long) %></span>
-                </div>
-                <div class="card-hover-show">
-                  <button class="btn btn-xs fs-10 btn-bold btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
-                  <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
-                </div>
-              </footer>
-            </div>
-          <% end %>
-        <% end %>
+        <div id="open-tasks">
+          <%= render partial: 'contact_open_tasks' %>
+        </div>
         <br>
         <div class="divider text-uppercase fw-500">Timeline</div>
 
@@ -212,7 +173,7 @@
               <div class="form-group ">
                 <div class="input-group">
                   <div class="input-group-input">
-                    <input class="form-control" type="text" value="<%= @contact.sales_stage.capitalize %>" readonly>
+                    <%= @contact.sales_stage.capitalize %>
                     <label>Status</label>
                   </div>
                   <span class="input-group-append">
@@ -383,7 +344,6 @@
 
     </div>
 
-
   </div>
 </div>
 
@@ -510,18 +470,21 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <%= form_tag admin_update_contact_status_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'update-sales-stage-form' do %>
+        <input type="hidden" name="contact[sales_stage]" id="update-sales-stage-field" value="">
+      <% end %>
       <div class="modal-body">
         <p>
-          <a href="#" class="btn btn-block btn-bold btn-lead btn-lg">Lead</a>
+          <button class="btn btn-block btn-bold btn-lead btn-lg" onclick="updateSalesStage('lead')">Lead</button>
         </p>
         <p>
-          <a href="#" class="btn btn-block btn-bold btn-prospect btn-lg">Prospect</a>
+          <button class="btn btn-block btn-bold btn-prospect btn-lg" onclick="updateSalesStage('prospect')">Prospect</button>
         </p>
         <p>
-          <a href="#" disabled class="btn btn-block btn-bold btn-customer btn-lg">Customer</a>
+          <button class="btn btn-block btn-bold btn-customer btn-lg" onclick="updateSalesStage('customer')">Customer</button>
         </p>
         <p>
-          <a href="#" disabled class="btn btn-block btn-bold border-danger text-danger btn-lg">Archive Contact</a>
+          <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('archived')">Archive Contact</button>
         </p>
       </div>
       <div class="modal-footer">
