@@ -1,1 +1,1 @@
-Rails.application.config.assets.precompile += %w(contacts recipes flexx_plugin_crm)
+Rails.application.config.assets.precompile += %w(contacts recipes tasks flexx_plugin_crm)

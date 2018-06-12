@@ -75,12 +75,14 @@
       <div class="row">
         <div class="col-md-12">
           <p class="lead text-center text-fade">Today's tasks</p>
-          <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks } %>
-
+          <div id="todays-tasks-list">
+            <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' } %>
+          </div>
           <br>
           <div class="divider text-uppercase fw-500">Upcoming</div>
-
-          <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks } %>
+          <div id="upcoming-tasks-list">
+            <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' } %>
+          </div>
         </div>
       </div>
     </div>

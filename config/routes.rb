@@ -20,7 +20,7 @@ Rails.application.routes.draw do
         post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
-          get :task_owners
+          get 'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
         end
       end
 

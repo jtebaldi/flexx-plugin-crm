@@ -1,0 +1,8 @@
+<% case params[:refresh_panel] %>
+  <% when 'todays-tasks-list' %>
+    $('.modal').modal('hide');
+    $('#todays-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' })  %>');
+  <% when 'upcoming-tasks-list' %>
+    $('.modal').modal('hide');
+    $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' })  %>');
+<% end %>

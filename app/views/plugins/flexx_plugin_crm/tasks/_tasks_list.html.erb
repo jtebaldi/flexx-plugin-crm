@@ -27,7 +27,7 @@
           <% row.owners.each do |owner| %>
             <span class="avatar bg-dark"><%= owner.initials %></span>
           <% end %>
-          <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id) %>"></button>
+          <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id, refresh_panel: refresh_panel) %>"></button>
         </div>
       </div>
     </footer>

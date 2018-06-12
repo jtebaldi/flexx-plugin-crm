@@ -10,19 +10,32 @@ module Plugins::FlexxPluginCrm
     end
 
     def task_owners
-      @current_owners = current_site.tasks.find(params[:task_id]).owners.pluck(:id)
+      @task = current_site.tasks.find(params[:task_id])
+      @current_owners = @task.owners.pluck(:id)
+
       render partial: 'task_owners'
     end
 
     def update
       task = current_site.tasks.find(params[:id])
       task.update(task_params)
+
+      case params[:refresh_panel]
+      when 'todays-tasks-list'
+        @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
+      when 'upcoming-tasks-list'
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+      end
+
+      respond_to do |format|
+        format.js
+      end
     end
 
     private
 
     def task_params
-      params.require(:task).permit(:owner_ids)
+      params.require(:task).permit(owner_ids: [])
     end
   end
 end
