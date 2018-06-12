@@ -10,13 +10,14 @@ Rails.application.routes.draw do
 
         get 'task_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
 
-        get  :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
-        get  'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card
-        get  'recipes/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_recipe, as: :view_recipe
-        get  'toggle_recipe/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :toggle_recipe, as: :toggle_recipe
-        post :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe, as: :create_recipe
-        post 'recipes/:id/directions', controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe_direction, as: :create_recipe_direction
-        post 'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
+        get   :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
+        get   'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card
+        get   'recipes/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_recipe, as: :view_recipe
+        get   'toggle_recipe/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :toggle_recipe, as: :toggle_recipe
+        get   'recipes/:id/remove', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_recipe, as: :remove_recipe
+        post  :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe, as: :create_recipe
+        post  'recipes/:id/directions', controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe_direction, as: :create_recipe_direction
+        post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
           get :task_owners

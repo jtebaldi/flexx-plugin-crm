@@ -115,6 +115,16 @@ module Plugins::FlexxPluginCrm
       head :ok
     end
 
+    def remove_recipe
+      current_site.task_recipes.find(params[:id]).update!(
+        archived: true,
+        archived_by: current_user.id,
+        archived_at: DateTime.now
+      )
+
+      redirect_to action: :recipes
+    end
+
     def toggle_recipe
       @task_recipe = current_site.task_recipes.find(params[:id])
 

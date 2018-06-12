@@ -43,7 +43,7 @@
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="#">Delete</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_remove_recipe_path(id: recipe.id) %>" data-remote="true" data-method="patch">Delete</a>
         </div>
       </footer>
     </div>
@@ -78,7 +78,7 @@
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="#">Delete</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_remove_recipe_path(id: recipe.id) %>">Delete</a>
         </div>
       </footer>
     </div>
