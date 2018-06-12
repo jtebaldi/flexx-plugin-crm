@@ -1,8 +1,17 @@
-(twilio form)
-<br/>
 <form class="quickview-block form-type-combine">
-  <div class="form-group">
-    <label>Outcome / Notes</label>
-    <textarea class="form-control" rows="6"></textarea>
+  <div class="publisher publisher-multi bg-transparent b-1 form-group">
+    <label>Message</label>
+    <textarea class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+    <div class="flexbox">
+      <div class="gap-items">
+        <span class="publisher-btn file-group">
+          <i class="fa fa-paperclip file-browser"></i>
+          <input type="file">
+        </span>
+        <button type="button" class="publisher-btn" data-toggle="modal" data-target="#modal-snippet"><i class="ti-receipt"></i></button>
+        <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+      </div>
+      <button class="btn btn-sm btn-bold btn-primary">Send</button>
+    </div>
   </div>
 </form>
