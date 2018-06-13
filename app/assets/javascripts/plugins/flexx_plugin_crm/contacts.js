@@ -12,6 +12,24 @@ function updateSalesStage(stage) {
   $('#update-sales-stage-form').submit();
 }
 
+function addNewContactTask() {
+  $('#new-contact-task-add').toggleClass('disabled');
+  $('#new-contact-task-cancel').toggleClass('disabled');
+  $('#new-contact-task-spinner').toggleClass('invisible');
+
+  $('#new-contact-task-form').submit();
+}
+
+function clearNewContactTaskForm() {
+  $('#new-contact-task-form')[0].reset();
+
+  $('#new-contact-task-add').toggleClass('disabled');
+  $('#new-contact-task-cancel').toggleClass('disabled');
+  $('#new-contact-task-spinner').toggleClass('invisible');
+
+  $('#new-contact-task-panel').fadeOut();
+}
+
 app.ready(function() {
   var sample_tags = ['Event', 'Facebook', 'Cancelled'];
 

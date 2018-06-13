@@ -5,20 +5,7 @@
 <style>
   input[type=radio].hide-control { display: none; }
 </style>
-<script>
-  $('document').ready(function(){
-    $("#timing_detail").hide();
-    var rad = document.createTask.timingOptions;
-    $(rad).on('click change', function(e) {
-      if (rad.value == 2) {
-        $("#timing_detail").show();
-      } else {
-        $("#timing_detail").hide();
-      }
-    });
 
-  });
-</script>
 <div class="main-content">
   <div class="row">
 
@@ -92,7 +79,7 @@
     <div class="col-md-8 tab-content">
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
-        <div id="open-tasks">
+        <div id="contact-open-tasks-panel">
           <%= render partial: 'contact_open_tasks' %>
         </div>
         <br>
@@ -302,7 +289,7 @@
         </div>
 
       </div>
-      
+
       <div class="tab-pane fade" id="tab_recipes_campaigns">
         <div class="card">
           <h5 class="card-title">Active <strong>Campaigns</strong></h5>
@@ -358,75 +345,41 @@
   </header>
 
   <div class="quickview-body">
-    <form class="quickview-block form-type-combine" name="createTask">
-
-      <div class="card-body">
-        <div class="form-group">
-          <label for="select">Type</label>
-          <select class="form-control" id="step_type">
-            <option>Phone call</option>
-            <option>Email</option>
-            <option>Text</option>
-            <option>General</option>
-          </select>
-        </div>
-
-        <h6 class="text-light fw-300">Timing</h6>
-        <div class="no-border text-center">
-          <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-lg btn-info active" style="width: 100%;">
-              <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</i>
-            </label>
-            <label class="btn btn-lg btn-info" style="width: 100%;">
-              <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
-            </label>
-          </div>
-        </div>
-
-        <div id="timing_detail" class="form-groups-attached">
-
-          <div class="row">
-            <div class="form-group col-6">
-              <label>After</label>
-              <input class="form-control" type="text" placeholder="1">
-            </div>
-
-            <div class="form-group col-6">
-              <label for="select">Time unit</label>
-              <select class="form-control" id="step_time_unit">
-                <option>minutes</option>
-                <option>hours</option>
-                <option>days</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-        <br>
-        <h6 class="text-light fw-300">Details</h6>
-        <div class="form-groups-attached">
-
-          <div class="form-group">
-            <label>Task title</label>
-            <input class="form-control" type="text">
-          </div>
-
-          <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" rows="6"></textarea>
-          </div>
-
-        </div>
-
+    <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="select">Type</label>
+        <select class="form-control" name="new_contact_task[task_type]">
+          <option value="phone_call">Phone call</option>
+          <option value="message">Email</option>
+          <option value="email">Text</option>
+          <option value="meeting">Meeting</option>
+          <option value="general">General</option>
+        </select>
       </div>
-
-    </form>
+      <div class="form-group col-12">
+        <label>Date</label>
+        <input class="form-control" data-provide="datepicker" type="text" name="new_contact_task[due_date]">
+      </div>
+      <br>
+      <h6 class="text-light fw-300">Details</h6>
+      <div class="form-groups-attached">
+        <div class="form-group">
+          <label>Task title</label>
+          <input class="form-control" type="text" name="new_contact_task[title]">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" rows="6" name="new_contact_task[details]"></textarea>
+        </div>
+      </div>
+    </div>
   </div>
-
+  <% end %>
   <footer class="quickview-footer flex-row-reverse">
-    <button class="btn btn-success" type="submit">Add</button>
-    <button class="btn btn-danger" type="reset">Cancel</button>
+    <div id="new-contact-task-spinner" class="spinner-circle-shadow invisible"></div>
+    <button class="btn btn-success" id="new-contact-task-add" onclick="addNewContactTask()">Add</button>
+    <button class="btn btn-danger" id="new-contact-task-cancel" type="reset">Cancel</button>
   </footer>
 </div>
 

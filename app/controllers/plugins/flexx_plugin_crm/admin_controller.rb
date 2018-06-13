@@ -55,6 +55,16 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def create_contact_task
+      @contact = current_site.contacts.find(params[:id])
+
+      @contact.tasks.create(new_contact_task_params)
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
     def create_task
       current_site.contacts.find(params[:contact_id]).tasks.create(new_task_params)
 
@@ -223,6 +233,16 @@ module Plugins::FlexxPluginCrm
       params[:new_automated_campaign_step].merge!(created_by: current_user.id)
 
       params.require(:new_automated_campaign_step).permit(:name, :due_on_value, :due_on_unit, :message, :created_by)
+    end
+
+    def new_contact_task_params
+      params[:new_contact_task].merge!(site_id: current_site.id)
+      params[:new_contact_task].merge!(created_by: current_user.id)
+      params[:new_contact_task].merge!(updated_by: current_user.id)
+
+      params[:new_contact_task][:due_date] = DateTime.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y')
+
+      params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end
   end
 end

@@ -1,0 +1,9 @@
+clearNewContactTaskForm();
+
+$('#contact-open-tasks-panel').hide();
+
+$('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'contact_open_tasks')  %>');
+
+$('#contact-open-tasks-panel').fadeIn();
+
+quickview.close($('#qv-add-task'));
