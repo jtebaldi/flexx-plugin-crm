@@ -1,6 +1,5 @@
 module Plugins::FlexxPluginCrm
   class TasksController < CamaleonCms::Apps::PluginsAdminController
-    include Plugins::FlexxPluginCrm::MainHelper
 
     layout "layouts/flexx_next_admin"
 

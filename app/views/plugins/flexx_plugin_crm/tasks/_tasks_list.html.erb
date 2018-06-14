@@ -1,6 +1,6 @@
 <% tasks.each do |row| %>
   <div class="card b-1 hover-shadow-2 mb-20">
-    <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id) %>">
+    <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id, refresh_panel: refresh_panel) %>">
       <div class="media-left pr-12">
         <span class="avatar avatar-xl no-radius"><i class="fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></span>
       </div>
