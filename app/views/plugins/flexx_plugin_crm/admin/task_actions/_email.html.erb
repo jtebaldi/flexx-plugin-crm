@@ -1,4 +1,5 @@
-<form class="quickview-block form-type-combine">
+  <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
+
   <div class="form-groups-attached">
     <div class="form-group">
       <label>Subject</label>
@@ -20,6 +21,4 @@
         <button class="btn btn-sm btn-bold btn-primary">Send</button>
       </div>
     </div>
-
   </div>
-</form>

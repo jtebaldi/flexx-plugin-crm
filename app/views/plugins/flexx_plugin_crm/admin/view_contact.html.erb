@@ -80,7 +80,7 @@
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
         <div id="contact-open-tasks-panel">
-          <%= render partial: 'contact_open_tasks' %>
+          <%= render partial: 'contact_open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }%>
         </div>
         <br>
         <div class="divider text-uppercase fw-500">Timeline</div>
@@ -93,26 +93,8 @@
             </div>
           </header>
 
-          <ol class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
-            <% @contact.tasks.done.order(updated_at: :desc).each do |task| %>
-              <li class="timeline-block">
-                <div class="timeline-point">
-                  <span class="avatar bg-info"><i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
-                </div>
-                <div class="timeline-content">
-                  <time><%= time_ago_in_words(task.updated_at) %> ago</time>
-                  <p><span class="h6"><a href="#"><%= task.task_type.humanize %></a></span> completed by <strong><%= task.updated_by_user.first_name %></strong></p>
-
-                  <blockquote class="blockquote ml-0 my-2">
-                    <% task.notes.each do |note| %>
-                      <p class="fs-14"><%= note.details %></p>
-                    <% end %>
-                  </blockquote>
-
-                  <hr>
-                </div>
-              </li>
-            <% end %>
+          <ol id="contact-timeline-panel" class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
+            <%= render partial: 'contact_timeline' %>
           </ol>
 
         </div>

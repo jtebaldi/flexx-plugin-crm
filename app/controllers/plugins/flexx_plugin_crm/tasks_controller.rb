@@ -25,6 +25,8 @@ module Plugins::FlexxPluginCrm
         @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
       when 'upcoming-tasks-list'
         @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+      when 'view-contact-tasks-panels'
+        @contact = task.contact
       end
 
       respond_to do |format|
@@ -35,7 +37,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def task_params
-      params.require(:task).permit(owner_ids: [])
+      params.require(:task).permit(:aasm_state, notes_attributes: [:details, :created_by], owner_ids: [])
     end
   end
 end
