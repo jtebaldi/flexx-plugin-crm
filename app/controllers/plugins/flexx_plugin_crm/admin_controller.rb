@@ -8,16 +8,6 @@ module Plugins::FlexxPluginCrm
       @active_contacts = current_site.contacts.active
     end
 
-    def contacts
-      @active_contacts = current_site.contacts.active.order(:first_name, :email)
-    end
-
-    def create_contact
-      new_contact = current_site.contacts.create!(new_contact_params)
-
-      redirect_to action: :view_contact, id: new_contact.id
-    end
-
     def contact_card
       @contact = current_site.contacts.find(params[:id])
 
@@ -188,10 +178,6 @@ module Plugins::FlexxPluginCrm
     end
 
     private
-
-    def new_contact_params
-      params.require(:new_contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumbers_attributes: [:number, :phone_type])
-    end
 
     def contact_params
       params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumber_attributes: [:number, :phone_type])

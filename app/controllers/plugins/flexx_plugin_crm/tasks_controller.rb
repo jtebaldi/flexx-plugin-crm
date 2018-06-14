@@ -1,6 +1,5 @@
 module Plugins::FlexxPluginCrm
   class TasksController < CamaleonCms::Apps::PluginsAdminController
-
     layout "layouts/flexx_next_admin"
 
     def index

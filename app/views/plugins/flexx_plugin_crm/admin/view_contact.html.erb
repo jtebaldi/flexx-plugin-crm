@@ -157,15 +157,15 @@
                 <div class="input-group">
                   <label>Lead source</label>
                   <select class="form-control" data-provide="selectpicker" title="Choose Source">
-                    <option>Referral</option>
-                    <option>Social Media</option>
-                    <option>Web Search</option>
-                    <option selected>Website Form</option>
-                    <option>PR / Advertising</option>
-                    <option>Email</option>
-                    <option>Word of mouth</option>
-                    <option>Partner</option>
-                    <option>Other</option>
+                    <option <%= 'selected' if @contact.source == 'email' %> value="email">Email</option>
+                    <option <%= 'selected' if @contact.source == 'other' %> value="other">Other</option>
+                    <option <%= 'selected' if @contact.source == 'partner' %> value="partner">Partner</option>
+                    <option <%= 'selected' if @contact.source == 'pr_advertising' %> value="pr_advertising">PR / Advertising</option>
+                    <option <%= 'selected' if @contact.source == 'referral' %> value="referral">Referral</option>
+                    <option <%= 'selected' if @contact.source == 'social_media' %> value="social_media">Social Media</option>
+                    <option <%= 'selected' if @contact.source == 'web_search' %> value="web_search">Web Search</option>
+                    <option <%= 'selected' if @contact.source == 'website_form' %> value="website_form">Website Form</option>
+                    <option <%= 'selected' if @contact.source == 'word_of_mouth' %> value="word_of_mouth">Word of mouth</option>
                   </select>
                 </div>
               </div>
@@ -181,11 +181,21 @@
               <label>Email</label>
             </div>
             </div>
-
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="<%= @contact.phonenumbers.first.number unless           f9d∂  @contact.phonenumbers.empty? %>">
                 <label>Phone</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
+                  <option>Type</option>
+                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'mobile' %> value="mobile">Mobile</option>
+                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'home' %> value="home">Home</option>
+                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'work' %> value="work">Work</option>
+                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'other' %> value="other">Other</option>
+                </select>
               </div>
             </div>
           </div>
@@ -255,7 +265,7 @@
           </div>
 
           <div class="form-group">
-            <textarea class="form-control" rows="6"></textarea>
+            <textarea class="form-control" rows="6"><%= @contact.highlights %></textarea>
             <label>Highlights</label>
           </div>
         </div>
