@@ -31,7 +31,14 @@
     </div>
   </div>
 <footer class="quickview-footer flex-row-reverse">
-  <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Done</button>
+  <div class="btn-group">
+    <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
+    <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
+    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
+      <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
+      <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
+    </div>
+  </div>
   <button class="btn btn-danger" type="reset">Cancel</button>
   <button class="btn btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
 </footer>
