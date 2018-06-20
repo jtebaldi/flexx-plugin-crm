@@ -1,0 +1,5 @@
+$('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
+$('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_timeline') %>');
+
+$('#modal-defer-task').modal('hide');
+

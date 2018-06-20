@@ -16,6 +16,10 @@ module Plugins::FlexxPluginCrm
 
     def update
       task = current_site.tasks.find(params[:id])
+
+      params[:task].merge!(updated_by: current_user.id)
+      params[:task][:due_date] = DateTime.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+
       task.update(task_params)
 
       case params[:refresh_panel]
@@ -32,10 +36,27 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def defer_task
+      task = current_site.tasks.find(params[:task_id])
+
+      params[:task].merge!(updated_by: current_user.id)
+      params[:task][:due_date] = DateTime.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+
+      task.update(task_params)
+
+      @contact = task.contact
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
     private
 
     def task_params
-      params.require(:task).permit(:aasm_state, notes_attributes: [:details, :created_by], owner_ids: [])
+      params.require(:task).permit(
+        :aasm_state, :updated_by, :due_date, notes_attributes: [:details, :created_by], owner_ids: []
+      )
     end
   end
 end

@@ -1,4 +1,5 @@
 <% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
 <% end %>
 
@@ -350,8 +351,8 @@
         </select>
       </div>
       <div class="form-group col-12">
-        <label>Date</label>
-        <input class="form-control" data-provide="datepicker" type="text" name="new_contact_task[due_date]">
+        <label>Date / Time</label>
+        <input class="form-control datetimepicker" type="text" name="new_contact_task[due_date]">
       </div>
       <br>
       <h6 class="text-light fw-300">Details</h6>
@@ -385,22 +386,23 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form>
+      <%= form_tag defer_task_admin_tasks_path(), method: :post, remote: true, authenticity_token: true, id: 'defer-task-form', class: 'quickview-block form-type-combine' do %>
+        <div class="modal-body">
+          <input type="hidden" name="task_id" value="" id="defer-task-id-field">
           <div class="form-group">
             <label>Current due date</label>
-            <input type="text" class="form-control" value="04/12/2018" readonly="">
+            <input type="text" class="form-control" id="defer-current-due-date-field" value="" readonly="">
           </div>
           <div class="form-group">
             <label>Defer until</label>
-            <input type="text" class="form-control">
+            <input class="form-control datetimepicker" type="text" name="task[due_date]">
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-bold btn-pure btn-primary">Save changes</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-bold btn-pure btn-primary" onclick="$('#defer-task-form').submit()">Save changes</button>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
