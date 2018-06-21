@@ -3,6 +3,8 @@ require 'aasm'
 class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   include AASM
 
+  acts_as_taggable
+
   self.table_name = 'tasks'
 
   belongs_to :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
