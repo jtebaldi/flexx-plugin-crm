@@ -261,7 +261,7 @@
 
           <label>Tags</label>
           <div class="form-group">
-            <input type="text" value="Grand Opening,Injury,Mother" data-provide="tagsinput">
+            <input type="text" value="<%= @contact.tag_list %>" id="typeahed-tags" name="contact[tag_list]">
             <small class="form-text">Press enter after typing tag</small>
           </div>
 

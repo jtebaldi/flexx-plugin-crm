@@ -180,7 +180,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, :tags_list, phonenumber_attributes: [:number, :phone_type])
+      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, :tag_list, phonenumber_attributes: [:number, :phone_type])
     end
 
     def new_task_params
