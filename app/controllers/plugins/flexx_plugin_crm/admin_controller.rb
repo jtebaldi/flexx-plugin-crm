@@ -180,7 +180,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumber_attributes: [:number, :phone_type])
+      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, :tag_list, phonenumber_attributes: [:number, :phone_type])
     end
 
     def new_task_params
@@ -188,13 +188,13 @@ module Plugins::FlexxPluginCrm
       params[:new_task].merge!(created_by: current_user.id)
       params[:new_task].merge!(updated_by: current_user.id)
 
-      params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
+      params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by, :tag_list)
     end
 
     def task_params
       params[:task].merge!(updated_by: current_user.id)
 
-      params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
+      params.require(:task).permit(:aasm_state, :updated_by, :tag_list, notes_attributes: [:details, :created_by])
     end
 
     def new_task_recipe_params
@@ -228,7 +228,7 @@ module Plugins::FlexxPluginCrm
 
       params[:new_contact_task][:due_date] = DateTime.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
 
-      params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
+      params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by, :tag_list)
     end
   end
 end

@@ -55,7 +55,7 @@ module Plugins::FlexxPluginCrm
 
     def task_params
       params.require(:task).permit(
-        :aasm_state, :updated_by, :due_date, notes_attributes: [:details, :created_by], owner_ids: []
+        :aasm_state, :updated_by, :due_date, :tag_list, notes_attributes: [:details, :created_by], owner_ids: []
       )
     end
   end

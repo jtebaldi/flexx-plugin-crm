@@ -3,6 +3,8 @@ require 'aasm'
 class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   include AASM
 
+  acts_as_taggable
+
   self.table_name = 'contacts'
 
   belongs_to :cama_contact_form, class_name: 'Plugins::CamaContactForm::CamaContactForm'

@@ -22,6 +22,7 @@ module Plugins::FlexxPluginCrm
         :email,
         :source,
         :highlights,
+        :tag_list,
         phonenumbers_attributes: [:number, :phone_type]
       )
     end
