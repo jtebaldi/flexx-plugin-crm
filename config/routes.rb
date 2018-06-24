@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         get 'contacts/:id/remove_contact_task/:task_id', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_contact_task, as: :remove_contact_task
         post 'contacts/:id/update_contact_status', controller: 'plugins/flexx_plugin_crm/admin', action: :update_contact_status, as: :update_contact_status
         post 'contacts/:id/tasks', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_task, as: :create_contact_task
+        post 'contacts/:id/messages', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_message, as: :create_contact_message
 
         get 'task_card/:id/:refresh_panel', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
 
@@ -28,6 +29,12 @@ Rails.application.routes.draw do
         end
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', only: [:index, :create]
+
+        resources :messages, controller: 'plugins/flexx_plugin_crm/messages' do
+          collection do
+            post 'inbound'
+          end
+        end
       end
 
       namespace 'plugins' do
