@@ -12,6 +12,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent
   has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber'
   has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
+  has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
 
   scope :active, -> { where.not(sales_stage: :archived) }
 
