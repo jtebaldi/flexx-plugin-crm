@@ -61,7 +61,8 @@ module Plugins::FlexxPluginCrm
       sms = twilio_client.api.account.messages.create(
           from: ENV["TWILIO_NUMBER"],
           to: params[:new_contact_message][:phonenumber],
-          body: params[:new_contact_message][:message]
+          body: params[:new_contact_message][:message],
+          status_callback: ENV["TWILIO_STATUS_CALLBACK"]
       )
 
       contact.messages.create(

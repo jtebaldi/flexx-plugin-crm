@@ -19,5 +19,16 @@ module Plugins::FlexxPluginCrm
 
         head :no_content
     end
+
+    def status
+      message = Message.find_by(sid: params["SmsSid"])
+
+      if message
+        message.status = params["SmsStatus"]
+        message.save
+      end
+
+      head :no_content
+    end
   end
 end

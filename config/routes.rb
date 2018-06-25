@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages' do
           collection do
             post 'inbound'
+            post 'status'
           end
         end
       end
