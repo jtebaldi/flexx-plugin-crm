@@ -16,7 +16,9 @@ Rails.application.config.to_prepare do
     has_many :automated_campaigns, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', through: :automated_campaign_to_contact_form_associations
   end
 
-  CamaleonCms::User.class_eval do
+  user_class = (PluginRoutes.static_system_info['user_model'].presence || 'CamaleonCms::User').constantize
+
+  user_class.class_eval do
     def initials
       result = if first_name.present? && last_name.present?
         "#{first_name[0]}#{last_name[0]}"

@@ -1,6 +1,7 @@
 require 'aasm'
 
 class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
+  include Plugins::FlexxPluginCrm::Concerns::HasUsers
   include AASM
 
   acts_as_taggable
@@ -13,7 +14,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent
 
   has_many :task_owners, class_name: 'Plugins::FlexxPluginCrm::TaskOwner'
-  has_many :owners, class_name: 'CamaleonCms::User', through: :task_owners
+  has_many :owners, class_name: user_class_name, through: :task_owners
 
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :owners
@@ -29,6 +30,6 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   end
 
   def updated_by_user
-    CamaleonCms::User.find(updated_by)
+    user_class.find(updated_by)
   end
 end
