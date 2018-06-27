@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
           collection do
             post :defer_task
+            post :send_task_confirmation
           end
 
           get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
           collection do
             post 'inbound'
             post 'status'
+            post 'confirmation'
           end
         end
       end
