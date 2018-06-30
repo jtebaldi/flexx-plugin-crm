@@ -69,10 +69,8 @@ module Plugins::FlexxPluginCrm
           parameters: flow_params.to_json
       )
 
-      task.notes.create(
-        details: 'Confirmation message sent',
-        created_by: current_user.id
-      )
+      # TODO: use a system user to create an automatic note
+      task.notes.create(details: 'Confirmation message sent', created_by: CamaleonCms::User.first)
 
       head :ok
     end

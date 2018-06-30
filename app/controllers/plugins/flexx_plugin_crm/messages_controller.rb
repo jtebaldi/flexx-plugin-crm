@@ -35,11 +35,8 @@ module Plugins::FlexxPluginCrm
       task = Task.find(params["TaskId"])
 
       if task
-        # TODO: update task confirmation status
-
-        task.notes.create(
-          details: "Confirmation message received. #{params['Choice']}",
-        )
+        task.send params["Action"]
+        task.save
       end
 
       head :no_content
