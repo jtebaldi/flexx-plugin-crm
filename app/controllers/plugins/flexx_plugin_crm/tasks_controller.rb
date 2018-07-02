@@ -54,23 +54,7 @@ module Plugins::FlexxPluginCrm
     def send_task_confirmation
       task = current_site.tasks.find(params[:task_id])
 
-      if task.nil?
-        head :bad_request
-      end
-
-      flow_params = {
-        task_id: task.id,
-        due_time: task.due_date
-      }
-
-      flow = twilio_client.studio.flows(ENV["TWILIO_CONFIRMATION_FLOW_SID"]).engagements.create(
-          from: ENV["TWILIO_NUMBER"],
-          to: params[:task_confirmation][:phonenumber],
-          parameters: flow_params.to_json
-      )
-
-      # TODO: use a system user to create an automatic note
-      task.notes.create(details: 'Confirmation message sent', created_by: CamaleonCms::User.first)
+      TaskConfirmationService.new(task: task, number: params[:task_confirmation][:phonenumber]).call
 
       head :ok
     end
@@ -81,13 +65,6 @@ module Plugins::FlexxPluginCrm
       params.require(:task).permit(
         :aasm_state, :updated_by, :due_date, :tag_list, notes_attributes: [:details, :created_by], owner_ids: []
       )
-    end
-
-    def twilio_client
-      account_sid = ENV["TWILIO_ACCOUNT_SID"]
-      auth_token = ENV["TWILIO_AUTH_TOKEN"]
-
-      Twilio::REST::Client.new account_sid, auth_token
     end
   end
 end

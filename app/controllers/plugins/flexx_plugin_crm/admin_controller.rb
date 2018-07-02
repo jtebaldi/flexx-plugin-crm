@@ -58,21 +58,11 @@ module Plugins::FlexxPluginCrm
     def create_contact_message
       contact = current_site.contacts.find(params[:id])
 
-      sms = twilio_client.api.account.messages.create(
-          from: ENV["TWILIO_NUMBER"],
-          to: params[:new_contact_message][:phonenumber],
-          body: params[:new_contact_message][:message],
-          status_callback: ENV["TWILIO_STATUS_CALLBACK"]
-      )
-
-      contact.messages.create(
-        site_id: current_site.id,
-        sid: sms.sid,
-        from_number: sms.from,
-        to_number: sms.to,
-        message: sms.body,
-        status: sms.status
-      )
+      ContactMessageService.new(
+        contact: contact,
+        number: params[:new_contact_message][:phonenumber],
+        message: params[:new_contact_message][:message]
+      ).call
 
       head :ok
     end
@@ -251,13 +241,6 @@ module Plugins::FlexxPluginCrm
       params[:new_contact_task][:due_date] = DateTime.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
 
       params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by, :tag_list)
-    end
-
-    def twilio_client
-      account_sid = ENV["TWILIO_ACCOUNT_SID"]
-      auth_token = ENV["TWILIO_AUTH_TOKEN"]
-
-      Twilio::REST::Client.new account_sid, auth_token
     end
   end
 end
