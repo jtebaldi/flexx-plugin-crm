@@ -9,7 +9,7 @@ class ContactMessageService
     sms = TwilioAdapter.new.send_sms(to: @number, body: @message)
 
     @contact.messages.create(
-      site_id: current_site.id,
+      site_id: @contact.site_id,
       sid: sms.sid,
       from_number: sms.from,
       to_number: sms.to,

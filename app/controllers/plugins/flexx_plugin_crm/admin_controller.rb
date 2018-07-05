@@ -60,8 +60,8 @@ module Plugins::FlexxPluginCrm
 
       ContactMessageService.new(
         contact: contact,
-        number: params[:new_contact_message][:phonenumber],
-        message: params[:new_contact_message][:message]
+        number: params[:phonenumber],
+        message: params[:message]
       ).call
 
       head :ok
