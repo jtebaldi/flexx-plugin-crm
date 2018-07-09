@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
   s.add_dependency "acts-as-taggable-on", "~> 5.0"
+  s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
 end
