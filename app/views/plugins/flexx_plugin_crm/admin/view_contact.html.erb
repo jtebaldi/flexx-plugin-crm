@@ -4,7 +4,7 @@
 <% end %>
 
 <style>
-  input[type=radio].hide-control { display: none; }
+input[type=radio].hide-control { display: none; }
 </style>
 
 <div class="main-content">
@@ -178,9 +178,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-              <input class="form-control" type="text" value="<%= @contact.email %>">
-              <label>Email</label>
-            </div>
+                <input class="form-control" type="text" value="<%= @contact.email %>">
+                <label>Email</label>
+              </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
@@ -281,6 +281,46 @@
           <h5 class="card-title"><strong>Conversations</strong></h5>
         </div>
 
+        <div class="main-content">
+          <div class="card card-bordered flex-column">
+
+            <header class="flexbox align-items-center p-12 pr-20 bg-lighter bb-1 border-light">
+              <div class="media align-items-center p-0">
+                <a href="#"><span class="avatar"><%= @contact.initials %></span></a>
+                <div class="media-body">
+                  <h6><a href="#"><%= @contact.print_name %></a></h6>
+                </div>
+              </div>
+
+              <div class="dropdown">
+                <a class="text-lighter" data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-picture-o"></i> Medias</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-volume-off"></i> Mute</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                </div>
+              </div>
+            </header>
+
+            <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
+              <%= render partial: 'contact_conversations' %>
+            </div>
+            <footer class="publisher">
+              <span class="avatar">jt</span>
+              <input class="publisher-input" rows="1" placeholder="Write something">
+              <div class="align-self-end gap-items">
+                <span class="publisher-btn file-group">
+                  <i class="fa fa-paperclip file-browser"></i>
+                  <input type="file">
+                </span>
+                <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+                <a class="publisher-btn" href="#"><i class="fa fa-paper-plane"></i></a>
+              </div>
+            </footer>
+          </div>
+        </div>
       </div>
 
       <div class="tab-pane fade" id="tab_recipes_campaigns">
@@ -339,36 +379,36 @@
 
   <div class="quickview-body">
     <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="select">Type</label>
-        <select class="form-control" name="new_contact_task[task_type]">
-          <option value="phone_call">Phone call</option>
-          <option value="message">Email</option>
-          <option value="email">Text</option>
-          <option value="meeting">Meeting</option>
-          <option value="general">General</option>
-        </select>
-      </div>
-      <div class="form-group col-12">
-        <label>Date / Time</label>
-        <input class="form-control datetimepicker" type="text" name="new_contact_task[due_date]">
-      </div>
-      <br>
-      <h6 class="text-light fw-300">Details</h6>
-      <div class="form-groups-attached">
+      <div class="card-body">
         <div class="form-group">
-          <label>Task title</label>
-          <input class="form-control" type="text" name="new_contact_task[title]">
+          <label for="select">Type</label>
+          <select class="form-control" name="new_contact_task[task_type]">
+            <option value="phone_call">Phone call</option>
+            <option value="message">Email</option>
+            <option value="email">Text</option>
+            <option value="meeting">Meeting</option>
+            <option value="general">General</option>
+          </select>
         </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="6" name="new_contact_task[details]"></textarea>
+        <div class="form-group col-12">
+          <label>Date / Time</label>
+          <input class="form-control datetimepicker" type="text" name="new_contact_task[due_date]">
+        </div>
+        <br>
+        <h6 class="text-light fw-300">Details</h6>
+        <div class="form-groups-attached">
+          <div class="form-group">
+            <label>Task title</label>
+            <input class="form-control" type="text" name="new_contact_task[title]">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6" name="new_contact_task[details]"></textarea>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
-  <% end %>
   <footer class="quickview-footer flex-row-reverse">
     <div id="new-contact-task-spinner" class="spinner-circle-shadow invisible"></div>
     <button class="btn btn-success" id="new-contact-task-add" onclick="addNewContactTask()">Add</button>
