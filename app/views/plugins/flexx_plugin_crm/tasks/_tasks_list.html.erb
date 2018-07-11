@@ -16,8 +16,12 @@
     <footer class="card-footer flexbox align-items-center">
       <div>
         <strong>Due:</strong>
-        <span><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%b, %d %Y') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></span>
+        <span><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%b, %d %Y') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %><%= ' (confirmed)' if row.confirmed_at? %></span>
         <span class="card-hover-show pl-20">
+          <% if row.confirmed_at.nil? %>
+            <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
+          <% end %>
+            
           <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
           <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
         </span>
