@@ -54,7 +54,7 @@ module Plugins::FlexxPluginCrm
     def send_task_confirmation
       task = current_site.tasks.find(params[:task_id])
 
-      TaskConfirmationService.new(task: task, number: params[:task_confirmation][:phonenumber]).call
+      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call
 
       head :ok
     end
