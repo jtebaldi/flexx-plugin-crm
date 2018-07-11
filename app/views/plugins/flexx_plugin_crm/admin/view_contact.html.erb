@@ -447,6 +447,33 @@ input[type=radio].hide-control { display: none; }
   </div>
 </div>
 
+<!-- MODAL: Send Confirmation -->
+<div class="modal modal-center fade" id="modal-send-confirmation" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation Message</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= form_tag send_task_confirmation_admin_tasks_path(), method: :post, remote: true, authenticity_token: true, id: 'send-confirmation-form', class: 'quickview-block form-type-combine' do %>
+        <div class="modal-body">
+          <input type="hidden" name="task_id" value="" id="send-confirmation-task-id-field">
+          <div class="form-group">
+            <label>Number</label>
+            <input type="text" class="form-control" name="phonenumber" value="">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal" onclick="$('#send-confirmation-form').submit()">Send</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: Update Status -->
 <div class="modal modal-center fade" id="update_status_modal" tabindex="-1">
   <div class="modal-dialog">
