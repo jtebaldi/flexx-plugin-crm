@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class TwilioAdapter
   def send_sms(to:, body:)
     sms = client.api.account.messages.create(
