@@ -5,6 +5,8 @@ class Plugins::FlexxPluginCrm::Phonenumber < ActiveRecord::Base
 
   before_create :set_phonetype
 
+  scope :mobile, -> { where(phone_type: 'mobile') }
+
   private
 
   def set_phonetype

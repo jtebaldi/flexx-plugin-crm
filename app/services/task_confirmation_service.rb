@@ -9,7 +9,7 @@ class TaskConfirmationService
       to: @number,
       parameters: {
         task_id: @task.id,
-        due_time: @task.due_date
+        appointment_time: @task.due_date.strftime('%b, %d %Y %I:%M %p')
       }
     )
 

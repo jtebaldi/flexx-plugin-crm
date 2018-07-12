@@ -1,0 +1,8 @@
+<% @contact.messages.order(created_at: :desc).each do |message| %>
+  <div class="media media-chat <%= 'media-chat-reverse' if message.status != 'received' %>">
+    <div class="media-body">
+      <p><%= message.message %></p>
+      <p class="meta"><time datetime="<%= message.created_at %>"><%= message.created_at.strftime('%a, %d %b %H:%M') %></time></p>
+    </div>
+  </div>
+<% end %>
