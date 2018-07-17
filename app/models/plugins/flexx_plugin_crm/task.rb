@@ -36,12 +36,11 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   def confirm
     self.confirmed_at = DateTime.now
 
-    # TODO: use a system user to create an automatic note
-    self.notes.new(details: "Task confirmed.", created_by: CamaleonCms::User.first)
+    self.notes.new(details: "Task confirmed.")
   end
 
   def cancel
-    # TODO: use a system user to create an automatic note
-    self.notes.new(details: "Task cancelled.", created_by: CamaleonCms::User.first)
+    self.notes.new(details: "Task cancelled.")
   end
 end
+
