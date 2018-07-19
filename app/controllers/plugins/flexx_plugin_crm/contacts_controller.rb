@@ -9,6 +9,8 @@ module Plugins::FlexxPluginCrm
     def create
       new_contact = current_site.contacts.create!(contact_params)
 
+      current_site.tag(new_contact, with: params[:contact][:tag_list], on: :tags)
+
       redirect_to controller: :admin, action: :view_contact, id: new_contact.id
     end
 
@@ -22,7 +24,6 @@ module Plugins::FlexxPluginCrm
         :email,
         :source,
         :highlights,
-        :tag_list,
         phonenumbers_attributes: [:number, :phone_type]
       )
     end

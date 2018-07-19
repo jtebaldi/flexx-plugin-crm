@@ -69,7 +69,7 @@
           </div>
           <div class="col-md-6">
             <label>By</label><br>
-            <%= note.created_by_user.first_name %>
+            <%= note.created_by ? note.created_by_user.first_name : "System" %>
           </div>
           <div class="col-md-12">
             <br/>
