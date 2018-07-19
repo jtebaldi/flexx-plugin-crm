@@ -189,6 +189,10 @@ module Plugins::FlexxPluginCrm
       redirect_to url_for(action: :settings), notice: 'Settings Saved Successfully'
     end
 
+    def list_tags
+      render json: ActsAsTaggableOn::Tag.all.to_json(only: :name)
+    end
+
     private
 
     def contact_params

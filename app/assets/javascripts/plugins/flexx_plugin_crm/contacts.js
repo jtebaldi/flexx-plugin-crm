@@ -33,7 +33,7 @@ function clearNewContactTaskForm() {
 var taglist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  local: <%= ActsAsTaggableOn::Tag.all.to_json(only: :name) %>
+  prefetch: '/admin/next/list_tags'
 });
 
 app.ready(function() {
