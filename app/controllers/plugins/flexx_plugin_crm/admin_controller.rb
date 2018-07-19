@@ -193,6 +193,10 @@ module Plugins::FlexxPluginCrm
       render json: ActsAsTaggableOn::Tag.all.to_json(only: :name)
     end
 
+    def list_contacts
+      render json: current_site.contacts.to_json(only: [:first_name, :email])
+    end
+
     private
 
     def contact_params

@@ -1,7 +1,12 @@
 module Plugins::FlexxPluginCrm
   class MessagesController < CamaleonCms::Apps::PluginsAdminController
-    skip_before_action :verify_authenticity_token
-    skip_before_action :cama_authenticate
+    layout "layouts/flexx_next_admin"
+
+    skip_before_action :verify_authenticity_token, only: [:inbound, :status, :confirmation]
+    skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
+
+    def index
+    end
 
     def inbound
         phonenumber = Phonenumber.find_by(number: params["From"])
