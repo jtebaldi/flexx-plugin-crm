@@ -21,6 +21,7 @@ module Plugins::FlexxPluginCrm
       params[:task][:due_date] = DateTime.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
 
       task.update(task_params)
+      current_site.tag(task, with: params[:task][:tag_list], on: :tags)
 
       case params[:refresh_panel]
       when 'todays-tasks-list'
@@ -63,7 +64,7 @@ module Plugins::FlexxPluginCrm
 
     def task_params
       params.require(:task).permit(
-        :aasm_state, :updated_by, :due_date, :tag_list, notes_attributes: [:details, :created_by], owner_ids: []
+        :aasm_state, :updated_by, :due_date, notes_attributes: [:details, :created_by], owner_ids: []
       )
     end
   end

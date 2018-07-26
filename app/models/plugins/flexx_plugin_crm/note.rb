@@ -6,6 +6,6 @@ class Plugins::FlexxPluginCrm::Note < ActiveRecord::Base
   belongs_to :parent, polymorphic: true
 
   def created_by_user
-    user_class.find(created_by)
+    self.class.user_class.find(created_by)
   end
 end

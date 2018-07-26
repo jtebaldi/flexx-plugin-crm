@@ -31,7 +31,10 @@ module Plugins::FlexxPluginCrm
     end
 
     def update_contact
-      current_site.contacts.find(params[:id]).update(contact_params)
+      contact = current_site.contacts.find(params[:id])
+
+      contact.update(contact_params)
+      current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
 
       redirect_to action: :view_contact, id: params[:id]
     end
@@ -48,7 +51,8 @@ module Plugins::FlexxPluginCrm
     def create_contact_task
       @contact = current_site.contacts.find(params[:id])
 
-      @contact.tasks.create(new_contact_task_params)
+      task = @contact.tasks.create(new_contact_task_params)
+      current_site.tag(task, with: params[:new_contact_task][:tag_list], on: :tags)
 
       respond_to do |format|
         format.js
@@ -190,7 +194,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def list_tags
-      render json: ActsAsTaggableOn::Tag.all.to_json(only: :name)
+      render json: current_site.owned_tags.to_json(only: :name)
     end
 
     def list_contacts
@@ -200,7 +204,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, :tag_list, phonenumber_attributes: [:number, :phone_type])
+      params.require(:contact).permit(:sales_stage, :first_name, :last_name, :email, phonenumber_attributes: [:number, :phone_type])
     end
 
     def new_task_params
@@ -208,13 +212,13 @@ module Plugins::FlexxPluginCrm
       params[:new_task].merge!(created_by: current_user.id)
       params[:new_task].merge!(updated_by: current_user.id)
 
-      params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by, :tag_list)
+      params.require(:new_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end
 
     def task_params
       params[:task].merge!(updated_by: current_user.id)
 
-      params.require(:task).permit(:aasm_state, :updated_by, :tag_list, notes_attributes: [:details, :created_by])
+      params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
     end
 
     def new_task_recipe_params
@@ -248,7 +252,7 @@ module Plugins::FlexxPluginCrm
 
       params[:new_contact_task][:due_date] = DateTime.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
 
-      params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by, :tag_list)
+      params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end
   end
 end
