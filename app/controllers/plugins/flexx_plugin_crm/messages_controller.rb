@@ -2,10 +2,14 @@ module Plugins::FlexxPluginCrm
   class MessagesController < CamaleonCms::Apps::PluginsAdminController
     layout "layouts/flexx_next_admin"
 
+    #TODO move this callback handle logic to its own controller
     skip_before_action :verify_authenticity_token, only: [:inbound, :status, :confirmation]
     skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
 
     def index
+    end
+
+    def send_email_message
     end
 
     def inbound

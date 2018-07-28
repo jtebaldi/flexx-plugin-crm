@@ -19,12 +19,16 @@ class SendgridService
     JSON.parse(response.body)['persisted_recipients'][0] if (200..299).include?(response.status_code.to_i)
   end
 
-  def send_email(to:, body:, send_at:)
+  def send_email(to:, body:, send_at: nil)
+    recipients = if to.is_a?(Array)
+      to.map { |t| { email: t } }
+    else
+      { email: t }
+    end
+
     params = {
       personalizations: [{
-        to: [{
-          email: to
-        }]
+        to: recipients
       }],
       from: {
         email: 'contact@flexx.co'
@@ -32,12 +36,13 @@ class SendgridService
       subject: 'Flexx Automated Campaign',
       content: [
         {
-          type: 'text/plain',
+          type: 'text/html',
           value: body
         }
-      ],
-      send_at: send_at
+      ]
     }
+
+    params[:send_at] = send_at if send_at.present?
 
     response = sg.client.mail._("send").post(request_body: params)
   end
