@@ -1,5 +1,6 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
 <script>
@@ -59,6 +60,10 @@
 
 <style>
   input[type=radio].hide-control { display: none; }
+
+  .ck-editor__editable {
+    min-height: 350px;
+  }
 </style>
 
 <header class="header">
@@ -138,7 +143,7 @@
 
             <div class="form-group">
               <label>Message</label>
-              <textarea class="form-control" rows="6"></textarea>
+              <textarea class="form-control editor" rows="10"></textarea>
             </div>
 
           </div>

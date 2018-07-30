@@ -14,8 +14,6 @@ app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
 
-  console.log(1)
-
   $('#typeahed-recipients').tagsinput(
     {
       typeaheadjs: [
@@ -34,4 +32,10 @@ app.ready(function() {
         }
       ]
   });
+
+  ClassicEditor
+    .create(document.querySelector('.editor'))
+    .catch(function(error){
+      console.error(error);
+    });
 })
