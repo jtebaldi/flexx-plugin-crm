@@ -3,11 +3,20 @@ module Plugins::FlexxPluginCrm
     skip_before_action :verify_authenticity_token
     skip_before_action :cama_authenticate
 
+    def send_email_blast
+      EmailBlastService.new(
+        recipients: params[:recipients],
+        message: params[:message]
+      ).call
+
+      head :no_content
+    end
+
     def inbound
         phonenumber = Phonenumber.find_by(number: params["From"])
         contact = Contact.find(phonenumber.contact_id) if phonenumber
 
-        message = Message.create(
+        Message.create(
             contact_id: contact ? contact.id : nil,
             site_id: contact ? contact.site_id : nil,
             sid: params["SmsSid"],
