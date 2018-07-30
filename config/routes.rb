@@ -39,6 +39,7 @@ Rails.application.routes.draw do
             post 'inbound'
             post 'status'
             post 'confirmation'
+            post 'send_email_blast'
           end
         end
       end

@@ -1,5 +1,5 @@
 var contactlist = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('first_name'),
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   prefetch: '/admin/next/list_contacts'
 });
@@ -14,24 +14,42 @@ app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
 
-  $('#typeahed-recipients').tagsinput(
-    {
-      typeaheadjs: [
-        {},
-        {
-          name: 'taglist',
-          source: taglist.ttAdapter(),
-          displayKey: 'name',
-          valueKey: 'name'
-        },
-        {
-          name: 'contactlist',
-          source: contactlist.ttAdapter(),
-          displayKey: 'first_name',
-          valueKey: 'email'
-        }
-      ]
+  var tm = $('#recipients').tagsManager();
+
+  $('#recipients').on('tm:refresh', function(){
+    var pos = $('.tt-input').position();
+    $('.tt-hint').css({
+      'position':'absolute',
+      'top': pos.top,
+      'left': pos.left
+    })
   });
+
+  $('#recipients').typeahead({
+    highlight: true,
+    hint: true
+  },
+  {
+    name: 'taglist',
+    displayKey: 'name',
+    source: taglist.ttAdapter(),
+    templates: {
+      header: '<h3>Tags</h3>'
+    }
+  },
+  {
+    name: 'contactlist',
+    displayKey: 'name',
+    source: contactlist.ttAdapter(),
+    templates: {
+      header: '<h3>Contacts</h3>'
+    }
+  }
+  ).on('typeahead:selected', function(e,d){ // Push result to tag and clear value
+    tm.tagsManager('pushTag', d.value); // Use Tag Manager to push tag in
+    $('#recipients').typeahead('val', ''); // Clear input box after pushed tag
+  });
+
 
   ClassicEditor
     .create(document.querySelector('.editor'))

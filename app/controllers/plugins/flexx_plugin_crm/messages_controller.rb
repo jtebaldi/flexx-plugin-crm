@@ -9,7 +9,7 @@ module Plugins::FlexxPluginCrm
     def index
     end
 
-    def send_email_message
+    def send_email_blast
     end
 
     def inbound

@@ -86,7 +86,7 @@
   <div class="tab-content" id="message-tab-content">
 
     <div class="tab-pane fade active show" id="tab-email">
-      <form name="newEmailBlast" class="card form-type-combine">
+      <%= form_tag send_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', class: 'card form-type-combine' do %>
         <h4 class="card-title">New <strong>email blast</strong></h4>
 
         <div class="card-body">
@@ -123,7 +123,7 @@
               </span>
               <div class="input-group-input">
                 <label>To</label>
-                <input class="form-control" type="text" id="typeahed-recipients" name="recipients">
+                <input class="form-control" type="text" id="recipients" name="recipients">
               </div>
             </div>
 
@@ -143,15 +143,15 @@
 
             <div class="form-group">
               <label>Message</label>
-              <textarea class="form-control editor" rows="10"></textarea>
+              <textarea name="message" class="form-control editor" rows="10"></textarea>
             </div>
 
           </div>
           <div class="flexbox pull-right">
-            <button id="btn_send_email" class="btn btn-bold btn-round btn-w-xl btn-primary">Send Message</button>
+            <button type="submit" id="btn_send_email" class="btn btn-bold btn-round btn-w-xl btn-primary">Send Message</button>
           </div>
         </div>
-      </form>
+      <% end %>
     </div>
 
     <div class="tab-pane fade" id="tab-text">
