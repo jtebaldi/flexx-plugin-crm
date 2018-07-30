@@ -1,6 +1,6 @@
 require "sendgrid-ruby"
 
-class SendgridService
+class SendgridAdapter
   def create_list(name:)
     response = sg.client.contactdb.lists.post(request_body: { name: name })
 
@@ -35,36 +35,41 @@ class SendgridService
   def send_campaign(campaign_id:)
     response = sg.client.campaigns._(campaign_id).schedules.now.post()
 
-    JSON.parse(response.body)["status"] if (200.299).include?(response.status_code.to_i)
+    JSON.parse(response.body)["status"] if (200..299).include?(response.status_code.to_i)
   end
 
   def schedule_campaign(campaign_id:, send_at:)
     response = sg.client.campaigns._(campaign_id).schedules.post(request_body: { send_at: send_at })
 
-    JSON.parse(response.body)["status"] if (200.299).include?(response.status_code.to_i)
+    JSON.parse(response.body)["status"] if (200..299).include?(response.status_code.to_i)
   end
 
-  def send_email(to:, body:, send_at:)
+  def send_email(from:, to:, subject:, body:, send_at: nil)
     params = {
       personalizations: [{
-        to: [{
-          email: to
-        }]
+        to: to
       }],
-      from: {
-        email: 'contact@flexx.co'
-      },
-      subject: 'Flexx Automated Campaign',
+      from: from,
+      subject: subject,
       content: [
         {
-          type: 'text/plain',
+          type: 'text/html',
           value: body
         }
       ],
-      send_at: send_at
+      tracking_settings: {
+        subscription_tracking: {
+          enable: true,
+          text: 'Unsubscribe'
+        }
+      }
     }
 
+    params[:send_at] = send_at if send_at.present?
+
     response = sg.client.mail._("send").post(request_body: params)
+
+    (200..299).include?(response.status_code.to_i)
   end
 
   private

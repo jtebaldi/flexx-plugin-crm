@@ -55,7 +55,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
       sales_stage: sales_stage
     }]
 
-    sg_id = SendgridService.new.create_contact(contact_details: details)
+    sg_id = SendgridAdapter.new.create_contact(contact_details: details)
 
     update_column(:sendgrid_id, sg_id)
   end
@@ -69,7 +69,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     }]
 
     if previous_changes.keys.include?("email")
-      sg_id = SendgridService.new.create_contact(contact_details: details)
+      sg_id = SendgridAdapter.new.create_contact(contact_details: details)
 
       update_column(:sendgrid_id, sg_id)
     else
