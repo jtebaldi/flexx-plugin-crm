@@ -58,8 +58,6 @@ app.ready(function() {
     $('#recipients').typeahead('val', ''); // Clear input box after pushed tag
   });
 
-
-
   ClassicEditor
     .create(document.querySelector('.editor'))
     .catch(function(error){
