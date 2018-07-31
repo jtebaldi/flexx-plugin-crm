@@ -60,7 +60,7 @@ class SendgridAdapter
       tracking_settings: {
         subscription_tracking: {
           enable: true,
-          text: 'Unsubscribe'
+          html: "If you'd like to unsubscribe and stop receiving these emails <% click here %>."
         }
       }
     }
