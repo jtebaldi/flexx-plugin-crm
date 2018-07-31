@@ -5,8 +5,9 @@ module Plugins::FlexxPluginCrm
 
     def send_email_blast
       EmailBlastService.new(
+        site: CamaleonCms::Site.first,
         recipients: params[:recipients],
-        message: params[:message]
+        body: params[:message]
       ).call
 
       head :no_content
