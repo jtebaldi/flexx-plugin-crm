@@ -41,6 +41,15 @@ Rails.application.routes.draw do
             post 'send_email_blast'
           end
         end
+
+        resources :webhooks, controller: 'plugins/flexx_plugin_crm/webhooks', only: [] do
+          collection do
+            post 'inbound'
+            post 'status'
+            post 'confirmation'
+            post 'sg_events'
+          end
+        end
       end
 
       namespace 'plugins' do
