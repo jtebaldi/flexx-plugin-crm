@@ -10,6 +10,10 @@ var taglist = new Bloodhound({
   prefetch: '/admin/next/list_tags'
 });
 
+function fillRecipientsField() {
+  $('#recipientsHidden').val($('#recipients').tagsManager('customTagIds'));
+}
+
 app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
@@ -23,6 +27,10 @@ app.ready(function() {
       'top': pos.top,
       'left': pos.left
     })
+  });
+
+  $("#recipients").on('tm:pushed', function(e, tag) {
+    $('#recipients').typeahead('val', '');
   });
 
   $('#recipients').typeahead({
@@ -46,9 +54,10 @@ app.ready(function() {
     }
   }
   ).on('typeahead:selected', function(e,d){ // Push result to tag and clear value
-    tm.tagsManager('pushTag', d.value); // Use Tag Manager to push tag in
+    tm.tagsManager('pushTag', d.name, false, null, false, d.value); // Use Tag Manager to push tag in
     $('#recipients').typeahead('val', ''); // Clear input box after pushed tag
   });
+
 
 
   ClassicEditor
