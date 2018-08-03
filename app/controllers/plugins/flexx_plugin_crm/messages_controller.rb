@@ -10,12 +10,13 @@ module Plugins::FlexxPluginCrm
     end
 
     def send_email_blast
-    end
+      recipients_list = params[:recipients].gsub('___', ' ').split(',')
+      recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
 
-    def send_email_blast
       EmailBlastService.new(
-        site: CamaleonCms::Site.first,
-        recipients: params[:recipients],
+        site: current_site,
+        recipients: recipients,
+        subject: params[:subject],
         body: params[:message]
       ).call
 

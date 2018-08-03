@@ -45,10 +45,9 @@ class SendgridAdapter
   end
 
   def send_email(from:, to:, subject:, body:, send_at: nil)
+    personalizations = Array.new.tap { |p| to.each { |t| p << { to: [t] } } }
     params = {
-      personalizations: [{
-        to: to
-      }],
+      personalizations: personalizations,
       from: from,
       subject: subject,
       content: [

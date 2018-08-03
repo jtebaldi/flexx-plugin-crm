@@ -1,13 +1,13 @@
 var contactlist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: '/admin/next/list_contacts'
+  prefetch: { url: '/admin/next/list_contacts', cache: false }
 });
 
 var taglist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: '/admin/next/list_tags'
+  prefetch: { url: '/admin/next/list_tags', cache: false }
 });
 
 function fillRecipientsField() {

@@ -198,7 +198,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def list_contacts
-      render json: current_site.contacts.map { |c| { name: c.print_name, value: c.id } }
+      render json: current_site.contacts.map { |c| { name: "#{c.print_name} - #{c.email}", value: c.id } }
     end
 
     private
