@@ -1,28 +1,10 @@
 module Plugins::FlexxPluginCrm
-  class MessagesController < CamaleonCms::Apps::PluginsAdminController
-    layout "layouts/flexx_next_admin"
+  class WebhooksController < CamaleonCms::Apps::PluginsAdminController
+    skip_before_action :verify_authenticity_token
+    skip_before_action :cama_authenticate
 
-    #TODO move this callback handle logic to its own controller
-    skip_before_action :verify_authenticity_token, only: [:inbound, :status, :confirmation]
-    skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
-
-    def index
-    end
-
-    def send_email_blast
-      recipients_list = params[:recipients].gsub('___', ' ').split(',')
-      recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
-
-      EmailBlastService.new(
-        site: current_site,
-        recipients: recipients,
-        subject: params[:subject],
-        body: params[:message]
-      ).call
-
-      head :no_content
-    end
-
+    #TODO: Change old webhooks in twilio configuration and delete old methods
+    #      at MessagesController
     def inbound
         phonenumber = Phonenumber.find_by(number: params["From"])
         contact = Contact.find(phonenumber.contact_id) if phonenumber
@@ -61,5 +43,17 @@ module Plugins::FlexxPluginCrm
 
       head :no_content
     end
+
+    def sg_events
+      params[:_json].each do |p|
+        index = p[:sg_message_id].index('.filter')
+        message_id = p[:sg_message_id][0, index]
+
+        logger.debug "Message #{message_id} to #{p[:email]} - #{p[:event]}"
+      end
+
+      head :no_content
+    end
   end
 end
+

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         get 'list_tags', controller: 'plugins/flexx_plugin_crm/admin', action: :list_tags, as: :list_tags
+        get 'list_contacts', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts, as: :list_contacts
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
           collection do
@@ -33,11 +34,21 @@ Rails.application.routes.draw do
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', only: [:index, :create]
 
-        resources :messages, controller: 'plugins/flexx_plugin_crm/messages' do
+        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: :index do
           collection do
             post 'inbound'
             post 'status'
             post 'confirmation'
+            post 'send_email_blast'
+          end
+        end
+
+        resources :webhooks, controller: 'plugins/flexx_plugin_crm/webhooks', only: [] do
+          collection do
+            post 'inbound'
+            post 'status'
+            post 'confirmation'
+            post 'sg_events'
           end
         end
       end

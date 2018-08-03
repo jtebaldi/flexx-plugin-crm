@@ -1,0 +1,318 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    //grabs the hash tag from the url
+    var hash = window.location.hash;
+    //checks whether or not the hash tag is set
+    if (hash != "") {
+      //removes all active classes from tabs
+      $('#tabs a').each(function() {
+        $(this).removeClass('active');
+      });
+      $('#message-tab-content div').each(function() {
+        $(this).removeClass('active show');
+      });
+      //this will add the active class on the hashtagged value
+      var link = "";
+      $('#tabs a').each(function() {
+        link = $(this).attr('href');
+        if (link == hash) {
+          $(this).addClass('active');
+        }
+      });
+      $('#message-tab-content div').each(function() {
+        link = $(this).attr('id');
+        if ('#'+link == hash) {
+          $(this).addClass('active show');
+        }
+      });
+    }
+
+    $("#timing_detail").hide();
+    var rad = document.newTextBlast.timingOptions;
+    $(rad).on('click change', function(e) {
+      if (rad.value == 2) {
+        $("#timing_detail").show();
+        $("#btn_send_text").text('Schedule Message');
+      } else {
+        $("#timing_detail").hide();
+        $("#btn_send_text").text('Send Message');
+      }
+    });
+
+    $("#timing_detail2").hide();
+    var rad2 = document.newEmailBlast.timingOptions2;
+    $(rad2).on('click change', function(e) {
+      if (rad2.value == 2) {
+        $("#timing_detail2").show();
+        $("#btn_send_email").text('Schedule Message');
+      } else {
+        $("#timing_detail2").hide();
+        $("#btn_send_email").text('Send Message');
+      }
+    });
+  });
+</script>
+
+<style>
+  input[type=radio].hide-control { display: none; }
+
+  .ck-editor__editable {
+    min-height: 350px;
+  }
+</style>
+
+<header class="header">
+  <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Message Blast</strong></h2>
+    </div>
+  </div>
+
+  <div class="header-action">
+    <nav class="nav" id="tabs">
+      <a class="nav-link active" data-toggle="tab" href="#tab-email">Mass Email</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-text">Mass Text</a>
+    </nav>
+  </div>
+</header>
+
+<div class="main-content">
+  <div class="tab-content" id="message-tab-content">
+
+    <div class="tab-pane fade active show" id="tab-email">
+      <%= form_tag send_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', name: 'newEmailBlast', class: 'card form-type-combine' do %>
+        <input type="hidden" name="recipients" id="recipientsHidden">
+        <h4 class="card-title">New <strong>email blast</strong></h4>
+        <div class="card-body">
+          <div class="no-border text-center">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-lg btn-info active">
+                <input class="hide-control" type="radio" name="timingOptions2" id="option1" value="1" autocomplete="off" checked>Immediate</input>
+              </label>
+              <label class="btn btn-lg btn-info">
+                <input class="hide-control" type="radio" name="timingOptions2" id="option2" value="2" autocomplete="off">Schedule</i>
+              </label>
+            </div>
+          </div>
+
+          <div id="timing_detail2" class="form-groups-attached">
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Date</label>
+                <input class="form-control" type="text" data-provide="datepicker">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="select">Time</label>
+                <input class="form-control" type="text" data-provide="timepicker">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-groups-attached">
+
+            <div class="input-group">
+              <span class="input-group-prepend">
+                <a class="btn btn-light" type="button" data-toggle="quickview" href="#qv-to-field"><i class="ti-plus"></i></a>
+              </span>
+              <div class="input-group-input">
+                <label>To</label>
+                <input class="form-control" type="text" id="recipients">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Subject</label>
+              <input class="form-control" type="text" name="subject">
+            </div>
+
+            <div class="form-group">
+              <label>From</label>
+              <select class="form-control" data-provide="selectpicker">
+                <option>flexx. &lt;info@flexx.co&gt;</option>
+                <option>Joe Tebaldi &lt;joe@flexx.co&gt;</option>
+                <option>Staff Member &lt;staff@flexx.co&gt;</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Message</label>
+              <textarea name="message" class="form-control editor" rows="10"></textarea>
+            </div>
+
+          </div>
+          <div class="flexbox pull-right">
+            <button id="btn_send_email" class="btn btn-bold btn-round btn-w-xl btn-primary" onclick="fillRecipientsField()">Send Message</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade" id="tab-text">
+      <form name="newTextBlast" class="card form-type-combine">
+        <h4 class="card-title">New <strong>text blast</strong></h4>
+
+        <div class="card-body">
+          <div class="no-border text-center">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-lg btn-info active">
+                <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</i>
+              </label>
+              <label class="btn btn-lg btn-info">
+                <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
+              </label>
+            </div>
+          </div>
+
+          <div id="timing_detail" class="form-groups-attached">
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Date</label>
+                <input class="form-control" type="text" data-provide="datepicker">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="select">Time</label>
+                <input class="form-control" type="text" data-provide="timepicker">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-groups-attached">
+
+            <div class="input-group">
+              <span class="input-group-prepend">
+                <a class="btn btn-light" type="button" data-toggle="quickview" href="#qv-to-field"><i class="ti-plus"></i></a>
+              </span>
+              <div class="input-group-input">
+                <label>To</label>
+                <input class="form-control" type="text">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Message</label>
+              <textarea class="form-control" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+            </div>
+
+          </div>
+          <div class="flexbox pull-right">
+            <button id="btn_send_text" class="btn btn-bold btn-round btn-w-xl btn-primary">Send Message</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<div id="qv-to-field" class="quickview quickview-lg">
+
+  <ul class="quickview-header nav nav-tabs nav-justified nav-tabs-info">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#tab-contacts">Contacts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tab-groups">Groups</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tab-tags">Tags</a>
+    </li>
+  </ul>
+
+  <div class="quickview-body">
+    <div class="tab-content">
+      <div class="tab-pane fade active show" id="tab-contacts">
+        <div class="media-list media-list-hover">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <a class="media items-center" href="#">
+            <span class="avatar avatar-sm bg-secondary">JT</span>
+            <p class="title">Joe Tebaldi</p>
+            <span class="media-action text-success"><i class="ti-plus"></i></span>
+          </a>
+
+          <a class="media items-center" href="#">
+            <span class="avatar avatar-sm bg-secondary">PC</span>
+            <p class="title">Paulo Castro</p>
+            <span class="media-action text-success"><i class="ti-plus"></i></span>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="tab-groups">
+
+        <div class="media-list media-list-hover media-list-divided">
+          <a class="media media-single" href="#">
+            <span class="title">All Contacts</span>
+            <span class="badge badge-pill badge-secondary">14</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Leads</span>
+            <span class="badge badge-pill badge-primary">9</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Prospects</span>
+            <span class="badge badge-pill badge-info">7</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Customers</span>
+            <span class="badge badge-pill badge-success">3</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade" id="tab-tags">
+        <div class="media-list media-list-hover media-list-divided">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <a class="media media-single" href="#">
+            <span class="title">Remote</span>
+            <span class="badge badge-pill badge-secondary">14</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Personal Training</span>
+            <span class="badge badge-pill badge-primary">9</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Grand Opening</span>
+            <span class="badge badge-pill badge-info">7</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Athlete</span>
+            <span class="badge badge-pill badge-success">3</span>
+          </a>
+
+          <a class="media media-single" href="#">
+            <span class="title">Masters</span>
+            <span class="badge badge-pill badge-danger">4</span>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -194,7 +194,11 @@ module Plugins::FlexxPluginCrm
     end
 
     def list_tags
-      render json: current_site.owned_tags.to_json(only: :name)
+      render json: current_site.owned_tags.map { |t| { name: t.name, value: t.name } }
+    end
+
+    def list_contacts
+      render json: current_site.contacts.map { |c| { name: "#{c.print_name} - #{c.email}", value: c.id } }
     end
 
     private
