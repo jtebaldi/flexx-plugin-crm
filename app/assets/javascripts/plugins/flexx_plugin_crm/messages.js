@@ -18,17 +18,6 @@ app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
 
-  var tm = $('#recipients').tagsManager();
-
-  $('#recipients').on('tm:refresh', function(){
-    var pos = $('.tt-input').position();
-    $('.tt-hint').css({
-      'position':'absolute',
-      'top': pos.top,
-      'left': pos.left
-    })
-  });
-
   $("#recipients").on('tm:pushed', function(e, tag) {
     $('#recipients').typeahead('val', '');
   });
@@ -54,8 +43,26 @@ app.ready(function() {
     }
   }
   ).on('typeahead:selected', function(e,d){ // Push result to tag and clear value
-    tm.tagsManager('pushTag', d.name, false, null, false, d.value); // Use Tag Manager to push tag in
-    $('#recipients').typeahead('val', ''); // Clear input box after pushed tag
+    console.log(d)
+    tm.tagsManager('pushTag', d.name, false, null, false, d.value);
+
+    $('#recipients').typeahead('val', '');
+  });
+
+  /********************************************************
+   *
+   * IMPORTANT: tagsManager must be called AFTER typeahead
+   *
+  ********************************************************/
+  var tm = $('#recipients').tagsManager();
+
+  $('#recipients').on('tm:refresh', function(){
+    var pos = $('.tt-input').position();
+    $('.tt-hint').css({
+      'position':'absolute',
+      'top': pos.top,
+      'left': pos.left
+    })
   });
 
   ClassicEditor
