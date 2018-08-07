@@ -6,6 +6,13 @@ function submitNewContactForm() {
   $('#new-contact-form').submit();
 }
 
+function cancelNewContactForm(button) {
+  $('#new-contact-form')[0].reset();
+  $('#typeahed-tags').tagsinput('removeAll');
+  $('#new-contact-form [data-provide~="selectpicker"]').selectpicker('val', '');
+  quickview.close($(button).closest('.quickview'));
+}
+
 function updateSalesStage(stage) {
   $('#update-sales-stage-field').val(stage);
 
