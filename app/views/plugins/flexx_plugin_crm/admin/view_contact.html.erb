@@ -429,6 +429,7 @@ input[type=radio].hide-control { display: none; }
       <%= form_tag defer_task_admin_tasks_path(), method: :post, remote: true, authenticity_token: true, id: 'defer-task-form', class: 'quickview-block form-type-combine' do %>
         <div class="modal-body">
           <input type="hidden" name="task_id" value="" id="defer-task-id-field">
+          <input type="hidden" name="refresh_panel" value="contact-detail">
           <div class="form-group">
             <label>Current due date</label>
             <input type="text" class="form-control" id="defer-current-due-date-field" value="" readonly="">
@@ -537,4 +538,3 @@ input[type=radio].hide-control { display: none; }
     </div>
   </div>
 </div>
-

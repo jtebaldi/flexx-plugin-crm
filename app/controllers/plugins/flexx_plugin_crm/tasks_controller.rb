@@ -45,7 +45,13 @@ module Plugins::FlexxPluginCrm
 
       task.update(task_params)
 
-      @contact = task.contact
+      case params[:refresh_panel]
+      when 'contact-detail'
+        @contact = task.contact
+      when 'tasks-dashboard'
+        @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+      end
 
       respond_to do |format|
         format.js
