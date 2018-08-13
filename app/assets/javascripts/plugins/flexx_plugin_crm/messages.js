@@ -43,7 +43,6 @@ app.ready(function() {
     }
   }
   ).on('typeahead:selected', function(e,d){ // Push result to tag and clear value
-    console.log(d)
     tm.tagsManager('pushTag', d.name, false, null, false, d.value);
 
     $('#recipients').typeahead('val', '');

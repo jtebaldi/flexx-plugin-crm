@@ -1,5 +1,6 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/tasks' %>
 <% end %>
 
 <script>
@@ -12,43 +13,6 @@
       } else {
         $("#timing_detail").hide();
       }
-    });
-
-    // Temp Contact Dataset
-    var contacts = ['John Doe', 'James Oneil', 'Martha Washington', 'Paulo Castro', 'Mike Dent',
-      'Ashley Simmons', 'Jim Crowell'
-    ];
-
-    var substringMatcher = function(strs) {
-      return function findMatches(q, cb) {
-        var matches, substringRegex;
-
-        // an array that will be populated with substring matches
-        matches = [];
-
-        // regex used to determine if a string contains the substring `q`
-        substrRegex = new RegExp(q, 'i');
-
-        // iterate through the pool of strings and for any string that
-        // contains the substring `q`, add it to the `matches` array
-        $.each(strs, function(i, str) {
-          if (substrRegex.test(str)) {
-            matches.push(str);
-          }
-        });
-
-        cb(matches);
-      };
-    };
-
-    $('#typeahead-contacts').typeahead({
-      hint: true,
-      highlight: true,
-      minLength: 1
-    },
-    {
-      name: 'contacts',
-      source: substringMatcher(contacts)
     });
   });
 </script>
@@ -182,15 +146,9 @@
     <form class="quickview-block form-type-combine" name="createTask">
 
       <div class="card-body">
-        <div class="input-group">
-          <div class="input-group-input">
-            <label>Contact</label>
-            <input class="form-control" type="text" id="typeahead-contacts" placeholder="Start typing name...">
-          </div>
-          <span class="input-group-append">
-            <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#search_contacts_modal"><i class="ti-search"></i></button>
-          </span>
-        </div>
+        <label>Contact</label>
+        <input class="form-control" type="text" id="contacts-field" placeholder="Start typing name...">
+        <br/>
 
         <div class="form-group">
           <label for="select">Type</label>
