@@ -8,15 +8,18 @@
         <div class="mb-2">
           <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
         </div>
-        <small class="fs-16 fw-300 ls-1"><%= row.details %></small>
+        <small class="fs-14 fw-300"><strong>Due: </strong><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%B %d') %>&nbsp;(<%= row.due_date.strftime('%I:%M %p') %>) <%= ' (confirmed)' if row.confirmed_at? %></small>
       </div>
       <div class="media-right text-right d-none d-md-block">
       </div>
     </a>
     <footer class="card-footer flexbox align-items-center">
       <div>
-        <strong>Due:</strong>
-        <span><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%b, %d %Y') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %><%= ' (confirmed)' if row.confirmed_at? %></span>
+        <% unless row.notes.empty? %>
+          <span class="text-lighter hover-light">
+            <i class="fa fa-comment mr-1"></i> <%= row.notes.count %>
+          </span>
+        <% end %>  
         <span class="card-hover-show pl-20">
           <% if row.task_type == 'meeting' && row.confirmed_at.nil? %>
             <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
