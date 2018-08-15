@@ -4,7 +4,9 @@ module Plugins::FlexxPluginCrm
 
     def index
       @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
+      @todays_completed_tasks = current_site.tasks.done.due_today.includes(:contact, :owners)
       @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+      @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
     end
 
     def task_owners
@@ -18,7 +20,7 @@ module Plugins::FlexxPluginCrm
       task = current_site.tasks.find(params[:id])
 
       params[:task].merge!(updated_by: current_user.id)
-      params[:task][:due_date] = DateTime.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
 
       task.update(task_params)
       current_site.tag(task, with: params[:task][:tag_list], on: :tags)
@@ -41,7 +43,7 @@ module Plugins::FlexxPluginCrm
       task = current_site.tasks.find(params[:task_id])
 
       params[:task].merge!(updated_by: current_user.id)
-      params[:task][:due_date] = DateTime.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
 
       task.update(task_params)
 

@@ -135,7 +135,7 @@
               </small>
             </div>
             <div class="media-right text-right d-none d-md-block">
-              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
+              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.localtime.strftime('%m/%d/%Y') %></p>
             </div>
           </a>
           <!-- <div class="media-right gap-items">

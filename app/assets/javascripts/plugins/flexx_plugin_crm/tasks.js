@@ -4,6 +4,16 @@ var contactlist = new Bloodhound({
   prefetch: { url: '/admin/next/list_contacts', cache: false }
 });
 
+function updateTask(button, isDone) {
+  if(isDone) {
+    $('#task-status').val('done');
+  }
+
+  $('#update-task-form').submit();
+
+  quickview.close($(button).closest('.quickview'));
+}
+
 app.ready(function() {
   contactlist.initialize();
 

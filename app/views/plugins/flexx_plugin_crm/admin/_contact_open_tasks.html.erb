@@ -34,14 +34,14 @@
       <footer class="card-footer flexbox align-items-center">
         <div>
           <strong>Due by:</strong>
-          <span><%= task.due_date.today? ? 'Today,' : task.due_date.strftime('%b, %d %Y') %>&nbsp;<%= task.due_date.strftime('%I:%M %p') %><%= ' (confirmed)' if task.confirmed_at? %></span>
+          <span><%= task.due_date.today? ? 'Today,' : task.due_date.localtime.strftime('%b, %d %Y') %>&nbsp;<%= task.due_date.localtime.strftime('%I:%M %p') %><%= ' (confirmed)' if task.confirmed_at? %></span>
         </div>
         <div class="card-hover-show">
           <% if task.task_type == 'meeting' && task.confirmed_at.nil? %>
             <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= task.id %>)">Ask Confirmation</button>
           <% end %>
 
-          <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+          <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
           <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a>
         </div>
       </footer>

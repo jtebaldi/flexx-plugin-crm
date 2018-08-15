@@ -1,5 +1,5 @@
 <header class="quickview-header">
-  <p class="quickview-title lead">Complete: <strong><%= @task.title %></strong></p>
+  <p class="quickview-title lead">Complete<%= 'd' if @task.done? %>: <strong><%= @task.title %></strong></p>
   <span class="close"><i class="ti-close"></i></span>
 </header>
   <div class="quickview-body">
@@ -16,29 +16,33 @@
       <ul class="flexbox flex-justified text-center p-20">
         <li class="br-1 border-light">
           <span class="text-muted">Date</span><br>
-          <span><%= @task.due_date.strftime('%m/%d/%Y') %></span>
+          <span><%= @task.due_date.localtime.strftime('%m/%d/%Y') %></span>
         </li>
         <li>
           <span class="text-muted">Time</span><br>
-          <span><%= @task.due_date.strftime('%I:%M %p') %></span>
+          <span><%= @task.due_date.localtime.strftime('%I:%M %p') %></span>
         </li>
       </ul>
-      <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'quickview-block form-type-combine' do %>
-        <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
-        <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
-        <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}" %>
+      <% unless @task.done? %>
+        <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'quickview-block form-type-combine' do %>
+          <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
+          <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
+          <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}" %>
+        <% end %>
       <% end %>
     </div>
   </div>
-<footer class="quickview-footer flex-row-reverse">
-  <div class="btn-group">
-    <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
-    <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
-    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
-      <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
-      <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
-    </div>
-  </div>
-  <button class="btn btn-danger" type="reset">Cancel</button>
-  <button class="btn btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
-</footer>
+  <% unless @task.done? %>
+    <footer class="quickview-footer flex-row-reverse">
+      <div class="btn-group">
+        <button class="btn btn-success" onclick="updateTask(this)">Save</button>
+        <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
+        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
+          <a class="dropdown-item" style="display: block !important" onclick="updateTask(this)" href="#">Save</a>
+          <a class="dropdown-item" style="display: block !important" onclick="updateTask(this, true)" href="#">Save and mark as done</a>
+        </div>
+      </div>
+      <button class="btn btn-danger" type="reset">Cancel</button>
+      <button class="btn btn-warning" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+    </footer>
+  <% end %>

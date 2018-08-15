@@ -10,9 +10,9 @@ class AutomatedCampaignService
         automated_campaign_id: campaign.id,
         automated_campaign_step_id: step.id,
         send_to: contact.email,
-        send_at: DateTime.now + step.due_on_value.send(step.due_on_unit),
+        send_at: Time.now + step.due_on_value.send(step.due_on_unit),
         message: step.message,
-        status_changed_at: DateTime.now
+        status_changed_at: Time.now
       )
     end
   end

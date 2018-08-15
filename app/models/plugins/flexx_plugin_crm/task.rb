@@ -20,9 +20,10 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   accepts_nested_attributes_for :owners
 
   scope :done, -> { where(aasm_state: :done) }
-  scope :due_today, -> { where(due_date: DateTime.now.beginning_of_day..DateTime.now.end_of_day) }
+  scope :due_today, -> { where(due_date: Time.now.beginning_of_day..Time.now.end_of_day) }
   scope :pending, -> { where(aasm_state: :pending) }
-  scope :upcoming, -> { where('due_date > ?', DateTime.now.end_of_day) }
+  scope :upcoming, -> { where('due_date > ?', Time.now.end_of_day) }
+  scope :old, -> { where('due_date < ?', Time.now.beginning_of_day) }
 
   aasm do
     state :pending, initial: true
@@ -34,7 +35,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   end
 
   def confirm
-    self.confirmed_at = DateTime.now
+    self.confirmed_at = Time.now
 
     self.notes.new(details: "Task confirmed.")
   end
@@ -43,4 +44,3 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
     self.notes.new(details: "Task cancelled.")
   end
 end
-

@@ -12,5 +12,5 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignJob < ActiveRecord::Base
     state :running, :finished, :failed
   end
 
-  scope :queue, -> { where(['status = ? AND send_at <= ?', :queued, DateTime.now + 6.hours])  }
+  scope :queue, -> { where(['status = ? AND send_at <= ?', :queued, Time.now + 6.hours])  }
 end

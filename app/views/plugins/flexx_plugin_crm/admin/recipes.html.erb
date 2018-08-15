@@ -39,7 +39,7 @@
       <footer class="card-footer flexbox align-items-center">
         <div>
           <strong>Created on:</strong>
-          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+          <span><%= recipe.created_at.localtime.strftime('%b, %d %Y') %></span>
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
@@ -74,7 +74,7 @@
       <footer class="card-footer flexbox align-items-center">
         <div>
           <strong>Created on:</strong>
-          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+          <span><%= recipe.created_at.localtime.strftime('%b, %d %Y') %></span>
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
