@@ -135,7 +135,7 @@ module Plugins::FlexxPluginCrm
       current_site.task_recipes.find(params[:id]).update!(
         archived: true,
         archived_by: current_user.id,
-        archived_at: DateTime.now
+        archived_at: Time.now
       )
 
       redirect_to action: :recipes
@@ -250,7 +250,7 @@ module Plugins::FlexxPluginCrm
       params[:new_contact_task].merge!(created_by: current_user.id)
       params[:new_contact_task].merge!(updated_by: current_user.id)
 
-      params[:new_contact_task][:due_date] = DateTime.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
+      params[:new_contact_task][:due_date] = Time.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
 
       params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end

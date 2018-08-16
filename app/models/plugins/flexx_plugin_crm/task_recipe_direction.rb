@@ -11,7 +11,7 @@ class Plugins::FlexxPluginCrm::TaskRecipeDirection < ActiveRecord::Base
 
   def distance_of_time_from_now
     if self.due_on_value > 0
-      distance_of_time_in_words(DateTime.now, DateTime.now + self.due_on_value.send(self.due_on_unit))
+      distance_of_time_in_words(Time.now, Time.now + self.due_on_value.send(self.due_on_unit))
     else
       'immediately'
     end

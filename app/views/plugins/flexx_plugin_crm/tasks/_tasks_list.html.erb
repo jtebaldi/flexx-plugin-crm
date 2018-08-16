@@ -24,17 +24,20 @@
           <% if row.task_type == 'meeting' && row.confirmed_at.nil? %>
             <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
           <% end %>
-
-          <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
+          <% unless row.done? %>
+            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
+          <% end %>
         </span>
       </div>
       <div class="pull-right">
         <div class="avatar-list">
-          <% row.owners.each do |owner| %>
-            <span class="avatar bg-dark"><%= owner.initials %></span>
+          <% unless row.done? %>
+            <% row.owners.each do |owner| %>
+              <span class="avatar bg-dark"><%= owner.initials %></span>
+            <% end %>
+            <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id, refresh_panel: refresh_panel) %>"></button>
           <% end %>
-          <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id, refresh_panel: refresh_panel) %>"></button>
         </div>
       </div>
     </footer>

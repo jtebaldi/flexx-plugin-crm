@@ -10,7 +10,7 @@ class TaskRecipeService
         task_type: direction.task_type,
         title: direction.title,
         details: direction.details,
-        due_date: DateTime.now + direction.due_on_value.send(direction.due_on_unit)
+        due_date: Time.now + direction.due_on_value.send(direction.due_on_unit)
       )
     end
   end

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         post 'contacts/:id/tasks', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_task, as: :create_contact_task
         post 'contacts/:id/messages', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_message, as: :create_contact_message
 
-        get 'task_card/:id/:refresh_panel', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
+        get 'task_card/:id(/:refresh_panel)', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
 
         get   :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
         get   'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card

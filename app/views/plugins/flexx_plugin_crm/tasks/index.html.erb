@@ -94,36 +94,14 @@
 
         <div class="col-md-12">
           <p class="lead text-center text-fade">Today's tasks</p>
-          <div class="card b-1 hover-shadow-2 mb-20">
-            <a class="media card-body" data-toggle="quickview" href="#qv_view_task">
-              <div class="media-left pr-12">
-                <span class="avatar avatar-xl no-radius"><i class="fa fa-phone"></i></span>
-              </div>
-              <div class="media-body">
-                <div class="mb-2">
-                  <span class="fs-20 pr-16">Follow-up Call</span>
-                </div>
-                <small class="fs-16 fw-300 ls-1">Reach out to see if the prospect has any more questions</small>
-              </div>
-
-              <div class="media-right text-right d-none d-md-block">
-                <p class="fs-14 text-fade mb-12">
-
-                </p>
-              </div>
-            </a>
-            <footer class="card-footer flexbox align-items-center">
-              <div>
-                <strong>Completed:</strong>
-                <span>Today by Joe Tebaldi</span>
-              </div>
-            </footer>
+          <div id="todays-completed-tasks-list">
+            <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
           </div>
-
           <br>
           <div class="divider text-uppercase fw-500">Previous</div>
-
-
+          <div id="old-completed-tasks-list">
+            <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+          </div>
         </div>
 
       </div>
