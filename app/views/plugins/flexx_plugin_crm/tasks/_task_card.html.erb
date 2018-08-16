@@ -9,10 +9,12 @@
         <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @task.contact.print_name %></a></h4>
         <span><%= @task.task_type.humanize %></span>
       </div>
-      <div class="btn-group btn-group-justified">
-        <button class="btn p-10 btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
-        <a href="#"   class="btn p-10 btn-danger text-white">Delete</a>
-      </div>
+      <% unless @task.done? %>
+        <div class="btn-group btn-group-justified">
+          <button class="btn p-10 btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+          <a href="#" class="btn p-10 btn-danger text-white">Delete</a>
+        </div>
+      <% end %>
       <div class="p-20">
         <span class="text-muted">Description</span>
         <br/><span><%= @task.details %></span>
@@ -50,11 +52,13 @@
           </div>
         <% end %>
       </div>
-      <span class="publisher bt-1 border-fade bg-white">
-        <span class="avatar">JT</span>
-        <input class="publisher-input" type="text" placeholder="Type your note...">
-        <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
-      </span>
+      <% unless @task.done? %>
+        <span class="publisher bt-1 border-fade bg-white">
+          <span class="avatar">JT</span>
+          <input class="publisher-input" type="text" placeholder="Type your note...">
+          <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+        </span>
+      <% end %>
     </div>
   </div>
   <% unless @task.done? %>
