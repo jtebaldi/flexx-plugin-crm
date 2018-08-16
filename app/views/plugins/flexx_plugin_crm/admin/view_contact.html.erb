@@ -101,7 +101,7 @@ input[type=radio].hide-control { display: none; }
         </div>
       </div>
 
-      <form class="card form-type-material tab-pane fade" id="tab_contact_details">
+      <%= form_tag admin_update_contact_path(@contact.id), method: :post, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade' do %>
         <h4 class="card-title fw-400">Contact Details</h4>
 
         <div class="card-body">
@@ -112,14 +112,14 @@ input[type=radio].hide-control { display: none; }
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" type="text" value="<%= @contact.first_name %>">
+                    <input class="form-control" type="text" name="contact[first_name]" value="<%= @contact.first_name %>">
                     <label>First name</label>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" type="text" value="<%= @contact.last_name %>">
+                    <input class="form-control" type="text" name="contact[last_name]" value="<%= @contact.last_name %>">
                     <label>Last name</label>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ input[type=radio].hide-control { display: none; }
               <div class="form-group">
                 <div class="input-group">
                   <label>Lead source</label>
-                  <select class="form-control" data-provide="selectpicker" title="Choose Source">
+                  <select class="form-control" data-provide="selectpicker" title="Choose Source" name="contact[source]">
                     <option <%= 'selected' if @contact.source == 'email' %> value="email">Email</option>
                     <option <%= 'selected' if @contact.source == 'other' %> value="other">Other</option>
                     <option <%= 'selected' if @contact.source == 'partner' %> value="partner">Partner</option>
@@ -178,7 +178,7 @@ input[type=radio].hide-control { display: none; }
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text" value="<%= @contact.email %>">
+                <input class="form-control" type="text" name="contact[email]" value="<%= @contact.email %>">
                 <label>Email</label>
               </div>
             </div>
@@ -266,7 +266,7 @@ input[type=radio].hide-control { display: none; }
           </div>
 
           <div class="form-group">
-            <textarea class="form-control" rows="6"><%= @contact.highlights %></textarea>
+            <textarea class="form-control" rows="6" name="contact[highlights]"><%= @contact.highlights %></textarea>
             <label>Highlights</label>
           </div>
         </div>
@@ -274,7 +274,7 @@ input[type=radio].hide-control { display: none; }
         <footer class="card-footer text-right">
           <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
         </footer>
-      </form>
+      <% end %>
 
       <div class="tab-pane fade" id="tab_conversations">
         <div class="card">
