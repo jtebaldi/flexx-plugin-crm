@@ -184,6 +184,7 @@ input[type=radio].hide-control { display: none; }
             </div>
             <div class="col-md-3">
               <div class="form-group">
+                <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="<%= @contact.phonenumbers.first.id unless @contact.phonenumbers.empty? %>">
                 <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="<%= @contact.phonenumbers.first.number unless @contact.phonenumbers.empty? %>">
                 <label>Phone</label>
               </div>

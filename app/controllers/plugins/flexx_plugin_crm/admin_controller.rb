@@ -210,7 +210,7 @@ module Plugins::FlexxPluginCrm
         :email,
         :source,
         :highlights,
-        phonenumbers_attributes: [:number, :phone_type]
+        phonenumbers_attributes: [:id, :number, :phone_type]
       )
     end
 
