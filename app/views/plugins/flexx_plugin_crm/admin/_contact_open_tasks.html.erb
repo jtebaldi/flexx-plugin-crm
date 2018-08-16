@@ -21,28 +21,35 @@
           <div class="mb-2">
             <span class="fs-20 pr-16"><%= task.title %></span>
           </div>
-          <small class="fs-16 fw-300 ls-1"><%= task.details %></small>
+          <small class="fs-14 fw-300"><strong>Due: </strong><%= task.due_date.today? ? 'Today,' : task.due_date.strftime('%B %d') %>&nbsp;(<%= task.due_date.strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %></small>
         </div>
 
         <div class="media-right text-right d-none d-md-block">
-          <p class="fs-14 text-fade mb-12">
-            <img class="avatar" src="http://codetic.net/demo/themes/privado/wp-content/themes/privado/img/avatar.png">
-          </p>
-          <span class="text-fade fs-12"><em>Note added</em></span>
         </div>
       </a>
       <footer class="card-footer flexbox align-items-center">
-        <div>
-          <strong>Due by:</strong>
-          <span><%= task.due_date.today? ? 'Today,' : task.due_date.localtime.strftime('%b, %d %Y') %>&nbsp;<%= task.due_date.localtime.strftime('%I:%M %p') %><%= ' (confirmed)' if task.confirmed_at? %></span>
-        </div>
-        <div class="card-hover-show">
-          <% if task.task_type == 'meeting' && task.confirmed_at.nil? %>
-            <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= task.id %>)">Ask Confirmation</button>
-          <% end %>
+        <div class="">
+          <% unless task.notes.empty? %>
+            <span class="text-lighter hover-light mr-15">
+              <i class="fa fa-comment mr-1"></i> <%= task.notes.count %>
+            </span>
+          <% end %>   
+          <span class="card-hover-show">
+            <% if task.task_type == 'meeting' && task.confirmed_at.nil? %>
+              <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= task.id %>)">Ask Confirmation</button>
+            <% end %>
 
-          <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a>
+            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a>
+          </span>
+        </div>
+        <div class="pull-right">
+          <div class="avatar-list">
+            <% task.owners.each do |owner| %>
+              <span class="avatar bg-dark"><%= owner.initials %></span>
+            <% end %>
+            <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: task.id, refresh_panel: refresh_panel) %>"></button>
+          </div>
         </div>
       </footer>
     </div>

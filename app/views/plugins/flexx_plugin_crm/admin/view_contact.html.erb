@@ -10,49 +10,61 @@ input[type=radio].hide-control { display: none; }
 <div class="main-content">
   <div class="row">
 
-    <div class="col-md-4">
-      <div class="card no-margin">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card mb-0">
+          <header class="card-header card-<%= @contact.sales_stage.downcase %> text-center">
+            <h4 id="sales-stage-label" class="card-title text-white text-uppercase fw-600" style="margin: 0 auto;"><i><%= @contact.sales_stage.humanize %></i></h4>
+          </header>
+          <div class="media card-body card-inverse">
+            <div class="media-left pr-12">
+              <span class="avatar avatar-xl avatar-bordered status-success"><%= @contact.initials %></span>
+            </div>
 
-        <div class="card-body card-inverse text-center pb-50">
-          <a href="/admin/next/contacts/paulo">
-            <span class="avatar avatar-xxl avatar-bordered status-<%= @contact.sales_stage %>"><%= @contact.initials %></span>
-          </a>
-          <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @contact.print_name %></a></h4>
-          <span id="sales-stage-label"><%= @contact.sales_stage.humanize %></span>
-          <p class="mt-20"><button class="btn btn-label btn-info" data-toggle="modal" data-target="#update_status_modal"><label><i class="ti-bolt"></i></label> Update Status</button></p>
+            <div class="media-body">
+              <div class="mb-2">
+                <span class="fs-20 pr-16"><%= @contact.print_name %></span>
+              </div>
+              <small class="fs-16 fw-300 ls-1"><i>Independent</i></small>
+            </div>
+
+          </div>          
         </div>
-        <ul class="flexbox flex-justified text-center p-20">
-          <% if @contact.email.nil? %>
-            <li class="br-1 border-light">
-              <span class="text-muted">Email</span><br>
-              <span class="fs-22"><i class="fa fa-envelope"></i></span>
-            </li>
-          <% else %>
-            <a href="#" class="br-1 border-light text-info">
-              <span class="text-muted">Email</span><br>
-              <span class="fs-22"><i class="fa fa-envelope"></i></span>
-            </a>
-          <% end %>
-          <% if @contact.phonenumbers.empty? %>
-            <li class="br-1 border-light">
-              <span class="text-muted">Call</span><br>
-              <span class="fs-22"><i class="fa fa-phone"></i></span>
-            </li>
-            <li>
-              <span class="text-muted">Text</span><br>
-              <span class="fs-22"><i class="fa fa-comment"></i></span>
-            </li>
-          <% else %>
-            <a href="#" class="br-1 border-light text-info">
-              <span class="text-muted">Call</span><br>
-              <span class="fs-22"><i class="fa fa-phone"></i></span>
-            </a>
-            <a class="text-info" data-toggle="modal" data-target="#modal-send-text">
-              <span class="text-muted text-info">Text</span><br>
-              <span class="fs-22"><i class="fa fa-comment"></i></span>
-            </a>
-          <% end %>
-        </ul>
+        <div class="accordion accordion-connected" id="accordion-contact">
+          <div class="card">
+            <h5 class="card-title">
+              <a data-toggle="collapse" data-parent="#accordion-contact" href="#collapse-contact">Contact <%= @contact.first_name %></a>
+            </h5>
+
+            <div id="collapse-contact" class="collapse">
+              <% unless @contact.email.nil? %>
+                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-envelope"></i><strong> Email</strong></h5>
+                <div class="media-list media-list-hover media-list-divided">
+                  <a class="media media-single" href="#">
+                    <span class="title"><strong><%= @contact.email %></strong></span>
+                    <i class="fa fa-paper-plane text-info"></i>
+                  </a>
+                </div>
+              <% end %>
+              <% unless @contact.phonenumbers.empty? %>
+                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-phone"></i><strong> Call</strong></h5>
+                <div class="media-list media-list-hover media-list-divided">
+                  <a class="media media-single" href="#">
+                    <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
+                    <i class="fa fa-paper-plane text-info"></i>
+                  </a>
+                </div>
+                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-comment"></i><strong> Text</strong></h5>
+                <div class="media-list media-list-hover media-list-divided">
+                  <a class="media media-single" href="#" data-toggle="modal" data-target="#modal-send-text">
+                    <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
+                    <i class="fa fa-paper-plane text-info"></i>
+                  </a>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -77,7 +89,7 @@ input[type=radio].hide-control { display: none; }
       </div>
     </div>
 
-    <div class="col-md-8 tab-content">
+    <div class="col-lg-8 tab-content">
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
         <div id="contact-open-tasks-panel">
@@ -95,7 +107,7 @@ input[type=radio].hide-control { display: none; }
           </header>
 
           <ol id="contact-timeline-panel" class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
-            <%= render partial: 'contact_timeline' %>
+            <%= render partial: 'contact_timeline', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
           </ol>
 
         </div>
@@ -182,7 +194,15 @@ input[type=radio].hide-control { display: none; }
                 <label>Email</label>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
+              <div class="form-group do-float">
+                <input type="text" class="form-control" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
+                <label>Birthday</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
               <div class="form-group">
                 <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="<%= @contact.phonenumbers.first.number unless @contact.phonenumbers.empty? %>">
                 <label>Phone</label>
@@ -198,6 +218,9 @@ input[type=radio].hide-control { display: none; }
                   <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'other' %> value="other">Other</option>
                 </select>
               </div>
+            </div>
+            <div class="col-md-3 text-center">
+              <button class="btn btn-sm btn-info btn-outline mt-10" type="button">Add Phone</button>
             </div>
           </div>
 

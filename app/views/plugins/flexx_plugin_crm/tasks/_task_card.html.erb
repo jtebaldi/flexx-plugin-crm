@@ -9,6 +9,10 @@
         <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @task.contact.print_name %></a></h4>
         <span><%= @task.task_type.humanize %></span>
       </div>
+      <div class="btn-group btn-group-justified">
+        <button class="btn p-10 btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+        <a href="#"   class="btn p-10 btn-danger text-white">Delete</a>
+      </div>
       <div class="p-20">
         <span class="text-muted">Description</span>
         <br/><span><%= @task.details %></span>
@@ -30,19 +34,39 @@
           <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}" %>
         <% end %>
       <% end %>
+
+      <div class="media-list media-list-divided bg-lighter">
+        <h5 class="card-title p-15 text-muted fw-300 bt-1">Notes</h5>
+        <% @task.notes.each do |note| %>
+          <div class="media">
+            <span class="avatar">JT</span>
+            <div class="media-body">
+              <p>
+                <a href="#"><strong><%= note.created_by_user.print_name %></strong></a>
+                <time class="float-right text-fade" ><%= time_ago_in_words(note.created_at) %></time>
+              </p>
+              <p><%= note.details %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <span class="publisher bt-1 border-fade bg-white">
+        <span class="avatar">JT</span>
+        <input class="publisher-input" type="text" placeholder="Type your note...">
+        <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+      </span>
     </div>
   </div>
   <% unless @task.done? %>
     <footer class="quickview-footer flex-row-reverse">
       <div class="btn-group">
-        <button class="btn btn-success" onclick="updateTask(this)">Save</button>
+        <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
         <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
-          <a class="dropdown-item" style="display: block !important" onclick="updateTask(this)" href="#">Save</a>
-          <a class="dropdown-item" style="display: block !important" onclick="updateTask(this, true)" href="#">Save and mark as done</a>
+          <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
+          <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
         </div>
       </div>
-      <button class="btn btn-danger" type="reset">Cancel</button>
-      <button class="btn btn-warning" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+      <button class="btn btn-light" type="reset">Close</button>
     </footer>
   <% end %>
