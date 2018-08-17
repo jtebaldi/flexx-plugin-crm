@@ -204,12 +204,21 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
+      params[:contact][:birthday] = parse_date(params[:contact][:birthday])
+
       params.require(:contact).permit(
         :first_name,
         :last_name,
         :email,
         :source,
         :highlights,
+        :address1,
+        :address2,
+        :city,
+        :state,
+        :country,
+        :postal_code,
+        :birthday,
         phonenumbers_attributes: [:id, :number, :phone_type]
       )
     end

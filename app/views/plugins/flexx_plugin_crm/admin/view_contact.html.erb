@@ -205,14 +205,14 @@ input[type=radio].hide-control { display: none; }
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[address1]" value="<%= @contact.address1 %>">
                 <label>Street Address</label>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[address2]" value="<%= @contact.address2 %>">
                 <label>Line 2</label>
               </div>
             </div>
@@ -221,21 +221,21 @@ input[type=radio].hide-control { display: none; }
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[city]" value="<%= @contact.city %>">
                 <label>City</label>
               </div>
             </div>
 
             <div class="col-md-3">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[state]" value="<%= @contact.state %>">
                 <label>State / Province / Region</label>
               </div>
             </div>
 
             <div class="col-md-3">
               <div class="form-group">
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" name="contact[postal_code]" value="<%= @contact.postal_code %>">
                 <label>ZIP / Postal Code</label>
               </div>
             </div>
@@ -245,16 +245,15 @@ input[type=radio].hide-control { display: none; }
             <div class="col-md-6">
               <div class="form-group">
                 <label>Country</label>
-                <select class="form-control" data-provide="selectpicker" title="Select country">
-                  <option selected>United States</option>
-                  <option>Australia</option>
+                <select class="form-control" name="contact[country]" data-provide="selectpicker" title="Select country">
+                  <%= options_for_select([[''], ['United States'], ['Australia']], @contact.country) %>
                 </select>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group do-float">
-                <input type="text" class="form-control" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
+                <input type="text" class="form-control" name="contact[birthday]" value="<%= @contact.birthday.strftime("%m/%d/%Y") if @contact.birthday? %>" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
                 <label>Birthday</label>
               </div>
             </div>
