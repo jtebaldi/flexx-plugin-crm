@@ -41,7 +41,8 @@ module Plugins::FlexxPluginCrm
 
     def update_contact_status
       @contact = current_site.contacts.find(params[:id])
-      @contact.update(sales_stage: params[:contact][:sales_stage])
+      @contact.update(sales_stage: params[:contact][:sales_stage],
+                      updated_by: current_user.id)
 
       respond_to do |format|
         format.js
@@ -205,6 +206,7 @@ module Plugins::FlexxPluginCrm
 
     def contact_params
       params[:contact][:birthday] = parse_date(params[:contact][:birthday])
+      params[:contact].merge!(updated_by: current_user.id)
 
       params.require(:contact).permit(
         :first_name,
@@ -219,6 +221,7 @@ module Plugins::FlexxPluginCrm
         :country,
         :postal_code,
         :birthday,
+        :updated_by,
         phonenumbers_attributes: [:id, :number, :phone_type]
       )
     end
