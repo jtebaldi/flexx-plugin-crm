@@ -52,12 +52,4 @@ module Plugins::FlexxPluginCrm::MainHelper
       AutomatedCampaignService.apply_campaigns(contact: contact)
     end
   end
-
-  def parse_date(date_string)
-    begin
-      Date.strptime(date_string, '%m/%d/%Y')
-    rescue ArgumentError
-      nil
-    end
-  end
 end

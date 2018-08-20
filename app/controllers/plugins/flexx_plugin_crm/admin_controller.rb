@@ -205,7 +205,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      params[:contact][:birthday] = parse_date(params[:contact][:birthday])
+      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y') rescue nil
       params[:contact].merge!(updated_by: current_user.id)
 
       params.require(:contact).permit(
