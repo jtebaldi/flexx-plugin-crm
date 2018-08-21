@@ -17,6 +17,8 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
+      params[:contact].merge!(created_by: current_user.id)
+
       params.require(:contact).permit(
         :sales_stage,
         :first_name,
@@ -24,6 +26,7 @@ module Plugins::FlexxPluginCrm
         :email,
         :source,
         :highlights,
+        :created_by,
         phonenumbers_attributes: [:number, :phone_type]
       )
     end
