@@ -55,6 +55,38 @@
         $("#btn_send_email").text('Send Message');
       }
     });
+
+    new Chart($("#chart-line-2"), {
+      type: 'line',
+
+      // Data
+      //
+      data: {
+        labels: ["January", "February", "March", "April"],
+        datasets: [
+          {
+            label: "Revenue",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 5,
+            borderColor: "#9966ff",
+            pointBackgroundColor: "#9966ff",
+            pointBorderColor: "#9966ff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#9966ff",
+            data: [30, 25, 35, 23]
+          }
+        ]
+      },
+
+      // Options
+      //
+      options: {
+        legend: {
+          display: false
+        },
+      }
+    });
   });
 </script>
 
@@ -75,10 +107,23 @@
   </div>
 
   <div class="header-action">
-    <nav class="nav" id="tabs">
-      <a class="nav-link active" data-toggle="tab" href="#tab-email">Mass Email</a>
-      <a class="nav-link" data-toggle="tab" href="#tab-text">Mass Text</a>
+    <nav class="nav" id="header-tabs">
+      <a class="nav-link active" data-toggle="tab" href="#tab-email">Email</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-text">SMS</a>
     </nav>
+    <div class="buttons">
+      <div class="fab fab-dir-left">
+        <button class="btn btn-float btn-primary" data-toggle="button">
+          <i class="fab-icon-default ti-plus"></i>
+          <i class="fab-icon-active ti-close"></i>
+        </button>
+
+        <ul class="fab-buttons nav">
+          <li><a class="btn btn-float btn-sm btn-info" data-toggle="tab" href="#tab-new-email"><i class="ti-email"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" data-toggle="tab" href="#tab-new-text"><i class="ti-comment-alt"></i></a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -86,6 +131,289 @@
   <div class="tab-content" id="message-tab-content">
 
     <div class="tab-pane fade active show" id="tab-email">
+      <div class="row">
+
+          <div class="col-lg-3">
+            <div class="card">
+              <ul class="nav nav-lg nav-pills flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-9 tab-content">
+            <div class="card form-type-material tab-pane fade active show" id="tab-email-recent">
+              <h4 class="card-title"><strong>Recent</strong> Email Blasts</h4>
+
+              <div class="card-body">
+                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
+                <div class="media-list media-list-divided media-list-hover">
+
+                  <a class="media" data-toggle="modal" href="#modal-center">
+                    <div class="media-body">
+                      <h5>Email Subject Line 1</h5>
+                      <p><span class="text-cyan fw-400"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><span class="divider-dash"></span>08/25/18</p>
+                      <p>
+                        <!-- List if any Statuses -->
+                        <span class="badge badge-prospect">Customers </span>
+                
+                        <!-- List number of other contacts -->
+                        <span>&nbsp;</span>
+                        <span><i> +3 more </i></span>
+
+                      </p>
+                    </div>
+                  </a>
+
+                  <a class="media" data-toggle="quickview" href="#qv-email-report">
+                    <div class="media-body">
+                      <h5>Email Subject Line 2</h5>
+                      <p><span class="text-success fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><span class="divider-dash"></span>08/17/18</p>
+                      <p>
+                        <!-- List if any Statuses -->
+                        <span class="badge badge-prospect">Prospects </span>
+                        
+                        <!-- List if any Tags -->
+                        <span>&nbsp;</span>
+                        <span class="badge badge-yellow"> Drop-ins </span>
+                        <span class="badge badge-yellow"> 7 Day Trial </span>
+                        <!-- List number of other contacts -->
+                        <span>&nbsp;</span>
+                        <span><i> +9 more </i></span>
+
+                      </p>
+                    </div>
+
+                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
+                      <small>OPEN RATE</small><br>
+                      137 <small>/ 341</small>
+                    </span>
+                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
+                      <small>CLICKS</small><br>
+                      53
+                    </span>
+                  </a>                  
+
+                </div>
+                <h5 class="card-title text-right text-fade"><strong>July 2018</strong></h5>
+                
+                <div class="media-list media-list-divided media-list-hover">
+
+                  <a class="media" data-toggle="modal" href="#modal-center">
+                    <div class="media-body">
+                      <h5>Email Subject Line 3</h5>
+                      <p><span class="text-warning fw-400"><i class="ti-write" style="padding-right:3px;"></i> Draft</span></p>
+                    </div>
+                    <div class="media-right media-hover-show">
+                      <span class="">TEst</span>
+                    </div>
+                  </a>  
+                
+                </div>
+
+              </div>
+
+              <footer class="card-footer">
+                <nav class="mt-3">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-left"></span>
+                      </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-right"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </footer>
+            </div>
+
+            <div class="card form-type-material tab-pane fade" id="tab-email-scheduled">
+              <h4 class="card-title"><strong>Scheduled</strong> Email Blasts</h4>
+
+              <div class="card-body">
+                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
+                <div class="media-list media-list-divided media-list-hover">
+
+                  <a class="media" data-toggle="modal" href="#modal-center">
+                    <div class="media-body">
+                      <h5>Email Subject Line 1</h5>
+                      <p><span class="text-cyan fw-400"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><span class="divider-dash"></span>08/25/18</p>
+                      <p>
+                        <!-- List if any Statuses -->
+                        <span class="badge badge-prospect">Customers </span>
+                
+                        <!-- List number of other contacts -->
+                        <span>&nbsp;</span>
+                        <span><i> +3 more </i></span>
+
+                      </p>
+                    </div>
+                  </a>                 
+
+                </div>
+
+              </div>
+
+              <footer class="card-footer">
+                <nav class="mt-3">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-left"></span>
+                      </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-right"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </footer>
+            </div>
+
+            <div class="card form-type-material tab-pane fade" id="tab-email-draft">
+              <h4 class="card-title"><strong>Draft</strong> Email Blasts</h4>
+
+              <div class="card-body">                
+                <h5 class="card-title text-right text-fade"><strong>July 2018</strong></h5>
+                
+                <div class="media-list media-list-divided media-list-hover">
+
+                  <a class="media" data-toggle="modal" href="#modal-center">
+                    <div class="media-body">
+                      <h5>Email Subject Line 3</h5>
+                      <p><span class="text-warning fw-400"><i class="ti-write" style="padding-right:3px;"></i> Draft</span></p>
+                    </div>
+                    <div class="media-right media-hover-show">
+                      <span class="">TEst</span>
+                    </div>
+                  </a>  
+                
+                </div>
+
+              </div>
+
+              <footer class="card-footer">
+                <nav class="mt-3">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-left"></span>
+                      </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-right"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </footer>
+            </div>
+
+            <div class="card form-type-material tab-pane fade" id="tab-email-sent">
+              <h4 class="card-title"><strong>Sent</strong> Email Blasts</h4>
+
+              <div class="card-body">
+                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
+                <div class="media-list media-list-divided media-list-hover">
+
+                  <a class="media" data-toggle="quickview" href="#qv-email-report">
+                    <div class="media-body">
+                      <h5>Email Subject Line 2</h5>
+                      <p><span class="text-success fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><span class="divider-dash"></span>08/17/18</p>
+                      <p>
+                        <!-- List if any Statuses -->
+                        <span class="badge badge-prospect">Prospects </span>
+                        
+                        <!-- List if any Tags -->
+                        <span>&nbsp;</span>
+                        <span class="badge badge-yellow"> Drop-ins </span>
+                        <span class="badge badge-yellow"> 7 Day Trial </span>
+                        <!-- List number of other contacts -->
+                        <span>&nbsp;</span>
+                        <span><i> +9 more </i></span>
+
+                      </p>
+                    </div>
+
+                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
+                      <small>OPEN RATE</small><br>
+                      137 <small>/ 341</small>
+                    </span>
+                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
+                      <small>CLICKS</small><br>
+                      53
+                    </span>
+                  </a>                  
+
+                </div>
+
+              </div>
+
+              <footer class="card-footer">
+                <nav class="mt-3">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-left"></span>
+                      </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        <span class="ti-arrow-right"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </footer>
+            </div>
+
+          </div>
+
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-text">
+    </div>
+
+    <div class="tab-pane fade" id="tab-new-email">
       <%= form_tag send_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', name: 'newEmailBlast', class: 'card form-type-combine' do %>
         <input type="hidden" name="recipients" id="recipientsHidden">
         <h4 class="card-title">New <strong>email blast</strong></h4>
@@ -154,7 +482,7 @@
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="tab-text">
+    <div class="tab-pane fade" id="tab-new-text">
       <form name="newTextBlast" class="card form-type-combine">
         <h4 class="card-title">New <strong>text blast</strong></h4>
 
@@ -211,6 +539,8 @@
 
   </div>
 </div>
+
+<!-- Quickviews and Modals -->
 
 <div id="qv-to-field" class="quickview quickview-lg">
 
@@ -313,6 +643,171 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<div id="qv-email-report" class="quickview quickview-xxl backdrop-dark" data-fullscreen-on-mobile>
+  <header class="quickview-header">
+    <p class="quickview-title lead"><strong>Email</strong> Report</p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <div class="row m-0 bb-1">
+      <div class="col-sm-6 p-0 bg-success">
+        <p class="mb-0 text-center py-10 px-15 text-white text-uppercase fs-16"><strong>Sent</strong></p>
+      </div>
+      <div class="col-sm-6">
+        <p class="mb-0 text-center py-10 px-15">Date: <strong>Mon. Aug 20, 2018 03:32 pm</strong></p>
+      </div>
+    </div>
+
+    <ul class="nav nav-pills nav-justified">
+      <li class="nav-item">
+        <a class="nav-link py-10 active" data-toggle="tab" href="#tab-email-report-overview">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-10" data-toggle="tab" href="#tab-email-report-message">Message</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-10" data-toggle="tab" href="#tab-email-report-recipients">Recipients</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade active show" id="tab-email-report-overview">
+        <div class="row m-0">
+          <div class="col-12 p-0">
+            <div class="card-body bl-3 border-success flexbox flex-justified">
+              <div class="text-center">
+                <div class="fs-12 text-muted"><i class="ti-stats-up mr-1"></i> Open Rate</div>
+                <div class="fs-18 text-success">47%</div>
+              </div>
+              <div class="fs-40 fw-100 text-center pr-2"><small>SENT TO</small> 341</div>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="card card-body text-center">
+              <div class="fs-40 fw-100 text-success">137</div>
+              <div>Opened</div>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="card card-body text-center">
+              <div class="fs-40 fw-100 text-info">53</div>
+              <div>Clicked</div>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="card card-body text-center">
+              <div class="fs-40 fw-100 text-warning">13</div>
+              <div>Bounced</div>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="card card-body text-center">
+              <div class="fs-40 fw-100 text-danger">2</div>
+              <div>Unsubscribed</div>
+            </div>
+          </div>
+          <div class="col-12-p-0">
+            <div class="card">
+              <h4 class="card-title"><strong>Performance</strong> in 24-hours</h4>
+
+              <div class="card-body">
+                <p class="text-danger fs-20">Would like a line chart here with hour by hour breakdown of openings from time of sending to 24 hours later</p>
+                <canvas id="chart-line-2" width="400" height="250"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab-email-report-message">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-danger">Display the actual message sent (plain text or HTML)</h3>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab-email-report-recipients">
+        <div class="card">
+          <h5 class="card-title">
+            <span class="pr-10 fw-400">Sent to:</span>
+            <!-- List if any Statuses -->
+            <span class="badge badge-prospect">Prospects </span>
+            
+            <!-- List if any Tags -->
+            <span>&nbsp;</span>
+            <span class="badge badge-yellow"> Drop-ins </span>
+            <span class="badge badge-yellow"> 7 Day Trial </span>
+            <!-- List number of other contacts -->
+            <span>&nbsp;</span>
+            <span><i> +9 more </i></span>
+          </h5>
+
+          <div class="media-list media-list-divided media-list-hover">
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
+                <span>Maryam Amiri</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
+              </div>
+            </div>
+
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
+                <span>Maryam Amiri</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
+              </div>
+            </div>
+
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
+                <span>Maryam Amiri</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Bounced</span>
+              </div>
+            </div>
+
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-info">Replicate</button>
+    <button class="btn btn-warning" data-provide="tooltip" title="Only if Scheduled or in draft">Edit</button>
+  </footer>
+</div>
+
+<!-- Temp Modal -->
+<div class="modal modal-center fade" id="modal-center" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">TEMPORARY MODAL</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Take user to scheduled or draft email.</p>
+        <br><br><br><br><br><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
