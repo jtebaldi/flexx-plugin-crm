@@ -163,85 +163,82 @@
 
 
   <div class="quickview-body">
-    <%= form_tag admin_contacts_path, method: :post, id: 'new-contact-form' do %>
+    <%= form_tag admin_contacts_path, method: :post, id: 'new-contact-form', class: 'quickview-block form-type-material form-validate' do %>
 
-      <div class="quickview-block form-type-material">
-
-        <div class="form-group">
-          <input type="text" class="form-control" name="contact[first_name]">
-          <label>First Name</label>
-        </div>
-
-        <div class="form-group">
-          <input type="text" class="form-control" name="contact[last_name]">
-          <label>Last Name</label>
-        </div>
-
-        <div class="form-group">
-          <input type="text" class="form-control" name="contact[email]">
-          <label>Email Address</label>
-        </div>
-
-        <div class="form-row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <input type="text" class="form-control" name="contact[phonenumbers_attributes][][number]">
-              <label>Phone Number</label>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control" data-provide="selectpicker" title="Type" name="contact[phonenumbers_attributes][][phone_type]">
-                <option value="mobile">Mobile</option>
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control" data-provide="selectpicker" title="Status" name="contact[sales_stage]">
-                <option value="lead">Lead</option>
-                <option value="prospect">Prospect</option>
-                <option value="customer">Customer</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control" data-provide="selectpicker" title="Source" name="contact[source]">
-                <option value="email">Email</option>
-                <option value="other">Other</option>
-                <option value="partner">Partner</option>
-                <option value="pr_advertising">PR / Advertising</option>
-                <option value="referral">Referral</option>
-                <option value="social_media">Social Media</option>
-                <option value="web_search">Web Search</option>
-                <option value="website_form">Website Form</option>
-                <option value="word_of_mouth">Word of mouth</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <label>Tags</label>
-        <div class="form-group">
-          <input type="text" name="contact[tag_list]" id="typeahed-tags">
-          <small class="form-text">Press enter after typing tag</small>
-        </div>
-
-        <div class="form-group">
-          <textarea class="form-control" rows="6" name="contact[highlights]"></textarea>
-          <label>Highlights</label>
-        </div>
-
+      <div class="form-group">
+        <input type="text" class="form-control" name="contact[first_name]" required>
+        <label>First Name</label>
       </div>
+
+      <div class="form-group">
+        <input type="text" class="form-control" name="contact[last_name]" required>
+        <label>Last Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="email" class="form-control" name="contact[email]" required>
+        <label>Email Address</label>
+      </div>
+
+      <div class="form-row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <input type="text" class="form-control" name="contact[phonenumbers_attributes][][number]">
+            <label>Phone Number</label>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-group">
+            <select class="form-control" data-provide="selectpicker" title="Type" name="contact[phonenumbers_attributes][][phone_type]">
+              <option value="mobile">Mobile</option>
+              <option value="home">Home</option>
+              <option value="work">Work</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <select class="form-control" data-provide="selectpicker" title="Status" name="contact[sales_stage]">
+              <option value="lead">Lead</option>
+              <option value="prospect">Prospect</option>
+              <option value="customer">Customer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-group">
+            <select class="form-control" data-provide="selectpicker" title="Source" name="contact[source]">
+              <option value="email">Email</option>
+              <option value="other">Other</option>
+              <option value="partner">Partner</option>
+              <option value="pr_advertising">PR / Advertising</option>
+              <option value="referral">Referral</option>
+              <option value="social_media">Social Media</option>
+              <option value="web_search">Web Search</option>
+              <option value="website_form">Website Form</option>
+              <option value="word_of_mouth">Word of mouth</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <label>Tags</label>
+      <div class="form-group">
+        <input type="text" name="contact[tag_list]" id="typeahed-tags">
+        <small class="form-text">Press enter after typing tag</small>
+      </div>
+
+      <div class="form-group">
+        <textarea class="form-control" rows="6" name="contact[highlights]"></textarea>
+        <label>Highlights</label>
+      </div>
+
     <% end %>
   </div>
 

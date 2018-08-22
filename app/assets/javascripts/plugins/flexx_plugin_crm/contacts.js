@@ -1,4 +1,8 @@
 function submitNewContactForm() {
+  if (!$('#new-contact-form')[0].checkValidity()) {
+    return false;
+  }
+
   $('#new-contact-add').toggleClass('disabled');
   $('#new-contact-cancel').toggleClass('disabled');
   $('#new-contact-spinner').toggleClass('invisible');
