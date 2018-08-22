@@ -28,7 +28,7 @@ input[type=radio].hide-control { display: none; }
               <small class="fs-16 fw-300 ls-1"><i>Independent</i></small>
             </div>
 
-          </div>          
+          </div>
         </div>
         <div class="accordion accordion-connected" id="accordion-contact">
           <div class="card">
@@ -37,7 +37,7 @@ input[type=radio].hide-control { display: none; }
             </h5>
 
             <div id="collapse-contact" class="collapse">
-              <% unless @contact.email.nil? %>
+              <% if @contact.email.present? %>
                 <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-envelope"></i><strong> Email</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
                   <a class="media media-single" href="#">
@@ -46,7 +46,7 @@ input[type=radio].hide-control { display: none; }
                   </a>
                 </div>
               <% end %>
-              <% unless @contact.phonenumbers.empty? %>
+              <% if @contact.phonenumbers.present? %>
                 <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-phone"></i><strong> Call</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
                   <a class="media media-single" href="#">
@@ -54,6 +54,8 @@ input[type=radio].hide-control { display: none; }
                     <i class="fa fa-paper-plane text-info"></i>
                   </a>
                 </div>
+              <% end %>
+              <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
                 <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-comment"></i><strong> Text</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
                   <a class="media media-single" href="#" data-toggle="modal" data-target="#modal-send-text">
@@ -93,7 +95,7 @@ input[type=radio].hide-control { display: none; }
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
         <div id="contact-open-tasks-panel">
-          <%= render partial: 'contact_open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }%>
+          <%= render partial: 'open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }%>
         </div>
         <br>
         <div class="divider text-uppercase fw-500">Timeline</div>
@@ -107,13 +109,13 @@ input[type=radio].hide-control { display: none; }
           </header>
 
           <ol id="contact-timeline-panel" class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
-            <%= render partial: 'contact_timeline', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
+            <%= render partial: 'timeline', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
           </ol>
 
         </div>
       </div>
 
-      <%= form_tag admin_update_contact_path(@contact.id), method: :post, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade' do %>
+      <%= form_tag admin_contact_path(@contact.id), method: :patch, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade' do %>
         <h4 class="card-title fw-400">Contact Details</h4>
 
         <div class="card-body">
@@ -328,7 +330,7 @@ input[type=radio].hide-control { display: none; }
             </header>
 
             <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
-              <%= render partial: 'contact_conversations' %>
+              <%= render partial: 'conversations' %>
             </div>
             <footer class="publisher">
               <span class="avatar">jt</span>

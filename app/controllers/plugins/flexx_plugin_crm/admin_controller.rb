@@ -23,22 +23,6 @@ module Plugins::FlexxPluginCrm
       end
     end
 
-    def view_contact
-      @contact = current_site.contacts.find(params[:id])
-      @automated_campaigns = current_site.automated_campaigns.active
-      @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
-      @available_recipes = TaskRecipe.all.order(:title)
-    end
-
-    def update_contact
-      contact = current_site.contacts.find(params[:id])
-
-      contact.update(contact_params)
-      current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
-
-      redirect_to action: :view_contact, id: params[:id]
-    end
-
     def update_contact_status
       @contact = current_site.contacts.find(params[:id])
       @contact.update(sales_stage: params[:contact][:sales_stage],
@@ -203,28 +187,6 @@ module Plugins::FlexxPluginCrm
     end
 
     private
-
-    def contact_params
-      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y') rescue nil
-      params[:contact].merge!(updated_by: current_user.id)
-
-      params.require(:contact).permit(
-        :first_name,
-        :last_name,
-        :email,
-        :source,
-        :highlights,
-        :address1,
-        :address2,
-        :city,
-        :state,
-        :country,
-        :postal_code,
-        :birthday,
-        :updated_by,
-        phonenumbers_attributes: [:id, :number, :phone_type]
-      )
-    end
 
     def new_task_params
       params[:new_task].merge!(site_id: current_site.id)

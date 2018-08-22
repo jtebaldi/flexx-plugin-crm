@@ -11,14 +11,39 @@ module Plugins::FlexxPluginCrm
 
       current_site.tag(new_contact, with: params[:contact][:tag_list], on: :tags)
 
-      redirect_to controller: :admin, action: :view_contact, id: new_contact.id
+      redirect_to action: :show, id: new_contact.id
+    end
+
+    def show
+      @contact = current_site.contacts.find(params[:id])
+      @automated_campaigns = current_site.automated_campaigns.active
+      @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
+      @available_recipes = TaskRecipe.all.order(:title)
+    end
+
+    def update
+      contact = current_site.contacts.find(params[:id])
+
+      params[:contact].merge!(updated_by: current_user.id)
+
+      contact.update(contact_params)
+      current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
+
+      redirect_to action: :show, id: params[:id]
     end
 
     private
 
     def contact_params
-      params[:contact].merge!(created_by: current_user.id)
+      if params[:contact][:phonenumbers_attributes].present?
+        params[:contact][:phonenumbers_attributes].each do |row|
+          params[:contact][:phonenumbers_attributes].delete(row) if row[:number].empty?
+        end
+      end
 
+      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y') rescue nil
+
+      params[:contact].merge!(created_by: current_user.id)
       params.require(:contact).permit(
         :sales_stage,
         :first_name,
@@ -27,7 +52,15 @@ module Plugins::FlexxPluginCrm
         :source,
         :highlights,
         :created_by,
-        phonenumbers_attributes: [:number, :phone_type]
+        :address1,
+        :address2,
+        :city,
+        :state,
+        :country,
+        :postal_code,
+        :birthday,
+        :updated_by,
+        phonenumbers_attributes: [:id, :number, :phone_type]
       )
     end
   end

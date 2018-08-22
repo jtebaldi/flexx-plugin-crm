@@ -1,7 +1,7 @@
 <% case params[:refresh_panel] %>
   <% when 'contact-detail' %>
-    $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
-    $('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_timeline') %>');
+    $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
+    $('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/timeline') %>');
   <% when 'tasks-dashboard' %>
     $('#todays-tasks-list').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' }) %>');
     $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' }) %>');

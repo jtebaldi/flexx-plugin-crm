@@ -7,6 +7,6 @@
     $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' })  %>');
   <% when 'view-contact-tasks-panels' %>
     quickview.close($('#qv_view_task'));
-    $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
-    $('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/admin/contact_timeline') %>');
+    $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
+    $('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/timeline') %>');
 <% end %>

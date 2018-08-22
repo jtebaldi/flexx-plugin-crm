@@ -3,8 +3,6 @@ Rails.application.routes.draw do
     scope :admin, as: 'admin', path: PluginRoutes.system_info['admin_path_name'] do
       scope :next do
         get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
-        get 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_contact, as: :view_contact
-        post 'contacts/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :update_contact, as: :update_contact
         get 'contacts/:id/remove_contact_task/:task_id', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_contact_task, as: :remove_contact_task
         post 'contacts/:id/update_contact_status', controller: 'plugins/flexx_plugin_crm/admin', action: :update_contact_status, as: :update_contact_status
         post 'contacts/:id/tasks', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_task, as: :create_contact_task
@@ -33,7 +31,7 @@ Rails.application.routes.draw do
           get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
         end
 
-        resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', only: [:index, :create]
+        resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit]
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: :index do
           collection do

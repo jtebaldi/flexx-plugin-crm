@@ -113,7 +113,7 @@
     <div id="contact-list" class="media-list-body bg-white b-1">
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
-          <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_view_contact_path(contact.id) %>">
+          <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_contact_path(contact.id) %>">
             <span class="avatar avatar-lg status-<%= contact.sales_stage %>"><%= contact.initials %></span>
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
