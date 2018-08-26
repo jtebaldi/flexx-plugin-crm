@@ -1,11 +1,9 @@
 function submitNewContactForm() {
-  if (!$('#new-contact-form')[0].checkValidity()) {
-    return false;
+  if ($('#new-contact-form')[0].checkValidity()) {
+    $('#new-contact-add').toggleClass('disabled');
+    $('#new-contact-cancel').toggleClass('disabled');
+    $('#new-contact-spinner').toggleClass('invisible');
   }
-
-  $('#new-contact-add').toggleClass('disabled');
-  $('#new-contact-cancel').toggleClass('disabled');
-  $('#new-contact-spinner').toggleClass('invisible');
 
   $('#new-contact-form').submit();
 }
