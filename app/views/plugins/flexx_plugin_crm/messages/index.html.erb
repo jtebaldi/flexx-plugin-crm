@@ -56,6 +56,7 @@
       }
     });
 
+    /*
     new Chart($("#chart-line-2"), {
       type: 'line',
 
@@ -87,6 +88,7 @@
         },
       }
     });
+    */
   });
 </script>
 
@@ -119,8 +121,8 @@
         </button>
 
         <ul class="fab-buttons nav">
-          <li><a class="btn btn-float btn-sm btn-info" data-toggle="tab" href="#tab-new-email"><i class="ti-email"></i></a></li>
-          <li><a class="btn btn-float btn-sm btn-info" data-toggle="tab" href="#tab-new-text"><i class="ti-comment-alt"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW EMAIL BLAST" href="#"><i class="ti-email"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW SMS BLAST" href="#"><i class="ti-comment-alt"></i></a></li>
         </ul>
       </div>
     </div>
@@ -137,16 +139,16 @@
             <div class="card">
               <ul class="nav nav-lg nav-pills flex-column">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent</a>
+                  <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent<span class="badge badge-pill badge-default ml-10">3</span></a>                  
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled</a>
+                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10">1</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft</a>
+                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10">1</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent</a>
+                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10">1</span></a>
                 </li>
               </ul>
             </div>
@@ -163,14 +165,16 @@
                   <a class="media" data-toggle="modal" href="#modal-center">
                     <div class="media-body">
                       <h5>Email Subject Line 1</h5>
-                      <p><span class="text-cyan fw-400"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><span class="divider-dash"></span>08/25/18</p>
-                      <p>
+                      <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday Aug 31, 10:00 am</p>
+                      <p class="d-none d-sm-block">
+                        <span><small>To:</small></span>
                         <!-- List if any Statuses -->
+                        <span>&nbsp;</span>
                         <span class="badge badge-prospect">Customers </span>
                 
                         <!-- List number of other contacts -->
                         <span>&nbsp;</span>
-                        <span><i> +3 more </i></span>
+                        <span class="badge badge-secondary"> +3 contacts </span>
 
                       </p>
                     </div>
@@ -179,9 +183,11 @@
                   <a class="media" data-toggle="quickview" href="#qv-email-report">
                     <div class="media-body">
                       <h5>Email Subject Line 2</h5>
-                      <p><span class="text-success fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><span class="divider-dash"></span>08/17/18</p>
-                      <p>
+                      <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>Monday Aug 13, 10:00 am</p>
+                      <p class="d-none d-sm-block">
+                        <span><small>To:</small></span>
                         <!-- List if any Statuses -->
+                        <span>&nbsp;</span>
                         <span class="badge badge-prospect">Prospects </span>
                         
                         <!-- List if any Tags -->
@@ -190,19 +196,20 @@
                         <span class="badge badge-yellow"> 7 Day Trial </span>
                         <!-- List number of other contacts -->
                         <span>&nbsp;</span>
-                        <span><i> +9 more </i></span>
+                        <span class="badge badge-secondary"> +9 contacts </span>
 
                       </p>
                     </div>
 
-                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
-                      <small>OPEN RATE</small><br>
-                      137 <small>/ 341</small>
-                    </span>
-                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
-                      <small>CLICKS</small><br>
-                      53
-                    </span>
+                    <div class="text-center d-none d-sm-block">
+                      <div data-provide="easypie" data-percent="61" data-color="#926dde" data-scale-color="transparent" data-size="100">
+                        <span class="easypie-data">
+                          <h4 class="text-purple mb-0">67</h4>
+                          <small class="text-uppercase">opened</small>
+                        </span>
+                      </div>
+                    </div>
+
                   </a>                  
 
                 </div>
@@ -213,10 +220,7 @@
                   <a class="media" data-toggle="modal" href="#modal-center">
                     <div class="media-body">
                       <h5>Email Subject Line 3</h5>
-                      <p><span class="text-warning fw-400"><i class="ti-write" style="padding-right:3px;"></i> Draft</span></p>
-                    </div>
-                    <div class="media-right media-hover-show">
-                      <span class="">TEst</span>
+                      <p><span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span> <small class="text-uppercase">Created</small> July 13, 10:00 am</p>
                     </div>
                   </a>  
                 
@@ -257,18 +261,20 @@
                   <a class="media" data-toggle="modal" href="#modal-center">
                     <div class="media-body">
                       <h5>Email Subject Line 1</h5>
-                      <p><span class="text-cyan fw-400"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><span class="divider-dash"></span>08/25/18</p>
-                      <p>
+                      <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday Aug 31, 10:00 am</p>
+                      <p class="d-none d-sm-block">
+                        <span><small>To:</small></span>
                         <!-- List if any Statuses -->
+                        <span>&nbsp;</span>
                         <span class="badge badge-prospect">Customers </span>
                 
                         <!-- List number of other contacts -->
                         <span>&nbsp;</span>
-                        <span><i> +3 more </i></span>
+                        <span class="badge badge-secondary"> +3 contacts </span>
 
                       </p>
                     </div>
-                  </a>                 
+                  </a>                
 
                 </div>
 
@@ -308,10 +314,7 @@
                   <a class="media" data-toggle="modal" href="#modal-center">
                     <div class="media-body">
                       <h5>Email Subject Line 3</h5>
-                      <p><span class="text-warning fw-400"><i class="ti-write" style="padding-right:3px;"></i> Draft</span></p>
-                    </div>
-                    <div class="media-right media-hover-show">
-                      <span class="">TEst</span>
+                      <p><span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span> <small class="text-uppercase">Created</small> July 13, 10:00 am</p>
                     </div>
                   </a>  
                 
@@ -352,9 +355,11 @@
                   <a class="media" data-toggle="quickview" href="#qv-email-report">
                     <div class="media-body">
                       <h5>Email Subject Line 2</h5>
-                      <p><span class="text-success fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><span class="divider-dash"></span>08/17/18</p>
-                      <p>
+                      <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>Monday Aug 13, 10:00 am</p>
+                      <p class="d-none d-sm-block">
+                        <span><small>To:</small></span>
                         <!-- List if any Statuses -->
+                        <span>&nbsp;</span>
                         <span class="badge badge-prospect">Prospects </span>
                         
                         <!-- List if any Tags -->
@@ -363,20 +368,21 @@
                         <span class="badge badge-yellow"> 7 Day Trial </span>
                         <!-- List number of other contacts -->
                         <span>&nbsp;</span>
-                        <span><i> +9 more </i></span>
+                        <span class="badge badge-secondary"> +9 contacts </span>
 
                       </p>
                     </div>
 
-                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
-                      <small>OPEN RATE</small><br>
-                      137 <small>/ 341</small>
-                    </span>
-                    <span class="lead text-fade mr-25 d-none d-md-block text-center">
-                      <small>CLICKS</small><br>
-                      53
-                    </span>
-                  </a>                  
+                    <div class="text-center d-none d-sm-block">
+                      <div data-provide="easypie" data-percent="61" data-color="#926dde" data-scale-color="transparent" data-size="100">
+                        <span class="easypie-data">
+                          <h4 class="text-purple mb-0">67</h4>
+                          <small class="text-uppercase">opened</small>
+                        </span>
+                      </div>
+                    </div>
+
+                  </a>                 
 
                 </div>
 
@@ -542,111 +548,6 @@
 
 <!-- Quickviews and Modals -->
 
-<div id="qv-to-field" class="quickview quickview-lg">
-
-  <ul class="quickview-header nav nav-tabs nav-justified nav-tabs-info">
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#tab-contacts">Contacts</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#tab-groups">Groups</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#tab-tags">Tags</a>
-    </li>
-  </ul>
-
-  <div class="quickview-body">
-    <div class="tab-content">
-      <div class="tab-pane fade active show" id="tab-contacts">
-        <div class="media-list media-list-hover">
-          <header class="media-list-header b-0">
-            <form class="lookup lookup-lg w-100 bb-1 border-light">
-              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
-            </form>
-          </header>
-
-          <a class="media items-center" href="#">
-            <span class="avatar avatar-sm bg-secondary">JT</span>
-            <p class="title">Joe Tebaldi</p>
-            <span class="media-action text-success"><i class="ti-plus"></i></span>
-          </a>
-
-          <a class="media items-center" href="#">
-            <span class="avatar avatar-sm bg-secondary">PC</span>
-            <p class="title">Paulo Castro</p>
-            <span class="media-action text-success"><i class="ti-plus"></i></span>
-          </a>
-
-        </div>
-      </div>
-
-      <div class="tab-pane fade" id="tab-groups">
-
-        <div class="media-list media-list-hover media-list-divided">
-          <a class="media media-single" href="#">
-            <span class="title">All Contacts</span>
-            <span class="badge badge-pill badge-secondary">14</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Leads</span>
-            <span class="badge badge-pill badge-primary">9</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Prospects</span>
-            <span class="badge badge-pill badge-info">7</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Customers</span>
-            <span class="badge badge-pill badge-success">3</span>
-          </a>
-        </div>
-
-      </div>
-
-      <div class="tab-pane fade" id="tab-tags">
-        <div class="media-list media-list-hover media-list-divided">
-          <header class="media-list-header b-0">
-            <form class="lookup lookup-lg w-100 bb-1 border-light">
-              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
-            </form>
-          </header>
-
-          <a class="media media-single" href="#">
-            <span class="title">Remote</span>
-            <span class="badge badge-pill badge-secondary">14</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Personal Training</span>
-            <span class="badge badge-pill badge-primary">9</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Grand Opening</span>
-            <span class="badge badge-pill badge-info">7</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Athlete</span>
-            <span class="badge badge-pill badge-success">3</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Masters</span>
-            <span class="badge badge-pill badge-danger">4</span>
-          </a>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
 <div id="qv-email-report" class="quickview quickview-xxl backdrop-dark" data-fullscreen-on-mobile>
   <header class="quickview-header">
     <p class="quickview-title lead"><strong>Email</strong> Report</p>
@@ -678,15 +579,40 @@
     <div class="tab-content">
       <div class="tab-pane fade active show" id="tab-email-report-overview">
         <div class="row m-0">
-          <div class="col-12 p-0">
-            <div class="card-body bl-3 border-success flexbox flex-justified">
-              <div class="text-center">
-                <div class="fs-12 text-muted"><i class="ti-stats-up mr-1"></i> Open Rate</div>
-                <div class="fs-18 text-success">47%</div>
+          <div class="col-12">
+            <h5 class="card-title">
+              <span class="pr-10 fw-400">Sent to:</span>
+              <!-- List if any Statuses -->
+              <span class="badge badge-prospect">Prospects </span>
+              
+              <!-- List if any Tags -->
+              <span>&nbsp;</span>
+              <span class="badge badge-yellow"> Drop-ins </span>
+              <span class="badge badge-yellow"> 7 Day Trial </span>
+              <!-- List number of other contacts -->
+              <span>&nbsp;</span>
+              <span class="badge badge-secondary"> +9 contacts </span>
+            </h5>
+          </div>
+
+          <div class="col-6 p-15 d-block d-sm-none">
+            <div class="text-center">
+              <div data-provide="easypie" data-percent="32" data-color="#926dde" data-scale-color="transparent" data-size="125">
+                <span class="easypie-data">
+                  <h4 class="text-purple mb-0">32%</h4>
+                  <small class="text-uppercase">opened</small>
+                </span>
               </div>
-              <div class="fs-40 fw-100 text-center pr-2"><small>SENT TO</small> 341</div>
             </div>
           </div>
+
+          <div class="col-6 p-15 d-block d-sm-none">
+            <div class="card card-body text-center">
+              <div>Sent To</div>
+              <div class="fs-40 fw-100">189</div>
+            </div>
+          </div>
+
           <div class="col-6 col-xl-3">
             <div class="card card-body text-center">
               <div class="fs-40 fw-100 text-success">137</div>
@@ -711,13 +637,14 @@
               <div>Unsubscribed</div>
             </div>
           </div>
+
           <div class="col-12-p-0">
             <div class="card">
               <h4 class="card-title"><strong>Performance</strong> in 24-hours</h4>
 
               <div class="card-body">
                 <p class="text-danger fs-20">Would like a line chart here with hour by hour breakdown of openings from time of sending to 24 hours later</p>
-                <canvas id="chart-line-2" width="400" height="250"></canvas>
+                <!-- <canvas id="chart-line-2" width="400" height="250"></canvas> -->
               </div>
             </div>
           </div>
@@ -732,25 +659,17 @@
       </div>
       <div class="tab-pane fade" id="tab-email-report-recipients">
         <div class="card">
-          <h5 class="card-title">
-            <span class="pr-10 fw-400">Sent to:</span>
-            <!-- List if any Statuses -->
-            <span class="badge badge-prospect">Prospects </span>
-            
-            <!-- List if any Tags -->
-            <span>&nbsp;</span>
-            <span class="badge badge-yellow"> Drop-ins </span>
-            <span class="badge badge-yellow"> 7 Day Trial </span>
-            <!-- List number of other contacts -->
-            <span>&nbsp;</span>
-            <span><i> +9 more </i></span>
-          </h5>
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Type name..." data-provide="media-search">
+            </form>
+          </header>
 
           <div class="media-list media-list-divided media-list-hover">
             <div class="media media-single">
               <div class="media-body">
                 <span class="avatar avatar-sm">ma</span>
-                <span>Maryam Amiri</span>
+                <span>Joe Tebs</span>
               </div>
               <div class="media-right">
                 <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
@@ -760,7 +679,37 @@
             <div class="media media-single">
               <div class="media-body">
                 <span class="avatar avatar-sm">ma</span>
+                <span>Paulo Castro</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
+              </div>
+            </div>
+
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
+                <span>John Doe</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
+              </div>
+            </div>
+
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
                 <span>Maryam Amiri</span>
+              </div>
+              <div class="media-right">
+                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
+              </div>
+            </div>
+
+            <div class="media media-single">
+              <div class="media-body">
+                <span class="avatar avatar-sm">ma</span>
+                <span>Jane Austin</span>
               </div>
               <div class="media-right">
                 <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
@@ -787,7 +736,6 @@
 
   <footer class="quickview-footer flex-row-reverse">
     <button class="btn btn-info">Replicate</button>
-    <button class="btn btn-warning" data-provide="tooltip" title="Only if Scheduled or in draft">Edit</button>
   </footer>
 </div>
 
