@@ -18,7 +18,7 @@ module Plugins::FlexxPluginCrm
       @contact = current_site.contacts.find(params[:id])
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
-      @available_recipes = TaskRecipe.all.order(:title)
+      @available_recipes = TaskRecipe.active.order(:title)
     end
 
     def update
