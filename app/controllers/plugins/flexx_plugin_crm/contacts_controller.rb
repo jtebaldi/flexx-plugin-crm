@@ -33,12 +33,12 @@ module Plugins::FlexxPluginCrm
     end
 
     def add_task_recipe
-      @contact = current_site.contacts.find(params[:contact_id])
-      @recipe = TaskRecipe.find(params[:task_recipe_id])
+      contact = current_site.contacts.find(params[:contact_id])
+      recipe = TaskRecipe.find(params[:task_recipe_id])
 
-      #TODO: create service to add tasks to contact
+      TaskRecipeService.apply_recipe(contact: contact, recipe: recipe)
 
-      head :ok
+      redirect_to action: :show, id: contact.id
     end
 
     private

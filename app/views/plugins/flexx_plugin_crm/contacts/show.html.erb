@@ -378,7 +378,7 @@ input[type=radio].hide-control { display: none; }
                   <p><strong><%= recipe.title %></strong></p>
                 </div>
                 <div>
-                  <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>" data-remote="true">Add tasks</a>
+                  <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>">Add tasks</a>
                 </div>
               </div>
             <% end %>
