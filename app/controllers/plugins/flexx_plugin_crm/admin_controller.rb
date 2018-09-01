@@ -129,7 +129,9 @@ module Plugins::FlexxPluginCrm
     def toggle_recipe
       @task_recipe = current_site.task_recipes.find(params[:id])
 
-      @task_recipe.update(paused: !@task_recipe.paused, paused_by: !@task_recipe.paused ? current_user.id : nil)
+      @task_recipe.update(paused: !@task_recipe.paused,
+                          paused_by: !@task_recipe.paused ? current_user.id : nil,
+                          paused_at: !@task_recipe.paused ? Time.now : nil)
 
       respond_to do |format|
         format.js

@@ -31,7 +31,9 @@ Rails.application.routes.draw do
           get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
         end
 
-        resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit]
+        resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do
+          get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
+        end
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: :index do
           collection do

@@ -18,7 +18,7 @@ module Plugins::FlexxPluginCrm
       @contact = current_site.contacts.find(params[:id])
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
-      @available_recipes = TaskRecipe.all.order(:title)
+      @available_recipes = TaskRecipe.active.order(:title)
     end
 
     def update
@@ -30,6 +30,15 @@ module Plugins::FlexxPluginCrm
       current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
 
       redirect_to action: :show, id: params[:id]
+    end
+
+    def add_task_recipe
+      contact = current_site.contacts.find(params[:contact_id])
+      recipe = TaskRecipe.find(params[:task_recipe_id])
+
+      TaskRecipeService.apply_recipe(contact: contact, recipe: recipe)
+
+      redirect_to action: :show, id: contact.id
     end
 
     private
