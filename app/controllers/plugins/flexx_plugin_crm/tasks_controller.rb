@@ -6,6 +6,7 @@ module Plugins::FlexxPluginCrm
       @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
       @todays_completed_tasks = current_site.tasks.done.due_today.includes(:contact, :owners)
       @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+      @old_pending_tasks = current_site.tasks.pending.old.order(:due_date).includes(:contact, :owners)
       @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
     end
 

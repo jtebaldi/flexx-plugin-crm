@@ -42,6 +42,11 @@
     <div class="tab-pane fade active show" id="tab-task-view">
       <div class="row">
         <div class="col-md-12">
+          <p class="lead text-center text-fade">Overdue's tasks</p>
+          <div id="old-pending-tasks-list">
+            <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'old-pending-tasks-list' } %>
+          </div>
+          <br>
           <p class="lead text-center text-fade">Today's tasks</p>
           <div id="todays-tasks-list">
             <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' } %>
