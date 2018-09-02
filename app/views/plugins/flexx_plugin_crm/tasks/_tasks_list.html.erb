@@ -19,14 +19,14 @@
           <span class="text-lighter hover-light">
             <i class="fa fa-comment mr-1"></i> <%= row.notes.count %>
           </span>
-        <% end %>  
+        <% end %>
         <span class="card-hover-show pl-20">
           <% if row.task_type == 'meeting' && row.confirmed_at.nil? %>
             <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
           <% end %>
           <% unless row.done? %>
             <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="#">Remove</a>
+            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
           <% end %>
         </span>
       </div>

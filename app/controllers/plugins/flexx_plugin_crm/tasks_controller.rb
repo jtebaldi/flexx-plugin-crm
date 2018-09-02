@@ -10,6 +10,21 @@ module Plugins::FlexxPluginCrm
       @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
     end
 
+    def create
+      params[:task].merge!(updated_by: current_user.id)
+      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+
+      task = current_site.tasks.create(task_params)
+
+      redirect_to action: :index
+    end
+
+    def destroy
+      current_site.tasks.find(params[:id]).destroy
+
+      redirect_to action: :index
+    end
+
     def task_owners
       @task = current_site.tasks.find(params[:task_id])
       @current_owners = @task.owners.pluck(:id)
@@ -73,7 +88,8 @@ module Plugins::FlexxPluginCrm
 
     def task_params
       params.require(:task).permit(
-        :aasm_state, :updated_by, :due_date, notes_attributes: [:details, :created_by], owner_ids: []
+        :aasm_state, :contact_id, :task_type, :title, :details, :updated_by, :due_date,
+        notes_attributes: [:details, :created_by], owner_ids: []
       )
     end
   end

@@ -14,6 +14,19 @@ function updateTask(button, isDone) {
   quickview.close($(button).closest('.quickview'));
 }
 
+function addNewTask() {
+  $('#new-task-add').toggleClass('disabled');
+  $('#new-task-cancel').toggleClass('disabled');
+  $('#new-task-spinner').toggleClass('invisible');
+
+  $('#new-task-form').submit();
+}
+
+function cancelNewTaskForm(button) {
+  $('#new-task-form')[0].reset();
+  quickview.close($(button).closest('.quickview'));
+}
+
 app.ready(function() {
   contactlist.initialize();
 
@@ -24,6 +37,22 @@ app.ready(function() {
   {
     name: 'contactlist',
     displayKey: 'name',
+    valueKey: 'value',
     source: contactlist
+  });
+
+  var clearContactId = true;
+
+  $('#contacts-field').bind('typeahead:change', function() {
+    if(clearContactId) {
+      $('#new-task-contact-id').val('');
+    } else {
+      clearContactId = true;
+    }
+  });
+
+  $('#contacts-field').bind('typeahead:selected', function(e, option) {
+    $('#new-task-contact-id').val(option.value);
+    clearContactId = false;
   });
 });

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
           post :create_direction
         end
 
-        resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
+        resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks' do
           collection do
             post :defer_task
             post :send_task_confirmation
