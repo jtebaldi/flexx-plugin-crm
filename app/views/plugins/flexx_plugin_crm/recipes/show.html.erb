@@ -22,7 +22,7 @@
   </div>
 
   <div id="recipe-header-actions" class="header-action">
-    <%= render partial: 'recipe_header_actions' %>
+    <%= render partial: 'header_actions' %>
   </div>
 </header>
 
@@ -33,7 +33,7 @@
       <div class="card">
         <h4 class="card-title"><strong>Directions</strong></h4>
         <ol id="recipe-directions-panel" class="timeline timeline-activity timeline-point-sm timeline-content-right w-100 py-20 pr-20">
-          <%= render partial: 'recipe_directions' %>
+          <%= render partial: 'directions' %>
         </ol>
         <div class="card-footer text-center">
           <div class="fab">
@@ -46,14 +46,14 @@
     <div class="col-md-6" id="new-recipe-direction-panel">
       <div class="card">
         <h4 class="card-title"><strong>New step</strong></h4>
-        <%= form_tag admin_create_recipe_direction_path(id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
+        <%= form_tag admin_recipe_create_direction_path(recipe_id: @task_recipe.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'recipeStep', id: 'new-recipe-direction-form', class: 'form-type-combine' do %>
           <div class="card-body">
             <div class="form-group">
               <label for="select">Type</label>
-              <select class="form-control" name="new_task_recipe_direction[task_type]">
+              <select class="form-control" name="task_recipe_direction[task_type]">
                 <option value="phone_call">Phone call</option>
-                <option value="message">Email</option>
-                <option value="email">Text</option>
+                <option value="email">Email</option>
+                <option value="message">Text</option>
                 <option value="meeting">Meeting</option>
                 <option value="general">General</option>
               </select>
@@ -72,12 +72,12 @@
               <div class="row">
                 <div class="form-group col-6">
                   <label>After</label>
-                  <input class="form-control" type="text" name="new_task_recipe_direction[due_on_value]">
+                  <input class="form-control" type="text" name="task_recipe_direction[due_on_value]">
                 </div>
 
                 <div class="form-group col-6">
                   <label for="select">Time unit</label>
-                  <select class="form-control" name="new_task_recipe_direction[due_on_unit]">
+                  <select class="form-control" name="task_recipe_direction[due_on_unit]">
                     <option value="minutes">minute(s)</option>
                     <option value="hours">hour(s)</option>
                     <option value="days">day(s)</option>
@@ -91,12 +91,12 @@
 
               <div class="form-group">
                 <label>Title for reference</label>
-                <input class="form-control" type="text" name="new_task_recipe_direction[title]">
+                <input class="form-control" type="text" name="task_recipe_direction[title]">
               </div>
 
               <div class="form-group">
                 <label>Description</label>
-                <textarea class="form-control" rows="6" name="new_task_recipe_direction[details]"></textarea>
+                <textarea class="form-control" rows="6" name="task_recipe_direction[details]"></textarea>
               </div>
 
             </div>
@@ -104,7 +104,7 @@
         <% end %>
         <footer class="card-footer modal-footer text-right">
           <div id="new-recipe-direction-spinner" class="spinner-circle-shadow invisible"></div>
-          <button class="btn btn-secondary" id="new-recipe-direction-cancel">Cancel</button>
+          <button class="btn btn-secondary" id="new-recipe-direction-cancel" onclick="clearNewRecipeDirectionForm()">Cancel</button>
           <button class="btn btn-primary" id="new-recipe-direction-add" onclick="addNewRecipeDirection()">Add</button>
         </footer>
       </div>
@@ -138,5 +138,3 @@
     </div>
   </div>
 </div>
-
-<%= render 'edit_recipe_step' %>

@@ -21,9 +21,6 @@ function addNewRecipeDirection() {
 function clearNewRecipeDirectionForm() {
   $('#new-recipe-direction-form')[0].reset();
 
-  $('#new-recipe-direction-add').toggleClass('disabled');
-  $('#new-recipe-direction-cancel').toggleClass('disabled');
-  $('#new-recipe-direction-spinner').toggleClass('invisible');
   $("#new-recipe-direction-add-button").toggleClass('btn-primary btn-warning disabled');
   $("#new-recipe-direction-add-button > i").toggleClass('ti-plus ti-more');
 

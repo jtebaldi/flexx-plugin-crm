@@ -3,8 +3,7 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def flexx_plugin_admin_before_load
-    admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_plugins_flexx_plugin_crm_index_path})
-    admin_menu_append_menu_item("settings", {icon: "briefcase", title: "CRM Settings", url: admin_plugins_flexx_plugin_crm_settings_path})
+    admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_contacts_path})
   end
 
   def flexx_plugin_crm_on_active(plugin)
@@ -28,7 +27,6 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def flexx_plugin_crm_on_plugin_options(args)
-    args[:links] << link_to('Settings', admin_plugins_flexx_plugin_crm_settings_path)
   end
 
   def flexx_plugin_crm_on_contact_form_after_submit(args)

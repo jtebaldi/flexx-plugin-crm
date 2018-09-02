@@ -18,7 +18,7 @@
   <p class="lead text-center text-fade">Active recipes</p>
   <% @active_task_recipes.each do |recipe| %>
     <div class="card b-1 hover-shadow-2 mb-20">
-      <a class="media card-body" href="<%= admin_view_recipe_path(recipe.id) %>">
+      <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
 
         <div class="media-body">
           <div class="mb-2">
@@ -43,7 +43,7 @@
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_remove_recipe_path(id: recipe.id) %>" data-remote="true" data-method="patch">Delete</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_recipe_path(id: recipe.id) %>" data-method="delete">Delete</a>
         </div>
       </footer>
     </div>
@@ -53,7 +53,7 @@
 
   <% @paused_task_recipes.each do |recipe| %>
     <div class="card b-1 hover-shadow-2 mb-20">
-      <a class="media card-body" href="<%= admin_view_recipe_path(recipe.id) %>">
+      <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
 
         <div class="media-body">
           <div class="mb-2">
@@ -78,7 +78,7 @@
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_remove_recipe_path(id: recipe.id) %>">Delete</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_recipe_path(recipe.id) %>" data-method="delete">Delete</a>
         </div>
       </footer>
     </div>
@@ -98,16 +98,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <%= form_tag admin_create_recipe_path, method: :post, id: "new-task-recipe-form", class: "card form-type-combine" do %>
+        <%= form_tag admin_recipes_path, method: :post, id: "new-task-recipe-form", class: "card form-type-combine" do %>
           <div class="card-body">
             <div class="form-groups-attached">
               <div class="form-group">
                 <label>Recipe Name</label>
-                <input class="form-control" type="text" name="new_task_recipe[title]">
+                <input class="form-control" type="text" name="task_recipe[title]">
               </div>
               <div class="form-group">
                 <label for="textarea">Recipe description</label>
-                <textarea class="form-control" id="textarea" rows="6" name="new_task_recipe[description]"></textarea>
+                <textarea class="form-control" id="textarea" rows="6" name="task_recipe[description]"></textarea>
               </div>
 
             </div>

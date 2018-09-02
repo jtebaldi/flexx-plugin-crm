@@ -10,17 +10,16 @@ Rails.application.routes.draw do
 
         get 'task_card/:id(/:refresh_panel)', controller: 'plugins/flexx_plugin_crm/admin', action: :task_card, as: :task_card
 
-        get   :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :recipes
         get   'recipe_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :recipe_card
-        get   'recipes/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :view_recipe, as: :view_recipe
-        get   'toggle_recipe/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :toggle_recipe, as: :toggle_recipe
-        get   'recipes/:id/remove', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_recipe, as: :remove_recipe
-        post  :recipes, controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe, as: :create_recipe
-        post  'recipes/:id/directions', controller: 'plugins/flexx_plugin_crm/admin', action: :create_recipe_direction, as: :create_recipe_direction
         post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         get 'list_tags', controller: 'plugins/flexx_plugin_crm/admin', action: :list_tags, as: :list_tags
         get 'list_contacts', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts, as: :list_contacts
+
+        resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
+          get  :toggle
+          post :create_direction
+        end
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks', only: [:index, :update] do
           collection do
@@ -57,9 +56,6 @@ Rails.application.routes.draw do
       namespace 'plugins' do
         namespace 'flexx_plugin_crm' do
           controller :admin do
-            get :index
-            get :settings
-            post :save_settings
 
             get :new_contact
             post '/update_contact/:id', action: :update_contact, as: :update_contact

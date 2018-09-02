@@ -4,10 +4,6 @@ module Plugins::FlexxPluginCrm
 
     layout "layouts/flexx_next_admin"
 
-    def index
-      @active_contacts = current_site.contacts.active
-    end
-
     def contact_card
       @contact = current_site.contacts.find(params[:id])
 
@@ -75,37 +71,10 @@ module Plugins::FlexxPluginCrm
       render partial: "plugins/flexx_plugin_crm/tasks/task_card"
     end
 
-    def settings
-      add_breadcrumb "CRM Settings", :admin_plugins_flexx_plugin_crm_settings_path
-
-      @task_recipes = current_site.task_recipes
-      @automated_campaigns = current_site.automated_campaigns.active.order(:name)
-    end
-
-    def recipes
-      @active_task_recipes = current_site.task_recipes.active.order(:title)
-      @paused_task_recipes = current_site.task_recipes.paused.order(:title)
-    end
-
     def recipe_card
       @task_recipe = current_site.task_recipes.find(params[:id])
 
       render partial: "recipe_card"
-    end
-
-    def create_recipe
-      new_task_recipe = current_site.task_recipes.create(new_task_recipe_params)
-
-      redirect_to action: :view_recipe, id: new_task_recipe.id
-    end
-
-    def view_recipe
-      @task_recipe = current_site.task_recipes.find(params[:id])
-      @available_contact_forms = current_site.
-                                  contact_forms.
-                                  select(:id, :name).
-                                  where(parent_id: nil).
-                                  order(:name)
     end
 
     def update_recipe
@@ -114,38 +83,6 @@ module Plugins::FlexxPluginCrm
       @task_recipe.update(task_recipe_params)
 
       head :ok
-    end
-
-    def remove_recipe
-      current_site.task_recipes.find(params[:id]).update!(
-        archived: true,
-        archived_by: current_user.id,
-        archived_at: Time.now
-      )
-
-      redirect_to action: :recipes
-    end
-
-    def toggle_recipe
-      @task_recipe = current_site.task_recipes.find(params[:id])
-
-      @task_recipe.update(paused: !@task_recipe.paused,
-                          paused_by: !@task_recipe.paused ? current_user.id : nil,
-                          paused_at: !@task_recipe.paused ? Time.now : nil)
-
-      respond_to do |format|
-        format.js
-      end
-    end
-
-    def create_recipe_direction
-      @task_recipe = current_site.task_recipes.find(params[:id])
-
-      @task_recipe.directions.create(new_task_recipe_direction_params)
-
-      respond_to do |format|
-        format.js
-      end
     end
 
     def create_automated_campaign
@@ -173,13 +110,6 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :view_automated_campaign, id: params[:automated_campaign_id]
     end
 
-    def save_settings
-      @plugin.set_options(params[:options]) if params[:options].present? # save option values
-      @plugin.set_metas(params[:metas]) if params[:metas].present? # save meta values
-      @plugin.set_field_values(params[:field_options]) if params[:field_options].present? # save custom field values
-      redirect_to url_for(action: :settings), notice: 'Settings Saved Successfully'
-    end
-
     def list_tags
       render json: current_site.owned_tags.map { |t| { name: t.name, value: t.name } }
     end
@@ -204,22 +134,10 @@ module Plugins::FlexxPluginCrm
       params.require(:task).permit(:aasm_state, :updated_by, notes_attributes: [:details, :created_by])
     end
 
-    def new_task_recipe_params
-      params[:new_task_recipe].merge!(created_by: current_user.id)
-
-      params.require(:new_task_recipe).permit(:title, :description, :created_by)
-    end
-
     def task_recipe_params
       params[:task_recipe].merge!(updated_by: current_user.id)
 
       params.require(:task_recipe).permit(:cama_contact_form_ids, :updated_by)
-    end
-
-    def new_task_recipe_direction_params
-      params[:new_task_recipe_direction].merge!(created_by: current_user.id)
-
-      params.require(:new_task_recipe_direction).permit(:task_type, :due_on_value, :due_on_unit, :title, :details, :created_by)
     end
 
     def new_automated_campaign_step_params
