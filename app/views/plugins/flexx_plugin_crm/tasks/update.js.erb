@@ -1,10 +1,12 @@
 <% case params[:refresh_panel] %>
-  <% when 'todays-tasks-list' %>
+  <% when 'tasks-dashboard' %>
+    quickview.close($('#qv_view_task'));
     $('.modal').modal('hide');
-    $('#todays-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' })  %>');
-  <% when 'upcoming-tasks-list' %>
-    $('.modal').modal('hide');
-    $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' })  %>');
+    $('#todays-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' })  %>');
+    $('#todays-completed-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: 'tasks-dashboard' })  %>');
+    $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' })  %>');
+    $('#old-pending-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' }) %>');
+    $('#old-completed-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: 'tasks-dashboard' }) %>');
   <% when 'view-contact-tasks-panels' %>
     quickview.close($('#qv_view_task'));
     $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');

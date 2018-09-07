@@ -10,7 +10,6 @@
   <div class="header-action">
     <nav class="nav">
       <a class="nav-link active" data-toggle="tab" href="#tab-task-view">Task View</a>
-      <a class="nav-link" data-toggle="tab" href="#tab-calendar-view">Calendar View</a>
       <a class="nav-link" data-toggle="tab" href="#tab-completed">Completed</a>
     </nav>
     <div class="buttons">
@@ -27,53 +26,19 @@
         <div class="col-md-12">
           <p class="lead text-center text-fade">Overdue's tasks</p>
           <div id="old-pending-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'old-pending-tasks-list' } %>
+            <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
           </div>
           <br>
           <p class="lead text-center text-fade">Today's tasks</p>
           <div id="todays-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'todays-tasks-list' } %>
+            <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
           </div>
           <br>
           <div class="divider text-uppercase fw-500">Upcoming</div>
           <div id="upcoming-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'upcoming-tasks-list' } %>
+            <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="tab-pane fade" id="tab-calendar-view">
-      <header class="header header-inverse">
-        <div class="header-action">
-          <div class="flexbox align-items-center gap-items-4">
-            <a class="text-white" href="#" data-calendar="prev"><i class="ti-angle-left"></i></a>
-            <span class="text-white fs-16" id="calendar-title"></span>
-            <a class="text-white" href="#" data-calendar="next"><i class="ti-angle-right"></i></a>
-          </div>
-
-          <nav class="nav">
-            <a class="nav-link" href="#" data-calendar="today">Today</a>
-            <a class="nav-link active" href="#" data-calendar-view="month">Month</a>
-            <a class="nav-link" href="#" data-calendar-view="basicWeek">Week</a>
-            <a class="nav-link" href="#" data-calendar-view="basicDay">Day</a>
-            <div class="dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">More</a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#" data-calendar-view="agendaWeek">Agenda week</a>
-                <a class="dropdown-item" href="#" data-calendar-view="agendaDay">Agenda day</a>
-                <a class="dropdown-item" href="#" data-calendar-view="listYear">List year</a>
-                <a class="dropdown-item" href="#" data-calendar-view="listMonth">List month</a>
-                <a class="dropdown-item" href="#" data-calendar-view="listWeek">List week</a>
-                <a class="dropdown-item" href="#" data-calendar-view="listDay">List day</a>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </header>
-
-      <div class="card card-body">
-        <div id="calendar" data-provide="fullcalendar"></div>
       </div>
     </div>
 

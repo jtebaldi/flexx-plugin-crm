@@ -42,10 +42,12 @@ module Plugins::FlexxPluginCrm
       current_site.tag(task, with: params[:task][:tag_list], on: :tags)
 
       case params[:refresh_panel]
-      when 'todays-tasks-list'
+      when 'tasks-dashboard'
         @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
-      when 'upcoming-tasks-list'
+        @todays_completed_tasks = current_site.tasks.done.due_today.includes(:contact, :owners)
         @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order(:due_date).includes(:contact, :owners)
+        @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
       when 'view-contact-tasks-panels'
         @contact = task.contact
       end
@@ -69,6 +71,7 @@ module Plugins::FlexxPluginCrm
       when 'tasks-dashboard'
         @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
         @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order(:due_date).includes(:contact, :owners)
       end
 
       respond_to do |format|
