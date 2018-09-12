@@ -11,7 +11,7 @@
       </div>
       <% unless @task.done? %>
         <div class="btn-group btn-group-justified">
-          <button class="btn p-10 btn-warning" data-toggle="modal" data-target="#modal-defer-task">Defer Task</button>
+          <button class="btn p-10 btn-warning" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
           <a href="#" class="btn p-10 btn-danger text-white">Delete</a>
         </div>
       <% end %>
