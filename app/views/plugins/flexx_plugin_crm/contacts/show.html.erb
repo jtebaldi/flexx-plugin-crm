@@ -120,8 +120,6 @@ input[type=radio].hide-control { display: none; }
 
         <div class="card-body">
           <div class="flexbox gap-items-4">
-            <span class="avatar avatar-xl">pc</span>
-
             <div class="flex-grow">
               <div class="row">
                 <div class="col-md-6">
@@ -137,14 +135,6 @@ input[type=radio].hide-control { display: none; }
                     <label>Last name</label>
                   </div>
                 </div>
-              </div>
-              <div class="d-felx flex-column flex-sm-row gap-y gap-items-2 mt-16">
-                <div class="file-group file-group-inline">
-                  <button class="btn btn-sm btn-w-lg btn-outline btn-round btn-secondary file-browser" type="button">Change Picture</button>
-                  <input type="file">
-                </div>
-
-                <a class="btn btn-sm btn-w-lg btn-outline btn-round btn-danger align-top" href="#">Delete Picture</a>
               </div>
 
             </div>
@@ -198,7 +188,7 @@ input[type=radio].hide-control { display: none; }
             </div>
             <div class="col-md-6">
               <div class="form-group do-float">
-                <input type="text" class="form-control" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
+                <input type="text" class="form-control" name="contact[birthday]" value="<%= @contact.birthday.strftime("%m/%d/%Y") if @contact.birthday? %>" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
                 <label>Birthday</label>
               </div>
             </div>
@@ -266,24 +256,6 @@ input[type=radio].hide-control { display: none; }
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Country</label>
-                <select class="form-control" name="contact[country]" data-provide="selectpicker" title="Select country">
-                  <%= options_for_select([[''], ['United States'], ['Australia']], @contact.country) %>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group do-float">
-                <input type="text" class="form-control" name="contact[birthday]" value="<%= @contact.birthday.strftime("%m/%d/%Y") if @contact.birthday? %>" aria-describedby="basic-addon2"  data-format="{{99}}/{{99}}/{{9999}}">
-                <label>Birthday</label>
-              </div>
-            </div>
-          </div>
-
           <label>Tags</label>
           <div class="form-group">
             <input type="text" value="<%= @contact.all_tags_list %>" id="typeahed-tags" name="contact[tag_list]">
@@ -308,39 +280,15 @@ input[type=radio].hide-control { display: none; }
 
         <div class="main-content">
           <div class="card card-bordered flex-column">
-
-            <header class="flexbox align-items-center p-12 pr-20 bg-lighter bb-1 border-light">
-              <div class="media align-items-center p-0">
-                <a href="#"><span class="avatar"><%= @contact.initials %></span></a>
-                <div class="media-body">
-                  <h6><a href="#"><%= @contact.print_name %></a></h6>
-                </div>
-              </div>
-
-              <div class="dropdown">
-                <a class="text-lighter" data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-picture-o"></i> Medias</a>
-                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-volume-off"></i> Mute</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-trash"></i> Delete</a>
-                </div>
-              </div>
-            </header>
-
             <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
-              <%= render partial: 'conversations' %>
+              <div id="conversations-panel">
+                <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :desc) } %>
+              </div>
             </div>
             <footer class="publisher">
-              <span class="avatar">jt</span>
+              <span class="avatar"><%= current_user.initials %></span>
               <input class="publisher-input" rows="1" placeholder="Write something">
               <div class="align-self-end gap-items">
-                <span class="publisher-btn file-group">
-                  <i class="fa fa-paperclip file-browser"></i>
-                  <input type="file">
-                </span>
-                <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
                 <a class="publisher-btn" href="#"><i class="fa fa-paper-plane"></i></a>
               </div>
             </footer>
@@ -409,8 +357,8 @@ input[type=radio].hide-control { display: none; }
           <label for="select">Type</label>
           <select class="form-control" name="new_contact_task[task_type]">
             <option value="phone_call">Phone call</option>
-            <option value="message">Email</option>
-            <option value="email">Text</option>
+            <option value="email">Email</option>
+            <option value="message">Text</option>
             <option value="meeting">Meeting</option>
             <option value="general">General</option>
           </select>
@@ -544,7 +492,9 @@ input[type=radio].hide-control { display: none; }
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <%= form_tag admin_create_contact_message_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'send-message-form', class: 'quickview-block form-type-combine' do %>
+      <%= form_tag create_text_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'send-message-form', class: 'quickview-block form-type-combine' do %>
+        <input type="hidden" class="form-control" name="contact_id" value="<%= @contact.id %>">
+        <input type="hidden" class="form-control" name="refresh_panel" value="contact-view">
         <div class="modal-body">
           <div class="form-group">
             <label>Number</label>

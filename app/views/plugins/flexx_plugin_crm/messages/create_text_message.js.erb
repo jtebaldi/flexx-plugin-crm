@@ -1,0 +1,11 @@
+<% case params[:refresh_panel] %>
+<% when 'task-panel' %>
+  $('#task-send-message-form')[0].reset();
+  $('#task-send-text-message').toggleClass('disabled');
+  $('#task-send-text-button').toggleClass('disabled');
+  $('#task-send-text-spinner').toggleClass('invisible');
+  $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :desc) })  %>');
+<% when 'contact-view' %>
+  $('#send-message-form')[0].reset();
+  $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :desc) })  %>');
+<% end %>

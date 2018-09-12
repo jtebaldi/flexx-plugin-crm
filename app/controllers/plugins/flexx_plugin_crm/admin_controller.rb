@@ -40,18 +40,6 @@ module Plugins::FlexxPluginCrm
       end
     end
 
-    def create_contact_message
-      contact = current_site.contacts.find(params[:id])
-
-      ContactMessageService.new(
-        contact: contact,
-        number: params[:phonenumber],
-        message: params[:message]
-      ).call
-
-      head :ok
-    end
-
     def create_task
       current_site.contacts.find(params[:contact_id]).tasks.create(new_task_params)
 

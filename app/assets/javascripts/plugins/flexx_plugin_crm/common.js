@@ -8,3 +8,10 @@ function sendConfirmation(taskId) {
   $('#send-confirmation-task-id-field').val(taskId);
   $('#modal-send-confirmation').modal('show');
 }
+
+function submitTaskSendMessageForm() {
+  $('#task-send-text-message').toggleClass('disabled');
+  $('#task-send-text-button').toggleClass('disabled');
+  $('#task-send-text-spinner').toggleClass('invisible');
+  $('#task-send-message-form').submit();
+}

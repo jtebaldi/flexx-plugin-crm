@@ -1,4 +1,4 @@
-<% @contact.messages.order(created_at: :desc).each do |message| %>
+<% messages.each do |message| %>
   <div class="media media-chat <%= 'media-chat-reverse' if message.status != 'received' %>">
     <div class="media-body">
       <p><%= message.message %></p>
