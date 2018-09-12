@@ -15,3 +15,7 @@ function submitTaskSendMessageForm() {
   $('#task-send-text-spinner').toggleClass('invisible');
   $('#task-send-message-form').submit();
 }
+
+function closeTaskView(button) {
+  quickview.close($(button).closest('.quickview'));
+}

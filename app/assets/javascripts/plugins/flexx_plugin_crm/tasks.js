@@ -27,10 +27,6 @@ function cancelNewTaskForm(button) {
   quickview.close($(button).closest('.quickview'));
 }
 
-function closeTaskView(button) {
-  quickview.close($(button).closest('.quickview'));
-}
-
 app.ready(function() {
   contactlist.initialize();
 

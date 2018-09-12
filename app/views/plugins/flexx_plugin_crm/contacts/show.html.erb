@@ -193,30 +193,82 @@ input[type=radio].hide-control { display: none; }
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="<%= @contact.phonenumbers.first.id unless @contact.phonenumbers.empty? %>">
-                <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="<%= @contact.phonenumbers.first.number unless @contact.phonenumbers.empty? %>">
-                <label>Phone</label>
+          <div id="phone-rows">
+            <% if @contact.phonenumbers.present? %>
+              <% @contact.phonenumbers.each_with_index do |phone, i| %>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="<%= phone.id %>">
+                      <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="<%= phone.number %>">
+                      <label>Phone</label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
+                        <option>Type</option>
+                        <option <%= 'selected' if phone.phone_type == 'mobile' %> value="mobile">Mobile</option>
+                        <option <%= 'selected' if phone.phone_type == 'home' %> value="home">Home</option>
+                        <option <%= 'selected' if phone.phone_type == 'work' %> value="work">Work</option>
+                        <option <%= 'selected' if phone.phone_type == 'other' %> value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <% if i == 0%>
+                      <button class="btn btn-sm btn-info btn-outline mt-10" type="button" onclick="addNewPhoneRow()">Add Phone</button>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
+                    <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="">
+                    <label>Phone</label>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
+                      <option>Type</option>
+                      <option value="mobile">Mobile</option>
+                      <option value="home">Home</option>
+                      <option value="work">Work</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3 text-center">
+                  <button class="btn btn-sm btn-info btn-outline mt-10" type="button" onclick="addNewPhoneRow()">Add Phone</button>
+                </div>
               </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
-                  <option>Type</option>
-                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'mobile' %> value="mobile">Mobile</option>
-                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'home' %> value="home">Home</option>
-                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'work' %> value="work">Work</option>
-                  <option <%= 'selected' if !@contact.phonenumbers.empty? && @contact.phonenumbers.first.phone_type == 'other' %> value="other">Other</option>
-                </select>
+            <% end %>
+            <div class="row hidden" id="phone-row-template">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
+                  <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="">
+                  <label>Phone</label>
+                </div>
               </div>
-            </div>
-            <div class="col-md-3 text-center">
-              <button class="btn btn-sm btn-info btn-outline mt-10" type="button">Add Phone</button>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select class="form-control" name="contact[phonenumbers_attributes][][phone_type]">
+                    <option>Type</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="home">Home</option>
+                    <option value="work">Work</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 text-center"></div>
             </div>
           </div>
-
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -385,7 +437,7 @@ input[type=radio].hide-control { display: none; }
   <footer class="quickview-footer flex-row-reverse">
     <div id="new-contact-task-spinner" class="spinner-circle-shadow invisible"></div>
     <button class="btn btn-success" id="new-contact-task-add" onclick="addNewContactTask()">Add</button>
-    <button class="btn btn-danger" id="new-contact-task-cancel" type="reset">Cancel</button>
+    <button class="btn btn-danger" id="new-contact-task-cancel" onclick="closeTaskView(this)">Cancel</button>
   </footer>
 </div>
 

@@ -39,6 +39,16 @@ function clearNewContactTaskForm() {
   $('#new-contact-task-panel').fadeOut();
 }
 
+function addNewPhoneRow() {
+  var newrow = $('#phone-row-template').clone();
+  $(newrow).find('select').selectpicker({
+    iconBase: '',
+    tickIcon: 'ti-check',
+    style: 'btn-light'
+  });
+  $(newrow).toggleClass('hidden').appendTo('#phone-rows');
+}
+
 var taglist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
