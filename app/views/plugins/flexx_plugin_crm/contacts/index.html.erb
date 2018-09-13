@@ -17,9 +17,14 @@
         <small>Send or schedule mass emails and text messages</small>
       </a>
 
-      <a class="media flex-column px-20" href="/admin/next/conversations-email">
-        <p>Converations</p>
-        <small>See and continue conversations with your contacts</small>
+      <a class="media flex-column px-20" href="/admin/next/conversations-text">
+        <p>SMS Converations</p>
+        <small>See and continue SMS conversations with your contacts</small>
+      </a>
+
+      <a class="media flex-column px-20" href="/admin/next/stock">
+        <p>Stock Messages</p>
+        <small>Create and edit your stock messages.</small>
       </a>
 
     </div>
@@ -75,7 +80,6 @@
   </div>
   <div class="header-action">
     <div class="buttons">
-
       <button class="btn btn-primary btn-float" data-toggle="quickview" href="#qv_new_contact"><i class="ti-plus"></i></button>
     </div>
   </div>
@@ -91,9 +95,24 @@
   <div id="contact_list" class="media-list media-list-divided media-list-hover">
 
     <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16">
-      <div class="flexbox align-items-center">
+      <div class="flexbox align-items-center row">                
 
-        <span class="divider-line mx-1"></span>
+        <div class="col-sm-8 pl-0">
+          <div class="btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-light m-0 active">
+              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>All</input>
+            </label>
+            <label class="btn btn-light m-0">
+              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Leads</input>
+            </label>
+            <label class="btn btn-light m-0">
+              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Prospects</input>
+            </label>
+            <label class="btn btn-light m-0">
+              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Customers</input>
+            </label>
+          </div>
+        </div>
 
         <div class="dropdown">
           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
@@ -151,7 +170,7 @@
 <div id="qv-user-details" class="quickview"></div>
 
 <!-- QUICKVIEW: New Contact Form -->
-<div id="qv_new_contact" class="quickview quickview-lg">
+<div id="qv_new_contact" class="quickview quickview-xxl">
   <header class="quickview-header">
     <p class="quickview-title lead">New Contact</p>
     <span class="close"><i class="ti-close"></i></span>

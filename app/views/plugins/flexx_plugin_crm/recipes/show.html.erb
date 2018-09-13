@@ -2,9 +2,19 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/recipes' %>
 <% end %>
 
-<style>
-  input[type=radio].hide-control { display: none; }
-</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    $("#stock-email-select").hide();
+
+    $("#type-select").on('click change', function(e) {
+      if (this.value == 'email') {
+        $("#stock-email-select").show();
+      } else {
+        $("#stock-email-select").hide();
+      }
+    });
+  });
+</script>
 
 <header class="header">
   <div class="header-bar header-inverse bg-info">
@@ -50,7 +60,7 @@
           <div class="card-body">
             <div class="form-group">
               <label for="select">Type</label>
-              <select class="form-control" name="task_recipe_direction[task_type]">
+              <select id="type-select" class="form-control" name="task_recipe_direction[task_type]">
                 <option value="phone_call">Phone call</option>
                 <option value="email">Email</option>
                 <option value="message">Text</option>
@@ -92,6 +102,16 @@
               <div class="form-group">
                 <label>Title for reference</label>
                 <input class="form-control" type="text" name="task_recipe_direction[title]">
+              </div>
+
+              <div id="stock-email-select" class="form-group">
+                <label>Use stock email</label>
+                <select class="form-control" data-provide="selectpicker">
+                  <option>None</option>
+                  <option value="">Stock email 1</option>
+                  <option value="">Stock email 2</option>
+                  <option value="">Stock email 3</option>
+                </select>
               </div>
 
               <div class="form-group">
