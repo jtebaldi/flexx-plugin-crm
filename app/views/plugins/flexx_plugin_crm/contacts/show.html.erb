@@ -3,6 +3,22 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
 <% end %>
 
+<script>
+  $('document').ready(function(){
+    $("#send_text").click(function() {
+      $('#contact-main-nav li a').each(function() {
+        $(this).removeClass('active');
+      });
+      $('#contact-main-tabs div').each(function() {
+        $(this).removeClass('active show');
+      });
+      $("#nav-conversations").addClass('active');
+      $("#tab_conversations").addClass('active show');      
+    });
+    
+  });
+</script>
+
 <style>
 input[type=radio].hide-control { display: none; }
 </style>
@@ -38,29 +54,29 @@ input[type=radio].hide-control { display: none; }
 
             <div id="collapse-contact" class="collapse">
               <% if @contact.email.present? %>
-                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-envelope"></i><strong> Email</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
                   <a class="media media-single" href="#">
+                    <span class="lead text-info text-uppercase"><i class="fa fa-envelope"></i></span>
                     <span class="title"><strong><%= @contact.email %></strong></span>
-                    <i class="fa fa-paper-plane text-info"></i>
+                    <span class="lead text-info text-uppercase">Email </span><i class="fa fa-paper-plane text-info"></i>
                   </a>
                 </div>
               <% end %>
               <% if @contact.phonenumbers.present? %>
-                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-phone"></i><strong> Call</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
-                  <a class="media media-single" href="#">
+                  <span class="media media-single">
+                    <span class="lead text-lighter text-uppercase"><i class="fa fa-phone"></i></span>
                     <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
-                    <i class="fa fa-paper-plane text-info"></i>
-                  </a>
+                    <span class="lead text-lighter text-uppercase">Call </span>
+                  </span>
                 </div>
               <% end %>
               <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
-                <h6 class="card-title lead text-info text-uppercase text-center p-10"><i class="fa fa-comment"></i><strong> Text</strong></h5>
                 <div class="media-list media-list-hover media-list-divided">
-                  <a class="media media-single" href="#" data-toggle="modal" data-target="#modal-send-text">
+                  <a id="send_text" class="media media-single" href="#">
+                    <span class="lead text-info text-uppercase"><i class="fa fa-comment"></i></span>
                     <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
-                    <i class="fa fa-paper-plane text-info"></i>
+                    <span class="lead text-info text-uppercase">Text </span><i class="fa fa-paper-plane text-info"></i>
                   </a>
                 </div>
               <% end %>
@@ -70,7 +86,7 @@ input[type=radio].hide-control { display: none; }
       </div>
 
       <div class="card">
-        <ul class="nav nav-lg nav-pills flex-column">
+        <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
           <li class="nav-item">
             <a class="nav-link active" href="#tab_tasks" data-toggle="tab">Tasks</a>
           </li>
@@ -78,7 +94,7 @@ input[type=radio].hide-control { display: none; }
             <a class="nav-link" href="#tab_contact_details" data-toggle="tab">User Details</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#tab_conversations" data-toggle="tab">Conversations</a>
+            <a id="nav-conversations" class="nav-link" href="#tab_conversations" data-toggle="tab">SMS Conversation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
@@ -91,7 +107,7 @@ input[type=radio].hide-control { display: none; }
       </div>
     </div>
 
-    <div class="col-lg-8 tab-content">
+    <div id="contact-main-tabs" class="col-lg-8 tab-content">
       <div class="tab-pane fade active show" id="tab_tasks">
         <p class="lead text-center text-fade">Open tasks</p>
         <div id="contact-open-tasks-panel">
@@ -327,11 +343,8 @@ input[type=radio].hide-control { display: none; }
 
       <div class="tab-pane fade" id="tab_conversations">
         <div class="card">
-          <h5 class="card-title"><strong>Conversations</strong></h5>
-        </div>
-
-        <div class="main-content">
-          <div class="card card-bordered flex-column">
+          <h5 class="card-title"><strong>SMS</strong> Conversation</h5>
+          <div class="card-body flex-column">
             <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
               <div id="conversations-panel">
                 <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :desc) } %>
@@ -345,7 +358,8 @@ input[type=radio].hide-control { display: none; }
               </div>
             </footer>
           </div>
-        </div>
+        </div>        
+        
       </div>
 
       <div class="tab-pane fade" id="tab_recipes_campaigns">
@@ -393,10 +407,10 @@ input[type=radio].hide-control { display: none; }
 </div>
 
 <!-- QUICKVIEW - View task -->
-<div id="qv_view_task" class="quickview quickview-lg backdrop-dark"></div>
+<div id="qv_view_task" class="quickview quickview-xxl backdrop-dark"></div>
 
 <!-- QUICKVIEW - Add task -->
-<div id="qv-add-task" class="quickview quickview-lg backdrop-dark">
+<div id="qv-add-task" class="quickview quickview-xxl backdrop-dark">
   <header class="quickview-header">
     <p class="quickview-title lead">New <strong>Task</strong></p>
     <span class="close"><i class="ti-close"></i></span>
