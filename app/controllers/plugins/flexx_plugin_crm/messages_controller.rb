@@ -14,11 +14,10 @@ module Plugins::FlexxPluginCrm
 
     def send_email_blast
       recipients_list = params[:recipients].gsub('___', ' ').split(',')
-      recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
 
       EmailBlastService.new(
         site: current_site,
-        recipients: recipients,
+        recipients_list: recipients_list,
         subject: params[:subject],
         body: params[:message]
       ).call
