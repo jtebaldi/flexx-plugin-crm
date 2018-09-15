@@ -72,10 +72,13 @@ module Plugins::FlexxPluginCrm
     def sg_parse
       envelope = JSON.parse(params[:envelope])
 
+      reply_message_id = $1 if params[:headers] =~ /In-Reply-To:\s<(.+)@/
+
       email = Email.create(
         subject: params[:subject],
         body: params[:html],
         from: envelope["from"],
+        reply_message_id: reply_message_id,
         status: 'received',
       )
 
