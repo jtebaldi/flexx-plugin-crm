@@ -68,7 +68,11 @@ class SendgridAdapter
 
     response = sg.client.mail._("send").post(request_body: params)
 
-    response.headers["x-message-id"][0] if (200..299).include?(response.status_code.to_i)
+    if (200..299).include?(response.status_code.to_i)
+      response.headers["x-message-id"][0]
+    else
+      raise response.body
+    end
   end
 
   private
