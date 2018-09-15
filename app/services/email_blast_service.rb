@@ -1,8 +1,9 @@
 class EmailBlastService
-  def initialize(site:, recipients_list:, subject:, body:)
+  def initialize(site:, user:, recipients_list:, subject:, body:)
     @recipients_list = recipients_list
     @recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
     @site = site
+    @user = user
     @subject = subject
     @body = body
   end
@@ -31,7 +32,7 @@ class EmailBlastService
       status: 'sent',
       send_at: Time.now,
       recipients_count: emails.count,
-      created_by: @user
+      created_by: @user.id
     )
 
     emails.each do |r|

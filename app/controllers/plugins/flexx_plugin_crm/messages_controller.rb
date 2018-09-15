@@ -17,6 +17,7 @@ module Plugins::FlexxPluginCrm
 
       EmailBlastService.new(
         site: current_site,
+        user: current_user,
         recipients_list: recipients_list,
         subject: params[:subject],
         body: params[:message]
