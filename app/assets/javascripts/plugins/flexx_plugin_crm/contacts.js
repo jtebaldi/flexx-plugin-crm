@@ -49,6 +49,19 @@ function addNewPhoneRow() {
   $(newrow).toggleClass('hidden').appendTo('#phone-rows');
 }
 
+function submitConversationsSendMessageForm(e) {
+  e.preventDefault();
+
+  if($('#contact-conversations-text-message').val() == ''){
+    return false;
+  }
+
+  $('#contact-conversations-text-message').toggleClass('disabled');
+  $('#contact-conversations-text-button').toggleClass('disabled');
+  $('#contact-conversations-text-spinner').toggleClass('invisible');
+  $("#conversations-send-message-form :input").prop("readonly", true);
+}
+
 var taglist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -66,4 +79,6 @@ app.ready(function() {
       valueKey: 'name'
     }
   });
+
+  $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
 })

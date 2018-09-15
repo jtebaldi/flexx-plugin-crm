@@ -8,4 +8,11 @@
 <% when 'contact-view' %>
   $('#send-message-form')[0].reset();
   $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :desc) })  %>');
+<% when 'contact-conversations-panel' %>
+  $('#conversations-send-message-form')[0].reset();
+  $('#contact-conversations-text-message').toggleClass('disabled');
+  $('#contact-conversations-text-button').toggleClass('disabled');
+  $('#contact-conversations-text-spinner').toggleClass('invisible');
+  $("#conversations-send-message-form :input").prop("readonly", false);
+  $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :asc) })  %>');
 <% end %>

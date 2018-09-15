@@ -344,16 +344,26 @@ input[type=radio].hide-control { display: none; }
           <div class="card-body flex-column">
             <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
               <div id="conversations-panel">
-                <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :desc) } %>
+                <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
               </div>
             </div>
-            <footer class="publisher">
-              <span class="avatar"><%= current_user.initials %></span>
-              <input class="publisher-input" rows="1" placeholder="Write something">
-              <div class="align-self-end gap-items">
-                <a class="publisher-btn" href="#"><i class="fa fa-paper-plane"></i></a>
-              </div>
-            </footer>
+            <% if @contact.phonenumbers.mobile.present? %>
+              <footer class="publisher">
+                <span class="avatar"><%= current_user.initials %></span>
+                <%= form_tag create_text_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+                  <input type="hidden" class="form-control" name="contact_id" value="<%= @contact.id %>">
+                  <input type="hidden" class="form-control" name="phonenumber" value="<%= @contact.phonenumbers.mobile.first.number %>">
+                  <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
+                  <input name="message" style="width: 100%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+                <% end %>
+                <div class="gap-items">
+                  <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
+                </div>
+                <div class="gap-items">
+                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow invisible"></div>
+                </div>
+              </footer>
+            <% end %>
           </div>
         </div>
 
