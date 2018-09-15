@@ -29,6 +29,7 @@ class EmailBlastService
       recipients_list: @recipients_list,
       subject: @subject,
       body: @body,
+      from: 'contact@flexx.co',
       status: 'sent',
       send_at: Time.now,
       recipients_count: emails.count,
