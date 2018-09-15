@@ -47,22 +47,25 @@ module Plugins::FlexxPluginCrm
         message_id = p[:sg_message_id][0, index]
 
         email = Email.find_by(sg_message_id: message_id)
+        recipient = email.email_recipients.find_by(to: p[:email]) if email
 
-        if email
+        if recipient
           case p[:event]
           when 'open'
-            email.opened_count += 1
+            email.update(opened_count: email.opened_count + 1) if recipient.opened_at.nil?
+            recipient.update(opened_at: Time.now)
           when 'click'
-            email.clicked_count += 1
-          when 'bounce'
-            email.bounced_count += 1
+            email.update(clicked_count: email.clicked_count + 1) if recipient.clicked_at.nil?
+            recipient.update(clicked_at: Time.now)
           when 'unsubscribe'
-            email.unsubscribed_count += 1
+            email.update(unsubscribed_count: email.unsubscribed_count + 1) if recipient.unsubscribed_at.nil?
+            recipient.update(unsubscribed_at: Time.now)
+          when 'bounce'
+            email.update(bounced_count: email.bounced_count + 1)
+            recipient.update(status: 'bounced')
+          else
+            recipient.update(status: p[:event]) if recipient
           end
-          email.save
-
-          recipient = email.email_recipients.find_by(to: p[:email])
-          recipient.update(status: p[:event]) if recipient
         end
       end
 
