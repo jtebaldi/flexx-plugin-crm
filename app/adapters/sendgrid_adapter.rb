@@ -60,7 +60,9 @@ class SendgridAdapter
         subscription_tracking: {
           enable: true,
           html: "If you'd like to unsubscribe and stop receiving these emails <% click here %>."
-        }
+        },
+        click_tracking: { enable: true },
+        open_tracking: { enable: true }
       }
     }
 
