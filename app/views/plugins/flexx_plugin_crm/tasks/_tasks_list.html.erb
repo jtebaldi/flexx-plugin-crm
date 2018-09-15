@@ -26,7 +26,7 @@
           <% end %>
           <% unless row.done? %>
             <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
+            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
           <% end %>
         </span>
       </div>

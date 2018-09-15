@@ -12,7 +12,7 @@
       <% unless @task.done? %>
         <div class="btn-group btn-group-justified">
           <button class="btn p-10 btn-warning" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-          <a href="#" class="btn p-10 btn-danger text-white">Delete</a>
+          <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger text-white">Delete</a>
         </div>
       <% end %>
       <div class="p-20">

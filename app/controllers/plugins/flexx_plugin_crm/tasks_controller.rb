@@ -20,9 +20,23 @@ module Plugins::FlexxPluginCrm
     end
 
     def destroy
-      current_site.tasks.find(params[:id]).destroy
+      task = current_site.tasks.find(params[:id])
+      task.destroy
 
-      redirect_to action: :index
+      case params[:refresh_panel]
+      when 'tasks-dashboard'
+        @todays_tasks = current_site.tasks.pending.due_today.includes(:contact, :owners)
+        @todays_completed_tasks = current_site.tasks.done.due_today.includes(:contact, :owners)
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order(:due_date).includes(:contact, :owners)
+        @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
+      when 'view-contact-tasks-panels'
+        @contact = task.contact
+      end
+
+      respond_to do |format|
+        format.js { render :update }
+      end
     end
 
     def task_owners
