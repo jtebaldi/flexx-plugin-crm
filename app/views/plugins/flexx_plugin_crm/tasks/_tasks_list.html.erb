@@ -21,7 +21,7 @@
           </span>
         <% end %>
         <span class="card-hover-show pl-20">
-          <% if row.task_type == 'meeting' && row.confirmed_at.nil? %>
+          <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>
             <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
           <% end %>
           <% unless row.done? %>
