@@ -6,7 +6,13 @@
     <div class="card no-margin">
       <div class="card-body card-inverse text-center pb-20">
         <span class="avatar avatar-xxl avatar-bordered"><i class="fa fa-<%= task_type_icon(task_type: @task.task_type) %> fs-30"></i></span>
-        <h4 class="mt-2 mb-0"><a class="hover-primary text-white" href="#"><%= @task.contact.print_name %></a></h4>
+        <h4 class="mt-2 mb-0">
+          <% if params[:refresh_panel] == 'view-contact-tasks-panels' %>
+            <%= @task.contact.print_name %>
+          <% else %>
+            <a class="hover-primary text-white" href="<%= admin_contact_path(@task.contact.id) %>"><%= @task.contact.print_name %></a>
+          <% end %>
+        </h4>
         <span><%= @task.task_type.humanize %></span>
       </div>
       <% unless @task.done? %>
