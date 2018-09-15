@@ -51,6 +51,7 @@ Rails.application.routes.draw do
             post 'status'
             post 'confirmation'
             post 'sg_events'
+            post 'sg_parse'
           end
         end
       end

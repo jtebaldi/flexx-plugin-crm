@@ -68,5 +68,25 @@ module Plugins::FlexxPluginCrm
 
       head :no_content
     end
+
+    def sg_parse
+      envelope = JSON.parse(params[:envelope])
+
+      email = Email.create(
+        subject: params[:subject],
+        body: params[:html],
+        from: envelope["from"],
+        status: 'received',
+      )
+
+      envelope["to"].each do |to|
+        email.email_recipients.create(
+          to: to,
+          status: 'received'
+        )
+      end
+
+      head :no_content
+    end
   end
 end
