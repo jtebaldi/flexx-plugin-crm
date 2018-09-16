@@ -13,9 +13,14 @@ module Plugins::FlexxPluginCrm
     end
 
     def send_email_blast
+      scheduled = params[:timingOptions2] == '2'
+      scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
+
       EmailBlastService.new(
         site: current_site,
         user: current_user,
+        scheduled: scheduled,
+        scheduled_at: scheduled_at,
         recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]
