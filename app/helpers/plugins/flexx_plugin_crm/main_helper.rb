@@ -7,6 +7,8 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def flexx_plugin_crm_on_active(plugin)
+    init_default_settings(plugin.site)
+
     if plugin.site.get_option("flexx_crm_list_id").blank?
       list_name = "#{Digest::MD5.hexdigest(plugin.site.slug)}#{SecureRandom.hex(5)}"
 
@@ -49,5 +51,13 @@ module Plugins::FlexxPluginCrm::MainHelper
 
       AutomatedCampaignService.apply_campaigns(contact: contact)
     end
+  end
+
+  private
+
+  def init_default_settings(site)
+    site.set_meta("flexx_crm_settings", {
+      country_code: '+1'
+    }) unless site.get_meta("flexx_crm_settings").present? && site.get_meta("flexx_crm_settings")[:country_code].present?
   end
 end

@@ -3,15 +3,12 @@ module Plugins::FlexxPluginCrm
     skip_before_action :verify_authenticity_token
     skip_before_action :cama_authenticate
 
-    #TODO: Change old webhooks in twilio configuration and delete old methods
-    #      at MessagesController
     def inbound
-        phonenumber = Phonenumber.find_by(number: params["From"])
-        contact = Contact.find(phonenumber.contact_id) if phonenumber
+        contact = Phonenumber.find_by("LENGTH(number) > 0 AND POSITION(number IN ?) > 0", number, params["From"]).try(:contact)
 
         Message.create(
-            contact_id: contact ? contact.id : nil,
-            site_id: contact ? contact.site_id : nil,
+            contact_id: contact.try(:id),
+            site_id: contact.try(:site_id),
             sid: params["SmsSid"],
             from_number: params["From"],
             to_number: params["To"],
@@ -56,4 +53,3 @@ module Plugins::FlexxPluginCrm
     end
   end
 end
-
