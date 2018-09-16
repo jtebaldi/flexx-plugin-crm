@@ -1,7 +1,5 @@
 function loadConversation(card) {
-  if($(card).find('.badge-dot').is(":visible")) {
-    $(card).find('.badge-dot').hide();
-
+  if($(card).data('unread') > 0) {
     var total = $('#total-unread-label').data('total');
     var contact_total = $(card).data('unread');
 
@@ -11,6 +9,9 @@ function loadConversation(card) {
     } else {
       $('#total-unread-label').hide();
     }
+
+    $(card).find('.badge-dot').hide();
+    $(card).data('unread', 0);
   }
 
   $('#thread-body').hide();
