@@ -1,4 +1,8 @@
-class ContactMessageService
+class MessageService
+  def self.mark_contact_messages_read(contact:)
+    contact.messages.where(read: false).update_all(read: true)
+  end
+
   def initialize(contact:, number:, message:)
     @contact = contact
     @number = number

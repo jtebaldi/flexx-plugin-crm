@@ -65,7 +65,7 @@ module Plugins::FlexxPluginCrm
     def create_text_message
       @contact = current_site.contacts.find(params[:contact_id])
 
-      ContactMessageService.new(
+      MessageService.new(
         contact: @contact,
         number: params[:phonenumber],
         message: params[:message]

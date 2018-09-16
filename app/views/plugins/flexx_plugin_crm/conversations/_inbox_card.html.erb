@@ -1,11 +1,11 @@
 <% unless contact.blank? %>
   <% message = contact.messages.order(created_at: :desc).first %>
-  <a class="media align-items-center active" data-remote="true" href="<%= admin_conversation_path(contact.id) %>" onclick="loadConversation()">
+  <a data-unread="<%= contact.messages.unread.count %>" class="media align-items-center active" data-remote="true" href="<%= admin_conversation_path(contact.id) %>" onclick="loadConversation(this)">
     <div class="media-body">
       <div class="flexbox align-items-center">
         <strong class="title"><%= contact.print_name %></strong>
         <%= time_ago_in_words(message.created_at) %> ago
-        <span class="badge badge-lg badge-dot badge-warning"></span>
+        <% if contact.messages.unread.count > 0 %><span class="badge badge-lg badge-dot badge-warning"></span><% end %>
       </div>
       <p class="text-truncate"><%= message.message %></p>
     </div>

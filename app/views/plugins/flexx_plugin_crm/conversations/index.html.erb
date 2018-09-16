@@ -8,12 +8,14 @@
     <header class="card-header">
       <h5 class="card-title">Text Messages</h5>
       <ul class="card-controls">
-        <li><span class="badge badge-warning">2 unread</span></li>
+        <% if current_site.messages.unread.count > 0 %>
+          <li><span id="total-unread-label" data-total="<%= current_site.messages.unread.count %>" class="badge badge-warning"><%= current_site.messages.unread.count %> unread</span></li>
+        <% end %>
       </ul>
     </header>
     <div class="media-list media-list-divided media-list-hover">
 
-      <!-- 
+      <!--
       <header class="media-list-header b-0">
         <form class="lookup lookup-lg w-100 bb-1 border-light">
           <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
@@ -34,10 +36,8 @@
         </div>
       </div>
 
-      <div class="media-list-body">
-        <% @contact_ids.each do |row| %>
-          <%= render partial: 'inbox_card', locals: { contact: Plugins::FlexxPluginCrm::Contact.find_by(id: row.contact_id) } %>
-        <% end %>
+      <div id="inbox-list" class="media-list-body">
+        <%= render partial: 'inbox_list' %>
       </div>
 
     </div>
@@ -78,7 +78,7 @@
     </div>
   </div>
   <div id="thread-body" class="card card-bordered flex-column">
-    <%= render partial: 'message_thread', locals: { contact: Plugins::FlexxPluginCrm::Contact.find_by(id: @contact_ids.first.contact_id) } %>
+    <%= render partial: 'message_thread', locals: { contact: @first_contact } %>
   </div>
 </div>
 

@@ -5,4 +5,5 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
 
   scope :sent, -> { where(status: 'sent') }
   scope :received, -> { where(status: 'received') }
+  scope :unread, -> { where(status: 'received', read: false) }
 end
