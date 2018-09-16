@@ -4,7 +4,7 @@ module Plugins::FlexxPluginCrm
     skip_before_action :cama_authenticate
 
     def inbound
-        contact = Phonenumber.find_by("LENGTH(number) > 0 AND POSITION(number IN ?) > 0", number, params["From"]).try(:contact)
+        contact = Phonenumber.find_by("LENGTH(number) > 0 AND POSITION(number IN ?) > 0", params["From"]).try(:contact)
 
         Message.create(
             contact_id: contact.try(:id),
