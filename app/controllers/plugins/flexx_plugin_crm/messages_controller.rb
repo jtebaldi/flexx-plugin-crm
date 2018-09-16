@@ -7,6 +7,7 @@ module Plugins::FlexxPluginCrm
     skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
 
     def index
+      @recent_emails = Email.order(send_at: :desc).limit(5)
     end
 
     def new
