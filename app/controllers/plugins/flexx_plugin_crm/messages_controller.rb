@@ -13,17 +13,15 @@ module Plugins::FlexxPluginCrm
     end
 
     def send_email_blast
-      recipients_list = params[:recipients].gsub('___', ' ').split(',')
-
       EmailBlastService.new(
         site: current_site,
         user: current_user,
-        recipients_list: recipients_list,
+        recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]
       ).call
 
-      head :no_content
+      redirect_to action: :index
     end
 
     def create_text_message

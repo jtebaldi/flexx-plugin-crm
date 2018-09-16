@@ -1,7 +1,7 @@
 class EmailBlastService
   def initialize(site:, user:, recipients_list:, subject:, body:)
     @recipients_list = recipients_list
-    @recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
+    @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
     @user = user
     @subject = subject
@@ -9,10 +9,10 @@ class EmailBlastService
   end
 
   def call
-    emails = if @recipients.is_a?(Array)
-      @recipients.map { |r| { email: r } }
+    emails = if @email_list.is_a?(Array)
+      @email_list.map { |r| { email: r } }
     else
-      [ { email: @recipients } ]
+      [ { email: @email_list } ]
     end
 
     sg_message_id = SendgridAdapter.new.send_email(
