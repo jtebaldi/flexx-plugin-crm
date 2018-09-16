@@ -26,4 +26,5 @@ class MessageService
 
   def recipient
     @number[0] == "+" ? @number : "#{@contact.site.get_meta("flexx_crm_settings")[:country_code]}#{@number}"
+  end
 end
