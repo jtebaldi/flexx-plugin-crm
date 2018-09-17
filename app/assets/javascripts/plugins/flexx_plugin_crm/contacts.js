@@ -81,4 +81,4 @@ app.ready(function() {
   });
 
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
-})
+});

@@ -18,3 +18,20 @@ function loadConversation(card) {
   $('#loading-thread').show();
   $('#thread-body').html('');
 }
+
+function submitConversationsSendMessageForm(e) {
+  e.preventDefault();
+
+  if($('#conversations-text-message').val() == ''){
+    return false;
+  }
+
+  $('#conversations-text-message').toggleClass('disabled');
+  $('#conversations-text-button').toggleClass('disabled');
+  $('#conversations-text-spinner').toggleClass('invisible');
+  $("#conversations-send-message-form :input").prop("readonly", true);
+}
+
+app.ready(function() {
+  $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
+});
