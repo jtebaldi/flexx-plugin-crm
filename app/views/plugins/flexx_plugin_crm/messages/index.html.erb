@@ -140,13 +140,13 @@
                   <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent<span class="badge badge-pill badge-default ml-10"><%= @recent_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10"><%= @scheduled_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10"><%= @draft_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10"><%= @sent_emails.count %></span></a>
                 </li>
               </ul>
             </div>
@@ -157,7 +157,7 @@
               <h4 class="card-title"><strong>Recent</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <%= render partial: 'emails', object: @recent_emails %>
+                <%= render partial: 'emails', object: @recent_emails if @recent_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -187,29 +187,7 @@
               <h4 class="card-title"><strong>Scheduled</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 1</h5>
-                      <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday Aug 31, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Customers </span>
-
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +3 contacts </span>
-
-                      </p>
-                    </div>
-                  </a>
-
-                </div>
-
+                <%= render partial: 'emails', object: @scheduled_emails if @scheduled_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -239,19 +217,7 @@
               <h4 class="card-title"><strong>Draft</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>July 2018</strong></h5>
-
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 3</h5>
-                      <p><span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span> <small class="text-uppercase">Created</small> July 13, 10:00 am</p>
-                    </div>
-                  </a>
-
-                </div>
-
+                <%= render partial: 'emails', object: @draft_emails if @draft_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -281,43 +247,7 @@
               <h4 class="card-title"><strong>Sent</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="quickview" href="#qv-email-report">
-                    <div class="media-body">
-                      <h5>Email Subject Line 2</h5>
-                      <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>Monday Aug 13, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Prospects </span>
-
-                        <!-- List if any Tags -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-yellow"> Drop-ins </span>
-                        <span class="badge badge-yellow"> 7 Day Trial </span>
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +9 contacts </span>
-
-                      </p>
-                    </div>
-
-                    <div class="text-center d-none d-sm-block">
-                      <div data-provide="easypie" data-percent="61" data-color="#926dde" data-scale-color="transparent" data-size="100">
-                        <span class="easypie-data">
-                          <h4 class="text-purple mb-0">67</h4>
-                          <small class="text-uppercase">opened</small>
-                        </span>
-                      </div>
-                    </div>
-
-                  </a>
-
-                </div>
-
+                <%= render partial: 'emails', object: @sent_emails if @sent_emails.any? %>
               </div>
 
               <footer class="card-footer">

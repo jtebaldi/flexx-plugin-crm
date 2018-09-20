@@ -1,41 +1,22 @@
-<div class="media-list media-list-divided media-list-hover">
-  <% current_month = nil %>
-  <% emails.each do |email| %>
-    <% email_month = email.status == "draft" ? email.created_at.strftime('%B %Y') : email.send_at.strftime('%B %Y') %>
-    <% if current_month != email_month %>
+<% current_month = nil %>
+<% emails.each do |email| %>
+  <% email_month = email.status == "draft" ? email.created_at.strftime('%B %Y') : email.send_at.strftime('%B %Y') %>
+  <% if current_month != email_month %>
+    <% if current_month %>
+      </div>
+    <% end %>
+    <div class="media-list media-list-divided media-list-hover">
       <h5 class="card-title text-right text-fade"><strong><%= email_month %></strong></h5>
       <% current_month = email_month %>
     <% end %>
 
+    <% labels = recipients_to_labels(email.recipients_list) %>
     <% if email.status == "scheduled" %>
       <a class="media" data-toggle="modal" href="#modal-center">
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
-          <p class="d-none d-sm-block">
-          <span><small>To:</small></span>
-          <% labels = recipients_to_labels(email.recipients_list) %>
-          <!-- List if any Statuses -->
-          <% if labels.has_key?(:groups) %>
-            <span>&nbsp;</span>
-            <% labels[:groups].each do |group| %>
-              <span class="badge badge-prospect"><%= group %> </span>
-            <% end %>
-          <% end %>
-          <!-- List if any Tags -->
-          <% if labels.has_key?(:tags) %>
-            <span>&nbsp;</span>
-            <% labels[:tags].each do |tag| %>
-              <span class="badge badge-yellow"> <%= tag %> </span>
-            <% end %>
-          <% end %>
-          <!-- List number of other contacts -->
-          <% if labels.has_key?(:contacts) %>
-            <span>&nbsp;</span>
-            <span class="badge badge-secondary"> <%= labels[:contacts] %> </span>
-          <% end %>
-
-          </p>
+          <%= render partial: "labels", object: labels %>
         </div>
       </a>
     <% elsif email.status == "sent" %>
@@ -43,21 +24,7 @@
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
-          <p class="d-none d-sm-block">
-          <span><small>To:</small></span>
-          <!-- List if any Statuses -->
-          <span>&nbsp;</span>
-          <span class="badge badge-prospect">Prospects </span>
-
-          <!-- List if any Tags -->
-          <span>&nbsp;</span>
-          <span class="badge badge-yellow"> Drop-ins </span>
-          <span class="badge badge-yellow"> 7 Day Trial </span>
-          <!-- List number of other contacts -->
-          <span>&nbsp;</span>
-          <span class="badge badge-secondary"> +9 contacts </span>
-
-          </p>
+          <%= render partial: "labels", object: labels %>
         </div>
 
         <div class="text-center d-none d-sm-block">
@@ -77,14 +44,14 @@
           <span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span>
           <% if email.created_at == email.updated_at %>
             <small class="text-uppercase">Created</small> <%= email.created_at.strftime('%A %b %-d, %I:%M %P') %>
-          <% else %>
-            <small class="text-uppercase">Updated</small> <%= email.updated_at.strftime('%A %b %-d, %I:%M %P') %>
-          <% end %>
+        <% else %>
+          <small class="text-uppercase">Updated</small> <%= email.updated_at.strftime('%A %b %-d, %I:%M %P') %>
+      <% end %>
           </p>
         </div>
       </a>
     <% end %>
 
-  <% end %>
+<% end %>
 
 </div>

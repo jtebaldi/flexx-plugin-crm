@@ -1,8 +1,10 @@
 class MessagingToolsService
   def self.tags_and_contacts_to_emails(recipients_list:)
-    recipients = recipients_list.gsub('___', ' ').split(',')
-
     result = Array.new
+
+    return result if recipients_list.nil?
+
+    recipients = recipients_list.gsub('___', ' ').split(',')
 
     if recipients.is_a?(String)
       find_email(recipient: recipients)

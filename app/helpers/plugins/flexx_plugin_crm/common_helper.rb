@@ -13,12 +13,14 @@ module Plugins::FlexxPluginCrm::CommonHelper
   end
 
   def recipients_to_labels(recipients_list)
+    result = Hash.new { |h, k| h[k] = Array.new }
+
+    return result if recipients_list.nil?
+
     recipients = recipients_list.gsub('___', ' ').split(',')
 
     groups = ['Leads', 'Prospects', 'Customers']
     contacts = 0
-
-    result = Hash.new { |h, k| h[k] = Array.new }
 
     recipients.uniq.each do |r|
       if r =~ URI::MailTo::EMAIL_REGEXP
