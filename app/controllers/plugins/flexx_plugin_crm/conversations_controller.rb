@@ -3,7 +3,7 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @contact_ids = Message.all.select(:contact_id).
+      @contact_ids = current_site.messages.select(:contact_id).
         where.not(contact_id: nil).
         group(:contact_id).
         order("MAX(created_at) DESC")

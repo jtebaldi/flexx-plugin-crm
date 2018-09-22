@@ -43,6 +43,8 @@ Rails.application.routes.draw do
         resources :conversations, controller: 'plugins/flexx_plugin_crm/conversations', only: [:index, :show, :create] do
         end
 
+        resources :stocks, controller: 'plugins/flexx_plugin_crm/stocks'
+
         resources :webhooks, controller: 'plugins/flexx_plugin_crm/webhooks', only: [] do
           collection do
             post 'inbound'

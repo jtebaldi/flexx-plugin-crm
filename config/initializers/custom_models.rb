@@ -10,6 +10,8 @@ Rails.application.config.to_prepare do
     has_many :automated_campaign_jobs, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignJob'
     has_many :emails, class_name: 'Plugins::FlexxPluginCrm::Email'
     has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
+    has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber'
+    has_many :stocks, class_name: 'Plugins::FlexxPluginCrm::Stock'
   end
 
   Plugins::CamaContactForm::CamaContactForm.class_eval do
