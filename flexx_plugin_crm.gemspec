@@ -18,8 +18,10 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "aasm", "~> 4.12.3"
+  s.add_dependency "acts-as-taggable-on", "~> 5.0"
+  s.add_dependency "camaleon_cms", "~> 2.4.3.8"
+  s.add_dependency "cama_contact_form", "~> 0.0.23"
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
-  s.add_dependency "acts-as-taggable-on", "~> 5.0"
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
 end
