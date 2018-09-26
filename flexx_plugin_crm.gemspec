@@ -15,13 +15,22 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  # s.test_files = Dir["test/**/*"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "aasm", "~> 4.12.3"
   s.add_dependency "acts-as-taggable-on", "~> 5.0"
-  s.add_dependency "camaleon_cms", "~> 2.4.3.8"
   s.add_dependency "cama_contact_form", "~> 0.0.23"
+  s.add_dependency "camaleon_cms", "~> 2.4.3.8"
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
+  s.add_dependency 'sidekiq'
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
+
+  s.add_development_dependency 'pg', '~>0.15'
+  s.add_development_dependency 'pry-byebug'
+  s.add_development_dependency 'rspec-activemodel-mocks'
+  s.add_development_dependency 'rspec-rails', '~>3.8'
+  s.add_development_dependency 'rspec-sidekiq'
+  # s.add_development_dependency 'sqlite3'
 end
