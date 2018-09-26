@@ -53,19 +53,19 @@ module Plugins::FlexxPluginCrm
           case p[:event]
           when 'open'
             email.update(opened_count: email.opened_count + 1) if recipient.opened_at.nil?
-            recipient.update(opened_at: Time.now)
+            recipient.opened_at = Time.now
           when 'click'
             email.update(clicked_count: email.clicked_count + 1) if recipient.clicked_at.nil?
-            recipient.update(clicked_at: Time.now)
+            recipient.clicked_at = Time.now
           when 'unsubscribe'
             email.update(unsubscribed_count: email.unsubscribed_count + 1) if recipient.unsubscribed_at.nil?
-            recipient.update(unsubscribed_at: Time.now)
+            recipient.unsubscribed_at = Time.now
           when 'bounce'
             email.update(bounced_count: email.bounced_count + 1)
-            recipient.update(status: 'bounced')
-          else
-            recipient.update(status: p[:event]) if recipient
           end
+
+          recipient.status = p[:event]
+          recipient.save
         end
       end
 
