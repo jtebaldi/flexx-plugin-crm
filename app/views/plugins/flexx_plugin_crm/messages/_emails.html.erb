@@ -24,7 +24,10 @@
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
-          <%= render partial: "labels", object: labels %>
+          <p class="d-none d-sm-block">
+            <span><small>To:</small></span>
+            <%= render partial: "labels", object: labels %>
+          </p>
         </div>
 
         <div class="text-center d-none d-sm-block">
