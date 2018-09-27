@@ -1,4 +1,5 @@
 if Rails.env.test?
+  require 'figaro'
   require 'camaleon_cms'
   require 'acts-as-taggable-on'
 end

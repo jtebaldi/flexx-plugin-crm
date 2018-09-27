@@ -27,10 +27,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'sidekiq'
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
 
+  s.add_development_dependency 'figaro'
   s.add_development_dependency 'pg', '~>0.15'
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rspec-activemodel-mocks'
   s.add_development_dependency 'rspec-rails', '~>3.8'
   s.add_development_dependency 'rspec-sidekiq'
   # s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'vcr'
+  s.add_development_dependency 'webmock'
 end
