@@ -23,102 +23,14 @@
     <div class="text-center" data-shuffle="filter">
       <button class="btn btn-w-sm btn-secondary active" data-shuffle="button">All</button>
       <button class="btn btn-w-sm btn-secondary" data-shuffle="button" data-group="snippet">Snippets</button>
-      <button class="btn btn-w-sm btn-secondary" data-shuffle="button" data-group="rich">Rich Text</button>
+      <button class="btn btn-w-sm btn-secondary" data-shuffle="button" data-group="rich_text">Rich Text</button>
       <button class="btn btn-w-sm btn-secondary" data-shuffle="button" data-group="html">HTML</button>
     </div>
 
     <br><br>
 
-    <div class="row" data-shuffle="list">
-
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="snippet">
-        <div class="card hover-shadow-4">
-          <div class="card-body">
-            <div class="flexbox align-items-center">
-              <label class="toggler toggler-yellow fs-16">
-                <input type="checkbox" checked>
-                <i class="fa fa-star"></i>
-              </label>
-            </div>
-            <div class="text-center pt-3 pb-3">
-              <a href="#">
-                <h5 class="mt-3 mb-0">Message Name</h5>
-                <span class="text-light">Message type</span>
-              </a>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <p>Created: {Created date} by {User}</p>
-          </footer>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="rich">
-        <div class="card hover-shadow-4">
-          <div class="card-body">
-            <div class="flexbox align-items-center">
-              <label class="toggler toggler-yellow fs-16">
-                <input type="checkbox">
-                <i class="fa fa-star"></i>
-              </label>
-            </div>
-            <div class="text-center pt-3 pb-3">
-              <a href="#qv-stock-rich-text" data-toggle="quickview">
-                <h5 class="mt-3 mb-0">Welcome Email</h5>
-                <span class="text-light">Rich Text</span>
-              </a>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <p>Created: Aug 10, 2018 by Jim Thornton</p>
-          </footer>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="snippet">
-        <div class="card hover-shadow-4">
-          <div class="card-body">
-            <div class="flexbox align-items-center">
-              <label class="toggler toggler-yellow fs-16">
-                <input type="checkbox">
-                <i class="fa fa-star"></i>
-              </label>
-            </div>
-            <div class="text-center pt-3 pb-3">
-              <a data-toggle="quickview" data-target="#qv-snippet">
-                <h5 class="mt-3 mb-0">Gym directions</h5>
-                <span class="text-light">Snippet</span>
-              </a>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <p>Created: Aug 12, 2018 by Joe Shmo</p>
-          </footer>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="html">
-        <div class="card hover-shadow-4">
-          <div class="card-body">
-            <div class="flexbox align-items-center">
-              <label class="toggler toggler-yellow fs-16">
-                <input type="checkbox">
-                <i class="fa fa-star"></i>
-              </label>
-            </div>
-            <div class="text-center pt-3 pb-3">
-              <a href="#qv-stock-html" data-toggle="quickview">
-                <h5 class="mt-3 mb-0">7-Day Trial</h5>
-                <span class="text-light">HTML</span>
-              </a>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <p>Created: Jul 8, 2018 by flexx.</p>
-          </footer>
-        </div>
-      </div>
-
+    <div id="stock-list-panel" class="row" data-shuffle="list">
+      <%= render partial: 'card_list', locals: { stocks: @stocks } %>
     </div>
   </div>
 </div>
@@ -138,8 +50,8 @@
       <div class="modal-body">
         <p>Choose a message type:</p>
         <p class="text-center">
-          <button class="btn btn-w-md btn-multiline btn-primary" data-toggle="quickview" data-target="#qv-text-stock"  data-dismiss="modal"><i class="ti-notepad fs-20"></i><br>Snippet</button>
-          <button class="btn btn-w-md btn-multiline btn-primary" data-toggle="quickview" data-target="#qv-new-rich-text"  data-dismiss="modal"><i class="ti-layout-cta-left fs-20"></i><br>Rich Text</button>
+          <button class="btn btn-w-md btn-multiline btn-primary" data-toggle="quickview" data-target="#qv-stock" data-url="<%= new_admin_stock_path(stock_type: 'snippet') %>" data-dismiss="modal"><i class="ti-notepad fs-20"></i><br>Snippet</button>
+          <button class="btn btn-w-md btn-multiline btn-primary" data-toggle="quickview" data-target="#qv-stock" data-url="<%= new_admin_stock_path(stock_type: 'rich_text') %>" data-dismiss="modal"><i class="ti-layout-cta-left fs-20"></i><br>Rich Text</button>
           <button class="btn btn-w-md btn-multiline btn-primary"><i class="ti-layout-accordion-separated fs-20"></i><br>HTML</button>
         </p>
       </div>
@@ -150,9 +62,5 @@
   </div>
 </div>
 
-<!-- Quickview: Text Snippet -->
-<%= render partial: 'text_snippet', locals: { text_snippet: @new_text_snippet } %>
-
-
-<!-- Quickview: Create new Rich Text Message -->
-<%= render partial: 'rich_text_snippet', locals: { text_snippet: @new_rich_text_snippet } %>
+<!-- Quickview: Snippet -->
+<div id="qv-stock" class="quickview quickview-xxl backdrop-dark"></div>

@@ -1,22 +1,26 @@
-function saveTextStock() {
-  if ($('#text-stock-form')[0].checkValidity()) {
-    $('#text-stock-save').toggleClass('disabled');
-    $('#text-stock-cancel').toggleClass('disabled');
-    $('#text-stock-spinner').toggleClass('invisible');
+function saveSnippetStock() {
+  if ($('#snippet-stock-form')[0].checkValidity()) {
+    $('#snippet-stock-save').toggleClass('disabled');
+    $('#snippet-stock-cancel').toggleClass('disabled');
+    $('#snippet-stock-spinner').toggleClass('invisible');
   }
 
-  $('#text-stock-form').submit();
+  $('#snippet-stock-form').submit();
 }
 
-function closeTextStock(button) {
-  $('#text-stock-form')[0].reset();
+function closeSnippetStock(button) {
+  $('#snippet-stock-form')[0].reset();
   quickview.close($(button).closest('.quickview'));
 }
 
 app.ready(function() {
-  ClassicEditor
+  var observer = new MutationObserver(function () {
+    ClassicEditor
     .create(document.querySelector('.editor'))
     .catch(function(error){
       console.error(error);
     });
+  });
+
+  observer.observe(document.getElementById('qv-stock'), { childList: true });
 });

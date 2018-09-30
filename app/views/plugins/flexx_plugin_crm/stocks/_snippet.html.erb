@@ -1,0 +1,69 @@
+<header class="quickview-header">
+  <p class="quickview-title lead"><%= stock.persisted? ? 'Edit' : 'New' %> Snippet</p>
+  <span class="close"><i class="ti-close"></i></span>
+</header>
+
+<div class="quickview-body">
+  <div class="card-body">
+    <div class="card form-type-combine">
+      <% form_path = stock.persisted? ? admin_stock_path(id: stock.id, format: :js) : admin_stocks_path(format: :js) %>
+      <% form_method = stock.persisted? ? :patch : :post %>
+      <%= form_tag form_path, method: form_method, remote: true, authenticity_token: true, id: 'snippet-stock-form', class: 'form-type-combine', style: 'width: 100%', data: { provide: 'validation' } do %>
+        <input type="hidden" name="stock[stock_type]" value="snippet">
+        <div class="card-body">
+
+          <h6 class="text-light fw-300">Details</h6>
+          <div class="form-groups-attached">
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Type</label>
+                <p class="form-control-plaintext">Snippet</p>
+              </div>
+
+              <div class="form-group col-6 text-center pt-20">
+                <label>Important? </label>
+                <label class="toggler toggler-yellow fs-16" style="cursor:pointer;">
+                  <%= check_box_tag 'stock[starred]', true, stock.starred %>
+                  <i class="fa fa-star"></i>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group require">
+              <label>Snippet Name</label>
+              <input class="form-control" type="text" name="stock[name]" value="<%= stock.name %>" required>
+              <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="form-group require">
+              <label>Snippet Code</label>
+              <input class="form-control" type="text" name="stock[label]" value="<%= stock.label %>" required>
+              <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="textarea">Description</label>
+              <small>Optional</small>
+              <textarea class="form-control" rows="3" name="stock[description]"><%= stock.description %></textarea>
+            </div>
+
+          </div>
+
+          <br>
+          <h6 class="text-light fw-300">Snippet Contents</h6>
+          <div class="form-group">
+              <textarea class="form-control" rows="10" name="stock[contents]" required><%= stock.contents %></textarea>
+              <div class="invalid-feedback"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+<footer class="quickview-footer flex-row-reverse">
+  <div class="spinner-circle-shadow invisible" id="snippet-stock-spinner"></div>
+  <button class="btn btn-success" onclick="saveSnippetStock()" id="snippet-stock-save">Save</button>
+  <button class="btn btn-default" onclick="closeSnippetStock(this)" id="snippet-stock-cancel" >Cancel</button>
+</footer>
