@@ -17,7 +17,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def create
-      current_site.stocks.create!(stock_params.merge(created_by: current_user.id))
+      @stock = current_site.stocks.create!(stock_params.merge(created_by: current_user.id))
 
       @stocks = current_site.stocks
     end
@@ -29,9 +29,9 @@ module Plugins::FlexxPluginCrm
     end
 
     def update
-      stock = current_site.stocks.find(params[:id])
+      @stock = current_site.stocks.find(params[:id])
 
-      stock.update(stock_params.merge(updated_by: current_user.id))
+      @stock.update(stock_params.merge(updated_by: current_user.id))
 
       @stocks = current_site.stocks
     end
@@ -39,7 +39,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def stock_params
-      params.require(:stock).permit(:id, :stock_type, :name, :label, :description, :contents)
+      params.require(:stock).permit(:id, :stock_type, :name, :label, :description, :contents, metadata: [:subject])
     end
   end
 end

@@ -3,6 +3,10 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
+<% content_for :css do %>
+  <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/stocks', media: 'all' %>
+<% end %>
+
 <header class="header">
   <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
   <div class="header-info">
