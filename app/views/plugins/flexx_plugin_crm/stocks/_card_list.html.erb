@@ -1,0 +1,24 @@
+<% stocks.each do |stock| %>
+  <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="<%= stock.stock_type %>">
+    <div class="card hover-shadow-4">
+      <div class="card-body">
+        <div class="flexbox align-items-center">
+          <label class="toggler toggler-yellow fs-16">
+            <% if stock.starred? %>
+              <i class="fa fa-star"></i>
+            <% end %>
+          </label>
+        </div>
+        <div class="text-center pt-3 pb-3">
+          <a data-toggle="quickview" href="#qv-stock" data-url="<%= admin_stock_path(stock) %>">
+            <h5 class="mt-3 mb-0"><%= stock.name %></h5>
+            <span class="text-light"><%= stock.stock_type.humanize %></span>
+          </a>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <p>Created: <%= stock.created_at.strftime('%b %d, %Y') %> by <%= stock.created_by_user.print_name %></p>
+      </footer>
+    </div>
+  </div>
+<% end %>
