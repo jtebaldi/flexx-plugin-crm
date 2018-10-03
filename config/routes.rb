@@ -35,8 +35,11 @@ Rails.application.routes.draw do
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index, :new] do
           collection do
-            post :send_email_blast
-            post :create_text_message
+            post :inbound
+            post :status
+            post :confirmation
+            post :create_email_blast
+            post :create_text_blast
           end
         end
 

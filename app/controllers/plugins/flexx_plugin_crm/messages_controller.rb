@@ -16,7 +16,7 @@ module Plugins::FlexxPluginCrm
     def new
     end
 
-    def send_email_blast
+    def create_email_blast
       scheduled = params[:timingOptions2] == '2'
       scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
 
@@ -33,7 +33,7 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :index
     end
 
-    def create_text_message
+    def create_text_blast
       @contact = current_site.contacts.find(params[:contact_id])
 
       MessageService.new(
