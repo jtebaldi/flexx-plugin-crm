@@ -7,10 +7,10 @@ module Plugins::FlexxPluginCrm
     skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
 
     def index
-      @recent_emails = Email.where(created_by: current_user.id, status: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_emails = Email.where(created_by: current_user.id, status: 'scheduled').order(send_at: :desc)
-      @sent_emails = Email.where(created_by: current_user.id, status: 'sent').order(send_at: :desc)
-      @draft_emails = Email.where(created_by: current_user.id, status: 'draft').order(updated_at: :desc)
+      @recent_emails = current_site.emails.where(status: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
+      @scheduled_emails = current_site.emails.where(status: 'scheduled').order(send_at: :desc)
+      @sent_emails = current_site.emails.where(status: 'sent').order(send_at: :desc)
+      @draft_emails = current_site.emails.where(status: 'draft').order(updated_at: :desc)
     end
 
     def new
