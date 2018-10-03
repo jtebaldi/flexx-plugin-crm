@@ -23,7 +23,6 @@ module Plugins::FlexxPluginCrm
       EmailBlastService.new(
         site: current_site,
         user: current_user,
-        scheduled: scheduled,
         scheduled_at: scheduled_at,
         recipients_list: params[:recipients],
         subject: params[:subject],

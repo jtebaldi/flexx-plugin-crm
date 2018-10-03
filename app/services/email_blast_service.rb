@@ -1,10 +1,9 @@
 class EmailBlastService
-  def initialize(site:, user:, scheduled:, scheduled_at:, recipients_list:, subject:, body:)
+  def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
     @recipients_list = recipients_list
     @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
     @user = user
-    @scheduled = scheduled
     @scheduled_at = scheduled_at
     @subject = subject
     @body = body
@@ -13,7 +12,7 @@ class EmailBlastService
   def call
     emails = Array.new
 
-    if @scheduled
+    if @scheduled_at
       send_at = Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p')
     else
       emails = if @email_list.is_a?(Array)
@@ -38,8 +37,8 @@ class EmailBlastService
       subject: @subject,
       body: @body,
       from: 'contact@flexx.co',
-      status: @scheduled ? 'scheduled' : 'sent',
-      send_at: @scheduled ? send_at : Time.now,
+      status: @scheduled_at ? 'scheduled' : 'sent',
+      send_at: @scheduled_at ? send_at : Time.now,
       recipients_count: emails.count,
       created_by: @user.id
     )
