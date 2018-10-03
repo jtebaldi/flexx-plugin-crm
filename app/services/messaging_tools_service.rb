@@ -6,11 +6,7 @@ class MessagingToolsService
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
-    if recipients.is_a?(String)
-      find_email(recipient: recipients)
-    elsif recipients.is_a?(Array)
-      recipients.uniq.each{ |r| result.concat(find_email(recipient: r)) }
-    end
+    recipients.uniq.each{ |r| result.concat(find_email(recipient: r)) }
 
     result.uniq
   end
