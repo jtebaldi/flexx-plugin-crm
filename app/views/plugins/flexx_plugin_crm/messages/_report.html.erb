@@ -32,7 +32,7 @@
           <div class="col-12">
             <h5 class="card-title">
               <span class="pr-10 fw-400">Sent to:</span>
-              <%= render partial: "labels", object: recipients_to_labels(email.recipients_list) %>
+              <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
             </h5>
           </div>
 

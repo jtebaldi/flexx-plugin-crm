@@ -10,13 +10,15 @@
       <% current_month = email_month %>
     <% end %>
 
-    <% labels = recipients_to_labels(email.recipients_list) %>
     <% if email.status == "scheduled" %>
-      <a class="media" data-toggle="modal" href="#modal-center">
+      <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
-          <%= render partial: "labels", object: labels %>
+          <p class="d-none d-sm-block">
+            <span><small>To:</small></span>
+            <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
+          </p>
         </div>
       </a>
     <% elsif email.status == "sent" %>
@@ -26,7 +28,7 @@
           <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
-            <%= render partial: "labels", object: labels %>
+            <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
           </p>
         </div>
 
@@ -40,7 +42,7 @@
         </div>
       </a>
     <% elsif email.status == "draft" %>
-      <a class="media" data-toggle="modal" href="#modal-center">
+      <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p>

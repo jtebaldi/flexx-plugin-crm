@@ -1,6 +1,7 @@
 class EmailBlastService
   def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
     @recipients_list = recipients_list
+    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
     @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
     @user = user
@@ -34,6 +35,7 @@ class EmailBlastService
     message = @site.emails.create(
       sg_message_id: sg_message_id,
       recipients_list: @recipients_list,
+      recipients_label: @recipients_label,
       subject: @subject,
       body: @body,
       from: 'contact@flexx.co',
