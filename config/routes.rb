@@ -53,8 +53,8 @@ Rails.application.routes.draw do
             post 'inbound'
             post 'status'
             post 'confirmation'
-            post 'sg_events'
-            post 'sg_parse'
+            post 'sendgrid_events'
+            post 'sendgrid_parse'
           end
         end
       end
