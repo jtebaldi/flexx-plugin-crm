@@ -4,7 +4,7 @@ class SendMessageWorker
   include Sidekiq::Worker
 
   def perform(id)
-    msg = Message.find id
-    MessagesJobService.send_message msg
+    msg = Plugins::FlexxPluginCrm::Message.find id
+    MessagesJobService.send_sms msg
   end
 end

@@ -8,7 +8,8 @@ module FlexxPluginCrm
 
   class Engine < ::Rails::Engine
     config.generators do |g|
-      g.test_framework :rspec
+      g.test_framework :rspec, fixture: true
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
 
     config.assets.paths += [FlexxPluginCrm::ASSET_PATH]

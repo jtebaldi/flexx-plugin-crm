@@ -9,8 +9,12 @@ describe 'rake messages_job:run', type: :task do
     Rake.application.rake_require 'tasks/messages_job' 
   end
 
-  it 'runs gracefully with no message', stub_message_model: { to_send: nil } do
+  before :each do
+    @message = create :message_to_send
+  end
+
+  it 'runs gracefully with no message' do
     expect { task.execute }.not_to raise_error
-    expect(SendMessageWorker).to have_enqueued_sidekiq_job 1
+    expect(SendMessageWorker).to have_enqueued_sidekiq_job @message.id
   end
 end

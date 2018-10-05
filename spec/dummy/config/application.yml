@@ -10,8 +10,8 @@
 #   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
 
-sendgrid_api_key: sample_key
+SENDGRID_API_KEY: sample_key
 
-twilio_from: +12345678901
-twilio_account_sid: sample_sid
-twilio_auth_token: sample_token
+TWILIO_FROM: +12345678901
+TWILIO_ACCOUNT_SID: sample_sid
+TWILIO_ACCOUNT_TOKEN: sample_token

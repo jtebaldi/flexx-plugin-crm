@@ -1,10 +1,12 @@
 require 'rails_helper'
 
-describe MessagesJobService, stub_message_model: { find: 2 } do
+describe MessagesJobService do
   it 'send sms message' do
-    VCR.use_cassette 'twilo_sms' do
-      MessagesJobService.send_message Message.find 2
-      expect(Message.find(2).status).to eq :sent
+    message = create :message
+    VCR.use_cassette 'twilio_sms' do
+      MessagesJobService.send_sms message
+      message.reload
+      expect(message.status).to eq 'sent'
     end
   end
 end

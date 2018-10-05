@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180922010737) do
+ActiveRecord::Schema.define(version: 20180930040928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,7 +255,7 @@ ActiveRecord::Schema.define(version: 20180922010737) do
   create_table "stocks", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "stock_type",               null: false
-    t.string   "label",                    null: false
+    t.string   "label"
     t.string   "description"
     t.text     "contents",                 null: false
     t.json     "metadata",    default: {}
@@ -263,6 +263,8 @@ ActiveRecord::Schema.define(version: 20180922010737) do
     t.integer  "updated_by"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.boolean  "starred"
+    t.string   "name",                     null: false
   end
 
   add_index "stocks", ["label"], name: "index_stocks_on_label", using: :btree

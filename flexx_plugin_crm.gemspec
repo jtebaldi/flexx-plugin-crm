@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-  # s.test_files = Dir["test/**/*"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "aasm", "~> 4.12.3"
@@ -27,6 +26,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'sidekiq'
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
 
+  s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'factory_bot_rails'
   s.add_development_dependency 'figaro'
   s.add_development_dependency 'pg', '~>0.15'
   s.add_development_dependency 'pry-byebug'
