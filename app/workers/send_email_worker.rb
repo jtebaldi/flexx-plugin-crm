@@ -1,3 +1,5 @@
+require 'sidekiq'
+
 class SendEmailWorker
   include Sidekiq::Worker
 
