@@ -7,23 +7,32 @@ module Plugins::FlexxPluginCrm
     skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
 
     def index
+      @recent_emails = current_site.emails.where(status: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
+      @scheduled_emails = current_site.emails.where(status: 'scheduled').order(send_at: :desc)
+      @sent_emails = current_site.emails.where(status: 'sent').order(send_at: :desc)
+      @draft_emails = current_site.emails.where(status: 'draft').order(updated_at: :desc)
     end
 
-    def send_email_blast
-      recipients_list = params[:recipients].gsub('___', ' ').split(',')
-      recipients = MessagingToolsService.tags_and_contacts_to_emails(recipients: recipients_list)
+    def new
+    end
+
+    def create_email_blast
+      scheduled = params[:timingOptions2] == '2'
+      scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
 
       EmailBlastService.new(
         site: current_site,
-        recipients: recipients,
+        user: current_user,
+        scheduled_at: scheduled_at,
+        recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]
       ).call
 
-      head :no_content
+      redirect_to action: :index
     end
 
-    def create_text_message
+    def create_text_blast
       @contact = current_site.contacts.find(params[:contact_id])
 
       MessageService.new(

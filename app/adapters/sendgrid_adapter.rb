@@ -60,7 +60,9 @@ class SendgridAdapter
         subscription_tracking: {
           enable: true,
           html: "If you'd like to unsubscribe and stop receiving these emails <% click here %>."
-        }
+        },
+        click_tracking: { enable: true },
+        open_tracking: { enable: true }
       }
     }
 
@@ -68,7 +70,11 @@ class SendgridAdapter
 
     response = sg.client.mail._("send").post(request_body: params)
 
-    response.headers["x-message-id"][0] if (200..299).include?(response.status_code.to_i)
+    if (200..299).include?(response.status_code.to_i)
+      response.headers["x-message-id"][0]
+    else
+      raise response.body
+    end
   end
 
   private

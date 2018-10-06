@@ -1,0 +1,20 @@
+<!-- List if any Statuses -->
+<% if labels.has_key?('groups') %>
+  <span>&nbsp;</span>
+  <% labels['groups'].each do |group| %>
+    <span class="badge badge-prospect"><%= group %> </span>
+  <% end %>
+<% end %>
+<!-- List if any Tags -->
+<% if labels.has_key?('tags') %>
+  <span>&nbsp;</span>
+  <% labels['tags'].each do |tag| %>
+    <span class="badge badge-yellow"> <%= tag %> </span>
+  <% end %>
+<% end %>
+<!-- List number of other contacts -->
+<% if labels.has_key?('contacts') %>
+  <span>&nbsp;</span>
+  <span class="badge badge-secondary"> <%= labels['contacts'] %> </span>
+<% end %>
+

@@ -1,14 +1,41 @@
 class MessagingToolsService
-  def self.tags_and_contacts_to_emails(recipients:)
+  def self.tags_and_contacts_to_emails(recipients_list:)
     result = Array.new
 
-    if recipients.is_a?(String)
-      find_email(recipient: recipients)
-    elsif recipients.is_a?(Array)
-      recipients.uniq.each{ |r| result.concat(find_email(recipient: r)) }
-    end
+    return result if recipients_list.nil?
+
+    recipients = recipients_list.gsub('___', ' ').split(',')
+
+    recipients.uniq.each{ |r| result.concat(find_email(recipient: r)) }
 
     result.uniq
+  end
+
+  def self.recipients_to_labels(recipients_list:)
+    result = Hash.new { |h, k| h[k] = Array.new }
+
+    return result if recipients_list.nil?
+
+    recipients = recipients_list.gsub('___', ' ').split(',')
+
+    groups = ['Leads', 'Prospects', 'Customers']
+    contacts = 0
+
+    recipients.uniq.each do |r|
+      if r =~ URI::MailTo::EMAIL_REGEXP
+        contacts += 1
+      elsif r.to_i > 0
+        contacts += 1
+      elsif groups.include? r
+        result[:groups].push(r)
+      else
+        result[:tags].push(r)
+      end
+    end
+
+    result[:contacts] = "#{result.any? ? '+' : ''}#{contacts} #{'contact'.pluralize(contacts)}" if contacts > 0
+
+    result
   end
 
   private_class_method def self.find_email(recipient:)

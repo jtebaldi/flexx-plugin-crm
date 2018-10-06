@@ -41,13 +41,14 @@ module Plugins::FlexxPluginCrm
       head :no_content
     end
 
-    def sg_events
-      params[:_json].each do |p|
-        index = p[:sg_message_id].index('.filter')
-        message_id = p[:sg_message_id][0, index]
+    def sendgrid_events
+      SendgridEventsService.updateStatus(params)
 
-        logger.debug "Message #{message_id} to #{p[:email]} - #{p[:event]}"
-      end
+      head :no_content
+    end
+
+    def sendgrid_parse
+      SendgridParseService.saveEmail(params)
 
       head :no_content
     end

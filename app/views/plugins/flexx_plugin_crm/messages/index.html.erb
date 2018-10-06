@@ -119,7 +119,7 @@
         </button>
 
         <ul class="fab-buttons nav">
-          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW EMAIL BLAST" href="#"><i class="ti-email"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW EMAIL BLAST" href='<%= new_admin_message_path() %>'><i class="ti-email"></i></a></li>
           <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW SMS BLAST" href="#"><i class="ti-comment-alt"></i></a></li>
         </ul>
       </div>
@@ -137,16 +137,16 @@
             <div class="card">
               <ul class="nav nav-lg nav-pills flex-column">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent<span class="badge badge-pill badge-default ml-10">3</span></a>                  
+                  <a class="nav-link active" href="#tab-email-recent" data-toggle="tab">Recent<span class="badge badge-pill badge-default ml-10"><%= @recent_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10"><%= @scheduled_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10"><%= @draft_emails.count %></span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10">1</span></a>
+                  <a class="nav-link" href="#tab-email-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10"><%= @sent_emails.count %></span></a>
                 </li>
               </ul>
             </div>
@@ -157,73 +157,7 @@
               <h4 class="card-title"><strong>Recent</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 1</h5>
-                      <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday Aug 31, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Customers </span>
-                
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +3 contacts </span>
-
-                      </p>
-                    </div>
-                  </a>
-
-                  <a class="media" data-toggle="quickview" href="#qv-email-report">
-                    <div class="media-body">
-                      <h5>Email Subject Line 2</h5>
-                      <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>Monday Aug 13, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Prospects </span>
-                        
-                        <!-- List if any Tags -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-yellow"> Drop-ins </span>
-                        <span class="badge badge-yellow"> 7 Day Trial </span>
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +9 contacts </span>
-
-                      </p>
-                    </div>
-
-                    <div class="text-center d-none d-sm-block">
-                      <div data-provide="easypie" data-percent="61" data-color="#926dde" data-scale-color="transparent" data-size="100">
-                        <span class="easypie-data">
-                          <h4 class="text-purple mb-0">67</h4>
-                          <small class="text-uppercase">opened</small>
-                        </span>
-                      </div>
-                    </div>
-
-                  </a>                  
-
-                </div>
-                <h5 class="card-title text-right text-fade"><strong>July 2018</strong></h5>
-                
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 3</h5>
-                      <p><span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span> <small class="text-uppercase">Created</small> July 13, 10:00 am</p>
-                    </div>
-                  </a>  
-                
-                </div>
-
+                <%= render partial: 'emails', object: @recent_emails if @recent_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -253,29 +187,7 @@
               <h4 class="card-title"><strong>Scheduled</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 1</h5>
-                      <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday Aug 31, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Customers </span>
-                
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +3 contacts </span>
-
-                      </p>
-                    </div>
-                  </a>                
-
-                </div>
-
+                <%= render partial: 'emails', object: @scheduled_emails if @scheduled_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -304,20 +216,8 @@
             <div class="card form-type-material tab-pane fade" id="tab-email-draft">
               <h4 class="card-title"><strong>Draft</strong> Email Blasts</h4>
 
-              <div class="card-body">                
-                <h5 class="card-title text-right text-fade"><strong>July 2018</strong></h5>
-                
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="modal" href="#modal-center">
-                    <div class="media-body">
-                      <h5>Email Subject Line 3</h5>
-                      <p><span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span> <small class="text-uppercase">Created</small> July 13, 10:00 am</p>
-                    </div>
-                  </a>  
-                
-                </div>
-
+              <div class="card-body">
+                <%= render partial: 'emails', object: @draft_emails if @draft_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -347,43 +247,7 @@
               <h4 class="card-title"><strong>Sent</strong> Email Blasts</h4>
 
               <div class="card-body">
-                <h5 class="card-title text-right text-fade"><strong>August 2018</strong></h5>
-                <div class="media-list media-list-divided media-list-hover">
-
-                  <a class="media" data-toggle="quickview" href="#qv-email-report">
-                    <div class="media-body">
-                      <h5>Email Subject Line 2</h5>
-                      <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>Monday Aug 13, 10:00 am</p>
-                      <p class="d-none d-sm-block">
-                        <span><small>To:</small></span>
-                        <!-- List if any Statuses -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-prospect">Prospects </span>
-                        
-                        <!-- List if any Tags -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-yellow"> Drop-ins </span>
-                        <span class="badge badge-yellow"> 7 Day Trial </span>
-                        <!-- List number of other contacts -->
-                        <span>&nbsp;</span>
-                        <span class="badge badge-secondary"> +9 contacts </span>
-
-                      </p>
-                    </div>
-
-                    <div class="text-center d-none d-sm-block">
-                      <div data-provide="easypie" data-percent="61" data-color="#926dde" data-scale-color="transparent" data-size="100">
-                        <span class="easypie-data">
-                          <h4 class="text-purple mb-0">67</h4>
-                          <small class="text-uppercase">opened</small>
-                        </span>
-                      </div>
-                    </div>
-
-                  </a>                 
-
-                </div>
-
+                <%= render partial: 'emails', object: @sent_emails if @sent_emails.any? %>
               </div>
 
               <footer class="card-footer">
@@ -418,7 +282,7 @@
     </div>
 
     <div class="tab-pane fade" id="tab-new-email">
-      <%= form_tag send_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', name: 'newEmailBlast', class: 'card form-type-combine' do %>
+      <%= form_tag create_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', name: 'newEmailBlast', class: 'card form-type-combine' do %>
         <input type="hidden" name="recipients" id="recipientsHidden">
         <h4 class="card-title">New <strong>email blast</strong></h4>
         <div class="card-body">
@@ -546,196 +410,7 @@
 
 <!-- Quickviews and Modals -->
 
-<div id="qv-email-report" class="quickview quickview-xxl backdrop-dark" data-fullscreen-on-mobile>
-  <header class="quickview-header">
-    <p class="quickview-title lead"><strong>Email</strong> Report</p>
-    <span class="close"><i class="ti-close"></i></span>
-  </header>
-
-  <div class="quickview-body">
-    <div class="row m-0 bb-1">
-      <div class="col-sm-6 p-0 bg-success">
-        <p class="mb-0 text-center py-10 px-15 text-white text-uppercase fs-16"><strong>Sent</strong></p>
-      </div>
-      <div class="col-sm-6">
-        <p class="mb-0 text-center py-10 px-15">Date: <strong>Mon. Aug 20, 2018 03:32 pm</strong></p>
-      </div>
-    </div>
-
-    <ul class="nav nav-pills nav-justified">
-      <li class="nav-item">
-        <a class="nav-link py-10 active" data-toggle="tab" href="#tab-email-report-overview">Overview</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link py-10" data-toggle="tab" href="#tab-email-report-message">Message</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link py-10" data-toggle="tab" href="#tab-email-report-recipients">Recipients</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane fade active show" id="tab-email-report-overview">
-        <div class="row m-0">
-          <div class="col-12">
-            <h5 class="card-title">
-              <span class="pr-10 fw-400">Sent to:</span>
-              <!-- List if any Statuses -->
-              <span class="badge badge-prospect">Prospects </span>
-              
-              <!-- List if any Tags -->
-              <span>&nbsp;</span>
-              <span class="badge badge-yellow"> Drop-ins </span>
-              <span class="badge badge-yellow"> 7 Day Trial </span>
-              <!-- List number of other contacts -->
-              <span>&nbsp;</span>
-              <span class="badge badge-secondary"> +9 contacts </span>
-            </h5>
-          </div>
-
-          <div class="col-6 p-15 d-block d-sm-none">
-            <div class="text-center">
-              <div data-provide="easypie" data-percent="32" data-color="#926dde" data-scale-color="transparent" data-size="125">
-                <span class="easypie-data">
-                  <h4 class="text-purple mb-0">32%</h4>
-                  <small class="text-uppercase">opened</small>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 p-15 d-block d-sm-none">
-            <div class="card card-body text-center">
-              <div>Sent To</div>
-              <div class="fs-40 fw-100">189</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-xl-3">
-            <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-success">137</div>
-              <div>Opened</div>
-            </div>
-          </div>
-          <div class="col-6 col-xl-3">
-            <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-info">53</div>
-              <div>Clicked</div>
-            </div>
-          </div>
-          <div class="col-6 col-xl-3">
-            <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-warning">13</div>
-              <div>Bounced</div>
-            </div>
-          </div>
-          <div class="col-6 col-xl-3">
-            <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-danger">2</div>
-              <div>Unsubscribed</div>
-            </div>
-          </div>
-
-          <div class="col-12-p-0">
-            <div class="card">
-              <h4 class="card-title"><strong>Performance</strong> in 24-hours</h4>
-
-              <div class="card-body">
-                <p class="text-danger fs-20">Would like a line chart here with hour by hour breakdown of openings from time of sending to 24 hours later</p>
-                <!-- <canvas id="chart-line-2" width="400" height="250"></canvas> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="tab-email-report-message">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="text-danger">Display the actual message sent (plain text or HTML)</h3>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="tab-email-report-recipients">
-        <div class="card">
-          <header class="media-list-header b-0">
-            <form class="lookup lookup-lg w-100 bb-1 border-light">
-              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Type name..." data-provide="media-search">
-            </form>
-          </header>
-
-          <div class="media-list media-list-divided media-list-hover">
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>Joe Tebs</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
-              </div>
-            </div>
-
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>Paulo Castro</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
-              </div>
-            </div>
-
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>John Doe</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
-              </div>
-            </div>
-
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>Maryam Amiri</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
-              </div>
-            </div>
-
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>Jane Austin</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
-              </div>
-            </div>
-
-            <div class="media media-single">
-              <div class="media-body">
-                <span class="avatar avatar-sm">ma</span>
-                <span>Maryam Amiri</span>
-              </div>
-              <div class="media-right">
-                <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Bounced</span>
-              </div>
-            </div>
-
-          </div>
-          
-        </div>
-      </div>
-    </div>
-    
-  </div>
-
-  <footer class="quickview-footer flex-row-reverse">
-    <button class="btn btn-info">Replicate</button>
-  </footer>
-</div>
+<%= render partial: "report", collection: @sent_emails, as: :email %>
 
 <!-- Temp Modal -->
 <div class="modal modal-center fade" id="modal-center" tabindex="-1">

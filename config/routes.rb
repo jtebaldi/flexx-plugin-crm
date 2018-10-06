@@ -33,10 +33,13 @@ Rails.application.routes.draw do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
         end
 
-        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: :index do
+        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index, :new] do
           collection do
-            post :send_email_blast
-            post :create_text_message
+            post :inbound
+            post :status
+            post :confirmation
+            post :create_email_blast
+            post :create_text_blast
           end
         end
 
@@ -50,7 +53,8 @@ Rails.application.routes.draw do
             post 'inbound'
             post 'status'
             post 'confirmation'
-            post 'sg_events'
+            post 'sendgrid_events'
+            post 'sendgrid_parse'
           end
         end
       end

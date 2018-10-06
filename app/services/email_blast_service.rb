@@ -1,33 +1,51 @@
 class EmailBlastService
-  def initialize(site:, recipients:, subject:, body:)
+  def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
+    @recipients_list = recipients_list
+    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
+    @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
-    @recipients = if recipients.is_a?(Array)
-      recipients.map { |r| { email: r } }
-    else
-      [ { email: recipients } ]
-    end
+    @user = user
+    @scheduled_at = scheduled_at
     @subject = subject
     @body = body
   end
 
   def call
-    sg_message_id = SendgridAdapter.new.send_email(
-      from: {
-        email: 'contact@flexx.co',
-        name: 'Flexx'
-      },
-      to: @recipients,
-      subject: @subject,
-      body: @body)
+    emails = Array.new
+
+    if @scheduled_at
+      send_at = Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p')
+    else
+      emails = if @email_list.is_a?(Array)
+        @email_list.map { |r| { email: r } }
+      else
+        [ { email: @email_list } ]
+      end
+
+      sg_message_id = SendgridAdapter.new.send_email(
+        from: {
+          email: 'contact@flexx.co',
+          name: 'Flexx'
+        },
+        to: emails,
+        subject: @subject,
+        body: @body)
+    end
 
     message = @site.emails.create(
       sg_message_id: sg_message_id,
+      recipients_list: @recipients_list,
+      recipients_label: @recipients_label,
       subject: @subject,
       body: @body,
-      created_by: @user
+      from: 'contact@flexx.co',
+      status: @scheduled_at ? 'scheduled' : 'sent',
+      send_at: @scheduled_at ? send_at : Time.now,
+      recipients_count: emails.count,
+      created_by: @user.id
     )
 
-    @recipients.each do |r|
+    emails.each do |r|
       message.email_recipients.create(to: r[:email])
     end
   end
