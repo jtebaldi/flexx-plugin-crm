@@ -30,10 +30,19 @@ function closeRichTextStock(button) {
   quickview.close($(button).closest('.quickview'));
 }
 
+function insertDynamicField(textareaInput, mergeField) {
+    var cursorPos = $(textareaInput).prop('selectionStart');
+    var v = $(textareaInput).val();
+    var textBefore = v.substring(0,  cursorPos);
+    var textAfter  = v.substring(cursorPos, v.length);
+
+    $(textareaInput).val(textBefore + mergeField + textAfter);
+}
+
 app.ready(function() {
   var observer = new MutationObserver(function () {
     ClassicEditor
-    .create(document.querySelector('.editor'))
+    .create(document.querySelector('.editor'), window.dynamic_fields)
     .then(function(editor){
       window.ckeditor = editor;
     })

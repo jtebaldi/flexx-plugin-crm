@@ -7,6 +7,10 @@
   <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/stocks', media: 'all' %>
 <% end %>
 
+<script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
+
 <header class="header">
   <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
   <div class="header-info">

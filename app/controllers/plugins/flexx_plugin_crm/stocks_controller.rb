@@ -4,6 +4,13 @@ module Plugins::FlexxPluginCrm
 
     def index
       @stocks = current_site.stocks
+      @dynamic_fields = {
+        flexxdynamicfields: [
+          ['E-mail', '{email}'],
+          ['First Name', '{first_name}'],
+          ['Last Name', '{last_name}']
+        ]
+      }.to_json
     end
 
     def new
