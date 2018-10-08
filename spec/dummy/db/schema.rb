@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180930040928) do
+ActiveRecord::Schema.define(version: 20181008102608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,11 +151,13 @@ ActiveRecord::Schema.define(version: 20180930040928) do
   end
 
   create_table "emails", force: :cascade do |t|
-    t.string  "sg_message_id"
-    t.integer "site_id"
-    t.string  "subject"
-    t.text    "body"
-    t.integer "created_by"
+    t.string   "sg_message_id"
+    t.integer  "site_id"
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "created_by"
+    t.string   "aasm_state"
+    t.datetime "send_at"
   end
 
   add_index "emails", ["sg_message_id"], name: "index_emails_on_sg_message_id", using: :btree
@@ -172,6 +174,8 @@ ActiveRecord::Schema.define(version: 20180930040928) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "read",        default: false
+    t.string   "aasm_state"
+    t.datetime "send_at"
   end
 
   add_index "messages", ["contact_id"], name: "index_messages_on_contact_id", using: :btree

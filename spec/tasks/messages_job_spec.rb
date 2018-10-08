@@ -14,6 +14,7 @@ describe 'rake messages_job:run', type: :task do
   end
 
   it 'runs gracefully with no message' do
+    Sidekiq::Testing.fake!
     expect { task.execute }.not_to raise_error
     expect(SendMessageWorker).to have_enqueued_sidekiq_job @message.id
   end

@@ -44,6 +44,12 @@ class SendgridAdapter
     JSON.parse(response.body)["status"] if (200..299).include?(response.status_code.to_i)
   end
 
+  # Send email
+  # @param from [Hash]
+  # @param to [Array]
+  # @param body [String]
+  # @paran send_at [String]
+  # @return [String, NillClass] message id
   def send_email(from:, to:, subject:, body:, send_at: nil)
     personalizations = Array.new.tap { |p| to.each { |t| p << { to: [t] } } }
     params = {

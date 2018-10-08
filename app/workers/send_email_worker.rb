@@ -3,8 +3,8 @@ require 'sidekiq'
 class SendEmailWorker
   include Sidekiq::Worker
 
-  def perform(recipient_id)
-    recipient = Plugins::FlexxPluginCrm::EmailRecipient.find(recipient_id)
-    MessagesJobService.send_email recipient
+  def perform(email_id)
+    email = Plugins::FlexxPluginCrm::Email.find(email_id)
+    MessagesJobService.send_email email
   end
 end

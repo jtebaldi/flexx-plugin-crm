@@ -3,6 +3,8 @@ FactoryBot.define do
     site
     subject { 'Test email subject' }
     body { 'Test email body' }
+    aasm_state { 'to_send' }
+    send_at { Time.now }
 
     transient do
       recipients_count { 4 }

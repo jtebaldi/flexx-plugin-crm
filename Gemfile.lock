@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     flexx_plugin_crm (0.0.1)
-      aasm (~> 4.12.3)
+      aasm (~> 5.0.1)
       acts-as-taggable-on (~> 5.0)
       cama_contact_form (~> 0.0.23)
       camaleon_cms (~> 2.4.3.8)
@@ -14,7 +14,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (4.12.3)
+    aasm (5.0.1)
       concurrent-ruby (~> 1.0)
     actionmailer (4.2.10)
       actionpack (= 4.2.10)
@@ -55,13 +55,13 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
-    aws-sdk (2.11.140)
-      aws-sdk-resources (= 2.11.140)
-    aws-sdk-core (2.11.140)
+    aws-sdk (2.11.144)
+      aws-sdk-resources (= 2.11.144)
+    aws-sdk-core (2.11.144)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.11.140)
-      aws-sdk-core (= 2.11.140)
+    aws-sdk-resources (2.11.144)
+      aws-sdk-core (= 2.11.144)
     aws-sigv4 (1.0.3)
     bcrypt (3.1.12)
     breadcrumbs_on_rails (3.0.1)
@@ -258,7 +258,7 @@ GEM
     tilt (2.0.8)
     tinymce-rails (4.8.3)
       railties (>= 3.1.1)
-    twilio-ruby (5.14.0)
+    twilio-ruby (5.14.1)
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)

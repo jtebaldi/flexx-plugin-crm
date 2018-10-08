@@ -3,7 +3,7 @@ require 'rspec-sidekiq'
 
 describe SendMessageWorker do
   before :each do
-    @message = create :message
+    @message = create :message, aasm_state: 'sending'
   end
 
   it { is_expected.to be_processed_in :default }
@@ -19,7 +19,7 @@ describe SendMessageWorker do
     VCR.use_cassette 'twilio_sms' do
       SendMessageWorker.perform_async @message.id
       @message.reload
-      expect(@message.status).to eq 'sent'
+      expect(@message.aasm_state).to eq 'sent'
       expect(@message.sid).not_to be_nil
     end
   end

@@ -2,21 +2,24 @@ require 'rails_helper'
 require 'rspec-sidekiq'
 
 describe SendEmailWorker do
+  before :each do
+    @email = create :email, aasm_state: 'sending'
+  end
+
   it { is_expected.to be_processed_in :default }
 
   it 'enqueue job' do
     Sidekiq::Testing.fake!
-    SendEmailWorker.perform_async 1
-    expect(SendEmailWorker).to have_enqueued_sidekiq_job 1
+    SendEmailWorker.perform_async @email.id
+    expect(SendEmailWorker).to have_enqueued_sidekiq_job @email.id
   end
 
   it 'perform job' do
-    email = create :email
     Sidekiq::Testing.inline!
     VCR.use_cassette 'sendgrid_mail' do
-      SendEmailWorker.perform_async email.email_recipients.first.id
-      email.reload
-      expect(email.email_recipients.first.status).to eq 'sent'
+      SendEmailWorker.perform_async @email.id
+      @email.reload
+      expect(@email.aasm_state).to eq 'sent'
     end
   end
 end
