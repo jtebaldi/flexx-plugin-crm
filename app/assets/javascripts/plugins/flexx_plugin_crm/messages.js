@@ -14,6 +14,12 @@ function fillRecipientsField() {
   $('#recipientsHidden').val($('#recipients').tagsManager('customTagIds'));
 }
 
+function pushTag(name, value) {
+  value = value || name;
+
+  $('#recipients').tagsManager('pushTag', name, false, null, false, value);
+}
+
 app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
