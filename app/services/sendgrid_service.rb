@@ -23,7 +23,7 @@ class SendgridService
     recipients = if to.is_a?(Array)
       to.map { |t| { email: t } }
     else
-      { email: t }
+      { email: to }
     end
 
     params = {
