@@ -19,8 +19,8 @@ module Plugins::FlexxPluginCrm
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
       }.to_json
-      @contacts = current_site.contacts
-      @tags = current_site.owned_tags
+      @contacts = current_site.contacts.order(:first_name, :last_name)
+      @tags = current_site.owned_tags.order(:name)
     end
 
     def create_email_blast
