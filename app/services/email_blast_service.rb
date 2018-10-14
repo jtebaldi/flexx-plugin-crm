@@ -34,5 +34,7 @@ class EmailBlastService
     emails.each do |r|
       message.email_recipients.create(to: r[:email])
     end
+
+    message.send_message! unless @scheduled_at.present?
   end
 end

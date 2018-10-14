@@ -8,12 +8,10 @@ class MessagesJobService
 
     def queue_new_messages
       Plugins::FlexxPluginCrm::Message.scheduled.where('send_at <= ?', Time.now).each do |msg|
-        SendMessageWorker.perform_async msg.id
         msg.send_message!
       end
 
       Plugins::FlexxPluginCrm::Email.scheduled.where('send_at <= ?', Time.now).each do |email|
-        SendEmailWorker.perform_async email.id
         email.send_message!
       end
     end
