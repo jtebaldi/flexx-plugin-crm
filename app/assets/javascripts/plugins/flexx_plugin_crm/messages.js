@@ -65,7 +65,7 @@ app.ready(function() {
   });
 
   ClassicEditor
-    .create(document.querySelector('.editor'))
+    .create(document.querySelector('.editor'), window.dynamic_fields)
     .catch(function(error){
       console.error(error);
     });

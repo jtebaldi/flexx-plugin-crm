@@ -4,6 +4,10 @@
 <% end %>
 
 <script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     //grabs the hash tag from the url
     var hash = window.location.hash;
@@ -349,4 +353,3 @@
 </div>
 
 <!-- Quickviews and Modals -->
-

@@ -1,6 +1,10 @@
 require "sendgrid-ruby"
 
 class SendgridAdapter
+  def initialize(site:)
+    @site = site
+  end
+
   def create_list(name:)
     response = sg.client.contactdb.lists.post(request_body: { name: name })
 
@@ -51,7 +55,15 @@ class SendgridAdapter
   # @paran send_at [String]
   # @return [String, NillClass] message id
   def send_email(from:, to:, subject:, body:, send_at: nil)
-    personalizations = Array.new.tap { |p| to.each { |t| p << { to: [t] } } }
+    personalizations = Array.new.tap do |p|
+      to.each do |t|
+        p << {
+          to: [{email: t}],
+          substitutions: dynamic_fields(t)
+        }
+      end
+    end
+
     params = {
       personalizations: personalizations,
       from: from,
@@ -87,5 +99,31 @@ class SendgridAdapter
 
   def sg
     @sg ||= SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+  end
+
+  def dynamic_fields(email)
+    contact_details(email).merge(site_snippets)
+  end
+
+  def contact_details(email)
+    contact = @site.contacts.find_by(email: email)
+
+    if contact.present?
+      {
+        "{{first_name}}" => contact.first_name,
+        "{{last_name}}" => contact.last_name,
+        "{{email}}" => email
+      }
+    else
+      {}
+    end
+  end
+
+  def site_snippets
+    @site_snippets ||= Hash.new.tap do |result|
+      @site.stocks.snippets.each do |row|
+        result["{#{row.label}}"] = row.contents
+      end
+    end
   end
 end

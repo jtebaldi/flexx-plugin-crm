@@ -1,6 +1,6 @@
 <% current_month = nil %>
 <% emails.each do |email| %>
-  <% email_month = email.status == "draft" ? email.created_at.strftime('%B %Y') : email.send_at.strftime('%B %Y') %>
+  <% email_month = email.draft? ? email.created_at.strftime('%B %Y') : email.send_at.strftime('%B %Y') %>
   <% if current_month != email_month %>
     <% if current_month %>
       </div>
@@ -10,7 +10,7 @@
       <% current_month = email_month %>
     <% end %>
 
-    <% if email.status == "scheduled" %>
+    <% if email.scheduled? %>
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= email.subject %></h5>
@@ -21,7 +21,7 @@
           </p>
         </div>
       </a>
-    <% elsif email.status == "sent" %>
+    <% elsif email.sent? %>
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
           <h5><%= email.subject %></h5>
@@ -41,7 +41,7 @@
           </div>
         </div>
       </a>
-    <% elsif email.status == "draft" %>
+    <% elsif email.draft? %>
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= email.subject %></h5>

@@ -1,15 +1,13 @@
 module Plugins::FlexxPluginCrm
   class StocksController < CamaleonCms::Apps::PluginsAdminController
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
+
     layout "layouts/flexx_next_admin"
 
     def index
       @stocks = current_site.stocks
       @dynamic_fields = {
-        flexxdynamicfields: [
-          ['E-mail', '{email}'],
-          ['First Name', '{first_name}'],
-          ['Last Name', '{last_name}']
-        ]
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
       }.to_json
     end
 

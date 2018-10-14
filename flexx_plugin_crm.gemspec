@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "acts-as-taggable-on", "~> 5.0"
   s.add_dependency "cama_contact_form", "~> 0.0.23"
   s.add_dependency "camaleon_cms", "~> 2.4.3.8"
+  s.add_dependency "mustache", "~> 1.0"
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
   s.add_dependency 'sidekiq'
@@ -34,7 +35,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-activemodel-mocks'
   s.add_development_dependency 'rspec-rails', '~>3.8'
   s.add_development_dependency 'rspec-sidekiq'
-  # s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'vcr'
   s.add_development_dependency 'webmock'
 end

@@ -7,11 +7,11 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
     include AASM
 
     aasm do
-      state :to_send, initial: true
-      state :sending, :sent
+      state :scheduled, initial: true
+      state :draft, :sending, :sent, :received
 
       event :send_message do
-        transitions from: :to_send, to: :sending
+        transitions from: :scheduled, to: :sending
       end
 
       event :done do

@@ -11,36 +11,22 @@ class EmailBlastService
   end
 
   def call
-    emails = Array.new
+    send_at = @scheduled_at.present? ? Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p') : Time.now
 
-    if @scheduled_at
-      send_at = Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p')
+    emails = if @email_list.is_a?(Array)
+      @email_list.map { |r| { email: r } }
     else
-      emails = if @email_list.is_a?(Array)
-        @email_list.map { |r| { email: r } }
-      else
-        [ { email: @email_list } ]
-      end
-
-      sg_message_id = SendgridAdapter.new.send_email(
-        from: {
-          email: 'contact@flexx.co',
-          name: 'Flexx'
-        },
-        to: emails,
-        subject: @subject,
-        body: @body)
+      [ { email: @email_list } ]
     end
 
     message = @site.emails.create(
-      sg_message_id: sg_message_id,
       recipients_list: @recipients_list,
       recipients_label: @recipients_label,
       subject: @subject,
-      body: @body,
+      body: DynamicFieldsParserService.parse(site: @site, template: @body),
       from: 'contact@flexx.co',
-      status: @scheduled_at ? 'scheduled' : 'sent',
-      send_at: @scheduled_at ? send_at : Time.now,
+      aasm_state: :scheduled,
+      send_at: send_at,
       recipients_count: emails.count,
       created_by: @user.id
     )

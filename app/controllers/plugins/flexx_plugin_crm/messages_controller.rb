@@ -1,5 +1,7 @@
 module Plugins::FlexxPluginCrm
   class MessagesController < CamaleonCms::Apps::PluginsAdminController
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
+
     layout "layouts/flexx_next_admin"
 
     #TODO move this callback handle logic to its own controller
@@ -7,13 +9,16 @@ module Plugins::FlexxPluginCrm
     skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
 
     def index
-      @recent_emails = current_site.emails.where(status: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_emails = current_site.emails.where(status: 'scheduled').order(send_at: :desc)
-      @sent_emails = current_site.emails.where(status: 'sent').order(send_at: :desc)
-      @draft_emails = current_site.emails.where(status: 'draft').order(updated_at: :desc)
+      @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
+      @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
+      @sent_emails = current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
+      @draft_emails = current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
     end
 
     def new
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
     end
 
     def create_email_blast

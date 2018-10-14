@@ -4,10 +4,10 @@ FactoryBot.define do
     contact
     send_at { Time.now }
 
-    trait :to_send do
-      aasm_state { 'to_send' }
+    trait :scheduled do
+      aasm_state { 'scheduled' }
     end
 
-    factory :message_to_send, traits: [:to_send]
+    factory :message_to_send, traits: [:scheduled]
   end
 end

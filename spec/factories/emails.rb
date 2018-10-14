@@ -3,7 +3,7 @@ FactoryBot.define do
     site
     subject { 'Test email subject' }
     body { 'Test email body' }
-    aasm_state { 'to_send' }
+    aasm_state { 'scheduled' }
     send_at { Time.now }
 
     transient do
