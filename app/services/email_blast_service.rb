@@ -1,13 +1,13 @@
 class EmailBlastService
   def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
-    @recipients_list = recipients_list
-    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
-    @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
     @user = user
     @scheduled_at = scheduled_at
+    @recipients_list = recipients_list
     @subject = subject
     @body = body
+    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
+    @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list, site: site)
   end
 
   def call

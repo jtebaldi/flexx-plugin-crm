@@ -1,12 +1,17 @@
 class MessagingToolsService
-  def self.tags_and_contacts_to_emails(recipients_list:)
+  MESSAGE_GROUPS = {'All Contacts' => :all,
+                    'Leads' => :lead,
+                    'Prospects' => :prospect,
+                    'Customers' => :customer}
+
+  def self.tags_and_contacts_to_emails(recipients_list:, site:)
     result = Array.new
 
     return result if recipients_list.nil?
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
-    recipients.uniq.each{ |r| result.concat(find_email(recipient: r)) }
+    recipients.uniq.each{ |r| result.concat(find_email(recipient: r, site: site)) }
 
     result.uniq
   end
@@ -18,7 +23,6 @@ class MessagingToolsService
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
-    groups = ['Leads', 'Prospects', 'Customers']
     contacts = 0
 
     recipients.uniq.each do |r|
@@ -26,7 +30,7 @@ class MessagingToolsService
         contacts += 1
       elsif r.to_i > 0
         contacts += 1
-      elsif groups.include? r
+      elsif MESSAGE_GROUPS.has_key? r
         result[:groups].push(r)
       else
         result[:tags].push(r)
@@ -38,15 +42,17 @@ class MessagingToolsService
     result
   end
 
-  private_class_method def self.find_email(recipient:)
+  private_class_method def self.find_email(recipient:, site:)
     return [recipient] if recipient =~ URI::MailTo::EMAIL_REGEXP
 
     if recipient.to_i > 0
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
       Array.new.tap { |a| a << contact.email if contact.present? }
+    elsif MESSAGE_GROUPS.has_key? recipient
+      site.contacts.send(MESSAGE_GROUPS[recipient]).pluck(:email)
     else
-      Plugins::FlexxPluginCrm::Contact.tagged_with(recipient).pluck(:email)
+      site.contacts.tagged_with(recipient).pluck(:email)
     end
   end
 end
