@@ -4,7 +4,7 @@ class MessagingToolsService
                     'Prospects' => :prospect,
                     'Customers' => :customer}
 
-  def self.tags_and_contacts_to_emails(recipients_list:, site:)
+  def self.recipients_to_contact_email_list(recipients_list:, site:)
     result = Array.new
 
     return result if recipients_list.nil?
@@ -43,16 +43,16 @@ class MessagingToolsService
   end
 
   private_class_method def self.find_email(recipient:, site:)
-    return [recipient] if recipient =~ URI::MailTo::EMAIL_REGEXP
+    return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
 
     if recipient.to_i > 0
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
-      Array.new.tap { |a| a << contact.email if contact.present? }
+      Array.new.tap { |a| a << [contact.id, contact.email] if contact.present? }
     elsif MESSAGE_GROUPS.has_key? recipient
-      site.contacts.send(MESSAGE_GROUPS[recipient]).pluck(:email)
+      site.contacts.send(MESSAGE_GROUPS[recipient]).pluck(:id, :email)
     else
-      site.contacts.tagged_with(recipient).pluck(:email)
+      site.contacts.tagged_with(recipient).pluck(:id, :email)
     end
   end
 end
