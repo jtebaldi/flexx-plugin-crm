@@ -122,7 +122,7 @@ GEM
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.7.0)
+    mail (2.7.1)
       mini_mime (>= 0.1.1)
     meta-tags (2.10.0)
       actionpack (>= 3.2.0, < 5.3)
@@ -131,7 +131,8 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multipart-post (2.0.0)
-    nokogiri (1.8.4)
+    mustache (1.1.0)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     rack (1.6.10)
     rack-protection (1.5.5)
@@ -218,4 +219,4 @@ DEPENDENCIES
   flexx_plugin_crm!
 
 BUNDLED WITH
-   1.16.2
+   1.16.6
