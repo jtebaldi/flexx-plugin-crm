@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
   s.add_dependency 'sidekiq'
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
+  s.add_dependency "json", "~> 1.7", ">= 1.7.7"
 
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'factory_bot_rails'
