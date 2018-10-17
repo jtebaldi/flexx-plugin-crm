@@ -7,3 +7,10 @@ $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plug
 $('#contact-open-tasks-panel').fadeIn();
 
 quickview.close($('#qv-add-task'));
+
+$touchpoint = $('#modal-new-touchpoint')
+if ($touchpoint.length) {
+  $touchpoint.modal('hide');
+  var url = '/admin/next/task_card/<%= @task.id %>/view-contact-tasks-panels';
+  quickview.toggle('#qv_view_task', url);
+}

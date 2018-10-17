@@ -32,9 +32,9 @@ function addNewContactTask() {
 function clearNewContactTaskForm() {
   $('#new-contact-task-form')[0].reset();
 
-  $('#new-contact-task-add').toggleClass('disabled');
-  $('#new-contact-task-cancel').toggleClass('disabled');
-  $('#new-contact-task-spinner').toggleClass('invisible');
+  $('#new-contact-task-add').removeClass('disabled');
+  $('#new-contact-task-cancel').removeClass('disabled');
+  $('#new-contact-task-spinner').removeClass('invisible');
 
   $('#new-contact-task-panel').fadeOut();
 }
@@ -68,6 +68,13 @@ var taglist = new Bloodhound({
   prefetch: '/admin/next/list_tags'
 });
 
+function newTouchpoint(e) {
+  $form = $('#new-contact-task-form');
+  $form.find('select[name="new_contact_task[task_type]"]').val(e.data.type);
+  $form.find('input[name="new_contact_task[title]"]').val(e.data.title);
+  $form.submit();
+}
+
 app.ready(function() {
   taglist.initialize();
 
@@ -81,4 +88,10 @@ app.ready(function() {
   });
 
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
+
+  $('#new-send-email-touchpoint').click({ type: 'email', title: 'Email' }, newTouchpoint);
+  $('#new-message-touchpoint').click({ type: 'message', title: 'Text' }, newTouchpoint);
+  $('#new-phone-call-touchpoint').click({ type: 'phone_call', title: 'Phone call' },newTouchpoint);
+  $('#new-meeting-touchpoint').click({ type: 'meeting', title: 'Meeteng' },newTouchpoint);
+  $('#new-general-touchpoint').click({ type: 'general', title: 'General' },newTouchpoint);
 });
