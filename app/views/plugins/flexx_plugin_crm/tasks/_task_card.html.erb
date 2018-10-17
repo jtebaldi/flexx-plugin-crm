@@ -60,11 +60,19 @@
           <% end %>
         </div>
         <% unless @task.done? %>
-          <span class="publisher bt-1 border-fade bg-white">
-            <span class="avatar"><%= current_user.initials %></span>
-            <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
-            <input name="task[notes_attributes][][details]" class="publisher-input" type="text" placeholder="Type your note...">
-          </span>
+          <div class="publisher publisher-multi">
+            <div class="flexbox">
+              <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
+              <textarea name="task[notes_attributes][][details]" class="publisher-input auto-expand" rows="2" placeholder="Type your note..."></textarea>
+              <span class="flex-top avatar bg-inverse"><%= current_user.initials %></span>
+            </div>
+            <div class="flexbox">
+              <div class="gap-items">
+                <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+              </div>
+              <button class="btn btn-sm btn-bold btn-primary">Post</button>
+            </div>
+          </div>
         <% end %>
       <% end %>
     </div>
