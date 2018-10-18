@@ -80,13 +80,21 @@
 
     <footer class="quickview-footer flex-row-reverse">
       <% unless @task.done? %>
-        <div class="btn-group">
+        <% case @task.task_type %>
+        <% when 'email' %>
+          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+        <% when 'message' %>
+          <button class="btn btn-success" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+        <% else %>
+          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
+        <% end %>
+        <!--<div class="btn-group">
           <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
           <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
           <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
             <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
             <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
-          </div>
+          </div>-->
         </div>
       <% end %>
       <button class="btn btn-light" onclick="closeTaskView(this)">Close</button>
