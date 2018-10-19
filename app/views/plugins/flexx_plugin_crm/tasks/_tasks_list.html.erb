@@ -1,45 +1,65 @@
 <% tasks.each do |row| %>
-  <div class="card b-1 hover-shadow-2 mb-20">
+  <div class="card b-1 hover-shadow-2 mb-20 task-card <%= 'completed' if row.done? %>" data-staff="<%= row.owners.ids unless row.owners.empty? %>" data-completed="<%= row.updated_by if row.done? %>">
     <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id, refresh_panel: refresh_panel) %>">
       <div class="media-left pr-12">
-        <span class="avatar avatar-xl no-radius"><i class="fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></span>
+        <span class="avatar avatar-xl no-radius" style="<%= 'background-color: #fff;' if row.done? %>">
+          <% if row.done? %>
+            <i class="ti-check-box fs-60 text-success"></i>
+          <% else %>  
+            <i class="fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i>
+          <% end %>
+        </span>
       </div>
       <div class="media-body">
         <div class="mb-2">
           <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
         </div>
-        <small class="fs-14 fw-300"><strong>Due: </strong><%= row.due_date.today? ? 'Today,' : row.due_date.strftime('%B %d') %>&nbsp;(<%= row.due_date.strftime('%I:%M %p') %>) <%= ' (confirmed)' if row.confirmed_at? %></small>
-      </div>
-      <div class="media-right text-right d-none d-md-block">
-      </div>
-    </a>
-    <footer class="card-footer flexbox align-items-center">
-      <div>
-        <% unless row.notes.empty? %>
-          <span class="text-lighter hover-light">
-            <i class="fa fa-comment mr-1"></i> <%= row.notes.count %>
-          </span>
+        <% if row.done? %>
+          <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.today? ? 'Today,' : row.updated_at.strftime('%B %d') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></small>
+        <% else %>
+          <small class="fs-14 fw-300 due-date"><strong>Due: </strong><%= row.due_date.today? ? 'Today' : row.due_date.strftime('%B %d') %>,&nbsp; <%= row.due_date.strftime('%I:%M %p') %> <%= ' (confirmed)' if row.confirmed_at? %></small>
         <% end %>
-        <span class="card-hover-show pl-20">
-          <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>
-            <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
-          <% end %>
-          <% unless row.done? %>
-            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
-          <% end %>
-        </span>
       </div>
-      <div class="pull-right">
-        <div class="avatar-list">
-          <% unless row.done? %>
-            <% row.owners.each do |owner| %>
-              <span class="avatar bg-dark"><%= owner.initials %></span>
-            <% end %>
-            <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id, refresh_panel: refresh_panel) %>"></button>
+      <% if row.done? %>
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12"><span class="avatar bg-dark"><%= current_site.users.find(row.updated_by).initials %></span></p>
+          <% unless row.notes.empty? %>
+            <span class="text-lighter fs-12 hover-light"><strong><%= row.notes.count %></strong> notes</span>
           <% end %>
         </div>
-      </div>
-    </footer>
+      <% end %>
+    </a>
+    <% unless row.done? %>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <% unless row.notes.empty? %>
+            <span class="text-lighter hover-light">
+              <i class="ti-comment-alt mr-1"></i> <%= row.notes.count %>
+            </span>
+          <% end %>
+          <span class="card-hover-show pl-20">
+            <!-- Temporarily disabled - waiting on editable text reminder settings
+            <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>
+              <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
+            <% end %>
+            -->
+            <% unless row.done? %>
+              <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+              <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
+            <% end %>
+          </span>
+        </div>
+        <div class="pull-right">
+          <div class="avatar-list">
+            <% unless row.done? %>
+              <% row.owners.each do |owner| %>
+                <span class="avatar bg-dark"><%= owner.initials %></span>
+              <% end %>
+              <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: row.id, refresh_panel: refresh_panel) %>"></button>
+            <% end %>
+          </div>
+        </div>
+      </footer>
+    <% end %>
   </div>
 <% end %>

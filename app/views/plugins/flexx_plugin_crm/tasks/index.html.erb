@@ -3,13 +3,19 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/tasks' %>
 <% end %>
 
+<style>
+  .custom-checkbox .custom-control-label:empty::after { top: 2px; } 
+  #old-pending-tasks-list .due-date { color: red; }
+</style>
+
 <header class="header">
   <div class="header-info">
     <h2 class="header-title"><strong>Tasks</strong></h2>
   </div>
   <div class="header-action">
-    <nav class="nav">
-      <a class="nav-link active" data-toggle="tab" href="#tab-task-view">Task View</a>
+    <nav id="taskNav" class="nav">
+      <a class="nav-link active" data-toggle="tab" href="#tab-today">Today</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-upcoming">Upcoming</a>
       <a class="nav-link" data-toggle="tab" href="#tab-completed">Completed</a>
     </nav>
     <div class="buttons">
@@ -19,47 +25,119 @@
 </header>
 
 <div class="main-content">
-  <div class="tab-content">
+  <div class="row">
+    <div class="col-md-4 col-lg-3">
+      <div class="card">
+        <h5 class="card-title"><strong>Staff list</strong></h5>
+        <div id="pendingStaff" class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
 
-    <div class="tab-pane fade active show" id="tab-task-view">
-      <div class="row">
-        <div class="col-md-12">
-          <p class="lead text-center text-fade">Overdue's tasks</p>
-          <div id="old-pending-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
-          </div>
-          <br>
-          <p class="lead text-center text-fade">Today's tasks</p>
-          <div id="todays-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
-          </div>
-          <br>
-          <div class="divider text-uppercase fw-500">Upcoming</div>
-          <div id="upcoming-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
-          </div>
+          <header class="media media-single media-list-header" style="padding: 8px 12px;">
+            <span class="title">Select all</span>
+            <div class="custom-control custom-control-lg custom-checkbox" onclick="checkedStaff(); return false;">
+              <input type="checkbox" class="custom-control-input" name="staffAll">
+              <label class="custom-control-label"></label>
+            </div>
+          </header>
+
+          <div class="media-list-body" id="staffList">
+
+            <div class="media media-single" onclick="checkedStaff(); return false;">
+              <span class="avatar avatar-sm"><%= current_user.initials %></span>
+              <span class="title"><%= current_user.first_name %> <%= current_user.last_name %></span>
+              <div class="custom-control no-border custom-control-lg custom-checkbox">
+                <input id="<%= current_user.id %>" value="<%= current_user.id %>" name="staff" type="checkbox" class="custom-control-input" checked>
+                <label class="custom-control-label"></label>
+              </div>
+            </div>
+
+            <% current_site.users.decorate.each do |staff| %>
+              <% unless staff.id == current_user.id %>
+                <div class="media media-single" onclick="checkedStaff(); return false;">
+                  <span class="avatar avatar-sm"><%= staff.initials %></span>
+                  <span class="title"><%= staff.first_name %> <%= staff.last_name %></span>
+                  <div class="custom-control no-border custom-control-lg custom-checkbox">
+                    <input id="<%= staff.id %>" value="<%= staff.id %>" name="staff" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label"></label>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+
+          </div> 
+
         </div>
       </div>
     </div>
+    <div class="col-md-8 col-lg-9">
+      <div class="tab-content">
 
-    <div class="tab-pane fade" id="tab-completed">
-      <div class="row">
-
-        <div class="col-md-12">
-          <p class="lead text-center text-fade">Today's tasks</p>
-          <div id="todays-completed-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
+        <div class="tab-pane fade active show" id="tab-today">
+          <div class="row">
+            <div class="col-md-12">
+              <% if @old_pending_tasks.length > 0 %>
+                <div id="old-pending-tasks-list">
+                  <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
+                </div>
+                <br>
+              <% end %>
+              <div id="todays-tasks-list" class="mb-90">
+                <% if @todays_tasks.length > 0 %>
+                  <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
+                <% else %>
+                  <div class="media card-body b-1">
+                    <div class="media-body h-80px">
+                      <div class="mb-2 text-center pt-30">
+                        <span class="fs-20">All tasks complete</span>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>      
+            </div>
           </div>
-          <br>
-          <div class="divider text-uppercase fw-500">Previous</div>
-          <div id="old-completed-tasks-list">
-            <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+        </div>
+
+        <div class="tab-pane fade" id="tab-upcoming">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div id="upcoming-tasks-list">
+                <% if @upcoming_tasks.length > 0 %>
+                  <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
+                <% else %>
+                  <div class="media card-body b-1">
+                    <div class="media-body h-100px">
+                      <div class="mb-2 text-center pt-20">
+                        <p class="fs-20">No upcoming tasks</p>
+                        <a class="btn btn-pure btn-primary" data-toggle="quickview" href="#qv-add-task" data-target="#qv-add-task">Create a task</a>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-completed">
+          <div class="row">
+
+            <div class="col-md-12">          
+              <div id="old-completed-tasks-list">
+                <% if @upcoming_tasks.length > 0 %>
+                  <div class="divider text-uppercase fw-500">Today</div>
+                  <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
+                <% end %>
+                <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+              </div>
+            </div>
+
           </div>
         </div>
 
       </div>
     </div>
-
   </div>
 </div>
 
