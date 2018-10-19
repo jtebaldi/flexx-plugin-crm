@@ -16,6 +16,12 @@ function submitTaskSendMessageForm() {
   $('#task-send-message-form').submit();
 }
 
+function saveNote(e, taskId) {
+  e.preventDefault();
+  var text = $('#update-task-form textarea').val();
+  $('#notes-content').load('/admin/next/tasks/' + taskId + '/create_note', { text: text });
+}
+
 function closeTaskView(button) {
   quickview.close($(button).closest('.quickview'));
 }
