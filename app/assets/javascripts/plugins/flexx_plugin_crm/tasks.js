@@ -89,17 +89,14 @@ app.ready(function() {
   });
 
   checkedStaff();
-  // $('#completedStaff').hide();
 
   $('nav#taskNav > a').click(function(event){
     var active_tab = $(this).attr('href');
 
     if (active_tab == "#tab-completed") {
       $('#pendingStaff').hide();
-      // $('#completedStaff').show();
     } else {
       $('#pendingStaff').show();
-      // $('#completedStaff').hide();
     }
     
   });

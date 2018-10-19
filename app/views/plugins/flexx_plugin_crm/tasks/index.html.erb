@@ -27,9 +27,9 @@
 <div class="main-content">
   <div class="row">
     <div class="col-md-4 col-lg-3">
-      <div class="card">
+      <div id="pendingStaff" class="card">
         <h5 class="card-title"><strong>Staff list</strong></h5>
-        <div id="pendingStaff" class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
+        <div class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
 
           <header class="media media-single media-list-header" style="padding: 8px 12px;">
             <span class="title">Select all</span>
@@ -78,7 +78,6 @@
                 <div id="old-pending-tasks-list">
                   <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
                 </div>
-                <br>
               <% end %>
               <div id="todays-tasks-list" class="mb-90">
                 <% if @todays_tasks.length > 0 %>
