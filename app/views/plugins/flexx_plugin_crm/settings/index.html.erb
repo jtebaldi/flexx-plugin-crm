@@ -34,8 +34,8 @@
     </div>
 
     <div class="col-lg-9 tab-content">
-      <div id='tab_profile' class='tab-pane fade active show'>
-        <%= form_for current_user, as: :user, url: admin_setting_path(current_user), html: { id: 'user_form' }, class: 'card form-type-material' do |f| %>
+      <div id='tab_profile' class='tab-pane form-type-material fade active show card'>
+        <%= form_for current_user, as: :user, url: admin_setting_path(current_user), html: { id: 'user_form' }, class: 'form-type-material' do |f| %>
           <h4 class="card-title fw-400">My Profile</h4>
 
           <div class="card-body">
@@ -43,7 +43,7 @@
               <div class="col-lg-6">
 
                 <div class="flexbox gap-items-4">
-                  <span class="avatar avatar-xl avatar-bordered">JT</span>
+                  <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= current_user.initials %></span>
 
                   <div class="flex-grow">
                     <h5 class='mt-4'><%= current_user.the_name %></h5>
