@@ -15,12 +15,42 @@ module Plugins::FlexxPluginCrm
       @draft_emails = current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
     end
 
+    def emails
+      @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
+      @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
+      @sent_emails = current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
+      @draft_emails = current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+    end
+
+    def sms
+      @recent_sms = [] # current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
+      @scheduled_sms = [] # current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
+      @sent_sms = [] # current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
+      @draft_sms = [] # current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+    end
+
     def new
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
       }.to_json
       @contacts = current_site.contacts.order(:first_name, :last_name)
       @tags = current_site.owned_tags.order(:name)
+    end
+
+    def new_email
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
+      @contacts = current_site.contacts
+      @tags = current_site.owned_tags
+    end
+
+    def new_sms
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
+      @contacts = current_site.contacts
+      @tags = current_site.owned_tags
     end
 
     def create_email_blast
