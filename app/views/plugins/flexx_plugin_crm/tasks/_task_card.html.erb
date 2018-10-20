@@ -21,6 +21,11 @@
           <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger text-white">Delete</a>
         </div>
       <% end %>
+      <% if @task.done? %>
+        <div class="pt-20 pl-20">
+          <span>Completed by: <strong><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></strong></span>
+        </div>
+      <% end %>
       <div class="p-20">
         <span class="text-muted">Description</span>
         <br/><span><%= @task.details %></span>
