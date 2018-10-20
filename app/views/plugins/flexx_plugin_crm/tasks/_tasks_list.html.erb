@@ -12,6 +12,7 @@
       </div>
       <div class="media-body">
         <div class="mb-2">
+          <span><%= row.task_type %></span>
           <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
         </div>
         <% if row.done? %>
