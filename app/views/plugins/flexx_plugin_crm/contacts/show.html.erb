@@ -433,6 +433,7 @@ input[type=radio].hide-control { display: none; }
 
   <div class="quickview-body">
     <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
+      <input type="hidden" name="new_contact_task[touchpoint]" value="">
       <div class="card-body">
         <div class="form-group">
           <label for="select">Type</label>
@@ -647,7 +648,7 @@ input[type=radio].hide-control { display: none; }
             </div>
           </div>
         </div>
-          
+
       </div>
     </div>
   </div>
