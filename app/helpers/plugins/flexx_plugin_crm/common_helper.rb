@@ -7,6 +7,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
       'envelope'
     when 'message'
       'comment'
+    when 'meeting'
+      'calendar'
     else
       'list'
     end
