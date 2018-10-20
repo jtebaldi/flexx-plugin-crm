@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           post :create_note, on: :member
 
           get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
+
         end
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do
@@ -63,6 +64,8 @@ Rails.application.routes.draw do
             post 'sendgrid_parse'
           end
         end
+
+        resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update]
       end
 
       namespace 'plugins' do

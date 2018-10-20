@@ -1,0 +1,264 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/uploader/_media_manager' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/_modal' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/_i18n' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/_user_profile' %>
+<% end %>
+
+<header class="header">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Settings</strong></h2>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+
+  <div class="row">
+
+    <div class="col-lg-3">
+      <div class="card">
+        <ul class="nav nav-lg nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#tab_profile" data-toggle="tab">My Profile</a>
+          </li>
+          <!--<li class="nav-item">
+            <a class="nav-link" href="#tab_email_settings" data-toggle="tab">Email Settings</a>
+          </li>-->
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-9 tab-content">
+      <div id='tab_profile' class='tab-pane fade active show'>
+        <%= form_for current_user, as: :user, url: admin_setting_path(current_user), html: { id: 'user_form' }, class: 'card form-type-material' do |f| %>
+          <h4 class="card-title fw-400">My Profile</h4>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+
+                <div class="flexbox gap-items-4">
+                  <span class="avatar avatar-xl avatar-bordered">JT</span>
+
+                  <div class="flex-grow">
+                    <h5 class='mt-4'><%= current_user.the_name %></h5>
+                    <!--<div class="flexbox justify-content-start mt-16">
+                      <div class="file-group file-group-inline">
+                        <button class="btn btn-sm btn-w-lg btn-bold btn-secondary btn_change_photo" type="button">Change Picture</button>
+                        <input type="file">
+                      </div>
+
+                      <a class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
+                    </div>-->
+                    
+                  </div>
+                </div>    
+
+                <div class="flexbox gap-items-4 mt-30">
+                  <div class="flex-grow">
+
+                    <div class="form-group">
+                      <%= f.text_field :first_name, class: 'form-control' %>
+                      <%= f.label :first_name %>
+                    </div>
+                  
+                    <div class="form-group">
+                      <%= f.text_field :last_name, class: 'form-control' %>
+                      <%= f.label :last_name %>
+                    </div>
+
+                    <div class="form-group">
+                      <%= f.text_field :email, class: "form-control#{invalid_class(f.object.errors[:email])}" %>
+                      <%= invalid_feedback f.object.errors[:email] %>
+                      <%= f.label :email, class: 'required' %>
+                    </div>                  
+
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="col-lg-6">  
+                <div class="flexbox gap-items-4">
+                  <div class="flex-grow">
+                    <h5 class='my-4 pb-3'>Account Information</h5>
+
+                    <div class="pt-1 form-group">
+                      <%= f.text_field :username, class: "form-control #{invalid_class(f.object.errors[:username])}" %>
+                      <%= invalid_feedback f.object.errors[:username] %>
+                      <%= f.label :username, class: 'required' %>
+                    </div>
+
+                    <!--<div class="form-group">
+                      <input class="form-control" type="text" name="" value="">
+                      <label>flexx Email Address</label>
+                    </div>-->
+
+                    <!--<div class="form-group">
+                      <select class="form-control" data-provide="selectpicker" name="">
+                        <option>Role</option>
+                        <option value="">Site Owner</option>
+                        <option value="">Editor</option>
+                        <option value="">Contributor</option>
+                      </select>
+                    </div>-->
+
+                    <!--<a class="btn btn-sm btn-w-lg btn-bold btn-warning" href="#" data-toggle="modal" data-target="#modal_update_pw">Update Password</a>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="card-footer text-right">
+            <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
+          </footer>
+        <% end %>
+      </div>
+
+      <form class="card tab-pane fade" id="tab_email_settings">
+        <h4 class="card-title fw-400">Email Settings</h4>
+
+        <div class="card-body">
+          <label>ACCOUNTS</label>
+          <div class="flexbox mb-20">
+            <div class="btn-toolbar">
+              <button class="btn" title="Add new" data-provide="tooltip"><i class="ion-plus-round"></i> Add New</button>
+            </div>            
+          </div>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>flexx Email</th>
+                <th class="text-center w-100px">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gym Info</td>
+                <td>info@flexx.domain.com</td>
+                <td class="text-right table-actions">
+                  <a class="table-action hover-primary" href="#"><i class="ti-pencil"></i></a>
+                  <a class="table-action hover-danger" href="#"><i class="ti-trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>Joe Tebaldi</td>
+                <td>joe.tebaldi@flexx.domain.com</td>
+                <td class="text-right table-actions">
+                  <a class="table-action hover-primary" href="#"><i class="ti-pencil"></i></a>
+                  <a class="table-action hover-danger" href="#"><i class="ti-trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>Paulo Castro</td>
+                <td>paulo@flexx.domain.com</td>
+                <td class="text-right table-actions">
+                  <a class="table-action hover-primary" href="#"><i class="ti-pencil"></i></a>
+                  <a class="table-action hover-danger" href="#"><i class="ti-trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>Steve Edmunds</td>
+                <td>steve@flexx.domain.com</td>
+                <td class="text-right table-actions">
+                  <a class="table-action hover-primary" href="#"><i class="ti-pencil"></i></a>
+                  <a class="table-action hover-danger" href="#"><i class="ti-trash"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <hr>
+          <label>LAYOUT</label>
+          <div class="row">
+            <div class="col-lg-6">
+              <div>
+                <label for="email_footer">General Footer</label>
+                <textarea name="email_footer" class="form-control editor" rows="10"></textarea>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                  <span class="switch-description">Include logo on top</span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="switch-indicator"></span>
+                  <span class="switch-description">Include footer</span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="switch-indicator"></span>
+                  <span class="switch-description">Include social links</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="card-footer text-right">
+          <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
+        </footer>
+      </form>
+
+    </div>
+
+  </div>
+
+</div>  
+
+<!-- MODAL: Update Password -->
+<div class="modal modal-center fade" id="modal_update_pw" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Password</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="card form-type-material tab-pane fade active show">
+        <div class="modal-body">
+          <div class="form-group">
+            <input class="form-control" type="text" name="" value="">
+            <label>Old Password</label>
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="" value="">
+            <label>New Password</label>
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="" value="">
+            <label>Re-enter Password</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-bold btn-pure btn-success">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+    var root_admin_url = '<%= cama_admin_url(locale: nil) %>';
+    jQuery(function ($) { init_profile_form(); });
+</script>
