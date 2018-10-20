@@ -26,6 +26,8 @@ Rails.application.routes.draw do
             post :send_task_confirmation
           end
 
+          post :create_note, on: :member
+
           get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
         end
 
