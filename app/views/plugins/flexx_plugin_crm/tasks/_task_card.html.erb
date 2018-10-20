@@ -45,7 +45,7 @@
         <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
 
         <div id='notes-content'>
-          <%= render 'plugins/flexx_plugin_crm/tasks/form' %>
+          <%= render partial: 'plugins/flexx_plugin_crm/tasks/notes' %>
         </div>
       <% end %>
     </div>

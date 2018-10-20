@@ -72,9 +72,11 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_note
-      @task = Task.find params[:id]
-      @task.notes.create details: params[:text], created_by: current_user.id
-      render partial: 'form'
+      @task = current_site.tasks.find(params[:id])
+
+      @task.notes.create(details: params[:text], created_by: current_user.id)
+
+      render partial: 'notes'
     end
 
     def defer_task
