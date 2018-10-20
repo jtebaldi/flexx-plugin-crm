@@ -46,7 +46,7 @@ input[type=radio].hide-control { display: none; }
 
           </div>
         </div>
-        <div class="accordion accordion-connected" id="accordion-contact">
+        <div class="accordion accordion-connected hidden" id="accordion-contact">
           <div class="card">
             <h5 class="card-title">
               <a data-toggle="collapse" data-parent="#accordion-contact" href="#collapse-contact">Contact <%= @contact.first_name %></a>
@@ -85,6 +85,11 @@ input[type=radio].hide-control { display: none; }
         </div>
       </div>
 
+      <div class="text-center mb-30">
+        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
+        <a class="btn btn-block btn-multiline btn-info" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
+      </div>
+
       <div class="card">
         <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
           <li class="nav-item">
@@ -100,10 +105,6 @@ input[type=radio].hide-control { display: none; }
             <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
           </li>
         </ul>
-      </div>
-
-      <div class="text-center mb-20">
-        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Add task</a>
       </div>
     </div>
 
@@ -432,6 +433,7 @@ input[type=radio].hide-control { display: none; }
 
   <div class="quickview-body">
     <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
+      <input type="hidden" name="new_contact_task[touchpoint]" value="">
       <div class="card-body">
         <div class="form-group">
           <label for="select">Type</label>
@@ -590,6 +592,64 @@ input[type=radio].hide-control { display: none; }
           <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal" onclick="$('#send-message-form').submit()">Send</button>
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add note to timeline -->
+<div class="modal modal-center fade" id="modal-new-touchpoint" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New <strong>touchpoint</strong></h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6 mb-30">
+            <h4>Send message</h4>
+            <% if @contact.email.present? %>
+              <div class="media-list media-list-hover media-list-divided b-1">
+                <a id='new-send-email-touchpoint' class="media media-single" href="#">
+                  <span class="lead text-info text-uppercase"><i class="fa fa-envelope"></i></span>
+                  <span class="title"><strong><%= @contact.email %></strong></span>
+                  <span class="lead text-info text-uppercase">Email </span><i class="fa fa-paper-plane text-info"></i>
+                </a>
+              </div>
+            <% end %>
+            <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
+              <div class="media-list media-list-hover media-list-divided b-1">
+                <a id="new-message-touchpoint" class="media media-single" href="#">
+                  <span class="lead text-info text-uppercase"><i class="fa fa-comment"></i></span>
+                  <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
+                  <span class="lead text-info text-uppercase">Text </span><i class="fa fa-paper-plane text-info"></i>
+                </a>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-lg-6">
+            <h4>Log interaction</h4>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-phone-call-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="fa fa-phone text-info fs-14 pr-10"></i> <strong>Phone call</strong></span>
+              </a>
+            </div>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-meeting-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="ti-calendar text-info fs-14 pr-10"></i> <strong>Meeting</strong></span>
+              </a>
+            </div>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-general-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="ti-notepad text-info fs-14 pr-10"></i> <strong>General</strong></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
