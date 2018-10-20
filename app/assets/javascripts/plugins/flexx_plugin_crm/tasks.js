@@ -27,6 +27,38 @@ function cancelNewTaskForm(button) {
   quickview.close($(button).closest('.quickview'));
 }
 
+function findMatch(haystack, arr) {
+  return arr.some(function (v) {
+    return haystack.indexOf(v) >= 0;
+  });
+}
+
+function checkedStaff() {    
+  $(".task-card").not('.completed').hide();
+
+  setTimeout(function(){ 
+    if ($("input[name='staff']:checked").length == $("input[name='staff']").length) {
+      $("input[name='staffAll']").prop('checked', true);
+    } else if ($("input[name='staff']:not(:checked)").length > 0) {
+      $("input[name='staffAll']").prop('checked', false);
+    }
+
+    var checked = [];
+    $("input[name='staff']:checked").each(function () {        
+      checked.push($(this).val());        
+    });
+    
+    $(".task-card").not('.completed').each(function(obj){
+      var owner_ids = [];
+      owner_ids = $(this).attr('data-staff');
+      
+      if ((findMatch(owner_ids, checked)) || (owner_ids.length === 0)) {
+        $(this).show();
+      }
+    });
+  }, 50);  
+}
+
 app.ready(function() {
   contactlist.initialize();
 
@@ -54,5 +86,18 @@ app.ready(function() {
   $('#contacts-field').bind('typeahead:selected', function(e, option) {
     $('#new-task-contact-id').val(option.value);
     clearContactId = false;
+  });
+
+  checkedStaff();
+
+  $('nav#taskNav > a').click(function(event){
+    var active_tab = $(this).attr('href');
+
+    if (active_tab == "#tab-completed") {
+      $('#pendingStaff').hide();
+    } else {
+      $('#pendingStaff').show();
+    }
+    
   });
 });

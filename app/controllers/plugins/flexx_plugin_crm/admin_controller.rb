@@ -32,8 +32,8 @@ module Plugins::FlexxPluginCrm
     def create_contact_task
       @contact = current_site.contacts.find(params[:id])
 
-      task = @contact.tasks.create(new_contact_task_params)
-      current_site.tag(task, with: params[:new_contact_task][:tag_list], on: :tags)
+      @task = @contact.tasks.create(new_contact_task_params)
+      current_site.tag(@task, with: params[:new_contact_task][:tag_list], on: :tags)
 
       respond_to do |format|
         format.js
@@ -139,7 +139,11 @@ module Plugins::FlexxPluginCrm
       params[:new_contact_task].merge!(created_by: current_user.id)
       params[:new_contact_task].merge!(updated_by: current_user.id)
 
-      params[:new_contact_task][:due_date] = Time.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
+      if params[:new_contact_task][:due_date].blank?
+        params[:new_contact_task][:due_date] = Time.now
+      else
+        params[:new_contact_task][:due_date] = Time.strptime(params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p')
+      end
 
       params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)
     end

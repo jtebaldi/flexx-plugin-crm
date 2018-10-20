@@ -4,6 +4,10 @@
 <% end %>
 
 <script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     //grabs the hash tag from the url
     var hash = window.location.hash;
@@ -124,17 +128,13 @@
             </form>
           </header>
 
-          <a class="media items-center" href="#">
-            <span class="avatar avatar-sm bg-secondary">JT</span>
-            <p class="title">Joe Tebaldi</p>
-            <span class="media-action text-success"><i class="ti-plus"></i></span>
-          </a>
-
-          <a class="media items-center" href="#">
-            <span class="avatar avatar-sm bg-secondary">PC</span>
-            <p class="title">Paulo Castro</p>
-            <span class="media-action text-success"><i class="ti-plus"></i></span>
-          </a>
+          <% @contacts.each do |contact| %>
+            <a class="media items-center" href="#" onclick="pushTag('<%= contact.print_name %> - <%= contact.email %>', '<%= contact.id %>')">
+              <span class="avatar avatar-sm bg-secondary"><%= contact.initials %></span>
+              <p class="title"><%= contact.print_name %></p>
+              <span class="media-action text-success"><i class="ti-plus"></i></span>
+            </a>
+          <% end %>
 
         </div>
       </div>
@@ -142,24 +142,24 @@
       <div class="tab-pane fade" id="tab-groups">
 
         <div class="media-list media-list-hover media-list-divided">
-          <a class="media media-single" href="#">
+          <a class="media media-single" href="#" onclick="pushTag('All Contacts')">
             <span class="title">All Contacts</span>
-            <span class="badge badge-pill badge-secondary">14</span>
+            <span class="badge badge-pill badge-secondary"><%= @contacts.count %></span>
           </a>
 
-          <a class="media media-single" href="#">
+          <a class="media media-single" href="#" onclick="pushTag('Leads')">
             <span class="title">Leads</span>
-            <span class="badge badge-pill badge-primary">9</span>
+            <span class="badge badge-pill badge-primary"><%= @contacts.lead.count %></span>
           </a>
 
-          <a class="media media-single" href="#">
+          <a class="media media-single" href="#" onclick="pushTag('Prospects')">
             <span class="title">Prospects</span>
-            <span class="badge badge-pill badge-info">7</span>
+            <span class="badge badge-pill badge-info"><%= @contacts.prospect.count %></span>
           </a>
 
-          <a class="media media-single" href="#">
+          <a class="media media-single" href="#" onclick="pushTag('Customers')">
             <span class="title">Customers</span>
-            <span class="badge badge-pill badge-success">3</span>
+            <span class="badge badge-pill badge-success"><%= @contacts.customer.count %></span>
           </a>
         </div>
 
@@ -173,30 +173,12 @@
             </form>
           </header>
 
-          <a class="media media-single" href="#">
-            <span class="title">Remote</span>
-            <span class="badge badge-pill badge-secondary">14</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Personal Training</span>
-            <span class="badge badge-pill badge-primary">9</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Grand Opening</span>
-            <span class="badge badge-pill badge-info">7</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Athlete</span>
-            <span class="badge badge-pill badge-success">3</span>
-          </a>
-
-          <a class="media media-single" href="#">
-            <span class="title">Masters</span>
-            <span class="badge badge-pill badge-danger">4</span>
-          </a>
+          <% @tags.each do |tag| %>
+            <a class="media media-single" href="#" onclick="pushTag('<%= tag.name %>')">
+              <span class="title"><%= tag.name %></span>
+              <span class="badge badge-pill badge-secondary"><%= @contacts.tagged_with(tag.name).count %></span>
+            </a>
+          <% end %>
 
         </div>
       </div>
@@ -239,6 +221,18 @@
               <label class="btn btn-lg btn-info">
                 <input class="hide-control" type="radio" name="timingOptions2" id="option2" value="2" autocomplete="off">Schedule</i>
               </label>
+            </div>
+          </div>
+
+          <div class="form-groups-attached mt-30">
+            <div id="stock-email-select" class="form-group">
+              <label>Use stock email</label>
+              <select class="form-control" data-provide="selectpicker">
+                <option>None</option>
+                <option value="">Stock email 1</option>
+                <option value="">Stock email 2</option>
+                <option value="">Stock email 3</option>
+              </select>
             </div>
           </div>
 
@@ -349,4 +343,3 @@
 </div>
 
 <!-- Quickviews and Modals -->
-

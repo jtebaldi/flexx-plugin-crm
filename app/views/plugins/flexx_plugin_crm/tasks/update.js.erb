@@ -7,6 +7,7 @@
     $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' })  %>');
     $('#old-pending-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' }) %>');
     $('#old-completed-tasks-list').html('<%= escape_javascript(render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: 'tasks-dashboard' }) %>');
+    checkedStaff();
   <% when 'view-contact-tasks-panels' %>
     quickview.close($('#qv_view_task'));
     $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');

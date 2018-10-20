@@ -17,9 +17,6 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   scope :active, -> { where.not(sales_stage: :archived) }
 
-  after_commit :create_sendgrid_record, on: :create
-  after_commit :update_sendgrid_record, on: :update
-
   accepts_nested_attributes_for :phonenumbers
 
   aasm('sales_stage') do
@@ -46,35 +43,4 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     tasks.pending.count
   end
 
-  private
-
-  def create_sendgrid_record
-    details = [{
-      email: email,
-      first_name: first_name,
-      last_name: last_name,
-      sales_stage: sales_stage
-    }]
-
-    sg_id = SendgridAdapter.new.create_contact(contact_details: details)
-
-    update_column(:sendgrid_id, sg_id)
-  end
-
-  def update_sendgrid_record
-    details = [{
-      email: email,
-      first_name: first_name,
-      last_name: last_name,
-      sales_stage: sales_stage
-    }]
-
-    if previous_changes.keys.include?("email")
-      sg_id = SendgridAdapter.new.create_contact(contact_details: details)
-
-      update_column(:sendgrid_id, sg_id)
-    else
-      SendgridService.new.update_contact(contact_details: details)
-    end
-  end
 end

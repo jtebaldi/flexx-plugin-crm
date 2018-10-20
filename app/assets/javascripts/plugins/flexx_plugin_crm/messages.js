@@ -14,6 +14,12 @@ function fillRecipientsField() {
   $('#recipientsHidden').val($('#recipients').tagsManager('customTagIds'));
 }
 
+function pushTag(name, value) {
+  value = value || name;
+
+  $('#recipients').tagsManager('pushTag', name, false, null, false, value);
+}
+
 app.ready(function() {
   taglist.initialize();
   contactlist.initialize();
@@ -65,7 +71,7 @@ app.ready(function() {
   });
 
   ClassicEditor
-    .create(document.querySelector('.editor'))
+    .create(document.querySelector('.editor'), window.dynamic_fields)
     .catch(function(error){
       console.error(error);
     });

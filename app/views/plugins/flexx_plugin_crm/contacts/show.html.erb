@@ -32,21 +32,27 @@ input[type=radio].hide-control { display: none; }
           <header class="card-header card-<%= @contact.sales_stage.downcase %> text-center">
             <h4 id="sales-stage-label" class="card-title text-white text-uppercase fw-300 fs-22"><%= @contact.sales_stage.humanize %></h4><a href="#" class="pull-right text-white" data-toggle="modal" data-target="#update_status_modal">Update</a>
           </header>
-          <div class="media card-body card-inverse">
-            <div class="media-left pr-12">
-              <span class="avatar avatar-xl avatar-bordered status-success"><%= @contact.initials %></span>
+          <div class="media card-body">
+            <div class="media-left pr-6">
+              <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= @contact.initials %></span>
             </div>
 
             <div class="media-body">
               <div class="mt-3">
-                <span class="fs-20 pr-16"><%= @contact.print_name %></span>
-              </div>
-              <!-- <small class="fs-16 fw-300 ls-1"><i>Independent</i></small> -->
+                <span class="fs-16 pr-16"><%= @contact.print_name %></span>
+              </div>              
             </div>
-
           </div>
+          <% unless @contact.all_tags_list.empty? %>
+            <div class="divider text-info text-capitalize m-0">Current Tags</div>
+            <div class="media card-body">
+              <% @contact.all_tags_list.each do |tag| %>
+                <span class="badge badge-info ml-0"><%= tag %></span>
+              <% end %>
+            </div>
+          <% end %>
         </div>
-        <div class="accordion accordion-connected" id="accordion-contact">
+        <div class="accordion accordion-connected hidden" id="accordion-contact">
           <div class="card">
             <h5 class="card-title">
               <a data-toggle="collapse" data-parent="#accordion-contact" href="#collapse-contact">Contact <%= @contact.first_name %></a>
@@ -85,6 +91,11 @@ input[type=radio].hide-control { display: none; }
         </div>
       </div>
 
+      <div class="text-center mb-30">
+        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
+        <a class="btn btn-block btn-multiline btn-info" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
+      </div>
+
       <div class="card">
         <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
           <li class="nav-item">
@@ -94,16 +105,12 @@ input[type=radio].hide-control { display: none; }
             <a class="nav-link" href="#tab_history" data-toggle="tab">Tasks & History</a>
           </li>
           <li class="nav-item">
-            <a id="nav-conversations" class="nav-link" href="#tab_conversations" data-toggle="tab">SMS Conversation</a>
+            <a id="nav-conversations" class="nav-link" href="#tab_conversations" data-toggle="tab"><% if @contact.phonenumbers.mobile.empty? %><span class="pr-1"><i class="ti-info-alt text-warning"></i></span><% end %> SMS Conversation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
           </li>
         </ul>
-      </div>
-
-      <div class="text-center mb-20">
-        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Add task</a>
       </div>
     </div>
 
@@ -278,7 +285,7 @@ input[type=radio].hide-control { display: none; }
             </div>
 
             <div class="col-md-6">
-              <div class="form-group form-type-material">
+              <div class="form-group form-type-material do-float">
                 <select class="form-control" data-provide="selectpicker" title="Choose Source" name="contact[source]">
                   <option <%= 'selected' if @contact.source == 'email' %> value="email">Email</option>
                   <option <%= 'selected' if @contact.source == 'other' %> value="other">Other</option>
@@ -319,10 +326,10 @@ input[type=radio].hide-control { display: none; }
       <% end %>
 
       <div class="tab-pane fade" id="tab_history">
-        <div class="accordion accordion-connected" id="accordion-tasks">
+        <div class="<%= 'accordion' unless @contact.tasks.empty? %> accordion-connected" id="accordion-tasks">
           <div class="">
             <h4 class="card-title mb-20">
-              <a data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong><span class="pull-right"><small>Click to view</small></span></a>
+              <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong> (<%= @contact.tasks.count %>)<% unless @contact.tasks.empty? %><span class="pull-right"><small>Click to view</small></span><% end %></a>
             </h4>
 
             <div id="collapse-tasks" class="collapse">
@@ -349,11 +356,23 @@ input[type=radio].hide-control { display: none; }
         <div class="card">
           <h5 class="card-title"><strong>SMS</strong> Conversation</h5>
           <div class="card-body flex-column">
-            <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
-              <div id="conversations-panel">
-                <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
+            <% if @contact.phonenumbers.mobile.empty? %>
+              <div class="media flex-column text-center p-40 b-2 border-warning">
+                <span class="avatar avatar-xxl bg-warning opacity-60 mx-auto">
+                  <i class="ti-info-alt fs-35 align-sub"></i>
+                </span>
+                <div class="text-center">
+                  <h5 class="text-uppercase fw-500 mt-3 text-warning">Uh oh!</h6>
+                  <small class="fs-14"><%= @contact.first_name %> does not have a mobile number stored.<br>Go to the <span class="text-info">User Details</span> tab and add a mobile number to send SMS messages.</small>
+                </div>
               </div>
-            </div>
+            <% else %>  
+              <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
+                <div id="conversations-panel">
+                  <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
+                </div>
+              </div>
+            <% end %>
             <% if @contact.phonenumbers.mobile.present? %>
               <footer class="publisher">
                 <span class="avatar"><%= current_user.initials %></span>
@@ -376,9 +395,26 @@ input[type=radio].hide-control { display: none; }
 
       </div>
 
-      <div class="tab-pane fade" id="tab_recipes_campaigns">
+      <div class="tab-pane fade" id="tab_recipes_campaigns">        
+
         <div class="card">
-          <h5 class="card-title">Active <strong>Campaigns</strong></h5>
+          <h5 class="card-title">Available <strong>Recipes</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <% @available_recipes.each do |recipe| %>
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p><strong><%= recipe.title %></strong></p>
+                </div>
+                <div>
+                  <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>">Add tasks</a>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="card">
+          <h5 class="card-title text-fade">Active <strong>Campaigns</strong><span class="pull-right"><small>Coming soon</small></span></h5>
           <div class="media-list media-list-hover media-list-divided">
             <% @automated_campaigns.each do |campaign| %>
               <div class="media align-items-center">
@@ -391,22 +427,6 @@ input[type=radio].hide-control { display: none; }
                   <% else %>
                     <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
                   <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="card">
-          <h5 class="card-title">Available <strong>Recipes</strong></h5>
-          <div class="media-list media-list-hover media-list-divided">
-            <% @available_recipes.each do |recipe| %>
-              <div class="media align-items-center">
-                <div class="media-body">
-                  <p><strong><%= recipe.title %></strong></p>
-                </div>
-                <div>
-                  <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>">Add tasks</a>
                 </div>
               </div>
             <% end %>
@@ -432,6 +452,7 @@ input[type=radio].hide-control { display: none; }
 
   <div class="quickview-body">
     <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
+      <input type="hidden" name="new_contact_task[touchpoint]" value="">
       <div class="card-body">
         <div class="form-group">
           <label for="select">Type</label>
@@ -590,6 +611,64 @@ input[type=radio].hide-control { display: none; }
           <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal" onclick="$('#send-message-form').submit()">Send</button>
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add note to timeline -->
+<div class="modal modal-center fade" id="modal-new-touchpoint" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New <strong>touchpoint</strong></h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6 mb-30">
+            <h4>Send message</h4>
+            <% if @contact.email.present? %>
+              <div class="media-list media-list-hover media-list-divided b-1">
+                <a id='new-send-email-touchpoint' class="media media-single" href="#">
+                  <span class="lead text-info text-uppercase"><i class="fa fa-envelope"></i></span>
+                  <span class="title"><strong><%= @contact.email %></strong></span>
+                  <span class="lead text-info text-uppercase">Email </span><i class="fa fa-paper-plane text-info"></i>
+                </a>
+              </div>
+            <% end %>
+            <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
+              <div class="media-list media-list-hover media-list-divided b-1">
+                <a id="new-message-touchpoint" class="media media-single" href="#">
+                  <span class="lead text-info text-uppercase"><i class="fa fa-comment"></i></span>
+                  <span class="title"><strong><%= @contact.phonenumbers.first.number %></strong></span>
+                  <span class="lead text-info text-uppercase">Text </span><i class="fa fa-paper-plane text-info"></i>
+                </a>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-lg-6">
+            <h4>Log interaction</h4>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-phone-call-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="fa fa-phone text-info fs-14 pr-10"></i> <strong>Phone call</strong></span>
+              </a>
+            </div>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-meeting-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="ti-calendar text-info fs-14 pr-10"></i> <strong>Meeting</strong></span>
+              </a>
+            </div>
+            <div class="media-list media-list-hover media-list-divided b-1">
+              <a id='new-general-touchpoint' class="media media-single text-center" href="#">
+                <span class="title text-uppercase"><i class="ti-notepad text-info fs-14 pr-10"></i> <strong>General</strong></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

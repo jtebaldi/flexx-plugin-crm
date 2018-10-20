@@ -1,0 +1,236 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+<% end %>
+
+<script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    $("#timing_detail").hide();
+    var rad = document.newEmailBlast.timingOptions;
+    $(rad).on('click change', function(e) {
+      if (rad.value == 2) {
+        $("#timing_detail").show();
+        $("#btn_send_email").text('Schedule Email');
+      } else {
+        $("#timing_detail").hide();
+        $("#btn_send_email").text('Send Email');
+      }
+    });
+
+    /*
+    new Chart($("#chart-line-2"), {
+      type: 'line',
+
+      // Data
+      //
+      data: {
+        labels: ["January", "February", "March", "April"],
+        datasets: [
+          {
+            label: "Revenue",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 5,
+            borderColor: "#9966ff",
+            pointBackgroundColor: "#9966ff",
+            pointBorderColor: "#9966ff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#9966ff",
+            data: [30, 25, 35, 23]
+          }
+        ]
+      },
+
+      // Options
+      //
+      options: {
+        legend: {
+          display: false
+        },
+      }
+    });
+    */
+  });
+</script>
+
+<style>
+  input[type=radio].hide-control { display: none; }
+
+  .ck-editor__editable {
+    min-height: 350px;
+  }
+</style>
+
+<!-- Start aside -->
+<aside class="aside aside-lg aside-expand-md">
+  <ul class="nav nav-tabs nav-justified nav-tabs-info">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#tab-contacts">Contacts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tab-groups">Groups</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tab-tags">Tags</a>
+    </li>
+  </ul>
+
+  <div class="aside-body p-0">
+    <div class="tab-content">
+      <div class="tab-pane fade active show" id="tab-contacts">
+        <div class="media-list media-list-hover">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <% @contacts.each do |contact| %>
+            <a class="media items-center" href="#" onclick="pushTag('<%= contact.print_name %> - <%= contact.email %>', '<%= contact.id %>')">
+              <span class="avatar avatar-sm bg-secondary"><%= contact.initials %></span>
+              <p class="title"><%= contact.print_name %></p>
+              <span class="media-action text-success"><i class="ti-plus"></i></span>
+            </a>
+          <% end %>
+
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="tab-groups">
+
+        <div class="media-list media-list-hover media-list-divided">
+          <a class="media media-single" href="#" onclick="pushTag('All Contacts')">
+            <span class="title">All Contacts</span>
+            <span class="badge badge-pill badge-secondary"><%= @contacts.count %></span>
+          </a>
+
+          <a class="media media-single" href="#" onclick="pushTag('Leads')">
+            <span class="title">Leads</span>
+            <span class="badge badge-pill badge-primary"><%= @contacts.lead.count %></span>
+          </a>
+
+          <a class="media media-single" href="#" onclick="pushTag('Prospects')">
+            <span class="title">Prospects</span>
+            <span class="badge badge-pill badge-info"><%= @contacts.prospect.count %></span>
+          </a>
+
+          <a class="media media-single" href="#" onclick="pushTag('Customers')">
+            <span class="title">Customers</span>
+            <span class="badge badge-pill badge-success"><%= @contacts.customer.count %></span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade" id="tab-tags">
+        <div class="media-list media-list-hover media-list-divided">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <% @tags.each do |tag| %>
+            <a class="media media-single" href="#" onclick="pushTag('<%= tag.name %>')">
+              <span class="title"><%= tag.name %></span>
+              <span class="badge badge-pill badge-secondary"><%= @contacts.tagged_with(tag.name).count %></span>
+            </a>
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <button class="aside-toggler"></button>
+</aside>
+<!-- end aside -->
+
+<div class="main-content">
+  <%= render 'next/partials/breadcrumb', link: emails_admin_messages_path(), page: 'Email Blasts' %>
+  <div class="tab-content mt-20" id="message-tab-content">
+
+    <div class="tab-pane fade active show" id="tab-new-email">
+      <%= form_tag create_email_blast_admin_messages_path, method: :post, id: 'new-email-blast', name: 'newEmailBlast', class: 'card form-type-combine' do %>
+        <input type="hidden" name="recipients" id="recipientsHidden">
+        <h4 class="card-title">New <strong>email blast</strong></h4>
+        <div class="card-body">
+          <div class="no-border text-center">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-lg btn-info active">
+                <input class="hide-control" type="radio" name="timingOptions" id="option1" value="1" autocomplete="off" checked>Immediate</input>
+              </label>
+              <label class="btn btn-lg btn-info">
+                <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
+              </label>
+            </div>
+          </div>          
+
+          <div id="timing_detail" class="form-groups-attached mt-30">
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Date</label>
+                <input class="form-control" type="text" data-provide="datepicker" name="scheduled_date">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="select">Time</label>
+                <input class="form-control" type="text" data-provide="timepicker" name="scheduled_time">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-groups-attached mt-30">
+            <div id="stock-email-select" class="form-group">
+              <label>Use stock email</label>
+              <select class="form-control" data-provide="selectpicker">
+                <option>None</option>
+                <option value="">Stock email 1</option>
+                <option value="">Stock email 2</option>
+                <option value="">Stock email 3</option>
+              </select>
+            </div>
+          </div>
+          
+          <br>
+          <div class="form-groups-attached">
+
+            <div class="form-group">
+              <label>To</label>
+              <input class="form-control" type="text" id="recipients">
+            </div>
+
+            <div class="form-group">
+              <label>Subject</label>
+              <input class="form-control" type="text" name="subject">
+            </div>
+
+            <div class="form-group">
+              <label>From</label>
+              <select class="form-control" data-provide="selectpicker">
+                <option>flexx. &lt;info@flexx.co&gt;</option>
+                <option>Joe Tebaldi &lt;joe@flexx.co&gt;</option>
+                <option>Staff Member &lt;staff@flexx.co&gt;</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Message</label>
+              <textarea name="message" class="form-control editor" rows="10"></textarea>
+            </div>
+
+          </div>
+          <div class="flexbox pull-right">
+            <button id="btn_send_email" class="btn btn-bold btn-round btn-w-xl btn-primary" onclick="fillRecipientsField()">Send Message</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

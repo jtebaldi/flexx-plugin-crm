@@ -1,52 +1,34 @@
 class EmailBlastService
   def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
-    @recipients_list = recipients_list
-    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
-    @email_list = MessagingToolsService.tags_and_contacts_to_emails(recipients_list: recipients_list)
     @site = site
     @user = user
     @scheduled_at = scheduled_at
+    @recipients_list = recipients_list
     @subject = subject
     @body = body
+    @recipients_label = MessagingToolsService.recipients_to_labels(recipients_list: recipients_list)
+    @contact_email_list = MessagingToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
   end
 
   def call
-    emails = Array.new
-
-    if @scheduled_at
-      send_at = Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p')
-    else
-      emails = if @email_list.is_a?(Array)
-        @email_list.map { |r| { email: r } }
-      else
-        [ { email: @email_list } ]
-      end
-
-      sg_message_id = SendgridAdapter.new.send_email(
-        from: {
-          email: 'contact@flexx.co',
-          name: 'Flexx'
-        },
-        to: emails,
-        subject: @subject,
-        body: @body)
-    end
+    send_at = @scheduled_at.present? ? Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p') : Time.now
 
     message = @site.emails.create(
-      sg_message_id: sg_message_id,
       recipients_list: @recipients_list,
       recipients_label: @recipients_label,
       subject: @subject,
-      body: @body,
+      body: DynamicFieldsParserService.parse(site: @site, template: @body),
       from: 'contact@flexx.co',
-      status: @scheduled_at ? 'scheduled' : 'sent',
-      send_at: @scheduled_at ? send_at : Time.now,
-      recipients_count: emails.count,
+      aasm_state: :scheduled,
+      send_at: send_at,
+      recipients_count: @contact_email_list.count,
       created_by: @user.id
     )
 
-    emails.each do |r|
-      message.email_recipients.create(to: r[:email])
+    @contact_email_list.each do |contact|
+      message.email_recipients.create(contact_id: contact[0], to: contact[1])
     end
+
+    message.send_message! unless @scheduled_at.present?
   end
 end

@@ -9,7 +9,7 @@ class SendgridParseService
       body: params[:html],
       from: envelope["from"],
       reply_message_id: reply_message_id,
-      status: 'received',
+      aasm_state: :received
     )
 
     envelope["to"].each do |to|
@@ -20,4 +20,3 @@ class SendgridParseService
     end
   end
 end
-

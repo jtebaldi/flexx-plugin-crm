@@ -21,6 +21,11 @@
           <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger text-white">Delete</a>
         </div>
       <% end %>
+      <% if @task.done? %>
+        <div class="pt-20 pl-20">
+          <span>Completed by: <strong><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></strong></span>
+        </div>
+      <% end %>
       <div class="p-20">
         <span class="text-muted">Description</span>
         <br/><span><%= @task.details %></span>
@@ -44,41 +49,30 @@
         <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
         <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
 
-        <div class="media-list media-list-divided bg-lighter">
-          <h5 class="card-title p-15 text-muted fw-300 bt-1">Notes</h5>
-          <% @task.notes.each do |note| %>
-            <div class="media">
-              <span class="avatar"><%= note.created_by_user.initials %></span>
-              <div class="media-body">
-                <p>
-                  <strong><%= note.created_by_user.print_name %></strong>
-                  <time class="float-right text-fade" ><%= time_ago_in_words(note.created_at) %></time>
-                </p>
-                <p><%= note.details %></p>
-              </div>
-            </div>
-          <% end %>
+        <div id='notes-content'>
+          <%= render partial: 'plugins/flexx_plugin_crm/tasks/notes' %>
         </div>
-        <% unless @task.done? %>
-          <span class="publisher bt-1 border-fade bg-white">
-            <span class="avatar"><%= current_user.initials %></span>
-            <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
-            <input name="task[notes_attributes][][details]" class="publisher-input" type="text" placeholder="Type your note...">
-          </span>
-        <% end %>
       <% end %>
     </div>
   </div>
 
     <footer class="quickview-footer flex-row-reverse">
       <% unless @task.done? %>
-        <div class="btn-group">
+        <% case @task.task_type %>
+        <% when 'email' %>
+          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+        <% when 'message' %>
+          <button class="btn btn-success" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+        <% else %>
+          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
+        <% end %>
+        <!--<div class="btn-group">
           <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
           <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
           <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
             <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
             <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
-          </div>
+          </div>-->
         </div>
       <% end %>
       <button class="btn btn-light" onclick="closeTaskView(this)">Close</button>

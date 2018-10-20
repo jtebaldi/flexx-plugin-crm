@@ -1,0 +1,225 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {   
+    /*
+    new Chart($("#chart-line-2"), {
+      type: 'line',
+
+      // Data
+      //
+      data: {
+        labels: ["January", "February", "March", "April"],
+        datasets: [
+          {
+            label: "Revenue",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 5,
+            borderColor: "#9966ff",
+            pointBackgroundColor: "#9966ff",
+            pointBorderColor: "#9966ff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#9966ff",
+            data: [30, 25, 35, 23]
+          }
+        ]
+      },
+
+      // Options
+      //
+      options: {
+        legend: {
+          display: false
+        },
+      }
+    });
+    */
+  });
+</script>
+
+<style>
+  .ck-editor__editable {
+    min-height: 350px;
+  }
+</style>
+
+<header class="header">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>SMS Blasts</strong></h2>
+    </div>
+  </div>
+
+  <div class="header-action">
+    <div class="buttons">
+      <a href='<%= new_sms_admin_messages_path() %>' class="btn btn-primary btn-float"><i class="ti-plus"></i></a>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+
+  <div class="row">
+
+    <div class="col-lg-3">
+      <div class="card">
+        <ul class="nav nav-lg nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#tab-sms-recent" data-toggle="tab">Recent<span class="badge badge-pill badge-default ml-10"><%= @recent_sms.count %></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab-sms-scheduled" data-toggle="tab">Scheduled<span class="badge badge-pill badge-default ml-10"><%= @scheduled_sms.count %></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab-sms-draft" data-toggle="tab">Draft<span class="badge badge-pill badge-default ml-10"><%= @draft_sms.count %></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab-sms-sent" data-toggle="tab">Sent<span class="badge badge-pill badge-default ml-10"><%= @sent_sms.count %></span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-9 tab-content">
+      <div class="card form-type-material tab-pane fade active show" id="tab-sms-recent">
+        <h4 class="card-title"><strong>Recent</strong> SMS Blasts</h4>
+
+        <div class="card-body">
+          <%= render partial: 'sms', object: @recent_sms if @recent_sms.any? %>
+        </div>
+
+        <!--
+        <footer class="card-footer">
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-left"></span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-right"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+        -->
+      </div>
+
+      <div class="card form-type-material tab-pane fade" id="tab-sms-scheduled">
+        <h4 class="card-title"><strong>Scheduled</strong> SMS Blasts</h4>
+
+        <div class="card-body">
+          <%= render partial: 'sms', object: @scheduled_sms if @scheduled_sms.any? %>
+        </div>
+
+        <!--
+        <footer class="card-footer">
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-left"></span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-right"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+        -->
+      </div>
+
+      <div class="card form-type-material tab-pane fade" id="tab-sms-draft">
+        <h4 class="card-title"><strong>Draft</strong> SMS Blasts</h4>
+
+        <div class="card-body">
+          <%= render partial: 'sms', object: @draft_sms if @draft_sms.any? %>
+        </div>
+
+        <!--
+        <footer class="card-footer">
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-left"></span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-right"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+        -->
+      </div>
+
+      <div class="card form-type-material tab-pane fade" id="tab-sms-sent">
+        <h4 class="card-title"><strong>Sent</strong> SMS Blasts</h4>
+
+        <div class="card-body">
+          <%= render partial: 'sms', object: @sent_sms if @sent_sms.any? %>
+        </div>
+
+        <!--
+        <footer class="card-footer">
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-left"></span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <span class="ti-arrow-right"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+        -->
+      </div>
+
+    </div>
+
+  </div>
+    
+</div>
+
+<!-- Quickviews and Modals -->
+
+<!-- <%= render partial: "report", collection: @sent_sms, as: :sms %> -->
+
