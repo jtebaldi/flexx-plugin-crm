@@ -112,8 +112,8 @@
               <div class="media media-single">
                 <div class="media-body">
                   <%# TODO: Find the contact based on email and site_id %>
-                  <span class="avatar avatar-sm">ma</span>
-                  <span><%= recipient.to %></span>
+                  <span class="avatar avatar-sm"><%= recipient.contact_id.present? ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
+                  <span><%= recipient.contact_id.present? ? recipient.contact.print_name : recipient.to %></span>
                 </div>
                 <div class="media-right">
                   <% if recipient.status == 'open' %>
