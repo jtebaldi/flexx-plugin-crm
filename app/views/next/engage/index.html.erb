@@ -1,0 +1,119 @@
+<header class="header">
+
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Engage</strong></h2>
+    </div>
+  </div>
+
+</header>
+
+<div class="main-content">
+
+  <div class="row">
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="<%= emails_admin_messages_path %>">
+            <!-- <img class="h-150px" src="https://flexxsirv.sirv.com/8e7fa0231c00fb60b86fba63f0519c90838a643975/5086_-_Web_Shop.png"> -->
+            <i class="ti-email fs-90 text-dark"></i>
+          </a>
+          <h5 class="m-1"><a class="hover-info" href="#">Email Blasts</a></h5>
+        </div>
+
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= new_email_admin_messages_path() %>">
+            <i class="ti-plus fs-25"></i><br>
+            New
+          </a>
+          <a class="text-muted pt-2" href="<%= emails_admin_messages_path() %>">
+            <i class="ti-view-grid fs-25"></i><br>
+            View
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="<%= sms_admin_messages_path() %>">
+            <i class="ti-mobile fs-90 text-dark"></i>
+          </a>
+          <h5 class="m-1"><a class="hover-info" href="#">SMS Blasts</a></h5>
+        </div>
+
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= new_sms_admin_messages_path() %>">
+            <i class="ti-plus fs-25"></i><br>
+            New
+          </a>
+          <a class="text-muted pt-2" href="<%= sms_admin_messages_path() %>">
+            <i class="ti-view-grid fs-25"></i><br>
+            View
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="<%= admin_conversations_path() %>">
+            <i class="ti-comment-alt fs-90 text-dark"></i>
+          </a>
+          <h5 class="m-1"><a class="hover-info" href="#">SMS Conversations</a></h5>
+        </div>
+
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= admin_conversations_path() %>">
+            <i class="ti-arrow-right fs-25"></i><br>
+            Go
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="<%= admin_stocks_path() %>">
+            <i class="ti-layout-cta-btn-left fs-90 text-dark"></i>
+          </a>
+          <h5 class="m-1"><a class="hover-info" href="#">Stock Messages</a></h5>
+        </div>
+
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= admin_stocks_path() %>">
+            <i class="ti-arrow-right fs-25"></i><br>
+            Go
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    Campaigns
+    -->
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <a href="<%= admin_recipes_path() %>">
+            <i class="ti-layout-list-thumb fs-90 text-dark"></i>
+          </a>
+          <h5 class="m-1"><a class="hover-info" href="#">Recipes</a></h5>
+        </div>
+
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= admin_recipes_path() %>">
+            <i class="ti-arrow-right fs-25"></i><br>
+            Go
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
