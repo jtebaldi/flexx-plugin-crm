@@ -66,7 +66,7 @@ module Plugins::FlexxPluginCrm
         body: params[:message]
       ).call
 
-      redirect_to action: :index
+      redirect_to action: :emails
     end
 
     def create_text_blast

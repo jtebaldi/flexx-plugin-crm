@@ -1,0 +1,45 @@
+<form class="form-type-combine card">
+  <div class="card-body">       
+
+    <div class="form-groups-attached mt-30">
+      <div id="stock-email-select" class="form-group">
+        <label>Use stock email</label>
+        <select class="form-control" data-provide="selectpicker">
+          <option>None</option>
+          <option value="">Stock email 1</option>
+          <option value="">Stock email 2</option>
+          <option value="">Stock email 3</option>
+        </select>
+      </div>
+    </div>
+    
+    <br>
+    <div class="form-groups-attached">
+
+      <div class="form-group">
+        <label>To</label>
+        <input class="form-control" type="text" id="recipients" value="<%= contact.print_name %>">
+      </div>
+
+      <div class="form-group">
+        <label>Subject</label>
+        <input class="form-control" type="text" name="subject">
+      </div>
+
+      <div class="form-group">
+        <label>From</label>
+        <select class="form-control" data-provide="selectpicker">
+          <option>flexx. &lt;info@flexx.co&gt;</option>
+          <option>Joe Tebaldi &lt;joe@flexx.co&gt;</option>
+          <option>Staff Member &lt;staff@flexx.co&gt;</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea name="message" class="form-control editor" rows="10"></textarea>
+      </div>
+
+    </div>
+  </div>
+</form>
