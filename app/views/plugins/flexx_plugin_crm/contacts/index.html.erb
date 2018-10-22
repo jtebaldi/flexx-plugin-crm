@@ -86,7 +86,7 @@ END Page aside -->
 </header>
 
 <div class="main-content">
-  <div class="card card-shadowed">
+  <div class="card card-shadowed hidden">
     <form class="lookup lookup-huge">
       <input class="no-radius no-border" type="text" placeholder="Try searching for names, tags...">
     </form>
@@ -98,7 +98,7 @@ END Page aside -->
       <div class="flexbox align-items-center row">
 
         <div class="col-sm-8 pl-0">
-          <div class="btn-group btn-group-justified" data-toggle="buttons">
+          <div class="btn-group btn-group-justified hidden" data-toggle="buttons">
             <label class="btn btn-light m-0 active">
               <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>All</input>
             </label>
@@ -133,9 +133,11 @@ END Page aside -->
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
               <small class="contact-detail">
+                <!--
                 <span>Last activity: </span>
                 <time datetime="2018-07-14 20:00">*** TO BE DONE ***</time>
-                <span class="divider-dash"><span class="text-info">
+                -->
+                <span class="divider-dash"><span class="<%= 'text-info' unless contact.pending_tasks_count == 0 %>">
                   <%=
                     case contact.pending_tasks_count
                     when 0
@@ -180,18 +182,24 @@ END Page aside -->
   <div class="quickview-body">
     <%= form_tag admin_contacts_path, method: :post, id: 'new-contact-form', class: 'quickview-block form-type-material', data: { provide: 'validation' } do %>
 
-      <div class="form-group">
-        <input type="text" class="form-control" name="contact[first_name]" required>
-        <label>First Name</label>
-        <div class="invalid-feedback"></div>
-      </div>
+      <div class="form-row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <input type="text" class="form-control" name="contact[first_name]" required>
+            <label>First Name</label>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <input type="text" class="form-control" name="contact[last_name]" required>
-        <label>Last Name</label>
-        <div class="invalid-feedback"></div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <input type="text" class="form-control" name="contact[last_name]" required>
+            <label>Last Name</label>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
       </div>
-
+      
       <div class="form-group">
         <input type="email" class="form-control" name="contact[email]" required>
         <label>Email Address</label>

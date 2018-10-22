@@ -91,9 +91,13 @@ input[type=radio].hide-control { display: none; }
         </div>
       </div>
 
-      <div class="text-center mb-30">
-        <a class="btn btn-block btn-multiline btn-primary" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
-        <a class="btn btn-block btn-multiline btn-info" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
+      <div class="row text-center mb-15">
+        <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
+          <a class="btn btn-block btn-multiline b-2 border-warning text-warning" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
+          <a class="btn btn-block btn-multiline b-2 border-success text-success" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
+        </div>
       </div>
 
       <div class="card">
@@ -326,10 +330,10 @@ input[type=radio].hide-control { display: none; }
       <% end %>
 
       <div class="tab-pane fade" id="tab_history">
-        <div class="<%= 'accordion' unless @contact.tasks.empty? %> accordion-connected" id="accordion-tasks">
+        <div class="<%= 'accordion' unless @contact.pending_tasks_count == 0 %> accordion-connected" id="accordion-tasks">
           <div class="">
             <h4 class="card-title mb-20">
-              <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong> (<%= @contact.tasks.count %>)<% unless @contact.tasks.empty? %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+              <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong> (<%= @contact.pending_tasks_count %>)<% unless @contact.pending_tasks_count == 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
             </h4>
 
             <div id="collapse-tasks" class="collapse">
