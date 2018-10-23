@@ -1,5 +1,9 @@
 clearNewRecipeDirectionForm();
 
+$('#new-recipe-direction-add').toggleClass('disabled');
+$('#new-recipe-direction-cancel').toggleClass('disabled');
+$('#new-recipe-direction-spinner').toggleClass('invisible');
+
 $('#recipe-directions-panel').hide();
 
 $('#recipe-directions-panel').html('<%= escape_javascript(render partial: 'directions')  %>');
