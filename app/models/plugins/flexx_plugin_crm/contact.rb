@@ -32,8 +32,10 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   def initials
     result = if first_name.present? && last_name.present?
       "#{first_name[0]}#{last_name[0]}"
-    else
+    elsif email
       "#{email[0]}#{email[1]}"
+    else
+      'NP'
     end
 
     result.upcase
@@ -42,5 +44,4 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   def pending_tasks_count
     tasks.pending.count
   end
-
 end
