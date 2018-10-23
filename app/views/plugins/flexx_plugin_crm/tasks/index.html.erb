@@ -1,11 +1,19 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/tasks' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
+<script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
+
 <style>
-  .custom-checkbox .custom-control-label:empty::after { top: 2px; } 
+  .custom-checkbox .custom-control-label:empty::after { top: 2px; }
   #old-pending-tasks-list .due-date { color: red; }
+  .ck-editor__editable {
+    min-height: 350px;
+  }
 </style>
 
 <header class="header">
@@ -63,7 +71,7 @@
               <% end %>
             <% end %>
 
-          </div> 
+          </div>
 
         </div>
       </div>
@@ -91,7 +99,7 @@
                     </div>
                   </div>
                 <% end %>
-              </div>      
+              </div>
             </div>
           </div>
         </div>
@@ -122,7 +130,7 @@
         <div class="tab-pane fade" id="tab-completed">
           <div class="row">
 
-            <div class="col-md-12">          
+            <div class="col-md-12">
               <div id="old-completed-tasks-list">
                 <% if @upcoming_tasks.length > 0 %>
                   <div class="divider text-uppercase fw-500">Today</div>

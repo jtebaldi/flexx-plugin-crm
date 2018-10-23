@@ -25,4 +25,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
   def invalid_class(errors)
     errors.any? ? ' is-invalid' : ''
   end
+
+  def rich_text_stocks
+    current_site.stocks.rich_texts.order(:name)
+  end
 end

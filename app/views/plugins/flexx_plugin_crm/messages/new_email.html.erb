@@ -169,7 +169,7 @@
                 <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
               </label>
             </div>
-          </div>          
+          </div>
 
           <div id="timing_detail" class="form-groups-attached mt-30">
             <div class="row">
@@ -186,17 +186,9 @@
           </div>
 
           <div class="form-groups-attached mt-30">
-            <div id="stock-email-select" class="form-group">
-              <label>Use stock email</label>
-              <select class="form-control" data-provide="selectpicker">
-                <option>None</option>
-                <option value="">Stock email 1</option>
-                <option value="">Stock email 2</option>
-                <option value="">Stock email 3</option>
-              </select>
-            </div>
+            <%= render partial: 'plugins/flexx_plugin_crm/common/email_stocks_dropdown' %>
           </div>
-          
+
           <br>
           <div class="form-groups-attached">
 

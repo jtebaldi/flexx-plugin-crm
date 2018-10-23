@@ -92,12 +92,6 @@
   });
 </script>
 
-<style>
-  .ck-editor__editable {
-    min-height: 350px;
-  }
-</style>
-
 <header class="header">
   <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
   <div class="header-info">
@@ -119,7 +113,7 @@
         </button>
 
         <ul class="fab-buttons nav">
-          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW EMAIL BLAST" href='<%= new_admin_message_path() %>'><i class="ti-email"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW EMAIL BLAST" href='<%= "" %>'><i class="ti-email"></i></a></li>
           <li><a class="btn btn-float btn-sm btn-info" data-provide="tooltip" title="Take user to NEW SMS BLAST" href="#"><i class="ti-comment-alt"></i></a></li>
         </ul>
       </div>

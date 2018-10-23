@@ -1,5 +1,7 @@
 module Plugins::FlexxPluginCrm
   class ContactsController < CamaleonCms::Apps::PluginsAdminController
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
+
     layout "layouts/flexx_next_admin"
 
     def index
@@ -19,6 +21,9 @@ module Plugins::FlexxPluginCrm
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
       @available_recipes = TaskRecipe.active.order(:title)
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
     end
 
     def update

@@ -33,10 +33,10 @@ function findMatch(haystack, arr) {
   });
 }
 
-function checkedStaff() {    
+function checkedStaff() {
   $(".task-card").not('.completed').hide();
 
-  setTimeout(function(){ 
+  setTimeout(function(){
     if ($("input[name='staff']:checked").length == $("input[name='staff']").length) {
       $("input[name='staffAll']").prop('checked', true);
     } else if ($("input[name='staff']:not(:checked)").length > 0) {
@@ -44,19 +44,19 @@ function checkedStaff() {
     }
 
     var checked = [];
-    $("input[name='staff']:checked").each(function () {        
-      checked.push($(this).val());        
+    $("input[name='staff']:checked").each(function () {
+      checked.push($(this).val());
     });
-    
+
     $(".task-card").not('.completed').each(function(obj){
       var owner_ids = [];
       owner_ids = $(this).attr('data-staff');
-      
+
       if ((findMatch(owner_ids, checked)) || (owner_ids.length === 0)) {
         $(this).show();
       }
     });
-  }, 50);  
+  }, 50);
 }
 
 app.ready(function() {
@@ -98,6 +98,8 @@ app.ready(function() {
     } else {
       $('#pendingStaff').show();
     }
-    
+
   });
+
+  observeTaskPanelForCKEditor();
 });

@@ -1,6 +1,7 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
 <script>
@@ -17,6 +18,9 @@
     });
 
   });
+
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+
 </script>
 
 <style>
@@ -40,7 +44,7 @@ input[type=radio].hide-control { display: none; }
             <div class="media-body">
               <div class="mt-3">
                 <span class="fs-16 pr-16"><%= @contact.print_name %></span>
-              </div>              
+              </div>
             </div>
           </div>
           <% unless @contact.all_tags_list.empty? %>
@@ -367,7 +371,7 @@ input[type=radio].hide-control { display: none; }
                   <small class="fs-14"><%= @contact.first_name %> does not have a mobile number stored.<br>Go to the <span class="text-info">User Details</span> tab and add a mobile number to send SMS messages.</small>
                 </div>
               </div>
-            <% else %>  
+            <% else %>
               <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
                 <div id="conversations-panel">
                   <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
@@ -396,7 +400,7 @@ input[type=radio].hide-control { display: none; }
 
       </div>
 
-      <div class="tab-pane fade" id="tab_recipes_campaigns">        
+      <div class="tab-pane fade" id="tab_recipes_campaigns">
 
         <div class="card">
           <h5 class="card-title">Available <strong>Recipes</strong></h5>

@@ -1,5 +1,7 @@
 module Plugins::FlexxPluginCrm
   class TasksController < CamaleonCms::Apps::PluginsAdminController
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
+
     layout "layouts/flexx_next_admin"
 
     def index
@@ -8,6 +10,9 @@ module Plugins::FlexxPluginCrm
       @upcoming_tasks = current_site.tasks.pending.upcoming.order(:due_date).includes(:contact, :owners)
       @old_pending_tasks = current_site.tasks.pending.old.order(:due_date).includes(:contact, :owners)
       @old_completed_tasks = current_site.tasks.done.old.order(:due_date).includes(:contact, :owners)
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
     end
 
     def create

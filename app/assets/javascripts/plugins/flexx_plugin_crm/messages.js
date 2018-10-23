@@ -72,6 +72,9 @@ app.ready(function() {
 
   ClassicEditor
     .create(document.querySelector('.editor'), window.dynamic_fields)
+    .then(function(editor){
+      window.ckeditor = editor;
+    })
     .catch(function(error){
       console.error(error);
     });

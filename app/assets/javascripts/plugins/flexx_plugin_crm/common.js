@@ -25,3 +25,21 @@ function saveNote(e, taskId) {
 function closeTaskView(button) {
   quickview.close($(button).closest('.quickview'));
 }
+
+function observeTaskPanelForCKEditor() {
+  if (!document.querySelector('#qv_view_task')) {
+    return;
+  }
+  var observer = new MutationObserver(function () {
+    ClassicEditor
+    .create(document.querySelector('.editor'), window.dynamic_fields)
+    .then(function(editor){
+      window.ckeditor = editor;
+    })
+    .catch(function(error){
+      console.error(error);
+    });
+  });
+
+  observer.observe(document.querySelector('#qv_view_task'), { childList: true });
+}

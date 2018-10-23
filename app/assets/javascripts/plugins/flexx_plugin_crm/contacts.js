@@ -97,4 +97,6 @@ app.ready(function() {
   $('#new-phone-call-touchpoint').click({ type: 'phone_call', title: 'Phone call' },newTouchpoint);
   $('#new-meeting-touchpoint').click({ type: 'meeting', title: 'Meeting' },newTouchpoint);
   $('#new-general-touchpoint').click({ type: 'general', title: 'General' },newTouchpoint);
+
+  observeTaskPanelForCKEditor();
 });

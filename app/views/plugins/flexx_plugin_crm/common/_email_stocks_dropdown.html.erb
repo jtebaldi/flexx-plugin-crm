@@ -1,0 +1,17 @@
+<div id="stock-email-select" class="form-group">
+  <label>Use stock email</label>
+  <select id="stock-email-select-field" class="form-control" data-provide="selectpicker">
+    <option>None</option>
+    <% rich_text_stocks.each_with_index do |row, i| %>
+      <option value="<%= i %>"><%= row.name %></option>
+    <% end %>
+  </select>
+</div>
+
+<script>
+  var stocks = <%= rich_text_stocks.pluck(:metadata, :contents).to_json.html_safe %>;
+
+  $('#stock-email-select-field').on('change', function(e) {
+    window.ckeditor.setData(stocks[e.target.value][1]);
+  });
+</script>
