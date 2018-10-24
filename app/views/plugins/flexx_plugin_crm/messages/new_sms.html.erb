@@ -15,10 +15,10 @@
     $(rad).on('click change', function(e) {
       if (rad.value == 2) {
         $("#timing_detail").show();
-        $("#btn_send_text").text('Schedule Email');
+        $("#btn_send_text").text('Schedule Message');
       } else {
         $("#timing_detail").hide();
-        $("#btn_send_text").text('Send Email');
+        $("#btn_send_text").text('Send Message');
       }
     });
 
@@ -167,7 +167,7 @@
 
           </div>
           <div class="flexbox pull-right">
-            <button id="btn_send_text" class="btn btn-bold btn-round btn-w-xl btn-primary">Send Message</button>
+            <button id="btn_send_text" class="btn btn-bold btn-w-xl btn-primary">Send Message</button>
           </div>
         </div>
       <% end %>

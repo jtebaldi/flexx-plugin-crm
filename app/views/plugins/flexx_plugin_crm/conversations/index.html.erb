@@ -6,7 +6,11 @@
 
   <div class="aside-body p-0">
     <header class="card-header">
-      <h5 class="card-title">Text Messages</h5>
+      <h5 class="card-title text-center">
+        <!-- Needs to connect to current contacts list and allow for new SMS conversation to be created 
+        <button class="btn btn-sm btn-bold btn-success btn-outline" data-toggle="modal" data-target="#modal-new-sms"><i class="ti-pencil-alt fs-14" style="position: relative; top: 2px;"></i> New</button>
+        -->
+      </h5>
       <ul class="card-controls">
         <% if current_site.messages.unread.count > 0 %>
           <li><span id="total-unread-label" data-total="<%= current_site.messages.unread.count %>" class="badge badge-warning"><%= current_site.messages.unread.count %> unread</span></li>
@@ -15,42 +19,47 @@
     </header>
     <div class="media-list media-list-divided media-list-hover">
 
-      <!--
-      <header class="media-list-header b-0">
-        <form class="lookup lookup-lg w-100 bb-1 border-light">
-          <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
-        </form>
-      </header>
-      -->
-
       <div class="media-list-header b-0">
-        <div class="form-group form-type-combine b-0">
+        <% if @contact_ids.empty? %>
+          <header class="media-list-header b-0">
+            <p class="w-100 bb-1 border-light p-20 text-fade"><i>No current conversations</i></p>
+          </header>          
+        <% else %>
+          <!-- Search messages
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+          -->
+          <div class="form-group form-type-combine b-0">
 
-          <label>Sort by</label>
+            <label>Sort by</label>
 
-          <div class="btn-group bootstrap-select form-control">
-            <button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Newest" aria-expanded="false">
-              <span class="filter-option pull-left">Newest</span>
-              <span class="bs-caret"><span class="caret"></span></span>
-            </button>
-            <div class="dropdown-menu open" role="combobox" style="max-height: 219.2px; overflow: hidden; min-height: 0px; position: absolute; top: 26px; left: 0px; will-change: top, left;" x-placement="bottom-start">
-              <div class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 219.2px; overflow-y: auto; min-height: 0px;">
-              <a onclick="sortMe('#inbox-list', 'a', 'data-date', 'desc')" class="dropdown-item selected">
-                <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
-                  <span class="text">Newest</span>
-                  <span class=" ti-check check-mark"></span>
-                </span>
-              </a>
-              <a onclick="sortMe('#inbox-list', 'a', 'data-unread', 'desc')" class="dropdown-item">
-                <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
-                  <span class="text">Unread</span>
-                  <span class=" ti-check check-mark"></span>
-                </span>
-              </a>
+            <div class="btn-group bootstrap-select form-control">
+              <button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Newest" aria-expanded="false">
+                <span class="filter-option pull-left">Newest</span>
+                <span class="bs-caret"><span class="caret"></span></span>
+              </button>
+              <div class="dropdown-menu open" role="combobox" style="max-height: 219.2px; overflow: hidden; min-height: 0px; position: absolute; top: 26px; left: 0px; will-change: top, left;" x-placement="bottom-start">
+                <div class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 219.2px; overflow-y: auto; min-height: 0px;">
+                <a onclick="sortMe('#inbox-list', 'a', 'data-date', 'desc')" class="dropdown-item selected">
+                  <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                    <span class="text">Newest</span>
+                    <span class=" ti-check check-mark"></span>
+                  </span>
+                </a>
+                <a onclick="sortMe('#inbox-list', 'a', 'data-unread', 'desc')" class="dropdown-item">
+                  <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
+                    <span class="text">Unread</span>
+                    <span class=" ti-check check-mark"></span>
+                  </span>
+                </a>
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
+        <% end %>
       </div>
 
       <div id="inbox-list" class="media-list-body">
@@ -64,28 +73,6 @@
   <button class="aside-toggler"></button>
 </aside>
 
-<header class="header">
-  <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
-  <div class="header-info">
-    <div class="left">
-      <h2 class="header-title"><strong>SMS</strong> Conversations</h2>
-    </div>
-  </div>
-
-
-  <div class="header-action">
-    <!--
-    <nav class="nav">
-      <a class="nav-link" href="/admin/next/conversations-email">Email <small>(2)</small></a>
-      <a class="nav-link active" href="/admin/next/conversations-text">SMS</a>
-    </nav>
-    -->
-    <div class="buttons">
-      <button class="btn btn-primary btn-float" data-toggle="modal" href="#modal-new-sms"><i class="ti-plus"></i></button>
-    </div>
-  </div>
-</header>
-
 <div class="main-content">
   <div id="loading-thread" class="center-h" style="display: none">
     <div class="spinner-dots">
@@ -95,7 +82,19 @@
     </div>
   </div>
   <div id="thread-body" class="card card-bordered flex-column">
-    <%= render partial: 'message_thread', locals: { contact: @first_contact } %>
+    <% if @contact_ids.empty? %>
+      <div class="media flex-column text-center p-40 b-2 border-info">
+        <span class="avatar avatar-xxl bg-info opacity-60 mx-auto">
+          <i class="ti-info-alt fs-35 align-sub"></i>
+        </span>
+        <div class="text-center">
+          <h5 class="text-uppercase fw-500 mt-3 text-info">No conversations found.</h5>
+          <small class="fs-14">Start a <a data-toggle="quickview" data-target="#qv-new-text" href="#qv-new-text" class="text-success">new conversation</a> now!</small>
+        </div>
+      </div>
+    <% else %>
+      <%= render partial: 'message_thread', locals: { contact: @first_contact } %>
+    <% end %>
   </div>
 </div>
 
@@ -248,10 +247,11 @@
           <label>Contact Name</label>
           <input class="form-control" type="text" id="contacts-field" placeholder="Start typing name...">
           <input type="hidden" name="task[contact_id]" id="new-task-contact-id">
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal">Go</button>
+          <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal">Send</button>
         </div>
       </form>
     </div>
