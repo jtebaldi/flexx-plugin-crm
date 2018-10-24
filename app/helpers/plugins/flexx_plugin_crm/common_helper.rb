@@ -29,4 +29,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
   def rich_text_stocks
     current_site.stocks.rich_texts.order(:name)
   end
+
+  def senders_list
+    current_site.users.order(:first_name, :last_name)
+  end
 end

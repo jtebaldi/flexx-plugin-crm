@@ -22,8 +22,8 @@ class MessagesJobService
     def send_email(email)
       sg_message_id = SendgridAdapter.new(site: email.site).send_email(
         from: {
-          email: 'contact@flexx.co',
-          name: 'Flexx'
+          email: email.from,
+          name: email.site.name
         },
         to: email.email_recipients.map(&:to),
         subject: email.subject,

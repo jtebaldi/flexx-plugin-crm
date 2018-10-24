@@ -1,0 +1,5 @@
+<select class="form-control" data-provide="selectpicker" name="<%= input_field_name %>">
+  <% senders_list.each do |row| %>
+    <option value="<%= row.email %>" <%= 'selected' if current_user.email == row.email %>><%= row.print_name %> - <%= row.email %></option>
+  <% end %>
+</select>

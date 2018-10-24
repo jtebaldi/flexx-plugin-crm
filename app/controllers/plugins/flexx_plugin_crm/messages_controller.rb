@@ -53,6 +53,7 @@ module Plugins::FlexxPluginCrm
         site: current_site,
         user: current_user,
         scheduled_at: scheduled_at,
+        sender: params[:sender],
         recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]

@@ -1,8 +1,9 @@
 class EmailBlastService
-  def initialize(site:, user:, scheduled_at:, recipients_list:, subject:, body:)
+  def initialize(site:, user:, scheduled_at:, sender:, recipients_list:, subject:, body:)
     @site = site
     @user = user
     @scheduled_at = scheduled_at
+    @sender = sender
     @recipients_list = recipients_list
     @subject = subject
     @body = body
@@ -18,7 +19,7 @@ class EmailBlastService
       recipients_label: @recipients_label,
       subject: @subject,
       body: DynamicFieldsParserService.parse(site: @site, template: @body),
-      from: 'contact@flexx.co',
+      from: @sender,
       aasm_state: :scheduled,
       send_at: send_at,
       recipients_count: @contact_email_list.count,

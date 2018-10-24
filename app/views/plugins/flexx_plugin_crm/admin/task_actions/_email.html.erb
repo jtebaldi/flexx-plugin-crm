@@ -26,11 +26,7 @@
 
       <div class="form-group">
         <label>From</label>
-        <select class="form-control" data-provide="selectpicker">
-          <option>flexx. &lt;info@flexx.co&gt;</option>
-          <option>Joe Tebaldi &lt;joe@flexx.co&gt;</option>
-          <option>Staff Member &lt;staff@flexx.co&gt;</option>
-        </select>
+        <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'sender' } %>
       </div>
 
       <div class="form-group">
