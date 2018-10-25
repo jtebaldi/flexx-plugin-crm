@@ -66,6 +66,9 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :dashboard, controller: 'plugins/flexx_plugin_crm/dashboard', only: :index do
+          get :from_form, on: :collection
+        end
         resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update]
       end
 

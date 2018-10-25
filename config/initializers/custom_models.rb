@@ -22,6 +22,56 @@ Rails.application.config.to_prepare do
 
     has_many :automated_campaign_to_contact_form_associations, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignToContactFormAssociation'
     has_many :automated_campaigns, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', through: :automated_campaign_to_contact_form_associations
+
+    belongs_to :parent, class_name: 'Plugins::CamaContactForm::CamaContactForm'
+
+    after_create :add_contact
+
+    def add_contact
+      return unless parent_id
+      cids = parent.fields.reduce({}) do |h, f|
+        if f['field_type'] == 'email'
+          h.merge email: f['cid']
+        else
+          case f['label'].downcase when 'first name' then h.merge(first_name: f['cid'])
+          when 'last name' then h.merge(last_name: f['cid'])
+          when 'name' then h.merge(name: f['cid'])
+          when 'phone number' then h.merge(phone_number: f['cid'])
+          else h
+          end
+        end
+      end
+
+      return if Plugins::FlexxPluginCrm::Contact.exists?(
+        site_id: parent.site_id, email: the_settings[:fields][cids[:email]]
+      )
+
+      first_name = last_name = ''
+      if cids[:first_name] && cids[:last_name]
+        first_name = the_settings[:fields][cids[:first_name]]
+        last_name = the_settings[:fields][cids[:last_name]]
+      elsif cids[:name]
+        first_name, last_name = the_settings[:fields][cids[:name]].split ' '
+      end
+
+      contact = Plugins::FlexxPluginCrm::Contact.create(
+        site_id: parent.site_id,
+        first_name: first_name,
+        last_name: last_name,
+        email: the_settings[:fields][cids[:email]],
+        source: "Form - #{parent.name}",
+        cama_contact_form_id: id
+      )
+      if the_settings[:fields][cids[:phone_number]]
+        contact.phonenumbers.create number: the_settings[:fields][cids[:phone_number]]
+      end
+
+      TaskRecipeService.apply_recipes(contact: contact)
+
+      Rails.logger.warn('RECIPES')
+
+      AutomatedCampaignService.apply_campaigns(contact: contact)
+    end
   end
 
   user_class = (PluginRoutes.static_system_info['user_model'].presence || 'CamaleonCms::User').constantize
