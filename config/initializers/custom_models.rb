@@ -62,7 +62,9 @@ Rails.application.config.to_prepare do
         source: "Form - #{parent.name}",
         cama_contact_form_id: id
       )
-      contact.phonenumbers.create number: the_settings[:fields][cids[:phone_number]]
+      if the_settings[:fields][cids[:phone_number]]
+        contact.phonenumbers.create number: the_settings[:fields][cids[:phone_number]]
+      end
 
       TaskRecipeService.apply_recipes(contact: contact)
 
