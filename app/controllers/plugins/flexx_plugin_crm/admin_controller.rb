@@ -102,7 +102,11 @@ module Plugins::FlexxPluginCrm
       render json: current_site.owned_tags.map { |t| { name: t.name, value: t.name } }
     end
 
-    def list_contacts
+    def list_contacts_with_mobile
+      render json: current_site.contacts.joins(:phonenumbers).where(phonenumbers: { phone_type: 'mobile' }).map { |c| { name: "#{c.print_name}", value: c.id } }
+    end
+
+    def list_contacts_with_email
       render json: current_site.contacts.map { |c| { name: "#{c.print_name} - #{c.email}", value: c.id } }
     end
 
