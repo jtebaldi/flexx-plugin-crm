@@ -1,0 +1,183 @@
+<!-- Page aside -->
+<aside class="aside aside-expand-md">
+  <div class="aside-body">
+
+    <div class="aside-block">
+      <h6 class="aside-title">Actions</h6>
+    </div>
+
+    <div class="media-list media-list-sm media-list-hover media-list-divided">
+      <a class="media flex-column px-20" href="#">
+        <p>Notify</p>
+        <small>Send a notification to any or all OPEX facilities</small>
+      </a>
+
+      <a class="media flex-column px-20" href="#">
+        <p>Share a Blog</p>
+        <small>Create a blog to publish to all subscribers</small>
+      </a>
+
+      <a class="media flex-column px-20" href="#">
+        <p>Add media</p>
+        <small>Upload media to a shared folder for your subscribers</small>
+      </a>
+
+      <a class="media flex-column px-20" href="#">
+        <p>Settings</p>
+        <small>Control permissions, notifications and access</small>
+      </a>
+
+    </div>
+
+
+    <hr class="hr-sm">
+
+
+    <div class="media-list media-list-sm media-list-hover media-list-divided">
+      <a class="media flex-column px-20" href="aside-doc.html">
+        <p>Support</p>
+        <small>Learn more about the features for Superusers</small>
+      </a>
+    </div>
+
+  </div>
+
+  <button class="aside-toggler"></button>
+</aside>
+<!-- END Page aside -->
+
+
+<header class="header bg-ui-general">
+  <div class="header-info">
+    <h1 class="header-title">
+      <strong>OPEX Gyms</strong>
+      <small>This is a Superuser dashboard. Here you'll find actions to and analytics to support your subscribers.</small>
+    </h1>
+  </div>
+
+  <div class="header-action">
+    <nav class="nav">
+      <a class="nav-link active" data-toggle="tab" href="#tab-gyms">Gyms</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-analytics">Analytics</a>
+    </nav>
+  </div>
+</header><!--/.header -->
+
+
+<div class="main-content">
+  <div class="tab-content">
+    
+    <div class="tab-pane fade active show" id="tab-gyms">
+      <div class="row">
+        <div class="col-6 col-md-6 col-lg-4 col-xl-3">
+          <div class="card card-body">
+            <div class="flexbox align-items-center">
+              <label class="toggler toggler-yellow fs-16">
+                <input type="checkbox" checked>
+                <i class="fa fa-star"></i>
+              </label>
+              <div class="dropdown">
+                <a data-toggle="dropdown" href="#" aria-expanded="false"><i class="ti-more-alt rotate-90 text-muted"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-comments"></i> Messages</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-phone"></i> Call</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#"><i class="fa fa-fw fa-remove"></i> Remove</a>
+                </div>
+              </div>
+            </div>
+            <div class="text-center pt-3">
+              <a href="#qv-gym" data-toggle="quickview">
+                <img class="" src="https://d2wjypkud4jtpk.cloudfront.net/columbialeander/opex-midlands-logo_black.png">
+              </a>
+              <h5 class="mt-3 mb-0"><a class="hover-primary" href="#">Carl Hardwick</a></h5>
+              <span>Columbia, SC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-analytics">
+      <div class="card">
+        <div class="card-header">
+          <h3>Global analytics widgets go here</h3>  
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title"><strong>Top</strong> Locations</h5>
+
+              <ul class="card-controls">
+                <li class="dropdown">
+                  <a data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item active" href="#">Today</a>
+                    <a class="dropdown-item" href="#">Yesterday</a>
+                    <a class="dropdown-item" href="#">Last week</a>
+                    <a class="dropdown-item" href="#">Last month</a>
+                  </div>
+                </li>
+                <li><a class="card-btn-reload" href="../assets/data/general.html" title="Refresh" data-provide="tooltip"><i class="fa fa-circle-thin"></i></a></li>
+              </ul>
+            </div>
+
+            <div class="card-body card-body">
+              <p>This is a brief summary of the locations who are performing the best.</p>
+
+              <div class="flexbox mt-70">
+                <div data-provide="peity" data-type="bar" data-height="130" data-width="90" data-fill="#33cabb,#48b0f7,#fdd501">953,813,369</div>
+
+                <ul class="list-inline align-self-end text-muted text-right mb-0">
+                  <li>OPEX Hooksett <span class="badge badge-ring badge-primary ml-2"></span></li>
+                  <li>OPEX North Vegas <span class="badge badge-ring badge-info ml-2"></span></li>
+                  <li>OPEX Omaha West <span class="badge badge-ring badge-yellow ml-2"></span></li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>  
+</div>
+
+<!-- QUICKVIEW: Gym Detail -->
+<div id="qv-gym" class="quickview quickview-xxl">
+  <header class="quickview-header">
+    <p class="quickview-title lead">OPEX Midlands</p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+
+    <div class="card card-body">
+      <h6>
+        <span class="text-uppercase">Requested Consults (RACs)</span>
+      </h6>
+      <br>
+      <p class="fs-28 fw-100">21</p>
+
+      <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 85%; height: 4px;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div class="text-gray fs-12"><i class="ti-stats-down text-success mr-1"></i> 18% increase from last month</div>
+    </div>
+  </div>
+
+  <footer class="quickview-footer flexbox">
+    <div>
+      <a href="#">View analysis</a>
+    </div>
+    <div>
+      <a href="#" data-provide="tooltip" title="Mark all as read"><i class="fa fa-circle-o"></i></a>
+      <a href="#" data-provide="tooltip" title="Update"><i class="fa fa-repeat"></i></a>
+    </div>
+  </footer>
+</div>

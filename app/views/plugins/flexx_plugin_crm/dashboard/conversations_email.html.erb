@@ -1,0 +1,397 @@
+<style>
+  input[type=radio].hide-control { display: none; }
+</style>
+
+<!-- ASIDE: Recent Email Threads -->
+<aside class="aside aside-lg aside-expand-lg">
+
+  <div class="aside-body p-0">
+    <header class="card-header">
+      <h5 class="card-title">Email</h5>
+      <ul class="card-controls">
+        <li><span class="badge badge-warning">2 unread</span></li>
+      </ul>
+    </header>
+    <div class="media-list media-list-divided media-list-hover">
+
+      <header class="media-list-header b-0">
+        <form class="lookup lookup-lg w-100 bb-1 border-light">
+          <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+        </form>
+      </header>
+
+      <div class="media-list-body">
+        <a class="media align-items-center active" href="#">
+          <div class="media-body">
+            <div class="flexbox align-items-center">
+              <strong class="title">Hossein Shams</strong>
+              <time datetime="2018-07-14 20:00">24 min ago</time>
+              <span class="badge badge-lg badge-dot badge-warning"></span>
+            </div>
+            <small>Welcome to flexx.</small>
+            <p class="text-truncate">You need to update the changelog in documentation before we release the current version.</p>
+          </div>
+        </a>
+
+
+        <a class="media align-items-center" href="#">
+          <div class="media-body">
+            <div class="flexbox align-items-center">
+              <strong class="title">Patric Johnson</strong>
+              <time datetime="2018-07-14 20:00">09:34 am</time>
+              <span class="badge badge-lg badge-dot badge-warning"></span>
+            </div>
+            <small>Subject Line</small>
+            <p class="text-truncate">Ok, I'll take care of it</p>
+          </div>
+        </a>
+
+
+        <a class="media align-items-center" href="#">
+          <div class="media-body">
+            <div class="flexbox align-items-center">
+              <strong class="title">Sarah Conner</strong>
+              <time datetime="2018-07-14 20:00">Yesterday</time>
+            </div>
+            <small>Subject Line</small>
+            <p class="text-truncate">Good Morning!</p>
+          </div>
+        </a>
+
+        <a class="media align-items-center" href="#">
+          <div class="media-body">
+            <div class="flexbox align-items-center">
+              <strong class="title">Mitch Rogers</strong>
+              <time datetime="2018-07-14 20:00">5/30/18</time>
+            </div>
+            <small>Subject Line</small>
+            <p class="text-truncate">I can definitely make that happen.</p>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <button class="aside-toggler"></button>
+</aside>
+<!-- END ASIDE: Messaging -->
+
+<header class="header">
+  <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
+
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Conversations</strong></h2>
+    </div>
+  </div>
+
+  <div class="header-action">
+    <nav class="nav">
+      <a class="nav-link active" href="/admin/next/conversations-email">Email <small>(2)</small></a>
+      <a class="nav-link" href="/admin/next/conversations-text">Text Message</a>
+    </nav>
+    <div class="buttons">
+      <div class="fab fab-dir-left">
+        <button class="btn btn-float btn-primary" data-toggle="button">
+          <i class="fab-icon-default ti-plus"></i>
+          <i class="fab-icon-active ti-close"></i>
+        </button>
+
+        <ul class="fab-buttons">
+          <li><a class="btn btn-float btn-sm btn-info" data-toggle="quickview" href="#qv-new-email"><i class="ti-user"></i></a></li>
+          <li><a class="btn btn-float btn-sm btn-info" href="/admin/next/messaging#tab-email"><i class="ti-announcement"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+
+  <div class="card">
+    <header class="card-header cursor-pointer" data-toggle="collapse" data-target="#email-1">
+      <div class="card-title flexbox">
+        <span class="avatar">hs</span>
+        <div>
+          <h6 class="mb-0">Hossein Shams</h6>
+          <small>Today at 11:34 AM</small>
+          <small><a class="text-info no-collapsing ml-1" href="#email-info-1" data-toggle="collapse">Details</a></small>
+
+          <div class="collapse no-collapsing cursor-text" id="email-info-1">
+            <small class="d-inline-block w-40px mt-1">From:</small>
+            <small>theadmin@thetheme.io</small>
+            <br>
+            <small class="d-inline-block w-40px">To:</small>
+            <small>subscriber@yahoo.com</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="text-lighter" data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#"><i class="fa fa-reply"></i> Reply</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-share"></i> Forward</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-print"></i> Print</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="collapse" id="email-1">
+      <div class="card-body">
+        <p>Credibly harness multidisciplinary ideas via alternative e-commerce. Intrinsicly transition interdependent best practices before resource sucking outsourcing.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <header class="card-header cursor-pointer" data-toggle="collapse" data-target="#email-2">
+      <div class="card-title flexbox">
+        <span class="avatar">hs</span>
+        <div>
+          <h6 class="mb-0">Hossein Shams</h6>
+          <small>Today at 11:34 AM</small>
+          <small><a class="text-info no-collapsing ml-1" href="#email-info-2" data-toggle="collapse">Details</a></small>
+
+          <div class="collapse no-collapsing cursor-text" id="email-info-2">
+            <small class="d-inline-block w-40px mt-1">From:</small>
+            <small>theadmin@thetheme.io</small>
+            <br>
+            <small class="d-inline-block w-40px">To:</small>
+            <small>subscriber@yahoo.com</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="text-lighter" data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#"><i class="fa fa-reply"></i> Reply</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-share"></i> Forward</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-print"></i> Print</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="collapse show" id="email-2">
+      <div class="card-body">
+        <p>Uniquely restore granular schemas with enterprise services. Competently maximize team driven networks and cross-platform users. Completely recaptiualize cross-platform networks functionalized services. Holisticly matrix extensible models via corporate value. Continually revolutionize open-source markets through high-quality functionalities.</p>
+        <hr>
+        <h6 class="text-lighter text-uppercase mb-3">
+          <i class="fa fa-paperclip mr-2"></i>
+          <small>Attchments (3)</small>
+        </h6>
+        <div class="gap-items-2 gap-y" data-provide="photoswipe">
+          <a class="d-inline-block" href="#"><img class="w-140px" src="../assets/img/gallery/thumb-sm/10.jpg" data-original-src="../assets/img/gallery/10.jpg" data-original-src-width="1920" data-original-src-height="1280" alt="..."></a>
+          <a class="d-inline-block" href="#"><img class="w-140px" src="../assets/img/gallery/thumb-sm/9.jpg" data-original-src="../assets/img/gallery/9.jpg" data-original-src-width="1920" data-original-src-height="1280" alt="..."></a>
+          <a class="d-inline-block" href="#"><img class="w-140px" src="../assets/img/gallery/thumb-sm/16.jpg" data-original-src="../assets/img/gallery/16.jpg" data-original-src-width="1920" data-original-src-height="1280" alt="..."></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <header class="card-header cursor-pointer" data-toggle="collapse" data-target="#email-3">
+      <div class="card-title flexbox">
+        <span class="avatar">hs</span>
+        <div>
+          <h6 class="mb-0">Hossein Shams</h6>
+          <small>Today at 11:34 AM</small>
+          <small><a class="text-info no-collapsing ml-1" href="#email-info-3" data-toggle="collapse">Details</a></small>
+
+          <div class="collapse no-collapsing cursor-text" id="email-info-3">
+            <small class="d-inline-block w-40px mt-1">From:</small>
+            <small>theadmin@thetheme.io</small>
+            <br>
+            <small class="d-inline-block w-40px">To:</small>
+            <small>subscriber@yahoo.com</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="text-lighter" data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#"><i class="fa fa-reply"></i> Reply</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-share"></i> Forward</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-print"></i> Print</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="collapse show" id="email-3">
+      <div class="card-body">
+        <p>Thank you so much</p>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="divider fs-15">Reply</div>
+  <form>
+    <div class="form-group">
+      <textarea data-provide="summernote" data-min-height="150"></textarea>
+    </div>
+    <button class="btn btn-primary">Reply</button>
+  </form>
+  <br>
+
+</div>
+
+<!-- QUICKVIEW - New email -->
+<div id="qv-new-email" class="quickview quickview-xl backdrop-dark">
+  <header class="quickview-header">
+    <p class="quickview-title lead">New <strong>Email</strong></p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <form class="quickview-block form-type-combine">
+
+      <div class="card-body">
+        <div class="input-group">
+          <div class="input-group-input">
+            <label>To</label>
+            <input class="form-control" type="text" id="typeahead-contacts" placeholder="Start typing name...">
+          </div>
+          <span class="input-group-append">
+            <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#search_contacts_modal"><i class="ti-search"></i></button>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="select">From</label>
+          <select class="form-control">
+            <option>Joe Tebaldi (joe@flexx.co)</option>
+            <option>Steve Edmunds (steve@flexx.co)</option>
+            <option>flexx. (info@flexx.co)</option>
+          </select>
+        </div>
+
+
+        <div class="form-groups-attached">
+
+          <div class="form-group">
+            <label>Subject</label>
+            <input class="form-control" type="text">
+          </div>
+
+          <div class="publisher publisher-multi bg-transparent b-1 form-group">
+            <label>Message</label>
+            <textarea class="publisher-input auto-expand" rows="6"></textarea>
+            <div class="flexbox">
+              <div class="gap-items">
+                <span class="publisher-btn file-group">
+                  <i class="fa fa-paperclip file-browser"></i>
+                  <input type="file">
+                </span>
+                <button type="button" class="publisher-btn" data-toggle="modal" data-target="#modal-snippet"><i class="ti-receipt"></i></button>
+                <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <button class="btn btn-success" type="submit">Send</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
+  </footer>
+</div>
+
+<!-- Modal: Text Snippets -->
+<div class="modal modal-center fade" id="modal-snippet" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Text snippets</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="media-list media-list-hover media-list-divided scrollable" style="height: 345px">
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+          <div class="media media-single">
+            <div class="media-body">
+              <h6><a href="#">Snippet title</a></h6>
+              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+            </div>
+            <div class="media-right">
+              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
