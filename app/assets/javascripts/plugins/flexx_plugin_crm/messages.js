@@ -1,7 +1,7 @@
 var contactlist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: { url: '/admin/next/list_contacts', cache: false }
+  prefetch: { url: '/admin/next/list_contacts_with_email', cache: false }
 });
 
 var taglist = new Bloodhound({

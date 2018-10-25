@@ -11,6 +11,6 @@ class Plugins::FlexxPluginCrm::Phonenumber < ActiveRecord::Base
   private
 
   def set_phonetype
-    self.phone_type = 'other' if self.phone_type.blank?
+    self.phone_type = 'mobile' if self.phone_type.blank?
   end
 end

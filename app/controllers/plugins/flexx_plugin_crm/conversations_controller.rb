@@ -8,8 +8,10 @@ module Plugins::FlexxPluginCrm
         group(:contact_id).
         order("MAX(created_at) DESC")
 
-      @first_contact = Contact.find_by(id: @contact_ids.first.contact_id)
-      MessageService.mark_contact_messages_read(contact: @first_contact)
+      unless @contact_ids.empty?
+        @first_contact = Contact.find_by(id: @contact_ids.first.contact_id)
+        MessageService.mark_contact_messages_read(contact: @first_contact)
+      end
     end
 
     def show

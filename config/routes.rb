@@ -13,7 +13,8 @@ Rails.application.routes.draw do
         post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         get 'list_tags', controller: 'plugins/flexx_plugin_crm/admin', action: :list_tags, as: :list_tags
-        get 'list_contacts', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts, as: :list_contacts
+        get 'list_contacts_with_mobile', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_mobile, as: :list_contacts_with_mobile
+        get 'list_contacts_with_email', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_email, as: :list_contacts_with_email
 
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle

@@ -1,3 +1,9 @@
+var contactlist = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: { url: '/admin/next/list_contacts_with_mobile', cache: false }
+});
+
 function loadConversation(card) {
   if($(card).data('unread') > 0) {
     var total = $('#total-unread-label').data('total');
@@ -33,5 +39,33 @@ function submitConversationsSendMessageForm(e) {
 }
 
 app.ready(function() {
+  contactlist.initialize();
+
+  $('#contacts-field').typeahead({
+    hint: true,
+    highlight: true
+  },
+  {
+    name: 'contactlist',
+    displayKey: 'name',
+    valueKey: 'value',
+    source: contactlist
+  });
+
+  var clearContactId = true;
+
+  $('#contacts-field').bind('typeahead:change', function() {
+    if(clearContactId) {
+      $('#new-task-contact-id').val('');
+    } else {
+      clearContactId = true;
+    }
+  });
+
+  $('#contacts-field').bind('typeahead:selected', function(e, option) {
+    $('#new-task-contact-id').val(option.value);
+    clearContactId = false;
+  });
+
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
 });
