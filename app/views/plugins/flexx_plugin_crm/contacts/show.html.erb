@@ -382,10 +382,9 @@ input[type=radio].hide-control { display: none; }
               <footer class="publisher">
                 <span class="avatar"><%= current_user.initials %></span>
                 <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
-                  <input type="hidden" class="form-control" name="contact_id" value="<%= @contact.id %>">
-                  <input type="hidden" class="form-control" name="phonenumber" value="<%= @contact.phonenumbers.mobile.first.number %>">
+                  <input type="hidden" class="form-control" name="recipients" value="<%= @contact.id %>">
                   <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
-                  <input name="message" style="width: 100%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+                  <input name="body" style="width: 100%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
                 <% end %>
                 <div class="gap-items">
                   <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
@@ -584,38 +583,6 @@ input[type=radio].hide-control { display: none; }
       <div class="modal-footer">
         <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Send text -->
-<div class="modal modal-center fade" id="modal-send-text" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Send Text</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'send-message-form', class: 'quickview-block form-type-combine' do %>
-        <input type="hidden" class="form-control" name="contact_id" value="<%= @contact.id %>">
-        <input type="hidden" class="form-control" name="refresh_panel" value="contact-view">
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Number</label>
-            <input type="text" class="form-control" name="phonenumber" value="<%= @contact.phonenumbers.mobile.first.number unless @contact.phonenumbers.mobile.empty? %>">
-          </div>
-          <div class="form-group">
-            <label>Message</label>
-            <input type="text" class="form-control" name="message" value="">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal" onclick="$('#send-message-form').submit()">Send</button>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>

@@ -56,14 +56,14 @@ app.ready(function() {
 
   $('#contacts-field').bind('typeahead:change', function() {
     if(clearContactId) {
-      $('#new-task-contact-id').val('');
+      $('#new-conversation-contact-id').val('');
     } else {
       clearContactId = true;
     }
   });
 
   $('#contacts-field').bind('typeahead:selected', function(e, option) {
-    $('#new-task-contact-id').val(option.value);
+    $('#new-conversation-contact-id').val(option.value);
     clearContactId = false;
   });
 

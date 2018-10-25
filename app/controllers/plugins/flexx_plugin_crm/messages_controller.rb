@@ -63,13 +63,17 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_text_blast
-      @contact = current_site.contacts.find(params[:contact_id])
+      recipients_list = params[:recipients].split(',')
 
-      MessageService.new(
-        contact: @contact,
-        number: params[:phonenumber],
-        message: params[:message]
+      MessageBlastService.new(
+        site: current_site,
+        user: current_user,
+        scheduled_at: nil,
+        recipients_list: recipients_list,
+        body: params[:body]
       ).call
+
+      @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
 
       respond_to do |format|
         format.js

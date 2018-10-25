@@ -10,14 +10,14 @@ module Plugins::FlexxPluginCrm
 
       unless @contact_ids.empty?
         @first_contact = Contact.find_by(id: @contact_ids.first.contact_id)
-        MessageService.mark_contact_messages_read(contact: @first_contact)
+        MessageBlastService.mark_contact_messages_read(contact: @first_contact)
       end
     end
 
     def show
       @contact = current_site.contacts.find(params[:id])
 
-      MessageService.mark_contact_messages_read(contact: @contact)
+      MessageBlastService.mark_contact_messages_read(contact: @contact)
 
       respond_to do |format|
         format.js

@@ -21,7 +21,7 @@
         <% if @contact_ids.empty? %>
           <header class="media-list-header b-0">
             <p class="w-100 bb-1 border-light p-20 text-fade"><i>No current conversations</i></p>
-          </header>          
+          </header>
         <% else %>
           <!-- Search messages
           <header class="media-list-header b-0">
@@ -111,7 +111,7 @@
           <div class="input-group-input">
             <label>To</label>
             <input class="form-control" type="text" id="contacts-field" placeholder="Start typing name...">
-            <input type="hidden" name="" id="new-task-contact-id">
+            <input type="hidden" name="" id="new-conversation-contact-id">
           </div>
         </div>
 
@@ -122,12 +122,7 @@
             <textarea class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
             <div class="flexbox">
               <div class="gap-items">
-                <span class="publisher-btn file-group">
-                  <i class="fa fa-paperclip file-browser"></i>
-                  <input type="file">
-                </span>
                 <button type="button" class="publisher-btn" data-toggle="modal" data-target="#modal-snippet"><i class="ti-receipt"></i></button>
-                <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
               </div>
 
             </div>

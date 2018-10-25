@@ -35,9 +35,9 @@ class MessagesJobService
     # Send sms message.
     # @param msg [Message] nessage to send
     # @return [TrueClass, FalseClass] true if the message was sent successfully
-    def send_sms(msg)
-      resp = TwilioAdapter.new.send_sms to: msg.to_number, body: msg.message
-      resp.error_code.zero? && msg.done! && msg.update(sid: resp.sid)
+    def send_sms(message)
+      result = TwilioAdapter.new.send_sms(message: message)
+      result.error_code.zero? && message.done! && message.update(sid: result.sid)
     end
   end
 end

@@ -3,8 +3,8 @@ require 'sidekiq'
 class SendMessageWorker
   include Sidekiq::Worker
 
-  def perform(msg_id)
-    msg = Plugins::FlexxPluginCrm::Message.find msg_id
-    MessagesJobService.send_sms msg
+  def perform(message_id)
+    message = Plugins::FlexxPluginCrm::Message.find(message_id)
+    MessagesJobService.send_sms message
   end
 end

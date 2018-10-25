@@ -1,12 +1,14 @@
 require 'twilio-ruby'
 
 class TwilioAdapter
-  def send_sms(to:, body:)
-    sms = client.api.account.messages.create(
-      from: ENV["TWILIO_CAMPAIGNS_NUMBER"],
-      to: to,
-      body: body,
-      status_callback: ENV["TWILIO_CAMPAIGNS_CALLBACK"]
+  def send_sms(message:)
+    sid = message.site.get_option('twilio_account_sid')
+    token = message.site.get_option('twilio_auth_token')
+
+    client(sid, token).api.account.messages.create(
+      from: message.from_number,
+      to: message.to_number,
+      body: message.message
     )
   end
 
@@ -20,7 +22,7 @@ class TwilioAdapter
 
   private
 
-  def client
-    @client ||= Twilio::REST::Client.new ENV["TWILIO_ACCOUNT_SID"], ENV["TWILIO_AUTH_TOKEN"]
+  def client(sid, token)
+    @client ||= Twilio::REST::Client.new(sid, token)
   end
 end
