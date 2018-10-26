@@ -1,5 +1,5 @@
 <div class="media-list media-list-divided bg-lighter">
-  <h5 class="card-title p-15 text-muted fw-300 bt-1">Notes</h5>
+  <h5 class="card-title p-15 text-muted fw-300 bt-1"><strong>Notes</strong></h5>
   <% @task.notes.each do |note| %>
     <div class="media">
       <span class="avatar"><%= note.created_by_user.initials %></span>
@@ -14,15 +14,14 @@
   <% end %>
 </div>
 <% unless @task.done? %>
-  <div class="publisher publisher-multi">
+  <div class="publisher publisher-multi bg-white">
     <div class="flexbox">
       <input type="hidden" name="task[notes_attributes][][created_by]" value="<%= current_user.id %>">
       <textarea name="task[notes_attributes][][details]" class="publisher-input auto-expand" rows="2" placeholder="Type your note..."></textarea>
       <span class="flex-top avatar bg-inverse"><%= current_user.initials %></span>
     </div>
     <div class="flexbox">
-      <div class="gap-items">
-        <a class="publisher-btn" href="#"><i class="fa fa-smile-o"></i></a>
+      <div class="gap-items">        
       </div>
       <button class="btn btn-sm btn-bold btn-primary" onclick='saveNote(event, <%= @task.id %>)'>Post</button>
     </div>

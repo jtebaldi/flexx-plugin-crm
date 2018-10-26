@@ -24,6 +24,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   scope :pending, -> { where(aasm_state: :pending) }
   scope :upcoming, -> { where('due_date > ?', Time.now.end_of_day) }
   scope :old, -> { where('due_date < ?', Time.now.beginning_of_day) }
+  scope :done_today, -> { where(updated_at: Time.now.beginning_of_day..Time.now.end_of_day) }
 
   aasm do
     state :pending, initial: true
