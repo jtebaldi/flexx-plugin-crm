@@ -1,8 +1,13 @@
 <% messages.each do |message| %>
+  <% time_diff = 0 %>
+  <% time_diff = ((@prev_created_at - message.created_at.localtime) / 1.hour).round unless @prev_created_at.nil? %>
   <div class="media media-chat <%= 'media-chat-reverse' if message.status != 'received' %>">
-    <div class="media-body">
-      <p><%= message.message %></p>
-      <p class="meta"><time datetime="<%= message.created_at.localtime %>"><%= message.created_at.localtime.strftime('%a, %d %b %H:%M') %></time></p>
+    <div class="media-body">      
+      <% unless time_diff > 3 %>
+        <p class="meta mb-0"><time datetime="<%= message.created_at.localtime %>"><%= message.created_at.localtime.strftime('%a, %m/%d/%y %H:%M %p') %></time></p>
+      <% end %>
+      <p><%= message.message %></p>      
     </div>
   </div>
+  <% @prev_created_at = message.created_at.localtime %>
 <% end %>
