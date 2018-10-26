@@ -14,6 +14,10 @@
   .ck-editor__editable {
     min-height: 350px;
   }
+  .divider::before, .divider::after {
+    border-top: 1px solid #48b0f7;
+  }
+  .nav-link.active { border-color: #48b0f7 !important; }
 </style>
 
 <header class="header">
@@ -88,7 +92,7 @@
                 </div>
               <% end %>
               <div id="todays-tasks-list" class="mb-90">
-                <% if @todays_tasks.length > 0 %>
+                <% if @todays_tasks.length > 0 || @old_pending_tasks.length > 0 %>
                   <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
                 <% else %>
                   <div class="media card-body b-1">
@@ -132,11 +136,23 @@
 
             <div class="col-md-12">
               <div id="old-completed-tasks-list">
-                <% if @upcoming_tasks.length > 0 %>
-                  <div class="divider text-uppercase fw-500">Today</div>
+                <% if @todays_completed_tasks.length > 0 %>
+                  <div class="divider text-uppercase fw-500 text-info">Today</div>
                   <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
                 <% end %>
-                <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+                <div class="<%= 'accordion' if @todays_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
+                  <div class="">
+                    <h4 class="card-title mb-20">
+                      <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past tasks</strong> <% if @todays_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+                    </h4>
+
+                    <div id="collapse-tasks" class="collapse">
+                      <div id="contact-open-tasks-panel">
+                        <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

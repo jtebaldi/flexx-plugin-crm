@@ -42,7 +42,7 @@
             -->
             
             <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-            <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a>
+            <!-- <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a> -->
           </span>
         </div>
         <div class="pull-right">

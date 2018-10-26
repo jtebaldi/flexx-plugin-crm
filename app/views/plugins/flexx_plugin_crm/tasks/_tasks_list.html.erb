@@ -12,13 +12,12 @@
       </div>
       <div class="media-body">
         <div class="mb-2">
-          <span><%= row.task_type %></span>
           <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
         </div>
         <% if row.done? %>
-          <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.today? ? 'Today,' : row.updated_at.strftime('%B %d') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></small>
+          <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.localtime.today? ? 'Today,' : row.updated_at.localtime.strftime('%B %d') %>&nbsp;<%= row.due_date.localtime.strftime('%I:%M %p') %></small>
         <% else %>
-          <small class="fs-14 fw-300 due-date"><strong>Due: </strong><%= row.due_date.today? ? 'Today' : row.due_date.strftime('%B %d') %>,&nbsp; <%= row.due_date.strftime('%I:%M %p') %> <%= ' (confirmed)' if row.confirmed_at? %></small>
+          <small class="fs-14 fw-300 due-date"><strong>Due: </strong><%= row.due_date.localtime.today? ? 'Today' : row.due_date.localtime.strftime('%B %d') %>, <%= row.due_date.localtime.strftime('%I:%M %p') %> <%= ' (confirmed)' if row.confirmed_at? %></small>
         <% end %>
       </div>
       <% if row.done? %>
@@ -46,7 +45,7 @@
             -->
             <% unless row.done? %>
               <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-              <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
+              <!-- <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a> -->
             <% end %>
           </span>
         </div>

@@ -18,34 +18,36 @@
       <% unless @task.done? %>
         <div class="btn-group btn-group-justified">
           <button class="btn p-10 btn-warning" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-          <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger text-white">Delete</a>
+          <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger text-white">Remove</a>
         </div>
       <% end %>
       <% if @task.done? %>
         <div class="pt-20 pl-20">
           <span>Completed by: <strong><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></strong></span>
         </div>
-      <% end %>
-      <div class="p-20">
-        <span class="text-muted">Description</span>
-        <br/><span><%= @task.details %></span>
-      </div>
+      <% end %>      
       <ul class="flexbox flex-justified text-center p-20">
         <li class="br-1 border-light">
-          <span class="text-muted">Date</span><br>
+          <span class="text-muted text-uppercase">Date</span><br>
           <span><%= @task.due_date.localtime.strftime('%m/%d/%Y') %></span>
         </li>
         <li>
-          <span class="text-muted">Time</span><br>
+          <span class="text-muted text-uppercase">Time</span><br>
           <span><%= @task.due_date.localtime.strftime('%I:%M %p') %></span>
         </li>
       </ul>
+      <% if @task.details.present? %>
+        <div class="pb-20 text-center">
+          <span class="text-muted text-uppercase">Description</span>
+          <br/><span><%= @task.details %></span>
+        </div>
+      <% end %>
 
       <% unless @task.done? %>
         <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}", locals: {contact: @task.contact} %>
       <% end %>
 
-      <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'quickview-block form-type-combine' do %>
+      <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'form-type-combine' do %>
         <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
         <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
 
@@ -60,11 +62,11 @@
       <% unless @task.done? %>
         <% case @task.task_type %>
         <% when 'email' %>
-          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+          <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
         <% when 'message' %>
-          <button class="btn btn-success" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+          <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
         <% else %>
-          <button class="btn btn-success" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
+          <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
         <% end %>
         <!--<div class="btn-group">
           <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>

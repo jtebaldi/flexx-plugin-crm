@@ -9,7 +9,7 @@
     </div>
   </div>
 <% else %>
-  <div class="publisher publisher-multi bg-transparent b-1 form-group">
+  <div class="publisher publisher-multi bg-transparent b-1 form-group mb-0">
     <label>Message</label>
     <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
       <input type="hidden" class="form-control" name="contact_id" value="<%= contact.id %>">
