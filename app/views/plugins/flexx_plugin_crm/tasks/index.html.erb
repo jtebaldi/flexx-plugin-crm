@@ -10,7 +10,10 @@
 
 <style>
   .custom-checkbox .custom-control-label:empty::after { top: 2px; }
+  
+  .due-date { color: rgba(77, 82, 89, 0.7); }
   #old-pending-tasks-list .due-date { color: red; }
+  
   .ck-editor__editable {
     min-height: 350px;
   }
@@ -38,7 +41,7 @@
 
 <div class="main-content">
   <div class="row">
-    <div class="col-md-4 col-lg-3">
+    <div class="col-md-12 col-lg-4">
       <div id="pendingStaff" class="card">
         <h5 class="card-title"><strong>Staff list</strong></h5>
         <div class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
@@ -80,7 +83,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8 col-lg-9">
+    <div class="col-md-12 col-lg-8">
       <div class="tab-content">
 
         <div class="tab-pane fade active show" id="tab-today">
@@ -88,11 +91,13 @@
             <div class="col-md-12">
               <% if @old_pending_tasks.length > 0 %>
                 <div id="old-pending-tasks-list">
+                  <h6 class="text-fade">Overdue</h6>
                   <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
                 </div>
               <% end %>
-              <div id="todays-tasks-list" class="mb-90">
+              <div id="todays-tasks-list" class="mb-90">                
                 <% if @todays_tasks.length > 0 || @old_pending_tasks.length > 0 %>
+                  <h6 class="text-fade">Today</h6>
                   <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
                 <% else %>
                   <div class="media card-body b-1">
@@ -137,13 +142,13 @@
             <div class="col-md-12">
               <div id="old-completed-tasks-list">
                 <% if @todays_completed_tasks.length > 0 %>
-                  <div class="divider text-uppercase fw-500 text-info">Today</div>
+                  <h6 class="text-fade">Today</h6>
                   <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
                 <% end %>
-                <div class="<%= 'accordion' if @todays_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
+                <div class="<%= 'accordion' if @old_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
                   <div class="">
                     <h4 class="card-title mb-20">
-                      <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past tasks</strong> <% if @todays_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+                      <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past tasks</strong> <% if @old_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
                     </h4>
 
                     <div id="collapse-tasks" class="collapse">

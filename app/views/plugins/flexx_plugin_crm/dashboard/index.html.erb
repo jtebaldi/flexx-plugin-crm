@@ -81,12 +81,14 @@
                 <i class="fa fa-bolt text-yellow"></i>
               <% end %>
               <a href="<%= admin_contact_path(contact.id) %>">
-                <span class="avatar avatar-lg status-<%= contact.sales_stage %>"><%= contact.initials %></span>
+                <span class="avatar avatar-lg"><%= contact.initials %></span>
               </a>
 
               <div class="media-body">
-                <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
-                <small class="text-fader">From <a href="#" data-from-form="<%= contact.id %>" class="text-blue"><%= contact.source %></a></small>
+                <h6><%= contact.print_name %></h6>
+                <% if contact.source.include? "Form" %>
+                  <small class="text-fader"><a href="#" data-from-form="<%= contact.id %>" class="text-blue"><%= contact.source %></a></small>
+                <% end %>
               </div>
 
               <div class="media-right">
