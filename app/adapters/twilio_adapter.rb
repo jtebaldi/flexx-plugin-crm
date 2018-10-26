@@ -8,7 +8,8 @@ class TwilioAdapter
     client(sid, token).api.account.messages.create(
       from: message.from_number,
       to: message.to_number,
-      body: message.message
+      body: message.message,
+      status_callback: status_callback_url(message.site)
     )
   end
 
@@ -24,5 +25,9 @@ class TwilioAdapter
 
   def client(sid, token)
     @client ||= Twilio::REST::Client.new(sid, token)
+  end
+
+  def status_callback_url(site)
+    Rails.application.routes.url_helpers.twilio_status_admin_webhooks_url(host: site.get_domain)
   end
 end

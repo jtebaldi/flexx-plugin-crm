@@ -5,6 +5,7 @@ class Plugins::FlexxPluginCrm::Phonenumber < ActiveRecord::Base
   belongs_to :site, class_name: 'CamaleonCms::Site'
 
   before_create :set_phonetype
+  before_save :set_site_id
 
   scope :mobile, -> { where(phone_type: 'mobile') }
 
@@ -12,5 +13,9 @@ class Plugins::FlexxPluginCrm::Phonenumber < ActiveRecord::Base
 
   def set_phonetype
     self.phone_type = 'mobile' if self.phone_type.blank?
+  end
+
+  def set_site_id
+    self.site_id = self.contact.site_id
   end
 end

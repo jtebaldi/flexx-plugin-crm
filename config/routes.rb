@@ -58,11 +58,11 @@ Rails.application.routes.draw do
 
         resources :webhooks, controller: 'plugins/flexx_plugin_crm/webhooks', only: [] do
           collection do
-            post 'inbound'
-            post 'status'
-            post 'confirmation'
-            post 'sendgrid_events'
-            post 'sendgrid_parse'
+            post :twilio_inbound
+            post :twilio_status
+            post :twilio_confirmation
+            post :sendgrid_events
+            post :sendgrid_parse
           end
         end
 
