@@ -23,11 +23,6 @@ function loadConversation(card) {
   $('#thread-body').hide();
   $('#loading-thread').show();
   $('#thread-body').html('');
-
-  $('.scrollable').perfectScrollbar({
-    wheelPropagation: false,
-    wheelSpeed: .5,
-  });
 }
 
 function submitConversationsSendMessageForm(e) {
@@ -74,5 +69,9 @@ app.ready(function() {
 
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
 
+  // $('.scrollable').perfectScrollbar({
+  //   wheelPropagation: false,
+  //   wheelSpeed: .5,
+  // });
   // $('#conversations-thread-panel').scrollToEnd();
 });
