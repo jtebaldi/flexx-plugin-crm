@@ -5,7 +5,7 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @active_contacts = current_site.contacts.active.order(:first_name, :email)
+      @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
     end
 
     def create

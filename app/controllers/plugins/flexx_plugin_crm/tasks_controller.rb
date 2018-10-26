@@ -5,10 +5,10 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @todays_tasks = current_site.tasks.pending.due_today.order('due_date desc').includes(:contact, :owners)
+      @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
       @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
-      @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date desc').includes(:contact, :owners)
-      @old_pending_tasks = current_site.tasks.pending.old.order('due_date desc').includes(:contact, :owners)
+      @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
+      @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
       @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
@@ -30,10 +30,10 @@ module Plugins::FlexxPluginCrm
 
       case params[:refresh_panel]
       when 'tasks-dashboard'
-        @todays_tasks = current_site.tasks.pending.due_today.order('due_date desc').includes(:contact, :owners)
+        @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
         @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
-        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date desc').includes(:contact, :owners)
-        @old_pending_tasks = current_site.tasks.pending.old.order('due_date desc').includes(:contact, :owners)
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
         @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       when 'view-contact-tasks-panels'
         @contact = task.contact
@@ -62,10 +62,10 @@ module Plugins::FlexxPluginCrm
 
       case params[:refresh_panel]
       when 'tasks-dashboard'
-        @todays_tasks = current_site.tasks.pending.due_today.order('due_date desc').includes(:contact, :owners)
+        @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
         @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
-        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date desc').includes(:contact, :owners)
-        @old_pending_tasks = current_site.tasks.pending.old.order('due_date desc').includes(:contact, :owners)
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
         @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       when 'view-contact-tasks-panels'
         @contact = task.contact
@@ -96,9 +96,9 @@ module Plugins::FlexxPluginCrm
       when 'contact-detail'
         @contact = task.contact
       when 'tasks-dashboard'
-        @todays_tasks = current_site.tasks.pending.due_today.order('due_date desc').includes(:contact, :owners)
-        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date desc').includes(:contact, :owners)
-        @old_pending_tasks = current_site.tasks.pending.old.order('due_date desc').includes(:contact, :owners)
+        @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
+        @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
+        @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
       end
 
       respond_to do |format|

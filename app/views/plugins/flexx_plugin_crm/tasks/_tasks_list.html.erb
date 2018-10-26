@@ -1,23 +1,26 @@
 <% tasks.each do |row| %>
   <div class="card b-1 hover-shadow-2 mb-20 task-card <%= 'completed' if row.done? %>" data-staff="<%= row.owners.ids unless row.owners.empty? %>" data-completed="<%= row.updated_by if row.done? %>">
     <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id, refresh_panel: refresh_panel) %>">
-      <div class="media-left pr-12">
-        <span class="avatar avatar-xl no-radius" style="<%= 'background-color: #fff;' if row.done? %>">
-          <% if row.done? %>
-            <i class="ti-check-box fs-60 text-success"></i>
-          <% else %>  
-            <i class="fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i>
-          <% end %>
-        </span>
+      <div class="media-left d-none d-sm-block">
+        <% if row.done? %>
+          <span class="avatar avatar-xl no-radius" style="background-color: #fff;"><i class="ti-check-box fs-60 text-success"></i></span>
+        <% else %>   
+          <div class="br-1 text-light">
+            <ul class="list-unstyled text-center mb-0 mr-20">
+              <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></li>
+              <li><small class="due-date fw-300"><%= row.due_date.localtime.today? ? 'Today' : row.due_date.localtime.strftime('%m/%d') %> <%= row.due_date.localtime.strftime('%I:%M%p') %></small></li>
+            </ul>
+          </div>
+        <% end %>        
       </div>
       <div class="media-body">
-        <div class="mb-2">
-          <span class="fs-20 pr-16"><%= row.title %> | <strong><%= "#{row.contact.print_name}" %></strong></span>
+        <div class="<%= 'mt-10' unless row.details.present? %>">
+          <span class="fs-18 pr-16"><strong><%= "#{row.contact.print_name}" %></strong> | <%= row.title %></span>
         </div>
         <% if row.done? %>
           <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.localtime.today? ? 'Today,' : row.updated_at.localtime.strftime('%B %d') %>&nbsp;<%= row.due_date.localtime.strftime('%I:%M %p') %></small>
         <% else %>
-          <small class="fs-14 fw-300 due-date"><strong>Due: </strong><%= row.due_date.localtime.today? ? 'Today' : row.due_date.localtime.strftime('%B %d') %>, <%= row.due_date.localtime.strftime('%I:%M %p') %> <%= ' (confirmed)' if row.confirmed_at? %></small>
+          <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= row.details %></p>
         <% end %>
       </div>
       <% if row.done? %>
@@ -32,24 +35,24 @@
     <% unless row.done? %>
       <footer class="card-footer flexbox align-items-center">
         <div>
-          <% unless row.notes.empty? %>
-            <span class="text-lighter hover-light">
-              <i class="ti-comment-alt mr-1"></i> <%= row.notes.count %>
-            </span>
-          <% end %>
-          <span class="card-hover-show pl-20">
-            <!-- Temporarily disabled - waiting on editable text reminder settings
+          <span class="text-lighter">
+            <i class="ti-comment-alt mr-1"></i> <%= row.notes.count %>
+          </span>
+          <!--
+          <span class="card-hover-show pl-20">            
             <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>
               <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
             <% end %>
-            -->
+            
             <% unless row.done? %>
               <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-              <!-- <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a> -->
+              <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
             <% end %>
           </span>
+          -->
         </div>
         <div class="pull-right">
+          <span class="pr-12">Assigned to: </span>
           <div class="avatar-list">
             <% unless row.done? %>
               <% row.owners.each do |owner| %>

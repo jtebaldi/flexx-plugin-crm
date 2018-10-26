@@ -3,76 +3,6 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
 <% end %>
 
-<!-- Page aside
-<aside class="aside aside-expand-md">
-  <div class="aside-body">
-
-    <div class="aside-block">
-      <h6 class="aside-title">Communication</h6>
-    </div>
-
-    <div class="media-list media-list-sm media-list-hover media-list-divided">
-
-      <a class="media flex-column px-20" href="/admin/next/messages">
-        <p>Message Blast</p>
-        <small>Send or schedule mass emails and text messages</small>
-      </a>
-
-      <a class="media flex-column px-20" href="/admin/next/conversations">
-        <p>SMS Conversations</p>
-        <small>See and continue SMS conversations with your contacts</small>
-      </a>
-
-      <a class="media flex-column px-20" href="/admin/next/stocks">
-        <p>Stock Messages</p>
-        <small>Create and edit your stock messages.</small>
-      </a>
-
-    </div>
-
-    <hr class="hr-sm">
-
-    <div class="aside-block">
-      <h6 class="aside-title">Automation</h6>
-    </div>
-
-    <div class="media-list media-list-sm media-list-hover media-list-divided">
-
-      <a class="media flex-column px-20" href="/admin/next/recipes">
-        <p>Recipes</p>
-        <small>View, create and manage your recipes</small>
-      </a>
-
-      <a class="media flex-column px-20" href="/admin/next/campaigns">
-        <p>Automated Campaigns</p>
-        <small>View, create and manage your automated campaigns</small>
-      </a>
-
-    </div>
-
-    <hr class="hr-sm">
-
-    <div class="aside-block">
-      <h6 class="aside-title">Support</h6>
-    </div>
-
-    <div class="media-list media-list-sm media-list-hover media-list-divided">
-      <a class="media flex-column px-20" href="#">
-        <p>Tour</p>
-        <small>Take a guided tour</small>
-      </a>
-      <a class="media flex-column px-20" href="#">
-        <p>Guides</p>
-        <small>Learn more about the features in your CRM</small>
-      </a>
-    </div>
-
-  </div>
-
-  <button class="aside-toggler"></button>
-</aside>
-END Page aside -->
-
 <header class="header">
   <div class="header-info">
     <div class="left">
@@ -117,10 +47,10 @@ END Page aside -->
 
         <div class="dropdown">
           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-name', 'asc')">Name</a>
+          <div class="dropdown-menu">            
             <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'desc')">Newest</a>
             <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'asc')">Oldest</a>
+            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-name', 'asc')">Name</a>
           </div>
         </div>
       </div>
@@ -130,7 +60,7 @@ END Page aside -->
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
           <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_contact_path(contact.id) %>">
-            <span class="avatar avatar-lg status-<%= contact.sales_stage %>"><%= contact.initials %></span>
+            <span class="avatar avatar-lg"><%= contact.initials %></span>
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
               <small class="contact-detail">
