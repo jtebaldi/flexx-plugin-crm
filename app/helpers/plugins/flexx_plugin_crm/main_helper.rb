@@ -3,7 +3,8 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def flexx_plugin_admin_before_load
-    admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_contacts_path})
+    # Temporarily removed icon until we're ready to go live
+    # admin_menu_insert_menu_after("dashboard", "crm", {icon: 'briefcase', title: 'CRM', url: admin_contacts_path})
   end
 
   def flexx_plugin_crm_on_active(plugin)
