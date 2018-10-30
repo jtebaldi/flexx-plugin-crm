@@ -13,7 +13,12 @@ function submitTaskSendMessageForm() {
   $('#task-send-text-message').toggleClass('disabled');
   $('#task-send-text-button').toggleClass('disabled');
   $('#task-send-text-spinner').toggleClass('invisible');
-  $('#task-send-message-form').submit();
+  try {
+    ckeditor.updateSourceElement();
+  } catch(err) {
+  } finally {
+    $('#task-send-message-form').submit();
+  }
 }
 
 function saveNote(e, taskId) {

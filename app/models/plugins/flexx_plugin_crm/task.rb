@@ -16,6 +16,12 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   has_many :task_owners, class_name: 'Plugins::FlexxPluginCrm::TaskOwner'
   has_many :owners, class_name: user_class_name, through: :task_owners
 
+  validates :due_date, presence: true
+
+  before_validation do
+    self.due_date = Time.now unless due_date
+  end
+
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :owners
 
