@@ -123,7 +123,7 @@
   <div class="tab-content mt-20" id="message-tab-content">
 
     <div class="tab-pane fade active show" id="tab-new-email">
-      <%= form_tag create_email_blast_admin_messages_path, method: :post, id: 'new-text-blast', name: 'newTextBlast', class: 'card form-type-combine' do %>
+      <%= form_tag create_text_blast_admin_messages_path, method: :post, id: 'new-text-blast', name: 'newTextBlast', class: 'card form-type-combine' do %>
         <input type="hidden" name="recipients" id="recipientsHidden">
         <h4 class="card-title">New <strong>SMS blast</strong></h4>
         <div class="card-body">
@@ -167,7 +167,7 @@
 
           </div>
           <div class="flexbox pull-right">
-            <button id="btn_send_text" class="btn btn-bold btn-w-xl btn-primary">Send Message</button>
+            <button onclick="fillRecipientsField()" id="btn_send_text" class="btn btn-bold btn-w-xl btn-primary">Send Message</button>
           </div>
         </div>
       <% end %>

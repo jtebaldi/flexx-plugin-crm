@@ -11,11 +11,11 @@
 <% else %>
   <div class="publisher publisher-multi bg-transparent b-1 form-group mb-0">
     <label>Message</label>
-    <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
-      <input type="hidden" class="form-control" name="contact_id" value="<%= contact.id %>">
+    <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
+      <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
       <input type="hidden" class="form-control" name="phonenumber" value="<%= contact.phonenumbers.mobile.first.number %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
-      <textarea name="message" id="task-send-text-message" class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+      <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
     <% end %>
     <!--<div class="flexbox">
       <button class="btn btn-sm btn-bold btn-primary" id="task-send-text-button" onclick="submitTaskSendMessageForm()">Send</button>
