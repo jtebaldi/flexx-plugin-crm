@@ -21,7 +21,11 @@
           <div class="mb-2">
             <span class="fs-20 pr-16"><%= task.title %></span>
           </div>
-          <small class="fs-14 fw-300"><strong>Due: </strong><%= task.due_date.localtime.today? ? 'Today,' : task.due_date.localtime.strftime('%B %d') %>&nbsp;(<%= task.due_date.localtime.strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %></small>
+          <small class="fs-14 fw-300">
+            <strong>Due: </strong>
+            <%= !task.due_date || task.due_date.localtime.today? ? 'Today,' : task.due_date.localtime.strftime('%B %d') %>
+            &nbsp;(<%= task.due_date && task.due_date.localtime.strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %>
+          </small>
         </div>
 
         <div class="media-right text-right d-none d-md-block">

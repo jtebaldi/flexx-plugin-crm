@@ -61,9 +61,7 @@
     <footer class="quickview-footer flex-row-reverse">
       <% unless @task.done? %>
         <% case @task.task_type %>
-        <% when 'email' %>
-          <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
-        <% when 'message' %>
+        <% when 'email', 'message' %>
           <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
         <% else %>
           <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>

@@ -11,7 +11,7 @@ class EmailBlastService
     @contact_email_list = MessagingToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
   end
 
-  def call
+  def call(task = false)
     send_at = @scheduled_at.present? ? Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p') : Time.now
 
     message = @site.emails.create(
@@ -20,7 +20,7 @@ class EmailBlastService
       subject: @subject,
       body: DynamicFieldsParserService.parse(site: @site, template: @body),
       from: @sender,
-      aasm_state: :scheduled,
+      aasm_state: (task ? :task_scheduled : :scheduled),
       send_at: send_at,
       recipients_count: @contact_email_list.count,
       created_by: @user.id
@@ -29,7 +29,12 @@ class EmailBlastService
     @contact_email_list.each do |contact|
       message.email_recipients.create(contact_id: contact[0], to: contact[1])
     end
+    return if @scheduled_at.present?
 
-    message.send_message! unless @scheduled_at.present?
+    if task
+      message.send_task_message!
+    else
+      message.send_message!
+    end
   end
 end

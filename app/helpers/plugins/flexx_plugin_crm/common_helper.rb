@@ -14,17 +14,17 @@ module Plugins::FlexxPluginCrm::CommonHelper
     end
   end
 
-  def invalid_feedback(errors)
-    errors.map do |err|
-      content_tag :div, class: 'invalid-feedback' do
-        err
-      end
-    end.join('').html_safe
-  end
+  # def invalid_feedback(errors)
+  #   errors.map do |err|
+  #     content_tag :div, class: 'invalid-feedback' do
+  #       err
+  #     end
+  #   end.join('').html_safe
+  # end
 
-  def invalid_class(errors)
-    errors.any? ? ' is-invalid' : ''
-  end
+  # def invalid_class(errors)
+  #   errors.any? ? ' is-invalid' : ''
+  # end
 
   def rich_text_stocks
     current_site.stocks.rich_texts.order(:name)

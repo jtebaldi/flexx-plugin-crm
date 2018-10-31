@@ -45,10 +45,34 @@ module Plugins::FlexxPluginCrm
       @tags = current_site.owned_tags.order(:name)
     end
 
+    def create_email
+      email_blast from_task: true
+      head :created
+    end
+
     def create_email_blast
       scheduled = params[:timingOptions2] == '2'
       scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
+      email_blast scheduled_at: scheduled_at
+      redirect_to action: :emails
+    end
 
+    def create_text
+      text_blast from_task: true
+      head :created
+    end
+
+    def create_text_blast
+      text_blast
+      # respond_to do |format|
+      #   format.js
+      # end
+      redirect_to action: :sms
+    end
+
+    private
+
+    def email_blast(scheduled_at: nil, from_task: false)
       EmailBlastService.new(
         site: current_site,
         user: current_user,
@@ -57,27 +81,20 @@ module Plugins::FlexxPluginCrm
         recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]
-      ).call
-
-      redirect_to action: :emails
+      ).call from_task
     end
 
-    def create_text_blast
+    def text_blast(form_task: false)
       recipients_list = params[:recipients].split(',')
-
+      require 'pry-byebug'; binding.pry
       MessageBlastService.new(
         site: current_site,
         user: current_user,
         scheduled_at: nil,
         recipients_list: recipients_list,
         body: params[:body]
-      ).call
-
+      ).call form_task
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
-
-      respond_to do |format|
-        format.js
-      end
     end
   end
 end
