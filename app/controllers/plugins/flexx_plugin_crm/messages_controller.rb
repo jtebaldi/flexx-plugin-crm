@@ -51,7 +51,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_email_blast
-      scheduled = params[:timingOptions2] == '2'
+      scheduled = params[:timingOptions] == '2'
       scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
       email_blast scheduled_at: scheduled_at
       redirect_to action: :emails
@@ -86,7 +86,6 @@ module Plugins::FlexxPluginCrm
 
     def text_blast(form_task: false)
       recipients_list = params[:recipients].split(',')
-      require 'pry-byebug'; binding.pry
       MessageBlastService.new(
         site: current_site,
         user: current_user,
