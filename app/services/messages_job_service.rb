@@ -11,7 +11,7 @@ class MessagesJobService
         msg.send_message!
       end
 
-      Plugins::FlexxPluginCrm::Message.tsk_scheduled.where('send_at <= ?', Time.now).each do |msg|
+      Plugins::FlexxPluginCrm::Message.task_scheduled.where('send_at <= ?', Time.now).each do |msg|
         msg.send_task_message!
       end
 
