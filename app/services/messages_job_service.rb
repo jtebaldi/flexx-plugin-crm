@@ -28,12 +28,16 @@ class MessagesJobService
     # @param msg [Email] email to send
     # @return [TrueClass, FalseClass] true if the message was sent successfully
     def send_email(email)
+      sender = CamaleonCms::User.find_by_email email.from
+      if sender
+        from = { email: email.from, name: sender.print_name }
+      else
+        be = CamaleonCms::CustomFieldsRelationship.find_by_custom_field_slug 'business_email'
+        from = { email: be.value, name: email.site.name }
+      end
       sg_message_id = SendgridAdapter.new(site: email.site).send_email(
-        from: {
-          email: email.from,
-          name: email.site.name
-        },
-        to: email.email_recipients.map(&:to),
+        from: from,
+        to: email.email_recipients.map { |r| { email: r.to, name: r.contact.print_name } },
         subject: email.subject,
         body: email.body
       )

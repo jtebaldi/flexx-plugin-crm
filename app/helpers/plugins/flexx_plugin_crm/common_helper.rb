@@ -31,6 +31,7 @@ module Plugins::FlexxPluginCrm::CommonHelper
   end
 
   def senders_list
-    current_site.users.order(:first_name, :last_name)
+    be = CamaleonCms::CustomFieldsRelationship.find_by_custom_field_slug 'business_email'
+    current_site.users.order(:first_name, :last_name) << CamaleonCms::User.new(email: be.value, first_name: current_site.name)
   end
 end

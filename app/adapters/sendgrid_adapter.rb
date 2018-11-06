@@ -49,8 +49,12 @@ class SendgridAdapter
   end
 
   # Send email
-  # @param from [Hash]
-  # @param to [Array]
+  # @param from [Hash{Symbol=>String, Symbol=>String}]
+  # @option from [String] :email
+  # @option from [String] :name
+  # @param to [Array<Hash{Symbol=>String, Symbol=>String}>]
+  # @option to [String] :email
+  # @option to [String] :name
   # @param body [String]
   # @paran send_at [String]
   # @return [String, NillClass] message id
@@ -58,8 +62,8 @@ class SendgridAdapter
     personalizations = Array.new.tap do |p|
       to.each do |t|
         p << {
-          to: [{email: t}],
-          substitutions: dynamic_fields(t)
+          to: [t],
+          substitutions: dynamic_fields(t[:email])
         }
       end
     end
