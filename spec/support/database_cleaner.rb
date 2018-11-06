@@ -4,7 +4,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each, js: true) do
@@ -17,5 +17,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    FactoryBot.reload 
   end
 end

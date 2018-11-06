@@ -3,7 +3,7 @@ require 'rspec-sidekiq'
 
 describe SendMessageWorker do
   before :each do
-    @message = create :message, aasm_state: 'sending'
+    @message = create :message, aasm_state: 'sending', from_number: '15162625087', to_number: '38333334444', message: 'test'
   end
 
   it { is_expected.to be_processed_in :default }

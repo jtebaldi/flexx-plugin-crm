@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008102608) do
+ActiveRecord::Schema.define(version: 20181014083347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,9 +145,13 @@ ActiveRecord::Schema.define(version: 20181008102608) do
   add_index "custom_fields_relationships", ["objectid"], name: "index_custom_fields_relationships_on_objectid", using: :btree
 
   create_table "email_recipients", force: :cascade do |t|
-    t.string "email_id"
-    t.string "to"
-    t.string "status"
+    t.integer  "email_id"
+    t.string   "to"
+    t.string   "status"
+    t.datetime "opened_at"
+    t.datetime "clicked_at"
+    t.datetime "unsubscribed_at"
+    t.integer  "contact_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -156,10 +160,23 @@ ActiveRecord::Schema.define(version: 20181008102608) do
     t.string   "subject"
     t.text     "body"
     t.integer  "created_by"
-    t.string   "aasm_state"
+    t.integer  "recipients_count"
+    t.integer  "opened_count",       default: 0
+    t.integer  "clicked_count",      default: 0
+    t.integer  "bounced_count",      default: 0
+    t.integer  "unsubscribed_count", default: 0
+    t.string   "recipients_list"
     t.datetime "send_at"
+    t.string   "from"
+    t.string   "reply_message_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.json     "recipients_label"
+    t.string   "aasm_state"
   end
 
+  add_index "emails", ["aasm_state"], name: "index_emails_on_aasm_state", using: :btree
+  add_index "emails", ["reply_message_id"], name: "index_emails_on_reply_message_id", using: :btree
   add_index "emails", ["sg_message_id"], name: "index_emails_on_sg_message_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
