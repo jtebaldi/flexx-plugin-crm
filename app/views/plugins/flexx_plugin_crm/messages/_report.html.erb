@@ -57,25 +57,25 @@
 
           <div class="col-6 col-xl-3">
             <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-success"><%= email.opened_count %></div>
+              <div class="fs-40 fw-100 text-info"><%= email.opened_count %></div>
               <div>Opened</div>
             </div>
           </div>
           <div class="col-6 col-xl-3">
             <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-info"><%= email.clicked_count %></div>
+              <div class="fs-40 fw-100 text-success"><%= email.clicked_count %></div>
               <div>Clicked</div>
             </div>
           </div>
           <div class="col-6 col-xl-3">
             <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-warning"><%= email.bounced_count %></div>
+              <div class="fs-40 fw-100 text-danger"><%= email.bounced_count %></div>
               <div>Bounced</div>
             </div>
           </div>
           <div class="col-6 col-xl-3">
             <div class="card card-body text-center">
-              <div class="fs-40 fw-100 text-danger"><%= email.unsubscribed_count %></div>
+              <div class="fs-40 fw-100 text-warning"><%= email.unsubscribed_count %></div>
               <div>Unsubscribed</div>
             </div>
           </div>
@@ -100,36 +100,38 @@
         </div>
       </div>
       <div class="tab-pane fade" id="tab-email-report-recipients-<%= email.id %>">
-        <div class="card">
-          <header class="media-list-header b-0">
-            <form class="lookup lookup-lg w-100 bb-1 border-light">
-              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Type name..." data-provide="media-search">
-            </form>
-          </header>
+        <div class="card">          
 
           <div class="media-list media-list-divided media-list-hover">
-            <% email.email_recipients.each do |recipient| %>
-              <div class="media media-single">
-                <div class="media-body">
-                  <%# TODO: Find the contact based on email and site_id %>
-                  <span class="avatar avatar-sm"><%= recipient.contact_id.present? ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
-                  <span><%= recipient.contact_id.present? ? recipient.contact.print_name : recipient.to %></span>
+            <header class="media-list-header b-0">
+              <form class="lookup lookup-lg w-100 bb-1 border-light">
+                <input class="w-100 no-radius no-border py-30" type="text" placeholder="Type name..." data-provide="media-search">
+              </form>
+            </header>
+            <div class="media-list-body">
+              <% email.email_recipients.each do |recipient| %>
+                <div class="media media-single">
+                  <div class="media-body">
+                    <%# TODO: Find the contact based on email and site_id %>
+                    <span class="avatar avatar-sm"><%= recipient.contact_id.present? ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
+                    <span><%= recipient.contact_id.present? ? recipient.contact.print_name : recipient.to %></span>
+                  </div>
+                  <div class="media-right">
+                    <% if recipient.status == 'open' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-info w-100px">Opened</span>
+                    <% elsif recipient.status == 'click' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Clicked</span>
+                    <% elsif recipient.status == 'delivered' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
+                    <% elsif recipient.status == 'unsubscribe' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-warning w-100px">Unsubscribed</span>
+                    <% elsif recipient.status == 'bounced' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Bounced</span>
+                    <% end %>
+                  </div>
                 </div>
-                <div class="media-right">
-                  <% if recipient.status == 'open' %>
-                    <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Opened</span>
-                  <% elsif recipient.status == 'click' %>
-                    <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Clicked</span>
-                  <% elsif recipient.status == 'delivered' %>
-                    <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
-                  <% elsif recipient.status == 'unsubscribe' %>
-                    <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Unsubscribed</span>
-                  <% elsif recipient.status == 'bounced' %>
-                    <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Bounced</span>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </div>
 
         </div>
@@ -139,7 +141,7 @@
   </div>
 
   <footer class="quickview-footer flex-row-reverse">
-    <button class="btn btn-info">Replicate</button>
+    <!-- <button class="btn btn-info">Replicate</button> -->
   </footer>
 </div>
 

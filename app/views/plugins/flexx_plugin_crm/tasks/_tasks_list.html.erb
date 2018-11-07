@@ -15,7 +15,7 @@
       </div>
       <div class="media-body">
         <div class="<%= 'mt-10' unless row.details.present? %>">
-          <span class="fs-18 pr-16"><strong><%= "#{row.contact.print_name}" %></strong> | <%= row.title %></span>
+          <span class="fs-18 pr-16"><strong><%= "#{row.contact.print_name}" %> </strong><span class="divider-dash"></span><%= row.title %></span>
         </div>
         <% if row.done? %>
           <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.localtime.today? ? 'Today,' : row.updated_at.localtime.strftime('%B %d') %>&nbsp;<%= row.due_date.localtime.strftime('%I:%M %p') %></small>
