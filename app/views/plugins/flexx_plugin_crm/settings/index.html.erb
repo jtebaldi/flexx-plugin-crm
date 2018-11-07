@@ -24,7 +24,7 @@
       <div class="card">
         <ul class="nav nav-lg nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#tab_profile" data-toggle="tab">My Profile</a>
+            <a class="nav-link active" href="#tab_profile" data-toggle="tab">Settings</a>
           </li>
           <!--<li class="nav-item">
             <a class="nav-link" href="#tab_email_settings" data-toggle="tab">Email Settings</a>
@@ -36,13 +36,33 @@
     <div class="col-lg-9 tab-content">
       <div id='tab_profile' class='tab-pane form-type-material fade active show card'>
         <%= form_for current_user, as: :user, url: admin_setting_path(current_user), html: { id: 'user_form' }, class: 'form-type-material' do |f| %>
-          <h4 class="card-title fw-400">My Profile</h4>
+          <h4 class="card-title fw-400">Settings</h4>
 
           <div class="card-body">
             <div class="row">
               <div class="col-lg-6">
+                <h5 class='my-4 pb-3'>Profile Information</h5>                   
 
-                <div class="flexbox gap-items-4">
+                <div class="flexbox gap-items-4 mt-30">
+                  <div class="flex-grow">
+
+                    <div class="form-group">
+                      <%= f.text_field :first_name, class: 'form-control' %>
+                      <%= f.label :first_name %>
+                    </div>
+                  
+                    <div class="form-group">
+                      <%= f.text_field :last_name, class: 'form-control' %>
+                      <%= f.label :last_name %>
+                    </div>                                   
+
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="col-lg-6">  
+                <div class="flexbox gap-items-4 mb-4">
                   <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= current_user.initials %></span>
 
                   <div class="flex-grow">
@@ -57,36 +77,10 @@
                     </div>-->
                     
                   </div>
-                </div>    
+                </div> 
 
-                <div class="flexbox gap-items-4 mt-30">
-                  <div class="flex-grow">
-
-                    <div class="form-group">
-                      <%= f.text_field :first_name, class: 'form-control' %>
-                      <%= f.label :first_name %>
-                    </div>
-                  
-                    <div class="form-group">
-                      <%= f.text_field :last_name, class: 'form-control' %>
-                      <%= f.label :last_name %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= f.text_field :email, class: "form-control#{invalid_class(f.object.errors[:email])}" %>
-                      <%= invalid_feedback f.object.errors[:email] %>
-                      <%= f.label :email, class: 'required' %>
-                    </div>                  
-
-                  </div>
-                </div>
-
-              </div>
-              
-              <div class="col-lg-6">  
                 <div class="flexbox gap-items-4">
-                  <div class="flex-grow">
-                    <h5 class='my-4 pb-3'>Account Information</h5>
+                  <div class="flex-grow">                    
 
                     <div class="pt-1 form-group">
                       <%= f.text_field :username, class: "form-control #{invalid_class(f.object.errors[:username])}" %>
@@ -95,9 +89,10 @@
                     </div>
 
                     <div class="form-group">
-                      <input class="form-control" type="email" name="business_email" value="<%= @business_email.value %>">
-                      <label><%= @business_email.custom_fields.name %></label>
-                    </div>
+                      <%= f.text_field :email, class: "form-control#{invalid_class(f.object.errors[:email])}" %>
+                      <%= invalid_feedback f.object.errors[:email] %>
+                      <%= f.label :email, class: 'required' %>
+                    </div>                       
 
                     <!--<div class="form-group">
                       <input class="form-control" type="text" name="" value="">
@@ -118,6 +113,23 @@
                 </div>
               </div>
             </div>
+            
+            <hr>
+
+            <div class="row">
+              <div class="col-lg-6">  
+                <div class="flexbox gap-items-4">
+                  <div class="flex-grow">
+                    <h5 class='my-4 pb-3'>Business Information</h5>
+                    <div class="form-group">
+                      <input class="form-control" type="email" name="business_email" value="<%= @business_email.value %>">
+                      <label><%= @business_email.custom_fields.name %></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <footer class="card-footer text-right">
