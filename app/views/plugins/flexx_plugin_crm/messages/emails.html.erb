@@ -92,6 +92,7 @@
           <%= render partial: 'emails', object: @recent_emails if @recent_emails.any? %>
         </div>
 
+        <!--
         <footer class="card-footer">
           <nav class="mt-3">
             <ul class="pagination justify-content-center">
@@ -113,6 +114,7 @@
             </ul>
           </nav>
         </footer>
+        -->
       </div>
 
       <div class="card form-type-material tab-pane fade" id="tab-email-scheduled">
@@ -122,6 +124,7 @@
           <%= render partial: 'emails', object: @scheduled_emails if @scheduled_emails.any? %>
         </div>
 
+        <!--
         <footer class="card-footer">
           <nav class="mt-3">
             <ul class="pagination justify-content-center">
@@ -143,6 +146,8 @@
             </ul>
           </nav>
         </footer>
+        -->
+
       </div>
 
       <div class="card form-type-material tab-pane fade" id="tab-email-draft">
@@ -152,6 +157,7 @@
           <%= render partial: 'emails', object: @draft_emails if @draft_emails.any? %>
         </div>
 
+        <!--
         <footer class="card-footer">
           <nav class="mt-3">
             <ul class="pagination justify-content-center">
@@ -173,6 +179,8 @@
             </ul>
           </nav>
         </footer>
+        -->
+
       </div>
 
       <div class="card form-type-material tab-pane fade" id="tab-email-sent">
@@ -182,6 +190,7 @@
           <%= render partial: 'emails', object: @sent_emails if @sent_emails.any? %>
         </div>
 
+        <!--
         <footer class="card-footer">
           <nav class="mt-3">
             <ul class="pagination justify-content-center">
@@ -203,6 +212,8 @@
             </ul>
           </nav>
         </footer>
+        -->
+        
       </div>
 
     </div>
