@@ -16,7 +16,7 @@ class EmailBlastService
   def call(task = false, timezone = 'UTC')
     tz = Timezone[timezone].abbr Time.now
     send_at = @scheduled_at.present? ?
-      Time.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
+      DateTime.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
       Time.current
 
     message = @site.emails.create(
