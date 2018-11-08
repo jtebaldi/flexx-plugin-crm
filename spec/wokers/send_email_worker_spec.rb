@@ -4,6 +4,7 @@ require 'rspec-sidekiq'
 describe SendEmailWorker do
   before :each do
     @email = create :email, :with_site, :recipients, aasm_state: 'sending'
+    create :user, email: @email.from
   end
 
   it { is_expected.to be_processed_in :default }

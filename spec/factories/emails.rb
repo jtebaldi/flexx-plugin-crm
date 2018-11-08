@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :email, class: 'Plugins::FlexxPluginCrm::Email' do
+    from { 'info@mail.net' }
     subject { 'Test email subject' }
     body { 'Test email body' }
     aasm_state { 'scheduled' }

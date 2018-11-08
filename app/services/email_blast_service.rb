@@ -12,7 +12,9 @@ class EmailBlastService
   end
 
   def call(task = false)
-    send_at = @scheduled_at.present? ? Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p') : Time.now
+    send_at = @scheduled_at.present? ?
+      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone :
+      Time.current
 
     message = @site.emails.create(
       recipients_list: @recipients_list,
