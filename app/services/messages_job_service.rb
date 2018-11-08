@@ -7,19 +7,19 @@ class MessagesJobService
   class << self
 
     def queue_new_messages
-      Plugins::FlexxPluginCrm::Message.scheduled.where('send_at <= ?', Time.now).each do |msg|
+      Plugins::FlexxPluginCrm::Message.scheduled.where('send_at <= ?', Time.current).each do |msg|
         msg.send_message!
       end
 
-      Plugins::FlexxPluginCrm::Message.task_scheduled.where('send_at <= ?', Time.now).each do |msg|
+      Plugins::FlexxPluginCrm::Message.task_scheduled.where('send_at <= ?', Time.current).each do |msg|
         msg.send_task_message!
       end
 
-      Plugins::FlexxPluginCrm::Email.scheduled.where('send_at <= ?', Time.now).each do |email|
+      Plugins::FlexxPluginCrm::Email.scheduled.where('send_at <= ?', Time.current).each do |email|
         email.send_message!
       end
 
-      Plugins::FlexxPluginCrm::Email.task_scheduled.where('send_at <= ?', Time.now).each do |email|
+      Plugins::FlexxPluginCrm::Email.task_scheduled.where('send_at <= ?', Time.current).each do |email|
         email.send_task_message!
       end
     end

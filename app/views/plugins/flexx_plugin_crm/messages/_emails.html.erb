@@ -14,7 +14,7 @@
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= email.subject %></h5>
-          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.localtime.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
@@ -25,7 +25,7 @@
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
           <h5><%= email.subject %></h5>
-          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.localtime.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
