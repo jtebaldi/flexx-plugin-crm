@@ -6,6 +6,7 @@ PATH
       acts-as-taggable-on (~> 5.0)
       cama_contact_form (~> 0.0.23)
       camaleon_cms (~> 2.4.3.8)
+      detect_timezone_rails
       json (~> 1.7, >= 1.7.7)
       mustache (~> 1.0)
       rails (~> 4.2.10)
@@ -106,6 +107,8 @@ GEM
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
     database_cleaner (1.7.0)
+    detect_timezone_rails (0.0.5)
+      railties (>= 3.1)
     diff-lcs (1.3)
     draper (2.1.0)
       actionpack (>= 3.0)

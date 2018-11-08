@@ -81,7 +81,7 @@ module Plugins::FlexxPluginCrm
         recipients_list: params[:recipients],
         subject: params[:subject],
         body: params[:message]
-      ).call from_task
+      ).call from_task, cookies[:timezone]
     end
 
     def text_blast(form_task: false)
@@ -92,7 +92,7 @@ module Plugins::FlexxPluginCrm
         scheduled_at: nil,
         recipients_list: recipients_list,
         body: params[:body]
-      ).call form_task
+      ).call form_task, cookies[:timezone]
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end

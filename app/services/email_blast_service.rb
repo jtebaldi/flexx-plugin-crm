@@ -11,10 +11,11 @@ class EmailBlastService
     @contact_email_list = MessagingToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
   end
 
-  def call(task = false)
+  def call(task = false, timezone = 'UTC')
+    require 'pry-byebug'; binding.pry
     send_at = @scheduled_at.present? ?
-      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone :
-      Time.current
+      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone(timezone) :
+      Time.current.in_time_zone(timezone)
 
     message = @site.emails.create(
       recipients_list: @recipients_list,
