@@ -1,3 +1,5 @@
+require 'timezone'
+
 class EmailBlastService
   def initialize(site:, user:, scheduled_at:, sender:, recipients_list:, subject:, body:)
     @site = site
@@ -12,8 +14,9 @@ class EmailBlastService
   end
 
   def call(task = false, timezone = 'UTC')
+    tz = Timezone[timezone].abbr Time.now
     send_at = @scheduled_at.present? ?
-      Time.strptime("#{@scheduled_at} #{timezone}", '%m/%d/%Y %H:%M %p %Z') :
+      Time.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
       Time.current
 
     message = @site.emails.create(
