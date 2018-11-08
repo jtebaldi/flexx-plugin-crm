@@ -12,7 +12,6 @@ class EmailBlastService
   end
 
   def call(task = false, timezone = 'UTC')
-    require 'pry-byebug'; binding.pry
     send_at = @scheduled_at.present? ?
       Time.strptime("#{@scheduled_at} #{timezone}", '%m/%d/%Y %H:%M %p %Z') :
       Time.current
