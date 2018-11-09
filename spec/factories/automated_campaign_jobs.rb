@@ -5,7 +5,7 @@ FactoryBot.define do
     contact
     message { 'Test message' }
     send_to { 'Mail' }
-    send_at { Time.now }
-    status_changed_at { Time.now }
+    send_at { Time.current }
+    status_changed_at { Time.current }
   end
 end

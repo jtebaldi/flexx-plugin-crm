@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :message, class: 'Plugins::FlexxPluginCrm::Message' do
     site
     contact
-    send_at { Time.now }
+    send_at { Time.current }
 
     trait :scheduled do
       aasm_state { 'scheduled' }

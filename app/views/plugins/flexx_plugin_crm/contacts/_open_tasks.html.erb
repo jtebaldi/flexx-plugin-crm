@@ -23,8 +23,8 @@
           </div>
           <small class="fs-14 fw-300">
             <strong>Due: </strong>
-            <%= !task.due_date || task.due_date.localtime.today? ? 'Today,' : task.due_date.localtime.strftime('%B %d') %>
-            &nbsp;(<%= task.due_date && task.due_date.localtime.strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %>
+            <%= !task.due_date || task.due_date.in_time_zone(cookies[:timezone]).today? ? 'Today,' : task.due_date.in_time_zone(cookies[:timezone]).strftime('%B %d') %>
+            &nbsp;(<%= task.due_date && task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %>
           </small>
         </div>
 
@@ -45,7 +45,7 @@
             <% end %>
             -->
             
-            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
             <!-- <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a> -->
           </span>
         </div>

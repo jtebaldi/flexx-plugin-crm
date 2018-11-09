@@ -19,18 +19,18 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   validates :due_date, presence: true
 
   before_validation do
-    self.due_date = Time.now unless due_date
+    self.due_date = Time.current unless due_date
   end
 
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :owners
 
   scope :done, -> { where(aasm_state: :done) }
-  scope :due_today, -> { where(due_date: Time.now.beginning_of_day..Time.now.end_of_day) }
+  scope :due_today, -> { where(due_date: Time.current.beginning_of_day..Time.current.end_of_day) }
   scope :pending, -> { where(aasm_state: :pending) }
-  scope :upcoming, -> { where('due_date > ?', Time.now.end_of_day) }
-  scope :old, -> { where('due_date < ?', Time.now.beginning_of_day) }
-  scope :done_today, -> { where(updated_at: Time.now.beginning_of_day..Time.now.end_of_day) }
+  scope :upcoming, -> { where('due_date > ?', Time.current.end_of_day) }
+  scope :old, -> { where('due_date < ?', Time.current.beginning_of_day) }
+  scope :done_today, -> { where(updated_at: Time.current.beginning_of_day..Time.current.end_of_day) }
 
   aasm do
     state :pending, initial: true
@@ -42,7 +42,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   end
 
   def confirm
-    self.confirmed_at = Time.now
+    self.confirmed_at = Time.current
 
     self.notes.new(details: "Task confirmed.")
   end

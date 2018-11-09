@@ -17,7 +17,7 @@ module Plugins::FlexxPluginCrm
 
     def create
       params[:task].merge!(updated_by: current_user.id)
-      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+      params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
       task = current_site.tasks.create(task_params)
 
@@ -55,7 +55,7 @@ module Plugins::FlexxPluginCrm
       task = current_site.tasks.find(params[:id])
 
       params[:task].merge!(updated_by: current_user.id)
-      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+      params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
       params[:task][:notes_attributes].delete_at 0 if params[:task][:notes_attributes][0][:details].empty?
       task.update(task_params)
@@ -89,7 +89,7 @@ module Plugins::FlexxPluginCrm
       task = current_site.tasks.find(params[:task_id])
 
       params[:task].merge!(updated_by: current_user.id)
-      params[:task][:due_date] = Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p') if params[:task][:due_date].present?
+      params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
       task.update(task_params)
 
@@ -110,7 +110,7 @@ module Plugins::FlexxPluginCrm
     def send_task_confirmation
       task = current_site.tasks.find(params[:task_id])
 
-      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call
+      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call cookies[:timezone]
 
       head :ok
     end
@@ -122,6 +122,11 @@ module Plugins::FlexxPluginCrm
         :aasm_state, :contact_id, :task_type, :title, :details, :updated_by, :due_date,
         notes_attributes: [:details, :created_by], owner_ids: []
       )
+    end
+
+    def due_date
+      tz = Timezone[cookies[:timezone]].abbr Time.now
+      DateTime.strptime("#{params[:task][:due_date]} #{tz}", '%m/%d/%Y - %I:%M %p %Z')
     end
   end
 end
