@@ -3,7 +3,7 @@
     <p>Form: <strong><%= @contact.source %></strong></p>
   </div>
   <div class="col-sm-6">
-    <p>Submitted: <strong><%= @contact.created_at.localtime.strftime('%m/%d/%Y - %I:%M %p') %></strong></p>
+    <p>Submitted: <strong><%= @contact.created_at.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %></strong></p>
   </div>
 </div>
 <% if @contact.cama_contact_form && @contact.cama_contact_form.parent %>

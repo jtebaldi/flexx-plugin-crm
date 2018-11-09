@@ -29,7 +29,7 @@ module Plugins::FlexxPluginCrm
 
       @task_recipe.update(paused: !@task_recipe.paused,
                           paused_by: !@task_recipe.paused ? current_user.id : nil,
-                          paused_at: !@task_recipe.paused ? Time.now : nil)
+                          paused_at: !@task_recipe.paused ? Time.current : nil)
 
       respond_to do |format|
         format.js
@@ -40,7 +40,7 @@ module Plugins::FlexxPluginCrm
       current_site.task_recipes.find(params[:id]).update!(
         archived: true,
         archived_by: current_user.id,
-        archived_at: Time.now
+        archived_at: Time.current
       )
 
       redirect_to action: :index

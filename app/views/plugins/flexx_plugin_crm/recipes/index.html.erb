@@ -1,6 +1,14 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/recipes' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Cookies.set('timezone', jstz.determine().name());
+  }
+</script>
 
 <header class="header">
   <div class="header-info">
@@ -39,7 +47,7 @@
       <footer class="card-footer flexbox align-items-center">
         <div>
           <strong>Created on:</strong>
-          <span><%= recipe.created_at.localtime.strftime('%b, %d %Y') %></span>
+          <span><%= recipe.created_at.in_time_zone(cookies[:timezone]).strftime('%b, %d %Y') %></span>
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
@@ -74,7 +82,7 @@
       <footer class="card-footer flexbox align-items-center">
         <div>
           <strong>Created on:</strong>
-          <span><%= recipe.created_at.localtime.strftime('%b, %d %Y') %></span>
+          <span><%= recipe.created_at.in_time_zone(cookies[:timezone]).strftime('%b, %d %Y') %></span>
         </div>
         <div class="card-hover-show">
           <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>

@@ -4,7 +4,7 @@ FactoryBot.define do
     subject { 'Test email subject' }
     body { 'Test email body' }
     aasm_state { 'scheduled' }
-    send_at { Time.now }
+    send_at { Time.current }
 
     transient do
       recipients_count { 4 }

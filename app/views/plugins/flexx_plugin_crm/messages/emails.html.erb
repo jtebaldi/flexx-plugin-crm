@@ -1,10 +1,14 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {   
+    Cookies.set('timezone', jstz.determine().name());
+
     /*
     new Chart($("#chart-line-2"), {
       type: 'line',

@@ -12,18 +12,18 @@ class SendgridEventsService
         when 'open'
           if recipient.opened_at.nil?
             email.increment!(:opened_count)
-            recipient.opened_at = Time.now
+            recipient.opened_at = Time.current
             recipient.status = p[:event]
           end
         when 'click'
           if recipient.clicked_at.nil?
             email.increment!(:clicked_count)
-            recipient.clicked_at = Time.now
+            recipient.clicked_at = Time.current
             recipient.status = p[:event]
           end
         when 'unsubscribe'
           email.increment!(:unsubscribed_count) if recipient.unsubscribed_at.nil?
-          recipient.unsubscribed_at = Time.now
+          recipient.unsubscribed_at = Time.current
             recipient.status = p[:event]
         when 'bounce'
           email.increment!(:bounced_count)

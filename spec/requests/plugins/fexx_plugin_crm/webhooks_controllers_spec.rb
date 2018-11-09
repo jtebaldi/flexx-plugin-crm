@@ -21,7 +21,7 @@ it "open event" do
       post sendgrid_events_admin_webhooks_path, { _json: [
         {
           "email": "test1@mail.net",
-          "timestamp": Time.now.to_i,
+          "timestamp": Time.current.to_i,
           "ip": "77.222.3.247",
           "sg_event_id": "E_1GuLXASuSE-OtaaCmj5w",
           "sg_message_id": "tk_wpzmPSMGGQ3HWqJ6Bkg.filter0109p3las1-17392-5BE02D7C-B.0",
@@ -47,7 +47,7 @@ it "open event" do
       post sendgrid_events_admin_webhooks_path, { _json: [
         {
           "email": "test1@mail.net",
-          "timestamp": Time.now.to_i,
+          "timestamp": Time.current.to_i,
           "ip": "77.222.3.247",
           "sg_event_id": "E_1GuLXASuSE-OtaaCmj5w",
           "sg_message_id": "tk_wpzmPSMGGQ3HWqJ6Bkg.filter0109p3las1-17392-5BE02D7C-B.0",
@@ -72,7 +72,7 @@ it "open event" do
       post sendgrid_events_admin_webhooks_path, { _json: [
         {
           "email": "test1@mail.net",
-          "timestamp": Time.now.to_i,
+          "timestamp": Time.current.to_i,
           "ip": "77.222.3.247",
           "sg_event_id": "E_1GuLXASuSE-OtaaCmj5w",
           "sg_message_id": "tk_wpzmPSMGGQ3HWqJ6Bkg.filter0109p3las1-17392-5BE02D7C-B.0",
@@ -92,7 +92,7 @@ it "open event" do
     { _json: [
       {
         "email": "test1@mail.net",
-        "timestamp": Time.now.to_i,
+        "timestamp": Time.current.to_i,
         "ip": "77.222.3.247",
         "sg_event_id": "E_1GuLXASuSE-OtaaCmj5w",
         "sg_message_id": "tk_wpzmPSMGGQ3HWqJ6Bkg.filter0109p3las1-17392-5BE02D7C-B.0",

@@ -10,7 +10,7 @@
         <p class="mb-0 text-center py-10 px-15 text-white text-uppercase fs-16"><strong>Sent</strong></p>
       </div>
       <div class="col-sm-6">
-        <p class="mb-0 text-center py-10 px-15">Date: <strong><%= email.send_at.strftime("%a, %b %d, %Y %I:%M %P") %></strong></p>
+        <p class="mb-0 text-center py-10 px-15">Date: <strong><%= email.send_at.in_time_zone(cookies[:timezone]).strftime("%a, %b %d, %Y %I:%M %P") %></strong></p>
       </div>
     </div>
 
