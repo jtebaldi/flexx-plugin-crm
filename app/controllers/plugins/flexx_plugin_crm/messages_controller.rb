@@ -30,11 +30,11 @@ module Plugins::FlexxPluginCrm
     end
 
     def new_email
-      @dynamic_fields = {
-        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
-      }.to_json
+      @email = current_site.emails.build
+      @dynamic_fields = { flexxdynamicfields: df_defaults + [['-', '']] + df_snippets }.to_json
       @contacts = current_site.contacts.order(:first_name, :last_name)
       @tags = current_site.owned_tags.order(:name)
+      Time.zone = cookies[:timezone]
     end
 
     def new_sms
@@ -48,6 +48,27 @@ module Plugins::FlexxPluginCrm
     def create_email
       email_blast from_task: true
       head :created
+    end
+
+    def edit_email
+      @email = current_site.emails.find params[:id]
+      @dynamic_fields = { flexxdynamicfields: df_defaults + [['-', '']] + df_snippets }.to_json
+      @contacts = current_site.contacts.order(:first_name, :last_name)
+      @tags = current_site.owned_tags.order(:name)
+      Time.zone = cookies[:timezone]
+      render :new_email
+    end
+
+    def update_email
+      scheduled = params[:timingOptions] == '2'
+      scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
+      email_blast scheduled_at: scheduled_at
+      redirect_to action: :emails
+    end
+
+    def delete_email
+      current_site.emails.destroy params[:id]
+      redirect_to action: :emails
     end
 
     def create_email_blast
@@ -80,7 +101,8 @@ module Plugins::FlexxPluginCrm
         sender: params[:sender],
         recipients_list: params[:recipients],
         subject: params[:subject],
-        body: params[:message]
+        body: params[:message],
+        email_id: params[:id]
       ).call from_task, cookies[:timezone]
     end
 

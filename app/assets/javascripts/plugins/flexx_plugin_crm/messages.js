@@ -70,6 +70,12 @@ app.ready(function() {
     })
   });
 
+  var recipientIds = $('#recipientsHidden').val().split(',');
+  $.each(recipientIds, function(idx, elm){
+    var $recipient = $('[data-id="' + elm + '"]');
+    pushTag($recipient.data('tag'), $recipient.data('id'));
+  });
+
   ClassicEditor
     .create(document.querySelector('.editor'), window.dynamic_fields)
     .then(function(editor){

@@ -11,7 +11,8 @@
     <% end %>
 
     <% if email.scheduled? %>
-      <a class="media" data-toggle="modal" href="#">
+      <!--<a class="media" data-toggle="modal" href="#">-->
+      <%= link_to edit_email_admin_message_path(email), class: 'media' do %>
         <div class="media-body">
           <h5><%= email.subject %></h5>
           <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %></p>
@@ -20,7 +21,7 @@
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
           </p>
         </div>
-      </a>
+      <% end %>
     <% elsif email.sent? %>
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
