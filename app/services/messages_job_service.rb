@@ -65,7 +65,7 @@ class MessagesJobService
     def send_sms(message)
       result = TwilioAdapter.new.send_sms(message: message)
       if message.sending? # sms blast
-        message.create_tasks(
+        message.create_task(
           site: message.site,
           contact: message.contact,
           aasm_state: :done,

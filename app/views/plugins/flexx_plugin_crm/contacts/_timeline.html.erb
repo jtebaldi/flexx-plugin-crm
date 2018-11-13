@@ -6,7 +6,12 @@
       </div>
       <div class="timeline-content">
         <time><%= time_ago_in_words(task.updated_at) %> ago</time>
-        <p style="color: #333"><span class="h6"><%= task.title %></span> completed by <strong><%= task.updated_by_user.first_name %></strong></p>
+        <p style="color: #333">
+          <span class="h6"><%= task.title %></span> completed by <strong><%= task.updated_by_user.first_name %></strong>
+          <% if task.email_recipient %>
+            status <strong><%= task.email_recipient.status || 'sent' %></strong>
+          <% end %>
+        </p>
         <hr>
       </div>
     </li>

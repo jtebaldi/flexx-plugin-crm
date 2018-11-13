@@ -9,6 +9,11 @@ class SendgridEventsService
 
       if recipient
         case p[:event]
+        when 'delivered'
+          if recipient.delivered_at.nil?
+            recipient.delivered_at = Time.current
+            recipient.status = p[:event]
+          end
         when 'open'
           if recipient.opened_at.nil?
             email.increment!(:opened_count)
@@ -26,6 +31,10 @@ class SendgridEventsService
           recipient.unsubscribed_at = Time.current
             recipient.status = p[:event]
         when 'bounce'
+          if recipient.bounced_at.nil?
+            recipient.bounced_at = Time.current
+            recipient.status = p[:event]
+          end
           email.increment!(:bounced_count)
         end
 

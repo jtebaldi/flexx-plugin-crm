@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181112172155) do
+ActiveRecord::Schema.define(version: 20181113162317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,8 @@ ActiveRecord::Schema.define(version: 20181112172155) do
     t.datetime "unsubscribed_at"
     t.integer  "contact_id"
     t.integer  "task_id"
+    t.datetime "delivered_at"
+    t.datetime "bounced_at"
   end
 
   add_index "email_recipients", ["task_id"], name: "index_email_recipients_on_task_id", using: :btree
