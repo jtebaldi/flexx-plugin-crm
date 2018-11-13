@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181014083347) do
+ActiveRecord::Schema.define(version: 20181112172155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,7 +152,10 @@ ActiveRecord::Schema.define(version: 20181014083347) do
     t.datetime "clicked_at"
     t.datetime "unsubscribed_at"
     t.integer  "contact_id"
+    t.integer  "task_id"
   end
+
+  add_index "email_recipients", ["task_id"], name: "index_email_recipients_on_task_id", using: :btree
 
   create_table "emails", force: :cascade do |t|
     t.string   "sg_message_id"
@@ -193,6 +196,7 @@ ActiveRecord::Schema.define(version: 20181014083347) do
     t.boolean  "read",        default: false
     t.string   "aasm_state"
     t.datetime "send_at"
+    t.integer  "task_id"
   end
 
   add_index "messages", ["contact_id"], name: "index_messages_on_contact_id", using: :btree
@@ -200,6 +204,7 @@ ActiveRecord::Schema.define(version: 20181014083347) do
   add_index "messages", ["from_number"], name: "index_messages_on_from_number", using: :btree
   add_index "messages", ["read"], name: "index_messages_on_read", using: :btree
   add_index "messages", ["site_id"], name: "index_messages_on_site_id", using: :btree
+  add_index "messages", ["task_id"], name: "index_messages_on_task_id", using: :btree
   add_index "messages", ["to_number"], name: "index_messages_on_to_number", using: :btree
 
   create_table "metas", force: :cascade do |t|
@@ -433,4 +438,6 @@ ActiveRecord::Schema.define(version: 20181014083347) do
   add_index "users", ["site_id"], name: "index_users_on_site_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
+  add_foreign_key "email_recipients", "tasks"
+  add_foreign_key "messages", "tasks"
 end

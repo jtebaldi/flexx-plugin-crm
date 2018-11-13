@@ -11,8 +11,9 @@ class MessageBlastService
     @body = body
   end
 
-  def call(task = false, timezone = 'UTC')
-    tz = Timezone[timezone].abbr Time.now
+  def call(task = nil, timezone = 'UTC')
+    tz = '%+.2d00' % TZInfo::Timezone.get(timezone).current_period
+      .utc_total_offset_rational.numerator
     send_at = @scheduled_at.present? ?
       DateTime.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
       Time.current
@@ -21,11 +22,12 @@ class MessageBlastService
 
     contacts.each do |contact|
       message = @site.messages.create(
+        task: task,
         contact_id: contact.id,
         from_number: @site.get_option('twilio_campaigns_number'),
         to_number: with_country_code(contact.phonenumbers.mobile.first.number),
         message: DynamicFieldsParserService.parse(site: @site, template: @body),
-        aasm_state: (task ? :task_schelduled : :scheduled),
+        aasm_state: (task ? :task_scheduled : :scheduled),
         send_at: send_at,
         created_by: @user.id
       )

@@ -1,19 +1,19 @@
-<% if contact.phonenumbers.mobile.empty? %>
+<% if task.contact.phonenumbers.mobile.empty? %>
   <div class="media flex-column text-center p-40 b-2 border-warning">
     <span class="avatar avatar-xxl bg-warning opacity-60 mx-auto">
       <i class="ti-info-alt fs-35 align-sub"></i>
     </span>
     <div class="text-center">
       <h5 class="text-uppercase fw-500 mt-3 text-warning">Uh oh!</h6>
-      <small class="fs-14">You cannot complete this task because the contact does not have a mobile number in their account.<br>Go to <a href="<%= admin_contact_path(contact.id) %>"><%= contact.print_name %>'s profile</a> and add a mobile number.</small>
+      <small class="fs-14">You cannot complete this task because the contact does not have a mobile number in their account.<br>Go to <a href="<%= admin_contact_path(task.contact.id) %>"><%= task.contact.print_name %>'s profile</a> and add a mobile number.</small>
     </div>
   </div>
 <% else %>
   <div class="publisher publisher-multi bg-transparent b-1 form-group mb-0">
     <label>Message</label>
-    <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
-      <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
-      <input type="hidden" class="form-control" name="phonenumber" value="<%= contact.phonenumbers.mobile.first.number %>">
+    <%= form_tag create_text_admin_messages_path(task_id: task.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
+      <input type="hidden" class="form-control" name="recipients" value="<%= task.contact.id %>">
+      <input type="hidden" class="form-control" name="phonenumber" value="<%= task.contact.phonenumbers.mobile.first.number %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
       <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
     <% end %>

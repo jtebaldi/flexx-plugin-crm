@@ -46,7 +46,8 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_email
-      email_blast from_task: true
+      task = current_site.tasks.find params[:task_id]
+      email_blast from_task: task
       head :created
     end
 
@@ -79,7 +80,8 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_text
-      text_blast from_task: true
+      task = current_site.tasks.find params[:task_id]
+      text_blast from_task: task
       head :created
     end
 
@@ -93,7 +95,7 @@ module Plugins::FlexxPluginCrm
 
     private
 
-    def email_blast(scheduled_at: nil, from_task: false)
+    def email_blast(scheduled_at: nil, from_task: nil)
       EmailBlastService.new(
         site: current_site,
         user: current_user,
@@ -106,7 +108,7 @@ module Plugins::FlexxPluginCrm
       ).call from_task, cookies[:timezone]
     end
 
-    def text_blast(form_task: false)
+    def text_blast(from_task: nil)
       recipients_list = params[:recipients].split(',')
       MessageBlastService.new(
         site: current_site,
@@ -114,7 +116,7 @@ module Plugins::FlexxPluginCrm
         scheduled_at: nil,
         recipients_list: recipients_list,
         body: params[:body]
-      ).call form_task, cookies[:timezone]
+      ).call from_task, cookies[:timezone]
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end

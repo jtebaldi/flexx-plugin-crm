@@ -16,6 +16,9 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   has_many :task_owners, class_name: 'Plugins::FlexxPluginCrm::TaskOwner'
   has_many :owners, class_name: user_class_name, through: :task_owners
 
+  has_one :email_recipient, class_name: 'Plugins::FlexxPluginCrm::EmailRecipient'
+  has_one :message, class_name: 'Plugins::FlexxPluginCrm::Message'
+
   validates :due_date, presence: true
 
   before_validation do

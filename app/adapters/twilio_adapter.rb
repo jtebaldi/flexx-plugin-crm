@@ -5,6 +5,7 @@ class TwilioAdapter
     sid = message.site.get_option('twilio_account_sid')
     token = message.site.get_option('twilio_auth_token')
 
+    require 'pry-byebug'; binding.pry
     client(sid, token).api.account.messages.create(
       from: message.from_number,
       to: message.to_number,
