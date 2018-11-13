@@ -222,7 +222,9 @@
             <% unless @email.new_record? %>
               <%= link_to  "Delete Message", delete_email_admin_message_path(@email), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-bold btn-w-xl' %>
             <% end %>
-            <button onclick="fillRecipientsField()" id="btn_send_email" class="btn btn-bold btn-w-xl btn-primary" >Send Message</button>
+            <button onclick="fillRecipientsField()" id="btn_send_email" class="btn btn-bold btn-w-xl btn-primary">
+              <%= @email.new_record? ? 'Send Message' : 'Save Changes' %>
+            </button>
           </div>
         </div>
       <% end %>
