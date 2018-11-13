@@ -125,7 +125,8 @@ module Plugins::FlexxPluginCrm
     end
 
     def due_date
-      tz = Timezone[cookies[:timezone]].abbr Time.now
+      tz = '%+.2d00' % TZInfo::Timezone.get(cookies[:timezone]).current_period
+        .utc_total_offset_rational.numerator
       DateTime.strptime("#{params[:task][:due_date]} #{tz}", '%m/%d/%Y - %I:%M %p %Z')
     end
   end

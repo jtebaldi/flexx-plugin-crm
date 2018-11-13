@@ -51,9 +51,11 @@ Rails.application.routes.draw do
             post :create_text
             post :create_text_blast
           end
-          get :edit_email, on: :member
-          patch :update_email, on: :member
-          delete :delete_email, on: :member
+          member do
+            get :edit_email
+            patch :update_email
+            delete :delete_email
+          end
         end
 
         resources :conversations, controller: 'plugins/flexx_plugin_crm/conversations', only: [:index, :show, :create] do

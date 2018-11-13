@@ -1,11 +1,11 @@
-<% unless contact.phonenumbers.present? %>
+<% unless task.contact.phonenumbers.present? %>
   <div class="media flex-column text-center p-40 b-2 border-warning">
     <span class="avatar avatar-xxl bg-warning opacity-60 mx-auto">
       <i class="ti-info-alt fs-35 align-sub"></i>
     </span>
     <div class="text-center">
       <h5 class="text-uppercase fw-500 mt-3 text-warning">Uh oh!</h6>
-      <small class="fs-14">You cannot complete this task because the contact does not have a phone number in their account.<br>Go to <a href="<%= admin_contact_path(contact.id) %>"><%= contact.print_name %>'s profile</a> and add a phone number.</small>
+      <small class="fs-14">You cannot complete this task because the contact does not have a phone number in their account.<br>Go to <a href="<%= admin_contact_path(task.contact.id) %>"><%= task.contact.print_name %>'s profile</a> and add a phone number.</small>
     </div>
   </div>
 <% end %>

@@ -6,7 +6,24 @@ RSpec.describe "Plugins::FexxPluginCrm::WebhooksControllers", type: :request do
       @email = create :email, :with_site, :recipients, sg_message_id: 'tk_wpzmPSMGGQ3HWqJ6Bkg'
     end
 
-it "open event" do
+    it "delivered event" do
+      post sendgrid_events_admin_webhooks_path, { _json: [
+        {
+          "email": "test1@mail.net",
+          "timestamp": Time.current.to_i,
+          "ip": "77.222.3.247",
+          "sg_event_id": "E_1GuLXASuSE-OtaaCmj5w",
+          "sg_message_id": "tk_wpzmPSMGGQ3HWqJ6Bkg.filter0109p3las1-17392-5BE02D7C-B.0",
+          "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+          "event": "delivered"
+        }
+      ]}.to_json, { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
+      recipient = @email.email_recipients.find_by_to('test1@mail.net')
+      expect(recipient.status).to eq 'delivered'
+      expect(recipient.delivered_at).not_to be_nil 
+    end
+
+    it "open event" do
       post sendgrid_events_admin_webhooks_path, open_json, { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
       expect(response).to have_http_status(204)
       @email.reload
@@ -14,6 +31,7 @@ it "open event" do
       recipient = @email.email_recipients.find_by_to('test1@mail.net')
       expect(recipient.status).to eq 'open'
       expect(recipient.opened_at).not_to be_nil 
+      expect(response).to have_http_status(204)
     end
 
     it "click event" do
@@ -39,6 +57,7 @@ it "open event" do
       post sendgrid_events_admin_webhooks_path, open_json, { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
       @email.reload
       recipient = @email.email_recipients.find_by_to('test1@mail.net')
+      expect(recipient.clicked_at).not_to be_nil
       expect(recipient.status).to eq 'click'
     end
 
@@ -65,6 +84,7 @@ it "open event" do
       post sendgrid_events_admin_webhooks_path, open_json, { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
       @email.reload
       recipient = @email.email_recipients.find_by_to('test1@mail.net')
+      expect(recipient.unsubscribed_at).not_to be_nil
       expect(recipient.status).to eq 'unsubscribe'
     end
 
@@ -83,6 +103,9 @@ it "open event" do
       expect(response).to have_http_status(204)
       @email.reload
       expect(@email.bounced_count).to eq 1
+      recipient = @email.email_recipients.find_by_to('test1@mail.net')
+      expect(recipient.bounced_at).not_to be_nil
+      expect(recipient.status).to eq 'bounce'
     end
   end
 

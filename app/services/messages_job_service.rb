@@ -43,8 +43,9 @@ class MessagesJobService
       )
 
       if email.sending? # email blast
-        email.email_recipients.each do |r|
-          r.contact.tasks.create(
+        email.email_recipients.includes(:contact).each do |r|
+          r.create_task(
+            contact: r.contact,
             site: email.site,
             aasm_state: :done,
             created_by: email.created_by,
@@ -64,8 +65,9 @@ class MessagesJobService
     def send_sms(message)
       result = TwilioAdapter.new.send_sms(message: message)
       if message.sending? # sms blast
-        message.contact.tasks.create(
+        message.create_task(
           site: message.site,
+          contact: message.contact,
           aasm_state: :done,
           created_by: message.created_by,
           details: 'SMS blast',

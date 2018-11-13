@@ -53,9 +53,14 @@
           <br/><span><%= @task.details %></span>
         </div>
       <% end %>
+      <% if @task.email_recipient %>
+        <div class='flexbox p-20'><%= @task.email_recipient.email.body.html_safe %></div>
+      <% elsif @task.message %>
+        <div class='flexbox p-20'><%= @task.message.message.html_safe %></div>
+      <% end %>
 
       <% unless @task.done? %>
-        <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}", locals: {contact: @task.contact} %>
+        <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}", locals: {task: @task} %>
       <% end %>
 
       <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'form-type-combine' do %>
