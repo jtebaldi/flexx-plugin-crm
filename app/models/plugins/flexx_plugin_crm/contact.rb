@@ -20,8 +20,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   accepts_nested_attributes_for :phonenumbers
 
   aasm('sales_stage') do
-    state :pending, initial: true
-    state :lead, :prospect, :customer, :archived
+    state :lead, initial: true
+    state :pending, :prospect, :customer, :archived
   end
 
   def print_name
