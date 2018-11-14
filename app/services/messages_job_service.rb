@@ -55,8 +55,10 @@ class MessagesJobService
             updated_by: email.created_by
           )
         end
+        email.update(sg_message_id: sg_message_id) && email.done!
+      else
+        email.update(sg_message_id: sg_message_id) && email.task_done!
       end
-      email.update(sg_message_id: sg_message_id) && email.done!
     end
 
     # Send sms message.
@@ -75,8 +77,10 @@ class MessagesJobService
           title: 'SMS blast',
           updated_by: message.created_by
         )
+        result.error_code.zero? && message.done! && message.update(sid: result.sid)
+      else
+        result.error_code.zero? && message.task_done! && message.update(sid: result.sid)
       end
-      result.error_code.zero? && message.done! && message.update(sid: result.sid)
     end
   end
 end
