@@ -11,7 +11,7 @@
   </div>
 <% else %>
   <% @contact.tasks.pending.order(:due_date).each do |task| %>
-    <div class="card b-1 hover-shadow-2 mb-20">
+    <div class="card b-1 hover-shadow-2 mb-20" data-open-task="<%= task.id %>">
       <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id, refresh_panel: refresh_panel) %>">
         <div class="media-left pr-12">
           <span class="avatar avatar-xl no-radius">
@@ -35,7 +35,7 @@
         <div class="">
           <% unless task.notes.empty? %>
             <span class="text-lighter hover-light mr-15">
-              <i class="fa fa-comment mr-1"></i> <%= task.notes.count %>
+              <i class="fa fa-comment mr-1"></i><span><%= task.notes.count %></span>
             </span>
           <% end %>   
           <span class="card-hover-show">

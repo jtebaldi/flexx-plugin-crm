@@ -1,5 +1,5 @@
 <% tasks.each do |row| %>
-  <div class="card b-1 hover-shadow-2 mb-20 task-card <%= 'completed' if row.done? %>" data-staff="<%= row.owners.ids unless row.owners.empty? %>" data-completed="<%= row.updated_by if row.done? %>">
+  <div data-open-task="<%= row.id %>" class="card b-1 hover-shadow-2 mb-20 task-card <%= 'completed' if row.done? %>" data-staff="<%= row.owners.ids unless row.owners.empty? %>" data-completed="<%= row.updated_by if row.done? %>">
     <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: row.id, refresh_panel: refresh_panel) %>">
       <div class="media-left d-none d-sm-block">
         <% if row.done? %>
@@ -36,9 +36,12 @@
     <% unless row.done? %>
       <footer class="card-footer flexbox align-items-center">
         <div>
-          <span class="text-lighter">
-            <i class="ti-comment-alt mr-1"></i> <%= row.notes.count %>
-          </span>
+          <% unless row.notes.empty? %>
+            <span class="text-lighter">
+              <i class="fa fa-comment mr-1"></i><span><%= row.notes.count %></span>
+              <!--<i class="ti-comment-alt mr-1"></i><span><%= row.notes.count %></span>-->
+            </span>
+          <% end %>
           <!--
           <span class="card-hover-show pl-20">            
             <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>

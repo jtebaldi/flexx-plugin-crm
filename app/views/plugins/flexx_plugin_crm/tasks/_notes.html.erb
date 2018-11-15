@@ -1,6 +1,6 @@
-<div class="media-list media-list-divided bg-lighter">
+<div data-task="<%= @task.id %>" class="media-list media-list-divided bg-lighter">
   <h5 class="card-title p-15 text-muted fw-300 bt-1"><strong>Notes</strong></h5>
-  <% @task.notes.each do |note| %>
+  <% @task.notes.order(:created_at).each do |note| %>
     <div class="media">
       <span class="avatar"><%= note.created_by_user.initials %></span>
       <div class="media-body">
@@ -8,11 +8,20 @@
           <strong><%= note.created_by_user.print_name %></strong>
           <time class="float-right text-fade" ><%= time_ago_in_words(note.created_at) %></time>
         </p>
-        <p><%= note.details %></p>
+        <p<%= @task.done? ? '' : " data-note=#{note.id}" %>><%= note.details %></p>
+        <% unless @task.done? %>
+          <div class="flexbox d-none">
+            <textarea class="publisher-input auto-expand" rows="2" placeholder="Type your note..."><%= note.details %></textarea>
+          </div>
+        <% end %>
       </div>
+      <% unless @task.done? %>
+        <button class="btn btn-sm" data-delete-note="<%= note.id %>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      <% end %>
     </div>
   <% end %>
 </div>
+
 <% unless @task.done? %>
   <div class="publisher publisher-multi bg-white">
     <div class="flexbox">
