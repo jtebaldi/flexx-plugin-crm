@@ -25,6 +25,8 @@ Rails.application.routes.draw do
           collection do
             post :defer_task
             post :send_task_confirmation
+            patch :update_note
+            delete :delete_note
           end
 
           post :create_note, on: :member

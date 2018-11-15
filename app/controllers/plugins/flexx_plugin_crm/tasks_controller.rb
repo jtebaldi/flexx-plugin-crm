@@ -85,6 +85,16 @@ module Plugins::FlexxPluginCrm
       render partial: 'notes'
     end
 
+    def update_note
+      Plugins::FlexxPluginCrm::Note.update(params[:note_id], details: params[:text])
+      head :no_content
+    end
+
+    def delete_note
+      Plugins::FlexxPluginCrm::Note.destroy(params[:note_id])
+      head :no_content
+    end
+
     def defer_task
       task = current_site.tasks.find(params[:task_id])
 
