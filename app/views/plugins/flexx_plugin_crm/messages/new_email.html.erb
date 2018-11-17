@@ -221,7 +221,7 @@
           </div>
           <div class="flexbox pull-right">
             <% unless @email.new_record? %>
-              <%= link_to  "Delete Message", delete_email_admin_message_path(@email), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-bold btn-w-xl' %>
+              <%= link_to  "<i class='ti-trash'></i>".html_safe, delete_email_admin_message_path(@email), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-bold hover-danger' %>
             <% end %>
             <button onclick="fillRecipientsField()" id="btn_send_email" class="btn btn-bold btn-w-xl btn-primary">
               <%= @email.new_record? ? 'Send Message' : 'Save Changes' %>
