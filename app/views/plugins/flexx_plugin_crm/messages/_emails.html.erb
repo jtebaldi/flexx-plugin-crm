@@ -21,6 +21,14 @@
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
           </p>
         </div>
+        <span class="d-block d-sm-none" style="line-height: 73px;">
+          <i class="ti-angle-double-right text-lighter"></i>
+        </span>
+        <div class="mr-25 d-none d-sm-block">
+          <small class="text-lighter fw-300 text-uppercase" style="line-height: 73px;">
+            click to <span class="badge badge-warning">edit</span>
+          </small>
+        </div>
       <% end %>
     <% elsif email.sent? %>
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
@@ -32,6 +40,10 @@
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
           </p>
         </div>
+
+        <span class="d-block d-sm-none" style="line-height: 73px;">
+          <i class="ti-pie-chart text-lighter"></i>
+        </span>
 
         <div class="text-center d-none d-sm-block">
           <div data-provide="easypie" data-percent="<%= email.recipients_count == 0 ? 0 : ((email.opened_count.to_f/email.recipients_count.to_f)*100).round %>" data-color="#926dde" data-scale-color="transparent" data-size="100">
