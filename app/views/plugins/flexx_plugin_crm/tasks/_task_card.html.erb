@@ -9,22 +9,78 @@
   });
 </script>
 
+<style>
+  @media (max-width: 690px) {
+    form .card-body { padding-left: 0; padding-right: 0; }
+  }
+</style>
+
 <header class="quickview-header">
   <p class="quickview-title lead">Complete<%= 'd' if @task.done? %>: <strong><%= @task.title %></strong></p>
   <span class="close"><i class="ti-close"></i></span>
 </header>
   <div class="quickview-body">
     <div class="card no-margin shadow-0">
-      <div class="card-body card-inverse text-center pb-20">
-        <span class="avatar avatar-xxl avatar-bordered"><i class="fa fa-<%= task_type_icon(task_type: @task.task_type) %> fs-30"></i></span>
-        <h4 class="mt-2 mb-0">
-          <% if params[:refresh_panel] == 'view-contact-tasks-panels' %>
-            <%= @task.contact.print_name %>
-          <% else %>
-            <a class="hover-primary text-white" href="<%= admin_contact_path(@task.contact.id) %>"><%= @task.contact.print_name %></a>
-          <% end %>
-        </h4>
-        <span><%= @task.task_type.humanize %></span>
+      <div class="card-body p-0">
+        <div class="media media-single shadow-4 d-block d-sm-none">
+          <a href="<%= admin_contact_path(@task.contact.id) %>">
+            <span class="avatar avatar-lg avatar-bordered" style="line-height: 40px;"><%= @task.contact.initials %></span>
+          </a>
+          <div class="media-body">
+            <h6><a href="<%= admin_contact_path(@task.contact.id) %>"><%= @task.contact.print_name %></a></h6>
+            <!-- <small class="text-fader">Co-Founder</small> -->
+          </div>
+          <div class="media-right">
+            <a class="btn btn-sm btn-bold btn-round btn-outline btn-info text-info" href="#"><i class="ti-info"></i></a>
+          </div>
+        </div>
+        <div class="row p-30 ml-0">
+          <div class="col-sm-7 col-12 pr-30">
+            <div class="form-type-material">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group mb-10">
+                    <p class="form-control-plaintext pt-0"><span><i class="fa fa-<%= task_type_icon(task_type: @task.task_type) %>"></i> <%= @task.task_type.humanize %></span></p>
+                    <label class="label-floated">Task Type</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group mb-10">
+                    <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y') %></p>
+                    <label class="label-floated">Date</label>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group mb-10">
+                    <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></p>
+                    <label class="label-floated">Time</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <% if @task.details.present? %>
+                    <div class="form-group mb-0">
+                      <p class="form-control-plaintext"><%= @task.details %></p>
+                      <label class="label-floated">Description</label>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-5 px-0 pr-30 d-none d-sm-block">
+            <div class="card-body text-center shadow-4">
+              <a href="<%= admin_contact_path(@task.contact.id) %>">
+                <span class="avatar avatar-xxl avatar-bordered fs-30" style="line-height: 88px;"><%= @task.contact.initials %></span>
+              </a>
+              <h5 class="mt-3 mb-1"><a class="hover-info" href="<%= admin_contact_path(@task.contact.id) %>"><%= @task.contact.print_name %></a></h5>
+              <button class="btn btn-sm btn-info btn-outline mt-10" type="button" onclick="">Highlights</button>
+            </div>
+          </div>
+        </div>
       </div>
       <% unless @task.done? %>
         <div class="btn-group btn-group-justified">
@@ -36,23 +92,7 @@
         <div class="pt-20 pl-20">
           <span>Completed by: <strong><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></strong></span>
         </div>
-      <% end %>      
-      <ul class="flexbox flex-justified text-center p-20">
-        <li class="br-1 border-light">
-          <span class="text-muted text-uppercase">Date</span><br>
-          <span><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y') %></span>
-        </li>
-        <li>
-          <span class="text-muted text-uppercase">Time</span><br>
-          <span><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></span>
-        </li>
-      </ul>
-      <% if @task.details.present? %>
-        <div class="text-center">
-          <span class="text-muted text-uppercase">Description</span>
-          <br/><span><%= @task.details %></span>
-        </div>
-      <% end %>
+      <% end %>                  
       <% if @task.email_recipient %>
         <div class='p-20'>
           <div class="form-type-combine form-groups-attached"> 
