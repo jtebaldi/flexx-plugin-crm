@@ -19,10 +19,11 @@
   <p class="quickview-title lead">Complete<%= 'd' if @task.done? %>: <strong><%= @task.title %></strong></p>
   <span class="close"><i class="ti-close"></i></span>
 </header>
-  <div class="quickview-body">
+<div class="quickview-body">
+  <div class="quickview-block p-0">
     <div class="card no-margin shadow-0">
       <div class="card-body p-0">
-        <div class="media media-single shadow-4 d-block d-sm-none">
+        <div class="media media-single shadow-4 d-sm-none">
           <a href="<%= admin_contact_path(@task.contact.id) %>">
             <span class="avatar avatar-lg avatar-bordered" style="line-height: 40px;"><%= @task.contact.initials %></span>
           </a>
@@ -34,11 +35,13 @@
             <a class="btn btn-sm btn-bold btn-round btn-outline btn-info text-info" href="#"><i class="ti-info"></i></a>
           </div>
         </div>
-        <div class="row p-30 ml-0">
-          <div class="col-sm-7 col-12 pr-30">
-            <div class="form-type-material">
+        <div class="row">
+          <div class="col-sm-7 col-12">
+            <div class="form-type-material pt-20 px-30">
               <div class="row">
                 <div class="col-12">
+                  <h6 class="text-uppercase">Details</h6>
+                  <hr class="mt-15 mb-15">
                   <div class="form-group mb-10">
                     <p class="form-control-plaintext pt-0"><span><i class="fa fa-<%= task_type_icon(task_type: @task.task_type) %>"></i> <%= @task.task_type.humanize %></span></p>
                     <label class="label-floated">Task Type</label>
@@ -46,18 +49,23 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group mb-10">
                     <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y') %></p>
                     <label class="label-floated">Date</label>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group mb-10">
                     <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></p>
                     <label class="label-floated">Time</label>
                   </div>
                 </div>
+                <% unless @task.done? %>
+                  <div class="col-4">
+                    <button class="btn btn-square btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-alarm-clock"></i></button>
+                  </div>
+                <% end %>
               </div>
               <div class="row">
                 <div class="col-12">
@@ -67,6 +75,12 @@
                       <label class="label-floated">Description</label>
                     </div>
                   <% end %>
+                  <% if @task.done? %>
+                    <div class="form-group mb-10">
+                      <p class="form-control-plaintext pt-0"><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></p>
+                      <label class="label-floated">Completed by</label>
+                    </div>
+                  <% end %> 
                 </div>
               </div>
             </div>
@@ -82,87 +96,84 @@
           </div>
         </div>
       </div>
-      <% unless @task.done? %>
-        <div class="btn-group btn-group-justified">
-          <button class="btn p-10 btn-warning btn-outline" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %>')">DEFER TASK</button>
-          <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn p-10 btn-danger btn-outline">REMOVE</a>
-        </div>
-      <% end %>
-      <% if @task.done? %>
-        <div class="pt-20 pl-20">
-          <span>Completed by: <strong><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></strong></span>
-        </div>
-      <% end %>                  
-      <% if @task.email_recipient %>
-        <div class='p-20'>
-          <div class="form-type-combine form-groups-attached"> 
-            <div class="form-group">
-              <label>
-                <strong>Status:</strong>
-                <% if task.email_recipient %>
-                  <% if task.email_recipient.status == 'open' %>
-                    <span class="ml-10 text-info fw-400 fs-12"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
-                  <% elsif task.email_recipient.status == 'click' %>
-                    <span class="ml-10 text-success fw-400 fs-12"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
-                  <% elsif task.email_recipient.status == 'delivered' %>
-                    <span class="ml-10 text-gray fw-400 fs-12"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
-                  <% elsif task.email_recipient.status == 'unsubscribe' %>
-                    <span class="ml-10 text-pink fw-400 fs-12"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
-                  <% elsif task.email_recipient.status == 'bounced' %>
-                    <span class="ml-10 text-danger fw-400 fs-12"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
-                  <% else %>
-                    <span class="ml-10 text-warning fw-400 fs-12"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
-                  <% end %>
+    </div>
+  </div>
+  <hr class="mb-0">
+  <div class="quickview-block p-0">                         
+    <% if @task.email_recipient %>
+      <div class='p-20'>
+        <div class="form-type-combine form-groups-attached"> 
+          <div class="form-group">
+            <label>
+              <strong>Status:</strong>
+              <% if task.email_recipient %>
+                <% if task.email_recipient.status == 'open' %>
+                  <span class="ml-10 text-info fw-400 fs-12"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
+                <% elsif task.email_recipient.status == 'click' %>
+                  <span class="ml-10 text-success fw-400 fs-12"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
+                <% elsif task.email_recipient.status == 'delivered' %>
+                  <span class="ml-10 text-gray fw-400 fs-12"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
+                <% elsif task.email_recipient.status == 'unsubscribe' %>
+                  <span class="ml-10 text-pink fw-400 fs-12"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
+                <% elsif task.email_recipient.status == 'bounced' %>
+                  <span class="ml-10 text-danger fw-400 fs-12"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
+                <% else %>
+                  <span class="ml-10 text-warning fw-400 fs-12"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
                 <% end %>
-              </label>
-            </div>           
-            <div class="form-group">
-              <label>Subject</label>
-              <input type="text" class="form-control" value="<%= @task.email_recipient.email.subject %>" readonly>
-            </div>
-            <div class="form-group">
-              <label for="textarea">Message</label>
-              <div class="pt-15">
-                <%= @task.email_recipient.email.body.html_safe %>
-              </div>
+              <% end %>
+            </label>
+          </div>           
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" class="form-control" value="<%= @task.email_recipient.email.subject %>" readonly>
+          </div>
+          <div class="form-group">
+            <label for="textarea">Message</label>
+            <div class="pt-15">
+              <%= @task.email_recipient.email.body.html_safe %>
             </div>
           </div>
         </div>
-      <% elsif @task.message %>
-        <div class='p-20'><%= @task.message.message.html_safe %></div>
-      <% end %>
+      </div>
+    <% elsif @task.message %>
+      <div class='p-20'><%= @task.message.message.html_safe %></div>
+    <% end %>
 
-      <% unless @task.done? %>
-        <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}", locals: {task: @task} %>
-      <% end %>
+    <% unless @task.done? %>
+      <%= render partial: "plugins/flexx_plugin_crm/admin/task_actions/#{@task.task_type}", locals: {task: @task} %>
+    <% end %>
 
-      <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'form-type-combine' do %>
-        <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
-        <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
+    <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true, id: 'update-task-form', class: 'form-type-combine' do %>
+      <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
+      <input type="hidden" name="task[aasm_state]" id="task-status" value="<%= @task.aasm_state %>">
 
-        <div id='notes-content'>
-          <%= render partial: 'plugins/flexx_plugin_crm/tasks/notes' %>
-        </div>
-      <% end %>
-    </div>
+      <div id='notes-content'>
+        <%= render partial: 'plugins/flexx_plugin_crm/tasks/notes' %>
+      </div>
+    <% end %>
   </div>
+  
+</div>
 
-    <footer class="quickview-footer flex-row-reverse">
-      <% unless @task.done? %>
-        <% case @task.task_type %>
-        <% when 'email', 'message' %>
-          <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
-        <% else %>
-          <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
-        <% end %>
-        <!--<div class="btn-group">
-          <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
-          <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
-          <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
-            <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
-            <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
-          </div>-->
-        </div>
-      <% end %>
-      <button class="btn btn-light" onclick="closeTaskView(this)">Close</button>
-    </footer>
+<footer class="quickview-footer flex-row-reverse">
+  <% unless @task.done? %>
+    <% case @task.task_type %>
+    <% when 'email', 'message' %>
+      <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); $('#task-status').val('done'); $('#update-task-form').submit();">Send and complete</button>
+    <% else %>
+      <button class="btn btn-success text-uppercase" onclick="$('#task-status').val('done'); $('#update-task-form').submit();">Complete</button>
+    <% end %>
+    <!--<div class="btn-group">
+      <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
+      <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
+      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
+        <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
+        <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
+      </div>-->
+    </div>
+  <% end %>
+  <!-- <button class="btn btn-light" onclick="closeTaskView(this)">Close</button> -->
+  <% unless @task.done? %>
+    <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-confirm="Are you sure you want to delete this task?" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn btn-danger btn-outline"><i class='ti-trash'></i></a>
+  <% end %>    
+</footer>
