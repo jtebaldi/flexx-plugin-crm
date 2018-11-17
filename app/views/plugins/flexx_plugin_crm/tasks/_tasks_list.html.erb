@@ -25,7 +25,9 @@
       </div>
       <% if row.done? %>
         <div class="media-right text-right d-none d-md-block">
-          <p class="fs-14 text-fade mb-12"><span class="avatar bg-dark"><%= current_site.users.find(row.updated_by).initials %></span></p>
+          <% unless current_site.users.find_by(id: row.updated_by).nil? %>
+            <p class="fs-14 text-fade mb-12"><span class="avatar bg-dark"><%= current_site.users.find_by(id: row.updated_by).initials %></span></p>
+          <% end %>
           <% unless row.notes.empty? %>
             <span class="text-lighter fs-12 hover-light"><strong><%= row.notes.count %></strong> notes</span>
           <% end %>

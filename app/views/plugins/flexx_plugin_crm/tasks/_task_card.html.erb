@@ -75,9 +75,9 @@
                       <label class="label-floated">Description</label>
                     </div>
                   <% end %>
-                  <% if @task.done? %>
+                  <% if (@task.done? && !current_site.users.find_by(id: @task.updated_by).nil?) %>
                     <div class="form-group mb-10">
-                      <p class="form-control-plaintext pt-0"><%= current_site.users.find(@task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></p>
+                      <p class="form-control-plaintext pt-0"><%= current_site.users.find_by(id: @task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></p>
                       <label class="label-floated">Completed by</label>
                     </div>
                   <% end %> 
