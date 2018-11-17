@@ -188,16 +188,17 @@
             </div>
           </div>
 
-          <div class="form-groups-attached mt-30">
+          <div class="mt-30">
             <%= render partial: 'plugins/flexx_plugin_crm/common/email_stocks_dropdown' %>
           </div>
 
           <br>
           <div class="form-groups-attached">
 
-            <div class="form-group">
-              <label>To</label>
-              <input class="form-control" type="hidden" id="recipients">
+            <div class="form-group has-form-text">
+              <label for="input-help-hover">To</label>
+              <input class="form-control test" type="hidden" id="recipients">
+              <small class="form-text">Use the list to select the contacts, groups or tags.</small>
             </div>
 
             <div class="form-group">
