@@ -335,13 +335,13 @@ input[type=radio].hide-control { display: none; }
       <% end %>
 
       <div class="tab-pane fade" id="tab_history">
-        <div class="<%= 'accordion' unless @contact.pending_tasks_count == 0 %> accordion-connected" id="accordion-tasks">
+        <div class="accordion accordion-connected" id="accordion-tasks">
           <div class="">
             <h4 class="card-title mb-20">
-              <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong> (<%= @contact.pending_tasks_count %>)<% unless @contact.pending_tasks_count == 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+              <a class="<%= 'collapsed' if @contact.pending_tasks_count == 0 %>" data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Open tasks</strong> <% unless @contact.pending_tasks_count == 0 %><span class="pull-right"><small class="text-lighter">Click to collapse</small></span><% end %></a>
             </h4>
 
-            <div id="collapse-tasks" class="collapse">
+            <div id="collapse-tasks" class="collapse <%= 'show' unless @contact.pending_tasks_count == 0 %>">
               <div id="contact-open-tasks-panel">
                 <%= render partial: 'open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </div>

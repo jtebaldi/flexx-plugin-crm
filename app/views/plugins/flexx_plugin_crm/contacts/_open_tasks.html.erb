@@ -1,6 +1,6 @@
 <% if @contact.tasks.pending.empty? %>
-  <div class="row justify-content-md-center">
-    <div class="col-md-offset-2 col-md-8">
+  <div class="task justify-content-md-center">
+    <div class="col-md-offset-2 col-md-8 mb-20">
       <div class="card card-transparent b-1" style="border-style:dotted !important;">
         <div class="card-body text-center">
           <h5 class="center-vh"><em>No pending tasks</em></h5>
@@ -11,53 +11,76 @@
   </div>
 <% else %>
   <% @contact.tasks.pending.order(:due_date).each do |task| %>
-    <div class="card b-1 hover-shadow-2 mb-20" data-open-task="<%= task.id %>">
+    <div data-open-task="<%= task.id %>" class="card b-1 hover-shadow-2 mb-20 task-card <%= 'completed' if task.done? %>" data-staff="<%= task.owners.ids unless task.owners.empty? %>" data-completed="<%= task.updated_by if task.done? %>">
       <a class="media card-body" data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id, refresh_panel: refresh_panel) %>">
-        <div class="media-left pr-12">
-          <span class="avatar avatar-xl no-radius">
-          <i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
+        <div class="media-left d-none d-sm-block">
+          <% if task.done? %>
+            <span class="avatar avatar-xl no-radius" style="background-color: #fff;"><i class="ti-check-box fs-60 text-success"></i></span>
+          <% else %>   
+            <div class="br-1 text-light">
+              <ul class="list-unstyled text-center mb-0 mr-20">
+                <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></li>
+                <li><small class="due-date fw-300"><%= task.due_date.in_time_zone(cookies[:timezone]).today? ? 'Today' : task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d') %> <%= task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M%p') %></small></li>
+              </ul>
+            </div>
+          <% end %>        
         </div>
         <div class="media-body">
-          <div class="mb-2">
-            <span class="fs-20 pr-16"><%= task.title %></span>
+          <div class="<%= 'mt-10' unless task.details.present? %>">
+            <span class="fs-18 pr-16"><strong><%= "#{task.contact.print_name}" %> </strong><span class="divider-dash"></span><%= task.title %></span>
           </div>
-          <small class="fs-14 fw-300">
-            <strong>Due: </strong>
-            <%= !task.due_date || task.due_date.in_time_zone(cookies[:timezone]).today? ? 'Today,' : task.due_date.in_time_zone(cookies[:timezone]).strftime('%B %d') %>
-            &nbsp;(<%= task.due_date && task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %>) <%= ' (confirmed)' if task.confirmed_at? %>
-          </small>
+          <% if task.done? %>
+            <small class="fs-14 fw-300"><strong>Completed: </strong><%= task.updated_at.in_time_zone(cookies[:timezone]).today? ? 'Today,' : task.updated_at.in_time_zone(cookies[:timezone]).strftime('%B %d') %>&nbsp;<%= task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></small>
+          <% else %>
+            <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= task.details %></p>
+          <% end %>
         </div>
-
-        <div class="media-right text-right d-none d-md-block">
-        </div>
+        <% if task.done? %>
+          <div class="media-right text-right d-none d-md-block">
+            <% unless current_site.users.find_by(id: task.updated_by).nil? %>
+              <p class="fs-14 text-fade mb-12"><span class="avatar bg-dark"><%= current_site.users.find_by(id: task.updated_by).initials %></span></p>
+            <% end %>
+            <% unless task.notes.empty? %>
+              <span class="text-lighter fs-12 hover-light"><strong><%= task.notes.count %></strong> notes</span>
+            <% end %>
+          </div>
+        <% end %>
       </a>
-      <footer class="card-footer flexbox align-items-center">
-        <div class="">
-          <% unless task.notes.empty? %>
-            <span class="text-lighter hover-light mr-15">
-              <i class="fa fa-comment mr-1"></i><span><%= task.notes.count %></span>
-            </span>
-          <% end %>   
-          <span class="card-hover-show">
+      <% unless task.done? %>
+        <footer class="card-footer flexbox align-items-center">
+          <div>
+            <% unless task.notes.empty? %>
+              <span class="text-lighter">
+                <i class="fa fa-comment mr-1"></i><span><%= task.notes.count %></span>
+                <!--<i class="ti-comment-alt mr-1"></i><span><%= task.notes.count %></span>-->
+              </span>
+            <% end %>
             <!--
-            <% if task.task_type == 'meeting' && task.confirmed_at.nil? %>
-              <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= task.id %>)">Ask Confirmation</button>
-            <% end %>
+            <span class="card-hover-show pl-20">            
+              <% if task.task_type == 'meeting' && task.confirmed_at.nil? && !task.done? %>
+                <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= task.id %>)">Ask Confirmation</button>
+              <% end %>
+              
+              <% unless task.done? %>
+                <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
+                <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(task.id) %>">Remove</a>
+              <% end %>
+            </span>
             -->
-            
-            <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= task.id %>, '<%= task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
-            <!-- <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" href="<%= admin_remove_contact_task_path(id: @contact.id, task_id: task.id) %>" data-remote="true">Remove</a> -->
-          </span>
-        </div>
-        <div class="pull-right">
-          <div class="avatar-list">
-            <% task.owners.each do |owner| %>
-              <span class="avatar bg-dark"><%= owner.initials %></span>
-            <% end %>
-            <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: task.id, refresh_panel: refresh_panel) %>"></button>
           </div>
-        </div>
-      </footer>
+          <div class="pull-right">
+            <span class="pr-12">Assigned to: </span>
+            <div class="avatar-list">
+              <% unless task.done? %>
+                <% task.owners.each do |owner| %>
+                  <span class="avatar bg-dark"><%= owner.initials %></span>
+                <% end %>
+                <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: task.id, refresh_panel: refresh_panel) %>"></button>
+              <% end %>
+            </div>
+          </div>
+        </footer>
+      <% end %>
     </div>
   <% end %>
 <% end %>
