@@ -3,8 +3,12 @@
     <a href="#"><span class="avatar"><%= contact.initials %></span></a>
     <div class="media-body">
       <h6><a href="#"><%= contact.print_name %></a></h6>
-    </div>
+    </div>    
   </div>
+  <a id="expand_thread" href="#" class="fs-16 text-gray fullscreen-toggle">
+    <i class="ti-fullscreen fullscreen-default"></i>
+    <i class="fa fa-compress fullscreen-active"></i>
+  </a>
 </header>
 
 <div class="scrollable flex-grow" id="conversations-thread-panel" data-provide="emoji" style="height: 500px; overflow-y: scroll;">

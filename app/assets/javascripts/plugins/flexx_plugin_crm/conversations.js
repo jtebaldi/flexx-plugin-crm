@@ -83,6 +83,33 @@ app.ready(function() {
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
   $('#conversations-send-new-message-form').on('submit', submitConversationsSendNewMessageForm);
 
+  // -------------------------- START: Make thread fullscreen
+
+  const fullscreentarget = $('#thread-body')[0]; // Get DOM element from jQuery collection
+  var fullscreentrigger = "#expand_thread";
+
+  $(document).on('click', fullscreentrigger, function(){
+    if (screenfull.enabled) {
+      $(fullscreentrigger).addClass('is-fullscreen')
+      screenfull.toggle(fullscreentarget);
+    }
+  });
+
+  document.addEventListener(screenfull.raw.fullscreenchange, function() {
+    if (screenfull.isFullscreen) {
+      $(fullscreentrigger).each(function(){
+        $(this).addClass('is-fullscreen')
+      });
+    }
+    else {
+      $(fullscreentrigger).each(function(){
+        $(this).removeClass('is-fullscreen')
+      });
+    }
+  });
+
+  // -------------------------- END: Make thread fullscreen
+
   // $('.scrollable').perfectScrollbar({
   //   wheelPropagation: false,
   //   wheelSpeed: .5,
