@@ -9,13 +9,15 @@
     </div>
   </div>
 <% else %>
-  <div class="publisher publisher-multi bg-transparent b-1 form-group mb-0">
-    <label>Message</label>
+  <div class="publisher publisher-multi bg-transparent b-1 mb-0">    
     <%= form_tag create_text_admin_messages_path(task_id: task.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
       <input type="hidden" class="form-control" name="recipients" value="<%= task.contact.id %>">
       <input type="hidden" class="form-control" name="phonenumber" value="<%= task.contact.phonenumbers.mobile.first.number %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
-      <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+      <div class="form-group">
+        <label for="textarea">Message</label>
+        <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand w-100" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+      </div>
     <% end %>
     <!--<div class="flexbox">
       <button class="btn btn-sm btn-bold btn-primary" id="task-send-text-button" onclick="submitTaskSendMessageForm()">Send</button>

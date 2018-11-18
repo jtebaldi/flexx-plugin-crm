@@ -2,7 +2,7 @@
   <a data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id, refresh_panel: refresh_panel) %>">  
     <li class="timeline-block">
       <div class="timeline-point">
-        <span class="avatar bg-info"><i class="fa fa-<%= task_type_icon(task_type: task.task_type) %>"></i></span>
+        <span class="avatar bg-white"><i class="fs-25 text-fade hover-info fa fa-<%= task_type_icon(task_type: task.task_type) %>" style="line-height: 38px;"></i></span>
       </div>
       <div class="timeline-content">
         <time><%= time_ago_in_words(task.updated_at) %> ago</time>
@@ -24,7 +24,6 @@
         <p style="color: #333">
           <span class="h6"><%= task.title %></span> completed by <strong><%= task.updated_by_user.first_name %></strong>          
         </p>
-        <hr>
       </div>
     </li>
   </a>
