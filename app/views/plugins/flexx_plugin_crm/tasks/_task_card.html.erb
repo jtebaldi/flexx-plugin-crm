@@ -106,16 +106,16 @@
           <div class="form-group">
             <label>
               <strong>Status:</strong>
-              <% if task.email_recipient %>
-                <% if task.email_recipient.status == 'open' %>
+              <% if @task.email_recipient %>
+                <% if @task.email_recipient.status == 'open' %>
                   <span class="ml-10 text-info fw-400 fs-12"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
-                <% elsif task.email_recipient.status == 'click' %>
+                <% elsif @task.email_recipient.status == 'click' %>
                   <span class="ml-10 text-success fw-400 fs-12"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
-                <% elsif task.email_recipient.status == 'delivered' %>
+                <% elsif @task.email_recipient.status == 'delivered' %>
                   <span class="ml-10 text-gray fw-400 fs-12"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
-                <% elsif task.email_recipient.status == 'unsubscribe' %>
+                <% elsif @task.email_recipient.status == 'unsubscribe' %>
                   <span class="ml-10 text-pink fw-400 fs-12"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
-                <% elsif task.email_recipient.status == 'bounced' %>
+                <% elsif @task.email_recipient.status == 'bounced' %>
                   <span class="ml-10 text-danger fw-400 fs-12"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
                 <% else %>
                   <span class="ml-10 text-warning fw-400 fs-12"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>

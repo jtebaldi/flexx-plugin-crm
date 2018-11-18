@@ -90,7 +90,9 @@ module Plugins::FlexxPluginCrm
       # respond_to do |format|
       #   format.js
       # end
-      redirect_to action: :sms     
+
+      # commented out temporarily
+      # redirect_to action: :sms     
     end
 
     private

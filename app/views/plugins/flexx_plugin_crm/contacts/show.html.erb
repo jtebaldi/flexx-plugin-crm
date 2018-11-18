@@ -8,7 +8,7 @@
 
 <script>
   $('document').ready(function(){
-    Cookies.set('timezone', ().name());
+    Cookies.set('timezone', jstz.determine().name());
 
     $("#send_text").click(function() {
       $('#contact-main-nav li a').each(function() {
