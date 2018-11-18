@@ -35,7 +35,20 @@ function submitConversationsSendMessageForm(e) {
   $('#conversations-text-message').toggleClass('disabled');
   $('#conversations-text-button').toggleClass('disabled');
   $('#conversations-text-spinner').toggleClass('invisible');
-  $("#conversations-send-message-form :input").prop("readonly", true);
+  $('#conversations-send-message-form :input').prop('readonly', true);
+}
+
+function submitConversationsSendNewMessageForm(e) {
+  e.preventDefault();
+
+  if($('#conversations-text-new-message').val() == ''){
+    return false;
+  }
+
+  $('#conversations-text-new-message').toggleClass('disabled');
+  $('#conversations-text-new-send-button').toggleClass('disabled');
+  $('#conversations-text-new-cancel-button').toggleClass('disabled');
+  $('#conversations-text-new-spinner').toggleClass('invisible');
 }
 
 app.ready(function() {
@@ -68,6 +81,7 @@ app.ready(function() {
   });
 
   $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
+  $('#conversations-send-new-message-form').on('submit', submitConversationsSendNewMessageForm);
 
   // $('.scrollable').perfectScrollbar({
   //   wheelPropagation: false,

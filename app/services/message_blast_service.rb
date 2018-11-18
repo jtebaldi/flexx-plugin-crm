@@ -26,7 +26,7 @@ class MessageBlastService
         contact_id: contact.id,
         from_number: @site.get_option('twilio_campaigns_number'),
         to_number: with_country_code(contact.phonenumbers.mobile.first.number),
-        message: DynamicFieldsParserService.parse(site: @site, template: @body),
+        message: DynamicFieldsParserService.parse_contact(site: @site, template: @body, contact: contact),
         aasm_state: (task ? :task_scheduled : :scheduled),
         send_at: send_at,
         created_by: @user.id

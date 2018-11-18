@@ -22,4 +22,6 @@
   $('#conversations-text-spinner').toggleClass('invisible');
   $("#conversations-send-message-form :input").prop("readonly", false);
   $('#conversations-thread-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :asc) }) %>');
+<% when 'conversations-new-message-panel' %>
+  location.reload(true);
 <% end %>

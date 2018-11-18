@@ -14,10 +14,9 @@
 <footer class="publisher">
   <span class="avatar"><%= current_user.initials %></span>
   <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
-    <input type="hidden" class="form-control" name="contact_id" value="<%= contact.id %>">
-    <input type="hidden" class="form-control" name="phonenumber" value="<%= contact.phonenumbers.mobile.first.number %>">
+    <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
-    <input name="message" style="width: 100%" id="conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+    <input name="body" style="width: 100%" id="conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
   <% end %>
   <div class="gap-items">
     <a class="publisher-btn" id="conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>

@@ -102,42 +102,40 @@
     <p class="quickview-title lead">New <strong>Text Message</strong></p>
     <span class="close"><i class="ti-close"></i></span>
   </header>
-
-  <div class="quickview-body">
-    <form class="quickview-block form-type-combine">
-
+  <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-new-message-form', class: 'quickview-block form-type-combine' do %>
+    <div class="quickview-body">
+      <input type="hidden" class="form-control" name="refresh_panel" value="conversations-new-message-panel">
       <div class="card-body">
         <div class="input-group">
           <div class="input-group-input">
             <label>To</label>
             <input class="form-control" type="text" id="contacts-field" placeholder="Start typing name...">
-            <input type="hidden" name="" id="new-conversation-contact-id">
+            <input type="hidden" name="recipients" id="new-conversation-contact-id">
           </div>
         </div>
 
         <div class="form-groups-attached">
-
           <div class="publisher publisher-multi bg-transparent b-1 form-group">
             <label>Message</label>
-            <textarea class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
-            <div class="flexbox">
-              <div class="gap-items">
-                <button type="button" class="publisher-btn" data-toggle="modal" data-target="#modal-snippet"><i class="ti-receipt"></i></button>
+            <textarea name="body" id="conversations-text-new-message" class="publisher-input auto-expand" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+            <% if @snippets.present? %>
+              <div class="flexbox">
+                <div class="gap-items">
+                  <button type="button" class="publisher-btn" data-toggle="modal" data-target="#modal-snippet"><i class="ti-receipt"></i></button>
+                </div>
               </div>
-
-            </div>
+            <% end %>
           </div>
-
         </div>
-
       </div>
-
-    </form>
-  </div>
-
+    </div>
+  <% end %>
   <footer class="quickview-footer flex-row-reverse">
-    <button class="btn btn-success" type="submit">Send</button>
-    <button class="btn btn-danger" type="reset">Cancel</button>
+    <button id="conversations-text-new-send-button" class="btn btn-success" onclick="$('#conversations-send-new-message-form').submit()">Send</button>
+    <button id="conversations-text-new-cancel-button" class="btn btn-danger" type="reset">Cancel</button>
+    <div class="gap-items">
+      <div id="conversations-text-new-spinner" style="margin-left: 10px" class="spinner-circle-shadow invisible"></div>
+    </div>
   </footer>
 </div>
 
@@ -153,66 +151,17 @@
       </div>
       <div class="modal-body">
         <div class="media-list media-list-hover media-list-divided scrollable" style="height: 345px">
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
+          <% @snippets.each do |row| %>
+            <div class="media media-single">
+              <div class="media-body">
+                <h6><a href="#" data-dismiss="modal" onclick="$('#conversations-text-new-message').val('<%= escape_javascript("{{ #{row.label} }}") %>')"><%= row.name %></a></h6>
+                <p class="text-fader text-truncate"><%= row.contents %></p>
+              </div>
+              <div class="media-right">
+                <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#" data-dismiss="modal" onclick="$('#conversations-text-new-message').val('<%= escape_javascript("{{ #{row.label} }}") %>')">Add</a>
+              </div>
             </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
-            </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
-            </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
-            </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
-            </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
-          <div class="media media-single">
-            <div class="media-body">
-              <h6><a href="#">Snippet title</a></h6>
-              <p class="text-fader text-truncate">The beginning of the snippet. Co-Foundera sdkfasdnfas dfblkh jabsdhkbfkhasb vdfhkaskl dfakshdvfa,sdfasdasjdf jdfh</p>
-            </div>
-            <div class="media-right">
-              <a class="btn btn-sm btn-bold btn-round btn-outline btn-primary w-100px" href="#">Add</a>
-            </div>
-          </div>
-
+          <% end %>
         </div>
 
       </div>

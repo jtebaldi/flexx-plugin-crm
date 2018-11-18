@@ -12,6 +12,8 @@ module Plugins::FlexxPluginCrm
         @first_contact = Contact.find_by(id: @contact_ids.first.contact_id)
         MessageBlastService.mark_contact_messages_read(contact: @first_contact)
       end
+
+      @snippets = current_site.stocks.snippets.order(:name)
     end
 
     def show

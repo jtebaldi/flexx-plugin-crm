@@ -87,12 +87,10 @@ module Plugins::FlexxPluginCrm
 
     def create_text_blast
       text_blast
-      # respond_to do |format|
-      #   format.js
-      # end
-
-      # commented out temporarily
-      # redirect_to action: :sms     
+      
+      respond_to do |format|
+        format.js
+      end 
     end
 
     private
@@ -117,7 +115,7 @@ module Plugins::FlexxPluginCrm
         user: current_user,
         scheduled_at: nil,
         recipients_list: recipients_list,
-        body: params[:body]
+        body: DynamicFieldsParserService.parse(site: current_site, template: params[:body])
       ).call from_task, cookies[:timezone]
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
