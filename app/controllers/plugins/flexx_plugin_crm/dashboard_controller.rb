@@ -4,6 +4,8 @@ module Plugins::FlexxPluginCrm
 
     def index
       @active_contacts = current_site.contacts.active
+      @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
+      @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
     end
 
     def settings

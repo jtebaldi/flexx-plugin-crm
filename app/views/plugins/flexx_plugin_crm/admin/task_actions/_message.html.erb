@@ -14,7 +14,8 @@
       <input type="hidden" class="form-control" name="recipients" value="<%= task.contact.id %>">
       <input type="hidden" class="form-control" name="phonenumber" value="<%= task.contact.phonenumbers.mobile.first.number %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
-      <div class="form-group">
+      <div class="publisher publisher-multi">
+        <img class="publisher-avatar avatar avatar-md" src="<%= current_site.get_option("icon") %>" alt="...">
         <label for="textarea">Message</label>
         <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand w-100" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
       </div>
@@ -22,6 +23,7 @@
     <!--<div class="flexbox">
       <button class="btn btn-sm btn-bold btn-primary" id="task-send-text-button" onclick="submitTaskSendMessageForm()">Send</button>
       <div id="task-send-text-spinner" class="spinner-circle-shadow invisible"></div>
-    </div>-->
+    </div>    
+    -->
   </div>
 <% end %>
