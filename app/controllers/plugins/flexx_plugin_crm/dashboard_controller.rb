@@ -37,10 +37,5 @@ module Plugins::FlexxPluginCrm
 
     def stock_new
     end
-
-    def from_form
-      @contact = Plugins::FlexxPluginCrm::Contact.find params[:contact_id]
-      render layout: false
-    end
   end
 end

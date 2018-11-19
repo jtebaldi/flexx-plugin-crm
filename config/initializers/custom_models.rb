@@ -29,6 +29,7 @@ Rails.application.config.to_prepare do
 
     def add_contact
       return unless parent_id
+
       cids = parent.fields.reduce({}) do |h, f|
         if f['field_type'] == 'email'
           h.merge email: f['cid']
@@ -42,10 +43,6 @@ Rails.application.config.to_prepare do
         end
       end
 
-      return if Plugins::FlexxPluginCrm::Contact.exists?(
-        site_id: parent.site_id, email: the_settings[:fields][cids[:email]]
-      )
-
       first_name = last_name = ''
       if cids[:first_name] && cids[:last_name]
         first_name = the_settings[:fields][cids[:first_name]]
@@ -54,23 +51,28 @@ Rails.application.config.to_prepare do
         first_name, last_name = the_settings[:fields][cids[:name]].split ' '
       end
 
-      contact = Plugins::FlexxPluginCrm::Contact.create(
-        site_id: parent.site_id,
-        first_name: first_name,
-        last_name: last_name,
-        email: the_settings[:fields][cids[:email]],
-        source: "Form - #{parent.name}",
-        cama_contact_form_id: id
-      )
-      if the_settings[:fields][cids[:phone_number]]
-        contact.phonenumbers.create number: the_settings[:fields][cids[:phone_number]]
+      contact = Plugins::FlexxPluginCrm::Contact.find_or_create_by(
+        site_id: parent.site_id, email: the_settings[:fields][cids[:email]]
+      ) do |c|
+        c.site_id = parent.site_id
+        c.first_name = first_name
+        c.last_name = last_name
+        c.email = the_settings[:fields][cids[:email]]
+        c.source = 'Website Form'
+        c.cama_contact_form_id = id
+
+        TaskRecipeService.apply_recipes(contact: c)
+        Rails.logger.warn('RECIPES')
+        AutomatedCampaignService.apply_campaigns(contact: contact)
       end
 
-      TaskRecipeService.apply_recipes(contact: contact)
+      update contact_id: contact.id
 
-      Rails.logger.warn('RECIPES')
+      return unless the_settings[:fields][cids[:phone_number]]
 
-      AutomatedCampaignService.apply_campaigns(contact: contact)
+      Plugins::FlexxPluginCrm::Phonenumber.find_or_create_by(
+        site_id: parent.site_id, number: the_settings[:fields][cids[:phone_number]]
+      ) { |p| p.contact_id = contact.id }
     end
   end
 

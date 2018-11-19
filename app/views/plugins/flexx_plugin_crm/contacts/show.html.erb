@@ -122,6 +122,9 @@ input[type=radio].hide-control { display: none; }
           <li class="nav-item">
             <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab_completed_forms" data-toggle="tab">Completed Forms</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -443,6 +446,32 @@ input[type=radio].hide-control { display: none; }
 
       </div>
 
+      <div class="tab-pane fade" id="tab_completed_forms">
+
+        <div class="card">
+          <h5 class="card-title"><strong>Completed Forms</strong></h5>
+          <div class="media-list media-list-hover media-list-divided">
+            <table class="table">
+              <thead><tr><th>Submited Date</th><th>Form Name</th><th>Actions</th></thead>
+              <tbody>
+                <% @contact.contact_forms.each do |cf| %>
+                  <tr>
+                    <td><%= cf.created_at.strftime '%m/%d/%Y' %></td>
+                    <td><%= cf.parent.name %></td>
+                    <td>
+                      <a href="#" data-from-form="<%= cf.id %>" class="text-blue">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </a>
+                      <a href="#" data-delete-form="<%= cf.id %>" class="text-blue">
+                        <i class="ml-3 fa fa-trash-o" aria-hidden="true"></i></td>
+                      </a>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -648,3 +677,6 @@ input[type=radio].hide-control { display: none; }
     </div>
   </div>
 </div>
+
+<!-- MODAL - Contact form modal -->
+<%= render 'plugins/flexx_plugin_crm/common/contact_form_modal' %>
