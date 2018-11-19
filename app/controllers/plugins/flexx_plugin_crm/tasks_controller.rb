@@ -57,7 +57,7 @@ module Plugins::FlexxPluginCrm
       params[:task].merge!(updated_by: current_user.id)
       params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
-      params[:task][:notes_attributes].delete_at 0 if params[:task][:notes_attributes][0][:details].empty?
+      params[:task][:notes_attributes].delete_at 0 if params[:task][:notes_attributes] && params[:task][:notes_attributes][0][:details].empty?
       task.update(task_params)
       current_site.tag(task, with: params[:task][:tag_list], on: :tags)
 
