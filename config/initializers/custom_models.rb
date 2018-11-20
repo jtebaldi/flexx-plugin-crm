@@ -63,7 +63,7 @@ Rails.application.config.to_prepare do
 
         TaskRecipeService.apply_recipes(contact: c)
         Rails.logger.warn('RECIPES')
-        AutomatedCampaignService.apply_campaigns(contact: contact)
+        AutomatedCampaignService.apply_campaigns(contact: c)
       end
 
       update contact_id: contact.id
