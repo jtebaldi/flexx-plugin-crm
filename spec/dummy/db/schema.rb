@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181113162317) do
+ActiveRecord::Schema.define(version: 20181119122320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,7 +253,10 @@ ActiveRecord::Schema.define(version: 20181113162317) do
     t.text     "settings"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "contact_id"
   end
+
+  add_index "plugins_contact_forms", ["contact_id"], name: "index_plugins_contact_forms_on_contact_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "title"
@@ -442,4 +445,5 @@ ActiveRecord::Schema.define(version: 20181113162317) do
 
   add_foreign_key "email_recipients", "tasks"
   add_foreign_key "messages", "tasks"
+  add_foreign_key "plugins_contact_forms", "contacts"
 end

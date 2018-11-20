@@ -16,6 +16,11 @@ Rails.application.routes.draw do
         get 'list_contacts_with_mobile', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_mobile, as: :list_contacts_with_mobile
         get 'list_contacts_with_email', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_email, as: :list_contacts_with_email
 
+        controller 'plugins/flexx_plugin_crm/admin' do
+          get :from_form
+          delete :delete_form
+        end
+
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle
           post :create_direction
@@ -75,9 +80,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :dashboard, controller: 'plugins/flexx_plugin_crm/dashboard', only: :index do
-          get :from_form, on: :collection
-        end
+        resources :dashboard, controller: 'plugins/flexx_plugin_crm/dashboard', only: :index
         resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update]
       end
 

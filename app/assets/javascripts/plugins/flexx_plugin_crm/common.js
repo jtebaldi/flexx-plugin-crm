@@ -104,4 +104,29 @@ $(function(){
     $note.text($this.val());
     $note.removeClass('d-none');
   });
+
+  $('[data-from-form]').click(function(e){
+    e.preventDefault();
+    var $modal = $('#contact_form_modal');
+    $body = $modal.find('.modal-body');
+    $body.html('<div class="spinner-circle-shadow mx-auto"></div>');
+    $.get('/admin/next/from_form', { form_id: this.dataset.fromForm }, function(resp){
+      $body.html(resp);
+    });
+    $modal.modal('show');
+  });
+
+  $('[data-delete-form]').click(function(e) {
+    e.preventDefault();
+    if (confirm('Are you sure?')) {
+      var $this = $(this);
+      var formId = $this.data('deleteForm');
+      $.ajax({
+        url: '/admin/next/delete_form',
+        data: { form_id: formId },
+        type: 'DELETE'
+      });
+      $this.closest('tr').detach();
+    }
+  });
 });

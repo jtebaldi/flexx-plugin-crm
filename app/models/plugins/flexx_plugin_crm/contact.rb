@@ -14,6 +14,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber'
   has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
+  has_many :contact_forms, class_name: 'Plugins::CamaContactForm::CamaContactForm'
 
   scope :active, -> { where.not(sales_stage: :archived) }
 

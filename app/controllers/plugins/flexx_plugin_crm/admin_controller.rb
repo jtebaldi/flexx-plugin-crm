@@ -110,6 +110,16 @@ module Plugins::FlexxPluginCrm
       render json: current_site.contacts.map { |c| { name: "#{c.print_name} - #{c.email}", value: c.id } }
     end
 
+    def from_form
+      @form = Plugins::CamaContactForm::CamaContactForm.find params[:form_id]
+      render layout: false
+    end
+
+    def delete_form
+      Plugins::CamaContactForm::CamaContactForm.destroy params[:form_id]
+      head :no_content
+    end
+
     private
 
     def new_task_params
