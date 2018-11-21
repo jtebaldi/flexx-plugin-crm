@@ -69,6 +69,7 @@ module Plugins::FlexxPluginCrm
 
     def delete_email
       current_site.emails.destroy params[:id]
+      flash[:notice] = 'Scheduled email successfully deleted.'
       redirect_to action: :emails
     end
 
@@ -76,6 +77,8 @@ module Plugins::FlexxPluginCrm
       scheduled = params[:timingOptions] == '2'
       scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
       email_blast scheduled_at: scheduled_at
+
+      flash[:notice] = 'Email successfully created. You may need to refresh to see sent message.' if !scheduled
       redirect_to action: :emails
     end
 

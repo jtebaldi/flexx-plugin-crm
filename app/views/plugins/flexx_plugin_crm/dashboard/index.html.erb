@@ -1,13 +1,14 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/dashboard' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
 <% end %>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    Cookies.set('timezone', jstz.determine().name());
-  });
+    Cookies.set('timezone', jstz.determine().name());    
+  });  
 </script>
 
 <div class="main-content">

@@ -16,16 +16,52 @@ function cancelNewContactForm(button) {
 }
 
 function updateSalesStage(stage) {
-  if (stage === 'archived' && !confirm('Archiving a contact\
- will permanently remove all pending tasks and hide this contact from your\
- view. Are you sure you want to archive?') || stage == 'delete' &&
-  !confirm('Deleting a contact will permanently remove all pending tasks,\
- messages, notes, and competed contact forms. Are you sure you want to delete?')) {
-    return;
+  if (stage === 'archived') {
+    swal({
+      title: 'Archive this contact',
+      text: 'This will permanently remove all pending tasks and hide this contact from your view. Are you sure you want to archive?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, archive it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        $('#update-sales-stage-field').val(stage);
+        $('#update-sales-stage-form').submit();
+      } else {
+        return;
+      }
+    })
   }
-  $('#update-sales-stage-field').val(stage);
 
-  $('#update-sales-stage-form').submit();
+  if (stage === 'delete') {
+    swal({
+      title: 'Delete this contact',
+      text: 'This will permanently remove all pending tasks, messages, notes, and completed contact forms for this contact. Are you sure you want to delete?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        $('#update-sales-stage-field').val(stage);
+        $('#update-sales-stage-form').submit();
+      } else {
+        return;
+      }
+    })
+  }
+
+//   if (stage === 'archived' && !confirm('Archiving a contact\
+//  will permanently remove all pending tasks and hide this contact from your\
+//  view. Are you sure you want to archive?') || stage == 'delete' &&
+//   !confirm('Deleting a contact will permanently remove all pending tasks,\
+//  messages, notes, and competed contact forms. Are you sure you want to delete?')) {
+//     return;
+//   }
+  // $('#update-sales-stage-field').val(stage);
+
+  // $('#update-sales-stage-form').submit();
 }
 
 function addNewContactTask() {
