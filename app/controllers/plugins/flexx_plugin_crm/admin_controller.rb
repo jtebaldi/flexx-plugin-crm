@@ -20,9 +20,18 @@ module Plugins::FlexxPluginCrm
     end
 
     def update_contact_status
-      @contact = current_site.contacts.find(params[:id])
-      @contact.update(sales_stage: params[:contact][:sales_stage],
-                      updated_by: current_user.id)
+      if params[:contact][:sales_stage] == 'delete'
+        current_site.contacts.where(id: params[:id]).destroy_all
+        flash[:notice] = 'Contact successfully deleted.'
+      else
+        @contact = current_site.contacts.find(params[:id])
+        @contact.update(sales_stage: params[:contact][:sales_stage],
+                        updated_by: current_user.id)
+      end
+
+      if params[:contact][:sales_stage] == 'archived'
+        flash[:notice] = 'Contact successfully archived.'
+      end
 
       respond_to do |format|
         format.js
@@ -156,7 +165,8 @@ module Plugins::FlexxPluginCrm
       if params[:new_contact_task][:due_date].blank?
         params[:new_contact_task][:due_date] = Time.current
       else
-        tz = Timezone[cookies[:timezone]].abbr Time.now
+        tz = '%+.2d00' % TZInfo::Timezone.get(cookies[:timezone]).current_period
+                                         .utc_total_offset_rational.numerator
         params[:new_contact_task][:due_date] = DateTime.strptime(
           "#{params[:new_contact_task][:due_date]} #{tz}", '%m/%d/%Y - %I:%M %p %Z'
         )
