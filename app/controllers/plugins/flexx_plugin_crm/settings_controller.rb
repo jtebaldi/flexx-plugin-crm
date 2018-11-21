@@ -24,6 +24,18 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def email_validate
+      not_found = !CamaleonCms::User.where.not(id: current_user.id)
+                                    .find_by_email(params[:user][:email])
+      render json: not_found
+    end
+
+    def username_validate
+      not_found = !CamaleonCms::User.where.not(id: current_user.id)
+                                    .find_by_username(params[:user][:username])
+      render json: not_found
+    end
+
     private
 
     def set_business_email

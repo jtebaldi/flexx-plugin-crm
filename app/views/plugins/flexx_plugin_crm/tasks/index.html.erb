@@ -3,7 +3,9 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/tasks' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
 <% end %>
 
 <script>
@@ -190,9 +192,9 @@
 
       <div class="card-body">
         <div class="input-group">
-          <div class="input-group-input">
-            <label>Contact</label>
-            <input class="form-control" type="text" id="contacts-field" placeholder="Start typing name...">
+          <div class="input-group-input require">
+            <label class="required">Contact</label>
+            <input class="form-control" required type="text" id="contacts-field" placeholder="Start typing name...">
             <input type="hidden" name="task[contact_id]" id="new-task-contact-id">
           </div>
         </div>

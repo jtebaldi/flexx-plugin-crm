@@ -1,5 +1,6 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
   <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
   <%= javascript_include_tag 'camaleon_cms/admin/uploader/_media_manager' %>
@@ -82,9 +83,8 @@
                 <div class="flexbox gap-items-4">
                   <div class="flex-grow">                    
 
-                    <div class="pt-1 form-group">
-                      <%= f.text_field :username, class: "form-control #{invalid_class(f.object.errors[:username])}" %>
-                      <%= invalid_feedback f.object.errors[:username] %>
+                    <div class="pt-1 form-group require">
+                      <%= f.text_field :username, required: true, class: "form-control" %>
                       <%= f.label :username, class: 'required' %>
                     </div>
 
@@ -277,5 +277,5 @@
 </div>
 <script type="application/javascript">
     var root_admin_url = '<%= cama_admin_url(locale: nil) %>';
-    jQuery(function ($) { init_profile_form(); });
+    // jQuery(function ($) { init_profile_form(); });
 </script>
