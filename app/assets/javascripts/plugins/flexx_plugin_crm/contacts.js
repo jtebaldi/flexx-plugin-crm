@@ -142,4 +142,7 @@ app.ready(function() {
   $('#new-general-touchpoint').click({ type: 'general', title: 'General' },newTouchpoint);
 
   observeTaskPanelForCKEditor();
+
+  $('.archived form input').attr('readonly', 'readonly');
+  $('.archived form button').attr('disabled', 'disabled');
 });

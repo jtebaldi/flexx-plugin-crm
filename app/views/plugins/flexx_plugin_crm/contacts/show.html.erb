@@ -38,7 +38,8 @@ input[type=radio].hide-control { display: none; }
       <div class="card">
         <div class="card mb-0">
           <header class="card-header card-<%= @contact.sales_stage.downcase %> text-center">
-            <h4 id="sales-stage-label" class="card-title text-white text-uppercase fw-300 fs-22"><%= @contact.sales_stage.humanize %></h4><a href="#" class="pull-right text-white" data-toggle="modal" data-target="#update_status_modal">Update</a>
+            <h4 id="sales-stage-label" class="card-title text-white text-uppercase fw-300 fs-22"><%= @contact.sales_stage.humanize %></h4>
+            <% unless @contact.sales_stage.downcase == "archived" %><a href="#" class="pull-right text-white" data-toggle="modal" data-target="#update_status_modal">Update</a><% end %>
           </header>
           <div class="media card-body">
             <div class="media-left pr-6">
@@ -99,37 +100,40 @@ input[type=radio].hide-control { display: none; }
         </div>
       </div>
 
-      <div class="row text-center mb-15">
-        <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
-          <a class="btn btn-block btn-multiline b-2 border-warning text-warning" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
+      <% unless @contact.sales_stage.downcase == "archived" %>
+        <div class="row text-center mb-15">
+          <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
+            <a class="btn btn-block btn-multiline b-2 border-warning text-warning" href="#qv-add-task" data-toggle="quickview"><i class="ti-layout-list-thumb fs-20"></i><br>Create task</a>
+          </div>
+          <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
+            <a class="btn btn-block btn-multiline b-2 border-success text-success" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
+          </div>
         </div>
-        <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-12 pb-15">
-          <a class="btn btn-block btn-multiline b-2 border-success text-success" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
-        </div>
-      </div>
+      
 
-      <div class="card">
-        <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#tab_contact_details" data-toggle="tab">User Details</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#tab_history" data-toggle="tab">Tasks & History</a>
-          </li>
-          <li class="nav-item">
-            <a id="nav-conversations" class="nav-link" href="#tab_conversations" data-toggle="tab"><% if @contact.phonenumbers.mobile.empty? %><span class="pr-1"><i class="ti-info-alt text-warning"></i></span><% end %> SMS Conversation</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#tab_completed_forms" data-toggle="tab">Completed Forms</a>
-          </li>
-        </ul>
-      </div>
+        <div class="card">
+          <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#tab_contact_details" data-toggle="tab">User Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_history" data-toggle="tab">Tasks & History</a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-conversations" class="nav-link" href="#tab_conversations" data-toggle="tab"><% if @contact.phonenumbers.mobile.empty? %><span class="pr-1"><i class="ti-info-alt text-warning"></i></span><% end %> SMS Conversation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_completed_forms" data-toggle="tab">Completed Forms</a>
+            </li>
+          </ul>
+        </div>
+      <% end %>
     </div>
 
-    <div id="contact-main-tabs" class="col-lg-8 tab-content">
+    <div id="contact-main-tabs" class="col-lg-8 tab-content <%= @contact.sales_stage.downcase %>">
       <%= form_tag admin_contact_path(@contact.id), method: :patch, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade active show' do %>
         <h4 class="card-title fw-400">Contact Details</h4>
 
