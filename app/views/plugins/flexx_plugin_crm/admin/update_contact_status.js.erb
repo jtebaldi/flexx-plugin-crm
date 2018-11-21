@@ -1,2 +1,6 @@
 $('#update_status_modal').modal('hide');
-$('#sales-stage-label').html('<%= @contact.sales_stage.humanize %>');
+<% if @contact && @contact.sales_stage != 'archived' %>
+  $('#sales-stage-label').html('<%= @contact.sales_stage.humanize %>');
+<% else %>
+  window.location = '<%= admin_contacts_path %>';
+<% end %>
