@@ -165,8 +165,8 @@ module Plugins::FlexxPluginCrm
       if params[:new_contact_task][:due_date].blank?
         params[:new_contact_task][:due_date] = Time.current
       else
-        params[:new_contact_task][:due_date] = Time.strptime(
-          params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p'
+        params[:new_contact_task][:due_date] = DateTime.strptime(
+          "#{params[:new_contact_task][:due_date]} #{Time.current.zone}", '%m/%d/%Y - %I:%M %p %Z'
         ).in_time_zone
       end
 
