@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class SettingsController < ApplicationController
+  class SettingsController < CamaleonCms::Apps::PluginsAdminController
     layout 'flexx_next_admin'
     before_action :set_business_email
 
@@ -7,7 +7,6 @@ module Plugins::FlexxPluginCrm
 
     def update
       r = { user: current_user }; hooks_run('user_update', r)
-      current_site.update timezone: params[:site][:timezone]
       if current_user.update(user_params)
         @business_email.update value: params[:business_email]
         current_user.set_metas(params[:meta]) if params[:meta].present?

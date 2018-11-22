@@ -4,10 +4,10 @@
   <div class="media media-chat pb-0 <%= 'media-chat-reverse' if message.status != 'received' %>">
     <div class="media-body">      
       <% if time_diff > 3 || time_diff < 0 %>
-        <p class="meta mb-0"><time datetime="<%= message.created_at %>"><%= message.created_at.strftime('%a, %m/%d/%y %I:%M %p') %></time></p>
+        <p class="meta mb-0"><time datetime="<%= message.created_at.in_time_zone(cookies[:timezone]) %>"><%= message.created_at.in_time_zone(cookies[:timezone]).strftime('%a, %m/%d/%y %I:%M %p') %></time></p>
       <% end %>
-      <p data-provide="tooltip" title="<%= message.created_at.strftime('%m/%d %H:%I %p') %>"><%= message.message %></p>      
+      <p data-provide="tooltip" title="<%= message.created_at.in_time_zone(cookies[:timezone]).strftime('%m/%d %H:%I %p') %>"><%= message.message %></p>      
     </div>
   </div>
-  <% @prev_created_at = message.created_at %>
+  <% @prev_created_at = message.created_at.in_time_zone(cookies[:timezone]) %>
 <% end %>

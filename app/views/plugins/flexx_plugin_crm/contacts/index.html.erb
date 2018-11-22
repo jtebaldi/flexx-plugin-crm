@@ -1,10 +1,14 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
 <% end %>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    Cookies.set('timezone', jstz.determine().name());
+
     // Fixes back button issue: when the user hits the Back button, the page DOM is restored from the cache but NOT the state of the select menu
     $('select').each(function () {
       var select = $(this);
@@ -99,7 +103,7 @@
               </small>
             </div>
             <div class="media-right text-right d-none d-md-block">
-              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
+              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y') %></p>
             </div>
           </a>
           <!-- <div class="media-right gap-items">

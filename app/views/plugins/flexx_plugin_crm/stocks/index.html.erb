@@ -1,7 +1,15 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/stocks' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Cookies.set('timezone', jstz.determine().name());
+  });
+</script>
 
 <% content_for :css do %>
   <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/stocks', media: 'all' %>

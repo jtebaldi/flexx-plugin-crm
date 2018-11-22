@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class TasksController < ApplicationController
+  class TasksController < CamaleonCms::Apps::PluginsAdminController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
@@ -120,7 +120,7 @@ module Plugins::FlexxPluginCrm
     def send_task_confirmation
       task = current_site.tasks.find(params[:task_id])
 
-      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call
+      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call cookies[:timezone]
 
       head :ok
     end
