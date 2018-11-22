@@ -1,23 +1,23 @@
 module Plugins::FlexxPluginCrm
-  class WebhooksController < CamaleonCms::Apps::PluginsAdminController
+  class WebhooksController < ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :cama_authenticate
 
     def twilio_inbound
-        return head :not_found unless current_site.get_option('twilio_campaigns_number') == params["To"]
+      return head :not_found unless current_site.get_option('twilio_campaigns_number') == params["To"]
 
-        contact = current_site.phonenumbers.find_by("LENGTH(number) > 0 AND POSITION(number IN ?) > 0", params["From"]).try(:contact)
+      contact = current_site.phonenumbers.find_by("LENGTH(number) > 0 AND POSITION(number IN ?) > 0", params["From"]).try(:contact)
 
-        current_site.messages.create(
-            contact_id: contact.try(:id),
-            sid: params["SmsSid"],
-            from_number: params["From"],
-            to_number: params["To"],
-            message: params["Body"],
-            status: params["SmsStatus"]
-        )
+      current_site.messages.create(
+        contact_id: contact.try(:id),
+        sid: params["SmsSid"],
+        from_number: params["From"],
+        to_number: params["To"],
+        message: params["Body"],
+        status: params["SmsStatus"]
+      )
 
-        head :no_content
+      head :no_content
     end
 
     def twilio_status

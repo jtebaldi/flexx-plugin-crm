@@ -1,7 +1,5 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
@@ -11,8 +9,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    Cookies.set('timezone', jstz.determine().name());
-
     // $("#timing_detail").hide();
     var rad = document.newEmailBlast.timingOptions;
     $(rad).on('click change', function(e) {
@@ -178,12 +174,12 @@
             <div class="row">
               <div class="form-group col-6">
                 <label>Date</label>
-                <input class="form-control" type="text" data-provide="datepicker" name="scheduled_date" value="<%= @email.send_at && @email.send_at.in_time_zone.strftime('%m/%d/%Y') %>">
+                <input class="form-control" type="text" data-provide="datepicker" name="scheduled_date" value="<%= @email.send_at && @email.send_at.strftime('%m/%d/%Y') %>">
               </div>
 
               <div class="form-group col-6">
                 <label for="select">Time</label>
-                <input class="form-control" type="text" data-provide="timepicker" name="scheduled_time" value="<%= @email.send_at && @email.send_at.in_time_zone.strftime('%l:%M %p') %>">
+                <input class="form-control" type="text" data-provide="timepicker" name="scheduled_time" value="<%= @email.send_at && @email.send_at.strftime('%l:%M %p') %>">
               </div>
             </div>
           </div>

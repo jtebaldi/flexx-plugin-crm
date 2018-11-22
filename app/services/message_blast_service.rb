@@ -11,11 +11,9 @@ class MessageBlastService
     @body = body
   end
 
-  def call(task = nil, timezone = 'UTC')
-    tz = '%+.2d00' % TZInfo::Timezone.get(timezone).current_period
-      .utc_total_offset_rational.numerator
+  def call(task = nil)
     send_at = @scheduled_at.present? ?
-      DateTime.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
+      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone :
       Time.current
 
     contacts = @site.contacts.includes(:phonenumbers).where(id: @recipients_list)

@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class StocksController < CamaleonCms::Apps::PluginsAdminController
+  class StocksController < ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"

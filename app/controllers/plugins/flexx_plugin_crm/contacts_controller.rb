@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class ContactsController < CamaleonCms::Apps::PluginsAdminController
+  class ContactsController < ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
@@ -55,7 +55,7 @@ module Plugins::FlexxPluginCrm
         end
       end
 
-      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y') rescue nil
+      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y').in_time_zone rescue nil
 
       params[:contact].merge!(created_by: current_user.id)
       params.require(:contact).permit(

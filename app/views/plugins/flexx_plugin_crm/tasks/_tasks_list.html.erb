@@ -8,17 +8,17 @@
           <div class="br-1 text-light">
             <ul class="list-unstyled text-center mb-0 mr-20">
               <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></li>
-              <li><small class="due-date fw-300"><%= row.due_date.in_time_zone(cookies[:timezone]).today? ? 'Today' : row.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d') %> <%= row.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M%p') %></small></li>
+              <li><small class="due-date fw-300"><%= row.due_date.today? ? 'Today' : row.due_date.strftime('%m/%d') %> <%= row.due_date.strftime('%I:%M%p') %></small></li>
             </ul>
           </div>
         <% end %>        
       </div>
       <div class="media-body">
         <div class="<%= 'mt-10' unless row.details.present? %>">
-          <span class="fs-18 pr-16"><strong><%= "#{row.contact.print_name}" %> </strong><span class="divider-dash"></span><%= row.title %></span>
+          <span class="fs-18 pr-16"><strong><%= "#{row.contact && row.contact.print_name}" %> </strong><span class="divider-dash"></span><%= row.title %></span>
         </div>
         <% if row.done? %>
-          <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.in_time_zone(cookies[:timezone]).today? ? 'Today,' : row.updated_at.in_time_zone(cookies[:timezone]).strftime('%B %d') %>&nbsp;<%= row.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></small>
+          <small class="fs-14 fw-300"><strong>Completed: </strong><%= row.updated_at.today? ? 'Today,' : row.updated_at.strftime('%B %d') %>&nbsp;<%= row.due_date.strftime('%I:%M %p') %></small>
         <% else %>
           <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= row.details %></p>
         <% end %>

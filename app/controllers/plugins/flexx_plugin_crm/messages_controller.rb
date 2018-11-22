@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class MessagesController < CamaleonCms::Apps::PluginsAdminController
+  class MessagesController < ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
@@ -34,7 +34,6 @@ module Plugins::FlexxPluginCrm
       @dynamic_fields = { flexxdynamicfields: df_defaults + [['-', '']] + df_snippets }.to_json
       @contacts = current_site.contacts.order(:first_name, :last_name)
       @tags = current_site.owned_tags.order(:name)
-      Time.zone = cookies[:timezone]
     end
 
     def new_sms
@@ -56,7 +55,6 @@ module Plugins::FlexxPluginCrm
       @dynamic_fields = { flexxdynamicfields: df_defaults + [['-', '']] + df_snippets }.to_json
       @contacts = current_site.contacts.order(:first_name, :last_name)
       @tags = current_site.owned_tags.order(:name)
-      Time.zone = cookies[:timezone]
       render :new_email
     end
 
@@ -90,7 +88,7 @@ module Plugins::FlexxPluginCrm
 
     def create_text_blast
       text_blast
-      
+
       respond_to do |format|
         format.js
       end 
@@ -108,7 +106,7 @@ module Plugins::FlexxPluginCrm
         subject: params[:subject],
         body: params[:message],
         email_id: params[:id]
-      ).call from_task, cookies[:timezone]
+      ).call from_task
     end
 
     def text_blast(from_task: nil)
@@ -119,7 +117,7 @@ module Plugins::FlexxPluginCrm
         scheduled_at: nil,
         recipients_list: recipients_list,
         body: DynamicFieldsParserService.parse(site: current_site, template: params[:body])
-      ).call from_task, cookies[:timezone]
+      ).call from_task
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end
