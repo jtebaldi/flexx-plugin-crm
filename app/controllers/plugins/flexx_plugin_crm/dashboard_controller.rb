@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class DashboardController < CamaleonCms::CamaleonController
+  class DashboardController < ApplicationController
     layout 'flexx_next_admin'
 
     def index

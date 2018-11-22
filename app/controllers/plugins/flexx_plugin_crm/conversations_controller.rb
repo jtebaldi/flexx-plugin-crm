@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class ConversationsController < CamaleonCms::Apps::PluginsAdminController
+  class ConversationsController < ApplicationController
     layout "layouts/flexx_next_admin"
 
     def index

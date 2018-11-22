@@ -10,7 +10,7 @@
         <p class="mb-0 text-center py-10 px-15 text-white text-uppercase fs-16"><strong>Sent</strong></p>
       </div>
       <div class="col-sm-6">
-        <p class="mb-0 text-center py-10 px-15">Date: <strong><%= email.send_at.in_time_zone(cookies[:timezone]).strftime("%a, %b %d, %Y %I:%M %P") %></strong></p>
+        <p class="mb-0 text-center py-10 px-15">Date: <strong><%= email.send_at.strftime("%a, %b %d, %Y %I:%M %P") %></strong></p>
       </div>
     </div>
 
@@ -124,8 +124,8 @@
                 <div class="media media-single">
                   <div class="media-body">
                     <%# TODO: Find the contact based on email and site_id %>
-                    <span class="avatar avatar-sm"><%= recipient.contact_id.present? ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
-                    <span><%= recipient.contact_id.present? ? recipient.contact.print_name : recipient.to %></span>
+                    <span class="avatar avatar-sm"><%= recipient.contact ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
+                    <span><%= recipient.contact ? recipient.contact.print_name : recipient.to %></span>
                   </div>
                   <div class="media-right">
                     <% if recipient.status == 'open' %>

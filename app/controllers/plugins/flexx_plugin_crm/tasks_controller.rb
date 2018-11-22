@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class TasksController < CamaleonCms::Apps::PluginsAdminController
+  class TasksController < ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
@@ -120,7 +120,7 @@ module Plugins::FlexxPluginCrm
     def send_task_confirmation
       task = current_site.tasks.find(params[:task_id])
 
-      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call cookies[:timezone]
+      TaskConfirmationService.new(task: task, number: params[:phonenumber]).call
 
       head :ok
     end
@@ -135,9 +135,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def due_date
-      tz = '%+.2d00' % TZInfo::Timezone.get(cookies[:timezone]).current_period
-        .utc_total_offset_rational.numerator
-      DateTime.strptime("#{params[:task][:due_date]} #{tz}", '%m/%d/%Y - %I:%M %p %Z')
+      Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p').in_time_zone
     end
   end
 end

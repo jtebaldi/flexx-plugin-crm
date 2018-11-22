@@ -1,15 +1,11 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
 <script>
   $('document').ready(function(){
-    Cookies.set('timezone', jstz.determine().name());
-
     $("#send_text").click(function() {
       $('#contact-main-nav li a').each(function() {
         $(this).removeClass('active');
