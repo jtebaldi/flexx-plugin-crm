@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class AdminController < ApplicationController
+  class AdminController < CamaleonCms::Apps::PluginsAdminController
     include Plugins::FlexxPluginCrm::MainHelper
 
     layout "layouts/flexx_next_admin"
@@ -165,9 +165,11 @@ module Plugins::FlexxPluginCrm
       if params[:new_contact_task][:due_date].blank?
         params[:new_contact_task][:due_date] = Time.current
       else
-        params[:new_contact_task][:due_date] = Time.strptime(
-          params[:new_contact_task][:due_date], '%m/%d/%Y - %I:%M %p'
-        ).in_time_zone
+        tz = '%+.2d00' % TZInfo::Timezone.get(cookies[:timezone]).current_period
+                                         .utc_total_offset_rational.numerator
+        params[:new_contact_task][:due_date] = DateTime.strptime(
+          "#{params[:new_contact_task][:due_date]} #{tz}", '%m/%d/%Y - %I:%M %p %Z'
+        )
       end
 
       params.require(:new_contact_task).permit(:task_type, :due_date, :title, :details, :site_id, :created_by, :updated_by)

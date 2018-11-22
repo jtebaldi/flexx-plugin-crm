@@ -1,6 +1,6 @@
 <% current_month = nil %>
 <% emails.each do |email| %>
-  <% email_month = email.draft? ? email.created_at.strftime('%B %Y') : (email.send_at && email.send_at.strftime('%B %Y')) %>
+  <% email_month = email.draft? ? email.created_at.in_time_zone(cookies[:timezone]).strftime('%B %Y') : (email.send_at && email.send_at.in_time_zone(cookies[:timezone]).strftime('%B %Y')) %>
   <% if current_month != email_month %>
     <% if current_month %>
       </div>
@@ -15,7 +15,7 @@
       <%= link_to edit_email_admin_message_path(email), class: 'media' do %>
         <div class="media-body">
           <h5><%= email.subject %></h5>
-          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at && email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at && email.send_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
@@ -34,7 +34,7 @@
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
           <h5><%= email.subject %></h5>
-          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
             <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
@@ -61,9 +61,9 @@
           <p>
           <span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span>
           <% if email.created_at == email.updated_at %>
-            <small class="text-uppercase">Created</small> <%= email.created_at.strftime('%A %b %-d, %I:%M %P') %>
+            <small class="text-uppercase">Created</small> <%= email.created_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %>
         <% else %>
-          <small class="text-uppercase">Updated</small> <%= email.updated_at.strftime('%A %b %-d, %I:%M %P') %>
+          <small class="text-uppercase">Updated</small> <%= email.updated_at.in_time_zone(cookies[:timezone]).strftime('%A %b %-d, %I:%M %P') %>
       <% end %>
           </p>
         </div>

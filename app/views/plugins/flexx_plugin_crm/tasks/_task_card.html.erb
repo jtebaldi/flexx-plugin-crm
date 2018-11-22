@@ -1,4 +1,13 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/jstz.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/vendors/js.cookie' %>
+<% end %>
+
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Cookies.set('timezone', jstz.determine().name());
+  });
+
   function showHighlights() {
     var headerHeight = document.getElementById('task_header').clientHeight;
 
@@ -85,19 +94,19 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-group mb-10">
-                    <p class="form-control-plaintext pt-0"><%= @task.due_date.strftime('%m/%d/%Y') %></p>
+                    <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y') %></p>
                     <label class="label-floated">Date</label>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group mb-10">
-                    <p class="form-control-plaintext pt-0"><%= @task.due_date.strftime('%I:%M %p') %></p>
+                    <p class="form-control-plaintext pt-0"><%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%I:%M %p') %></p>
                     <label class="label-floated">Time</label>
                   </div>
                 </div>
                 <% unless @task.done? %>
                   <div class="col-4">
-                    <button class="btn btn-square btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-alarm-clock"></i></button>
+                    <button class="btn btn-square btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-alarm-clock"></i></button>
                   </div>
                 <% end %>
               </div>
