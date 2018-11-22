@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class RecipesController < ApplicationController
+  class RecipesController < CamaleonCms::Apps::PluginsAdminController
     layout "layouts/flexx_next_admin"
 
     def index

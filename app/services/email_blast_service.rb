@@ -14,9 +14,10 @@ class EmailBlastService
     @contact_email_list = MessagingToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
   end
 
-  def call(task = nil)
+  def call(task = nil, timezone = 'UTC')
+    tz = Timezone[timezone].abbr Time.now
     send_at = @scheduled_at.present? ?
-      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone :
+      DateTime.strptime("#{@scheduled_at} #{tz}", '%m/%d/%Y %H:%M %p %Z') :
       Time.current
 
     message = @site.emails.find_or_initialize_by(id: @email_id)

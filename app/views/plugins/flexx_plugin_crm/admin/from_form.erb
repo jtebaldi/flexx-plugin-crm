@@ -3,7 +3,7 @@
     <p>Form: <strong><%= @form.parent.name %></strong></p>
   </div>
   <div class="col-sm-6">
-    <p>Submitted: <strong><%= @form.created_at.strftime('%m/%d/%Y - %I:%M %p') %></strong></p>
+    <p>Submitted: <strong><%= @form.created_at.in_time_zone(cookies[:timezone]).strftime('%m/%d/%Y - %I:%M %p') %></strong></p>
   </div>
 </div>
 <h5>Form Contents</h5>
