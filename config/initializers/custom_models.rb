@@ -51,19 +51,22 @@ Rails.application.config.to_prepare do
         first_name, last_name = the_settings[:fields][cids[:name]].split ' '
       end
 
-      contact = Plugins::FlexxPluginCrm::Contact.find_or_create_by(
+      contact = Plugins::FlexxPluginCrm::Contact.find_or_initialize_by(
         site_id: parent.site_id, email: the_settings[:fields][cids[:email]]
       ) do |c|
         c.site_id = parent.site_id
         c.first_name = first_name
         c.last_name = last_name
         c.email = the_settings[:fields][cids[:email]]
-        c.source = 'Website Form'
+        c.source = 'website_form'
         c.cama_contact_form_id = id
+      end
 
-        TaskRecipeService.apply_recipes(contact: c)
+      if contact.new_record?
+        contact.save
+        TaskRecipeService.apply_recipes(contact: contact)
         Rails.logger.warn('RECIPES')
-        AutomatedCampaignService.apply_campaigns(contact: c)
+        AutomatedCampaignService.apply_campaigns(contact: contact)
       end
 
       update contact_id: contact.id
