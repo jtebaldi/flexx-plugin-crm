@@ -129,6 +129,12 @@ module Plugins::FlexxPluginCrm
       head :no_content
     end
 
+    def associate_recipe_to_form
+      current_site.task_recipes.find(params[:id]).cama_contact_forms.clear
+      current_site.task_recipes.find(params[:id]).cama_contact_forms << current_site.contact_forms.where(id: params[:task_recipe][:cama_contact_form_ids])
+      head :ok
+    end
+
     private
 
     def new_task_params

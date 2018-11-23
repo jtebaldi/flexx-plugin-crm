@@ -106,11 +106,11 @@
 
               <div id="stock-email-select" class="form-group">
                 <label>Use stock email</label>
-                <select class="form-control" data-provide="selectpicker">
+                <select id="stock-email-select-field" class="form-control" data-provide="selectpicker">
                   <option>None</option>
-                  <option value="">Stock email 1</option>
-                  <option value="">Stock email 2</option>
-                  <option value="">Stock email 3</option>
+                  <% rich_text_stocks.each_with_index do |row, i| %>
+                    <option value="<%= i %>"><%= row.name %></option>
+                  <% end %>
                 </select>
               </div>
 
@@ -139,14 +139,14 @@
         <div class="card-body form-type-combine">
           <div class="row">
             <div class="col-md-6">
-              <p>Use the list on the right to select forms associated with the recipe. Anyone submitting through the form will automatically have the task list applied to their account.</p>
+              <p>Use the list on the right to select forms associated with the recipe. Any site visitor submitting that form will have the tasks on this list automatically applied.</p>
             </div>
             <div class="col-md-6">
               <hr class="d-md-none">
               <div class="form-group">
                 <h5>Forms</h5>
                 <%= form_tag admin_associate_recipe_to_form_path(id: @task_recipe.id, format: :js), method: :post, remote: true, id: 'update-recipe-form', class: 'form-type-combine' do %>
-                  <select id="update-recipe-associated-forms" name="task_recipe[cama_contact_form_ids]" data-provide="selectpicker" data-width="100%" multiple title="Choose one or more forms...">
+                  <select id="update-recipe-associated-forms" name="task_recipe[cama_contact_form_ids][]" data-provide="selectpicker" data-width="100%" multiple title="Choose one or more forms...">
                     <%= options_from_collection_for_select(@available_contact_forms, 'id', 'name', @task_recipe.cama_contact_form_ids) %>
                   </select>
                 <% end %>

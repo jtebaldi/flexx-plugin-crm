@@ -48,9 +48,9 @@ $('document').ready(function(){
     });
 
 
-    // $(document).on('rendered.bs.select', '#update-recipe-associated-forms', function(e) {
-    //   $('#update-recipe-form').trigger('submit.rails');
-    // });
+    $(document).on('rendered.bs.select', '#update-recipe-associated-forms', function(e) {
+      $('#update-recipe-form').trigger('submit.rails');
+    });
 
   var stepFormPlaceholder = $("#step_placeholder");
   var stepForm = $("#new-recipe-direction-panel");
