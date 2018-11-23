@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class TasksController < ApplicationController
+  class TasksController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"

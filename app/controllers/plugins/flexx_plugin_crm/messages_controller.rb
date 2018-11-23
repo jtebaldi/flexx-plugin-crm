@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class MessagesController < ApplicationController
+  class MessagesController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"

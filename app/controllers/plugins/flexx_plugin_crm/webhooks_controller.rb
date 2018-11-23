@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class WebhooksController < ApplicationController
+  class WebhooksController < Plugins::FlexxPluginCrm::ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :cama_authenticate
 

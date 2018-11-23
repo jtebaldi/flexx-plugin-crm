@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class StocksController < ApplicationController
+  class StocksController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"

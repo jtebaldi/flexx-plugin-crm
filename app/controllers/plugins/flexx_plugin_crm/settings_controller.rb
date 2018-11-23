@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class SettingsController < ApplicationController
+  class SettingsController < Plugins::FlexxPluginCrm::ApplicationController
     layout 'flexx_next_admin'
     before_action :set_business_email
 

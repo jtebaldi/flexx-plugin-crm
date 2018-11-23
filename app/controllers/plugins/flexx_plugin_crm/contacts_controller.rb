@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class ContactsController < ApplicationController
+  class ContactsController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
