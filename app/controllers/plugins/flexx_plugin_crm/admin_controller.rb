@@ -1,5 +1,5 @@
 module Plugins::FlexxPluginCrm
-  class AdminController < ApplicationController
+  class AdminController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::MainHelper
 
     layout "layouts/flexx_next_admin"
