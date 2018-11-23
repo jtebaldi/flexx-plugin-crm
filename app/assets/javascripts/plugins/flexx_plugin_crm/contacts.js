@@ -32,9 +32,7 @@ function updateSalesStage(stage) {
         return;
       }
     })
-  }
-
-  if (stage === 'delete') {
+  } else if (stage === 'delete') {
     swal({
       title: 'Delete this contact',
       text: 'This will permanently remove all pending tasks, messages, notes, and completed contact forms for this contact. Are you sure you want to delete?',
@@ -50,18 +48,11 @@ function updateSalesStage(stage) {
         return;
       }
     })
+  } else {
+    $('#update-sales-stage-field').val(stage);
+
+    $('#update-sales-stage-form').submit();
   }
-
-//   if (stage === 'archived' && !confirm('Archiving a contact\
-//  will permanently remove all pending tasks and hide this contact from your\
-//  view. Are you sure you want to archive?') || stage == 'delete' &&
-//   !confirm('Deleting a contact will permanently remove all pending tasks,\
-//  messages, notes, and competed contact forms. Are you sure you want to delete?')) {
-//     return;
-//   }
-  // $('#update-sales-stage-field').val(stage);
-
-  // $('#update-sales-stage-form').submit();
 }
 
 function addNewContactTask() {
