@@ -91,7 +91,7 @@ module Plugins::FlexxPluginCrm
 
       respond_to do |format|
         format.js
-      end 
+      end
     end
 
     private

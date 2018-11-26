@@ -32,7 +32,7 @@ class MessagesJobService
       if sender
         from = { email: email.from, name: sender.print_name }
       else
-        be = CamaleonCms::CustomFieldsRelationship.find_by_custom_field_slug 'business_email'
+        be = email.site.custom_field_values.find_by_custom_field_slug 'business_email'
         from = { email: be.value, name: email.site.name }
       end
       sg_message_id = SendgridAdapter.new(site: email.site).send_email(
