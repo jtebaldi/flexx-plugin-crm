@@ -67,6 +67,8 @@ Rails.application.config.to_prepare do
         TaskRecipeService.apply_recipes(contact: contact)
         Rails.logger.warn('RECIPES')
         AutomatedCampaignService.apply_campaigns(contact: contact)
+      elsif contact.archived?
+        contact.update sales_stage: :lead, unarchived_at: Time.current
       end
 
       update contact_id: contact.id

@@ -73,10 +73,12 @@
         <h5 class="card-title"><strong>Recent</strong> contacts</h5>
 
         <div class="media-list media-list-hover media-list-divided scrollable" style="height: 275px">
-          <% @active_contacts.order('created_at DESC').each do |contact| %>
+          <% @active_contacts.order('unarchived_at, created_at DESC').each do |contact| %>
             <div class="media media-single">
               <% if contact.created_at > 24.hours.ago %>
                 <i class="fa fa-bolt text-yellow"></i>
+              <% elsif contact.unarchived_at && contact.unarchived_at > 24.hours.ago %>
+                <i class="fa fa-bolt text-primary"></i>
               <% end %>
               <a href="<%= admin_contact_path(contact.id) %>">
                 <span class="avatar avatar-lg"><%= contact.initials %></span>
