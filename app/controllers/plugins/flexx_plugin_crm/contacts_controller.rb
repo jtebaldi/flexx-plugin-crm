@@ -27,14 +27,16 @@ module Plugins::FlexxPluginCrm
     end
 
     def update
-      contact = current_site.contacts.find(params[:id])
+      @contact = current_site.contacts.find(params[:id])
 
       params[:contact].merge!(updated_by: current_user.id)
 
-      contact.update(contact_params)
-      current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
-
-      redirect_to action: :show, id: params[:id]
+      if @contact.update(contact_params)
+        current_site.tag(@contact, with: params[:contact][:tag_list], on: :tags)
+        redirect_to action: :show, id: params[:id]
+      else
+        render :show
+      end
     end
 
     def add_task_recipe
@@ -44,6 +46,13 @@ module Plugins::FlexxPluginCrm
       TaskRecipeService.apply_recipe(contact: contact, recipe: recipe)
 
       redirect_to action: :show, id: contact.id
+    end
+
+    def email_validate
+      not_found = !current_site.contacts.where.not(
+        id: params[:contact_id].blank? ? nil : params[:contact_id]
+      ).find_by_email(params[:contact][:email])
+      render json: not_found
     end
 
     private

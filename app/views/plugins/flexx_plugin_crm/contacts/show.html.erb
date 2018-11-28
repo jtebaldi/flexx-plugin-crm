@@ -1,7 +1,9 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
 <% end %>
 
 <script>
@@ -157,9 +159,9 @@ input[type=radio].hide-control { display: none; }
 
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
-                <input class="form-control" type="text" name="contact[email]" value="<%= @contact.email %>">
-                <label>Email</label>
+              <div class="form-group require">
+                <input class="form-control" type="email" required name="contact[email]" value="<%= @contact.email %>">
+                <label class="required">Email</label>
               </div>
             </div>
             <div class="col-md-6">

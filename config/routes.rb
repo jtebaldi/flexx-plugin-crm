@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
+          get :email_validate, on: :collection
         end
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
@@ -80,8 +81,14 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :dashboard, controller: 'plugins/flexx_plugin_crm/dashboard', only: :index
-        resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update]
+        resources :dashboard, controller: 'plugins/flexx_plugin_crm/dashboard', only: :index do
+          get :from_form, on: :collection
+        end
+
+        resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update] do
+          get :email_validate, on: :collection
+          get :username_validate, on: :collection
+        end
       end
 
       namespace 'plugins' do
