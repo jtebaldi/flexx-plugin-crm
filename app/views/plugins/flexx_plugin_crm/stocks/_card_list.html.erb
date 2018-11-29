@@ -2,6 +2,9 @@
   <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3" data-shuffle="item" data-groups="<%= stock.stock_type %>">
     <div class="card hover-shadow-4">
       <div class="card-body">
+        <%= link_to admin_stock_path(stock), class: 'float-right', method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        <% end %>
         <div class="flexbox align-items-center">
           <label class="toggler toggler-yellow fs-16">
             <% if stock.starred? %>

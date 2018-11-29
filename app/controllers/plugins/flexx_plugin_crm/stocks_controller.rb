@@ -41,6 +41,11 @@ module Plugins::FlexxPluginCrm
       @stocks = current_site.stocks
     end
 
+    def destroy
+      current_site.stocks.find(params[:id]).destroy
+      redirect_to action: :index
+    end
+
     private
 
     def stock_params
