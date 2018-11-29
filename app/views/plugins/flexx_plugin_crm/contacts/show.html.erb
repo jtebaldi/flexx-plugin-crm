@@ -1,9 +1,7 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
-  <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
 <% end %>
 
 <script>
@@ -132,7 +130,7 @@ input[type=radio].hide-control { display: none; }
     </div>
 
     <div id="contact-main-tabs" class="col-lg-8 tab-content <%= @contact.sales_stage.downcase %>">
-      <%= form_tag admin_contact_path(@contact.id), method: :patch, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade active show' do %>
+      <%= form_tag admin_contact_path(@contact.id), method: :patch, id: 'tab_contact_details', class: 'card form-type-material tab-pane fade active show', data: { provide: 'validation' } do %>
         <h4 class="card-title fw-400">Contact Details</h4>
 
         <div class="card-body">
@@ -160,8 +158,9 @@ input[type=radio].hide-control { display: none; }
           <div class="row">
             <div class="col-md-6">
               <div class="form-group require">
-                <input class="form-control" type="email" required name="contact[email]" value="<%= @contact.email %>">
+                <input class="form-control" type="email" required name="contact[email]" data-remote="/admin/next/contacts/<%= @contact.id %>/email_validate" value="<%= @contact.email %>">
                 <label class="required">Email</label>
+                <div class="invalid-feedback"></div>
               </div>
             </div>
             <div class="col-md-6">

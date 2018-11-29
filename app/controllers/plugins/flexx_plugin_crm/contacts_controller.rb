@@ -49,10 +49,22 @@ module Plugins::FlexxPluginCrm
     end
 
     def email_validate
-      not_found = !current_site.contacts.where.not(
-        id: params[:contact_id].blank? ? nil : params[:contact_id]
+      contact = current_site.contacts.where.not(
+        id: (params[:id] == 'new' ? nil : params[:id])
       ).find_by_email(params[:contact][:email])
-      render json: not_found
+
+      if contact
+        message = if contact.archived?
+                    'This email address is currently attached to an archived contact.'
+                  else
+                    'The email is already in use.'
+                  end
+        Rack::Utils::HTTP_STATUS_CODES[400] = message
+        Puma::HTTP_STATUS_CODES[400] = message if defined? Puma
+        head 400
+      else
+        head :ok
+      end
     end
 
     private
