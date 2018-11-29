@@ -58,6 +58,11 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def destroy_direction
+      Plugins::FlexxPluginCrm::TaskRecipeDirection.find(params[:id]).destroy
+      redirect_to action: :show
+    end
+
     private
 
     def task_recipe_params

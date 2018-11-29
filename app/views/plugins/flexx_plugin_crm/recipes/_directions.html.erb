@@ -4,6 +4,10 @@
       <span class="badge badge-ring badge-primary"></span>
     </div>
     <div class="timeline-content">
+      <%= link_to admin_recipe_destroy_direction_path(@task_recipe, direction), class: 'float-right', method: :delete, data: {
+        confirm: 'Removing a recipe step will not the affect previous contacts who have had this recipe applied.' } do %>
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+      <% end %>
       <time datetime="2018"><%= direction.distance_of_time_from_now() %></time>
       <p><%= direction.task_type.humanize %> (<%= direction.title %>)</p>
     </div>

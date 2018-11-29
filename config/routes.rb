@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle
           post :create_direction
+          delete 'destroy_direction/:id', action: :destroy_direction, as: :destroy_direction
         end
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks' do
