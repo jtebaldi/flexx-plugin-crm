@@ -17,13 +17,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def show
-      @contact = current_site.contacts.find(params[:id])
-      @automated_campaigns = current_site.automated_campaigns.active
-      @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
-      @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)
-      @dynamic_fields = {
-        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
-      }.to_json
+      show_vars
     end
 
     def update
@@ -35,6 +29,7 @@ module Plugins::FlexxPluginCrm
         current_site.tag(@contact, with: params[:contact][:tag_list], on: :tags)
         redirect_to action: :show, id: params[:id]
       else
+        show_vars
         render :show
       end
     end
@@ -68,6 +63,16 @@ module Plugins::FlexxPluginCrm
     end
 
     private
+
+    def show_vars
+      @contact = current_site.contacts.find(params[:id])
+      @automated_campaigns = current_site.automated_campaigns.active
+      @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
+      @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
+    end
 
     def contact_params
       p = params.require(:contact).permit(

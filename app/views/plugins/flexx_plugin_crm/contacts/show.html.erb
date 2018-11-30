@@ -19,7 +19,7 @@
 
   });
 
-  window.dynamic_fields = <%= @dynamic_fields && @dynamic_fields.html_safe %>;
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
 
 </script>
 
@@ -412,7 +412,7 @@ input[type=radio].hide-control { display: none; }
         <div class="card">
           <h5 class="card-title">Available <strong>Recipes</strong></h5>
           <div class="media-list media-list-hover media-list-divided">
-            <% @available_recipes && @available_recipes.each do |recipe| %>
+            <% @available_recipes.each do |recipe| %>
               <div class="media align-items-center">
                 <div class="media-body">
                   <p><strong><%= recipe.title %></strong></p>

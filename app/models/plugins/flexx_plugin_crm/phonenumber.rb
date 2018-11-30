@@ -9,6 +9,8 @@ class Plugins::FlexxPluginCrm::Phonenumber < ActiveRecord::Base
 
   scope :mobile, -> { where(phone_type: 'mobile') }
 
+  validates :number, uniqueness: { scope: :site_id }
+
   private
 
   def set_phonetype
