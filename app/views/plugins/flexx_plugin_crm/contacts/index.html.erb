@@ -1,6 +1,7 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
 <% end %>
 
 <script>
@@ -148,7 +149,7 @@
       </div>
 
       <div class="form-group">
-        <input type="email" class="form-control" name="contact[email]" required>
+        <input type="email" required data-remote="/admin/next/contacts/new/email_validate" class="form-control" name="contact[email]">
         <label>Email Address</label>
         <div class="invalid-feedback"></div>
       </div>

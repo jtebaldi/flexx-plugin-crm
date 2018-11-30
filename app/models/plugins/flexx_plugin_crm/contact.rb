@@ -19,6 +19,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message', dependent: :destroy
   has_many :contact_forms, class_name: 'Plugins::CamaContactForm::CamaContactForm', dependent: :destroy
 
+  validates :email, presence: true, uniqueness: true
+
   scope :active, -> { where.not(sales_stage: :archived) }
 
   accepts_nested_attributes_for :phonenumbers

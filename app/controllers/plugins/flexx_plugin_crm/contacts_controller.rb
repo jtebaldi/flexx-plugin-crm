@@ -27,14 +27,16 @@ module Plugins::FlexxPluginCrm
     end
 
     def update
-      contact = current_site.contacts.find(params[:id])
+      @contact = current_site.contacts.find(params[:id])
 
       params[:contact].merge!(updated_by: current_user.id)
 
-      contact.update(contact_params)
-      current_site.tag(contact, with: params[:contact][:tag_list], on: :tags)
-
-      redirect_to action: :show, id: params[:id]
+      if @contact.update(contact_params)
+        current_site.tag(@contact, with: params[:contact][:tag_list], on: :tags)
+        redirect_to action: :show, id: params[:id]
+      else
+        render :show
+      end
     end
 
     def add_task_recipe
@@ -44,6 +46,25 @@ module Plugins::FlexxPluginCrm
       TaskRecipeService.apply_recipe(contact: contact, recipe: recipe)
 
       redirect_to action: :show, id: contact.id
+    end
+
+    def email_validate
+      contact = current_site.contacts.where.not(
+        id: (params[:id] == 'new' ? nil : params[:id])
+      ).find_by_email(params[:contact][:email])
+
+      if contact
+        message = if contact.archived?
+                    'This email address is currently attached to an archived contact.'
+                  else
+                    'The email is already in use.'
+                  end
+        Rack::Utils::HTTP_STATUS_CODES[400] = message
+        Puma::HTTP_STATUS_CODES[400] = message if defined? Puma
+        head 400
+      else
+        head :ok
+      end
     end
 
     private
