@@ -19,7 +19,7 @@
 
   });
 
-  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+  window.dynamic_fields = <%= @dynamic_fields && @dynamic_fields.html_safe %>;
 
 </script>
 
