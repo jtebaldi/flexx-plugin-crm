@@ -60,7 +60,7 @@ module Plugins::FlexxPluginCrm
 
     def destroy_direction
       Plugins::FlexxPluginCrm::TaskRecipeDirection.find(params[:id]).destroy
-      redirect_to action: :show
+      redirect_to admin_recipe_path(params[:recipe_id])
     end
 
     private
