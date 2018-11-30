@@ -135,7 +135,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def due_date
-      Time.strptime(params[:task][:due_date], '%m/%d/%Y - %I:%M %p').in_time_zone
+      Time.strptime("#{params[:task][:due_date]} #{Time.current.zone}", '%m/%d/%Y - %I:%M %p %Z').in_time_zone
     end
   end
 end

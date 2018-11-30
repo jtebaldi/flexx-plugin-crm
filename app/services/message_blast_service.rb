@@ -13,7 +13,7 @@ class MessageBlastService
 
   def call(task = nil)
     send_at = @scheduled_at.present? ?
-      Time.strptime(@scheduled_at, '%m/%d/%Y %H:%M %p').in_time_zone :
+      Time.strptime("#{@scheduled_at} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone :
       Time.current
 
     contacts = @site.contacts.includes(:phonenumbers).where(id: @recipients_list)
