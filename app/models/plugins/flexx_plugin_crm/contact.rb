@@ -23,7 +23,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   scope :active, -> { where.not(sales_stage: :archived) }
 
-  accepts_nested_attributes_for :phonenumbers
+  accepts_nested_attributes_for :phonenumbers, allow_destroy: true, reject_if: proc { |attributes| attributes['number'].blank? }
 
   aasm('sales_stage') do
     state :lead, initial: true

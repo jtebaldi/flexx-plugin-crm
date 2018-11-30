@@ -1,0 +1,66 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-btn sidebar-toggler"><i>&#9776;</i></span>
+    <a href="#" class="topbar-btn d-none d-md-block" data-provide="fullscreen">
+      <i class="ti-fullscreen fullscreen-default"></i>
+      <i class="fa fa-compress fullscreen-active"></i>
+    </a>
+    <div class="topbar-divider"></div>
+    <span class="topbar-mobile logo">
+      <img style="width: 100%; max-width: 120px; opacity: .8;" src="https://d15fieipd5pxyz.cloudfront.net/flexxco/flexx_final_dark_copy.png" alt="logo">
+    </span>
+    <h4 class="topbar-title text-uppercase d-none d-sm-block"><%= current_site.the_title %></h4>
+  </div>
+
+  <div class="topbar-right">
+
+    <ul class="topbar-btns">
+      <li class="dropdown">
+        <span class="topbar-btn" data-toggle="dropdown"><span class="avatar"><%= current_user.initials %></span></span>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="<%= admin_settings_path() %>"><i class="ti-user"></i> Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="<%= cama_admin_logout_path() %>"><i class="ti-power-off"></i> Logout</a>
+        </div>
+      </li>
+
+      <!-- START Notifications 
+      <li class="d-none d-md-block">
+        <a href="#qv-notifications" data-toggle="quickview" class="topbar-btn has-new"><i class="ti-bell"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+
+          <div class="media-list media-list-hover media-list-divided media-list-xs">
+            <a class="media media-new" href="#">
+              <span class="avatar bg-success"><i class="ti-user"></i></span>
+              <div class="media-body">
+                <p>New contact registered</p>
+                <time datetime="2018-07-14 20:00">Just now</time>
+              </div>
+            </a>
+          </div>
+
+          <div class="dropdown-footer">
+            <div class="left">
+              <a href="#">See all notifications</a>
+            </div>
+
+            <div class="right">
+              <a href="#" data-provide="tooltip" title="Mark all as read"><i class="fa fa-circle-o"></i></a>
+              <a href="#" data-provide="tooltip" title="Update"><i class="fa fa-repeat"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </li>
+      END Notifications -->
+
+      <!-- START Search
+      <li>
+        <button data-toggle="lookup" data-target="#lookup-full" class="topbar-btn" style="color:#4d5259;"><i class="ti-search"></i></button>
+      </li>
+      END Search-->
+
+    </ul>
+
+  </div>
+</header>

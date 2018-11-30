@@ -1,6 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
 require 'database_cleaner'
+require 'factory_bot'
+require 'spec_helper'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../dummy/config/environment', __FILE__)
@@ -8,6 +9,10 @@ require File.expand_path('../dummy/config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+
+
+Dir['./spec/support/**/*.rb'].each { |f| require f }
+# FactoryBot.find_definitions
 
 require 'vcr'
 
@@ -39,6 +44,7 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -67,4 +73,14 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+
+def sign_in
+  site = create(:site).decorate
+  user = create(:user, role: 'admin', parent_id: site.id).decorate
+  expect_any_instance_of(Plugins::FlexxPluginCrm::ApplicationController).to receive(:cama_authenticate)
+  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_user).at_least(:once).and_return(user)
+  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_site).at_least(:once).and_return(site)
+  # expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:cama_current_user).at_least(:once).and_return(user)
+  user
 end

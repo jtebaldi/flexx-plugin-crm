@@ -70,16 +70,8 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      if params[:contact][:phonenumbers_attributes].present?
-        params[:contact][:phonenumbers_attributes].each do |row|
-          params[:contact][:phonenumbers_attributes].delete(row) if row[:number].empty?
-        end
-      end
-
-      params[:contact][:birthday] = Date.strptime(params[:contact][:birthday], '%m/%d/%Y').in_time_zone rescue nil
-
-      params[:contact].merge!(created_by: current_user.id)
-      params.require(:contact).permit(
+      require 'pry-byebug'; binding.pry
+      p = params.require(:contact).permit(
         :sales_stage,
         :first_name,
         :last_name,
@@ -97,6 +89,19 @@ module Plugins::FlexxPluginCrm
         :updated_by,
         phonenumbers_attributes: [:id, :number, :phone_type]
       )
+
+      p[:created_by] = current_user.id
+
+      if p[:phonenumbers_attributes].present?
+        p[:phonenumbers_attributes].each do |row|
+          next unless row[:number] && row[:number].empty?
+
+          row[:_destroy] = 1
+        end
+      end
+
+      p[:birthday] = Date.strptime(p[:birthday], '%m/%d/%Y').in_time_zone rescue nil
+      p
     end
   end
 end

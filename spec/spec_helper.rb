@@ -14,10 +14,6 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require 'factory_bot'
-Dir['./spec/support/**/*.rb'].each { |f| require f }
-FactoryBot.find_definitions
-
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 

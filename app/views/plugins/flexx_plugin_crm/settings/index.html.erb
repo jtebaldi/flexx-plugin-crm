@@ -126,12 +126,13 @@
                 <div class="flexbox gap-items-4">
                   <div class="flex-grow">
                     <h5 class='my-4 pb-3'>Business Information</h5>
+                    <% if @business_email %>
+                      <div class="form-group">
+                        <input class="form-control" type="email" name="business_email" value="<%= @business_email.value %>">
+                        <label><%= @business_email.custom_fields.name %></label>
+                      </div>
+                    <% end %>
                     <div class="form-group">
-                      <input class="form-control" type="email" name="business_email" value="<%= @business_email.value %>">
-                      <label><%= @business_email.custom_fields.name %></label>
-                    </div>
-                    <div class="form-group">
-                      <!--<input class="form-control" type="text" name="business_email" value="<%= @business_email.value %>">-->
                       <%= select_tag 'site[timezone]', options_from_collection_for_select(TZInfo::Timezone.all,
                         'canonical_identifier', 'friendly_identifier', current_site.timezone), class: 'form-control' %>
                       <label>Timezone</label>

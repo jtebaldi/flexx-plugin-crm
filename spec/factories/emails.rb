@@ -16,6 +16,8 @@ FactoryBot.define do
       end
     end
 
-    trait :with_site { site }
+    trait :with_site do
+      site
+    end
   end
 end
