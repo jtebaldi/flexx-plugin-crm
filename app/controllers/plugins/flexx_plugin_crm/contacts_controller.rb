@@ -70,7 +70,6 @@ module Plugins::FlexxPluginCrm
     private
 
     def contact_params
-      require 'pry-byebug'; binding.pry
       p = params.require(:contact).permit(
         :sales_stage,
         :first_name,
