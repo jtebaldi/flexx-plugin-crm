@@ -7,6 +7,7 @@ class Plugins::FlexxPluginCrm::TaskRecipe < ActiveRecord::Base
 
   scope :active, -> { where(archived: false, paused: false) }
   scope :paused, -> { where(paused: true, archived: false) }
+  scope :shared, -> { where(shared: true, archived: false) }
 
   def ordered_directions
     directions.sort_by { |row| row.due_on_value.send(row.due_on_unit).to_i }

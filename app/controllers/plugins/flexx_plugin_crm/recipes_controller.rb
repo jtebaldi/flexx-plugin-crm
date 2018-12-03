@@ -3,8 +3,13 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @active_task_recipes = current_site.task_recipes.active.order(:title)
+      @active_task_recipes = current_site.task_recipes.active.order(:title)      
       @paused_task_recipes = current_site.task_recipes.paused.order(:title)
+
+      @shared_recipes = TaskRecipe.where.not(site_id: current_site.id).order(:created_at)
+      @shared_task_recipes = @shared_recipes.shared
+      # @shared_task_recipes = @shared_recipes.group_by(&:title).map{|k, v| v.first}
+      
     end
 
     def show
@@ -17,7 +22,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def create
-      params[:task_recipe].merge!(created_by: current_user.id)
+      params[:task_recipe].merge!(created_by: current_user.id, shared: false)
 
       new_task_recipe = current_site.task_recipes.create(task_recipe_params)
 
@@ -34,6 +39,38 @@ module Plugins::FlexxPluginCrm
       respond_to do |format|
         format.js
       end
+    end
+
+    def share
+      @task_recipe = current_site.task_recipes.find(params[:recipe_id])
+
+      @task_recipe.update(shared: !@task_recipe.shared,
+                          shared_by: !@task_recipe.shared ? current_user.id : nil,
+                          shared_at: !@task_recipe.shared ? Time.current : nil)
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
+    def add_shared
+      @shared_recipe = TaskRecipe.find(params[:recipe_id])
+
+      new_task_recipe = current_site.task_recipes.create(title: @shared_recipe.title,
+                                                          description: @shared_recipe.title,
+                                                          site_id: current_site.id,
+                                                          created_by: current_user.id,
+                                                          shared: false)
+                        
+      tasks = TaskRecipeDirection.where(task_recipe_id: @shared_recipe.id)
+
+      tasks.each do |task|
+        task_dup = task.dup
+        task_dup.task_recipe_id = new_task_recipe.id;
+        task_dup.save!
+      end
+      
+      redirect_to action: :index
     end
 
     def destroy
@@ -66,7 +103,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def task_recipe_params
-      params.require(:task_recipe).permit(:title, :description, :created_by)
+      params.require(:task_recipe).permit(:title, :description, :created_by, :shared)
     end
 
     def task_recipe_direction_params

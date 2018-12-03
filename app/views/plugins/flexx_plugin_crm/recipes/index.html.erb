@@ -49,8 +49,8 @@
     </div>
   <% end %>
   <br>
-  <div class="divider text-uppercase fw-500">Drafts</div>
-
+  
+  <div class="divider text-uppercase fw-500">Paused</div>
   <% @paused_task_recipes.each do |recipe| %>
     <div class="card b-1 hover-shadow-2 mb-20">
       <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
@@ -83,6 +83,40 @@
       </footer>
     </div>
   <% end %>
+
+  <p class="lead text-center text-fade">Shared recipes</p>
+  <% @shared_task_recipes.uniq.each do |recipe| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <div class="media card-body">
+
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= recipe.title %></span><br>
+            <span class="fs-12 pr-16">Shared by: <strong><%= CamaleonCms::Site.find(recipe.site_id).name %></strong></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><%= recipe.description %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+          
+          </p>
+          <span class="text-fade fs-12">Total tasks: <strong><%= recipe.directions.count %></strong></span>
+        </div>
+      </div>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Created on:</strong>
+          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+        </div>
+        <div class="card-hover-show">
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-success" href="<%= admin_recipe_add_shared_path(recipe.id) %>">Add</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+  <br>
 </div>
 
 <div id="qv-recipe-overview" class="quickview quickview-xxl backdrop-light"></div>
