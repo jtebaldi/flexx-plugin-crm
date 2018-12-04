@@ -13,9 +13,8 @@
           </div>
           <div class="timeline-content">
             <time datetime="2018"><%= distance_of_time_in_words(Time.now, Time.now + direction.due_on_value.send(direction.due_on_unit)) %></time>
-            <p><%= direction.task_type.humanize %></p>
-            <%= direction.title %>
-            <br/><%= direction.details %>
+            <p class="mb-0"><%= direction.title %> (<%= direction.task_type.humanize %>)</p>
+            <% if direction.details %> <p class="text-italic"><%= direction.details %></p> <% end %>
           </div>
         </li>
       <% end %>

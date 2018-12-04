@@ -60,7 +60,9 @@ module Plugins::FlexxPluginCrm
                                                           description: @shared_recipe.title,
                                                           site_id: current_site.id,
                                                           created_by: current_user.id,
-                                                          shared: false)
+                                                          shared: false,
+                                                          original_site_id: @shared_recipe.site_id,
+                                                          updated_at: Time.current)
                         
       tasks = TaskRecipeDirection.where(task_recipe_id: @shared_recipe.id)
 

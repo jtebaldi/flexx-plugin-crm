@@ -27,8 +27,12 @@
     <div class="left">
       <h2 class="header-title">
         <strong><%= @task_recipe.title %></strong> recipe
-        <small class="subtitle"><%= @task_recipe.description %></small>
+        <small class="subtitle pt-0"><%= @task_recipe.description %></small>
       </h2>
+      <% if @task_recipe.original_site_id %>
+        <span class="fs-12 pr-16 text-uppercase text-info">Copied from <strong><%= CamaleonCms::Site.find(@task_recipe.original_site_id).name %></strong></span>
+      <% end %>
+      <p></p>
     </div>
   </div>
 
