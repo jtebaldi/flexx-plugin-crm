@@ -73,16 +73,6 @@ function clearNewContactTaskForm() {
   $('#new-contact-task-panel').fadeOut();
 }
 
-function addNewPhoneRow() {
-  var newrow = $('#phone-row-template').clone();
-  $(newrow).find('select').selectpicker({
-    iconBase: '',
-    tickIcon: 'ti-check',
-    style: 'btn-light'
-  });
-  $(newrow).toggleClass('hidden').appendTo('#phone-rows');
-}
-
 function submitConversationsSendMessageForm(e) {
   e.preventDefault();
 
@@ -136,4 +126,62 @@ app.ready(function() {
 
   $('.archived form input').attr('readonly', 'readonly');
   $('.archived form button').attr('disabled', 'disabled');
+
+  var utilsScriptPath = $('[data-utils-script]').data('utilsScript');
+  var telInput = elm => {
+    var t = window.intlTelInput(elm, { utilsScript: utilsScriptPath });
+    // elm.addEventListener('countrychange', () => { return; });
+    var $elm = $(elm);
+    $elm.change(() => {
+      var $feedback = $elm.closest('.form-group').find('.invalid-feedback');
+      t.setNumber(elm.value)
+      if (elm.value.length) {
+        var action = $elm.closest('form').attr('action');
+        $.get(action + '/phone_validate', { number: t.getNumber() }, (data) => {
+          if (data.message) {
+            $elm.addClass('is-invalid');
+            $feedback.html(`<ul class="list-unstyled"><li>${data.message}</li></ul>`).show();
+          } else {
+            $elm.removeClass('is-invalid');
+            $feedback.html('');
+          }
+        });
+      } else {
+        $elm.removeClass('is-invalid');
+        $feedback.html('');
+      }
+    });
+    return t;
+  }
+
+  var telInputs = [];
+  $('.row:not(.hidden) > div > div > input[type="tel"]').each((i, input) => {
+    telInputs.push(telInput(input));
+  });
+
+  $('[data-add="phone"]').click(e => {
+    var $newrow = $('#phone-row-template').clone();
+    $newrow.find('select').selectpicker({
+      iconBase: '',
+      tickIcon: 'ti-check',
+      style: 'btn-light'
+    });
+    $newrow.toggleClass('hidden').appendTo('#phone-rows');
+    telInputs.push(telInput($newrow.find('input[type="tel"]')[0]));
+  });
+
+  $('#tab_contact_details').validator().on('submit', (e) => {
+    if (e.isDefaultPrevented()) {
+    } else {
+      var $feedback = $(e.target).find('.invalid-feedback > ul');
+      if ($feedback.length) {
+        e.preventDefault();
+        var $input = $feedback.closest('.form-group').find('.form-control');
+        $([document.documentElement, document.body]).animate({
+          scrollTop: ($input.offset().top - 100)
+        }, 200);
+        $input.focus();
+      } else telInputs.forEach((elm) => { elm.a.value = elm.getNumber() });
+    }
+  });
 });

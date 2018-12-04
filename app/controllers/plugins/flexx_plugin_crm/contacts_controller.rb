@@ -62,6 +62,16 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def phone_validate
+      phone = current_site.phonenumbers.where.not(contact_id: params[:id])
+                          .find_by_number params[:number]
+      if phone
+        render json: { message: 'The phone number is already in use.' }
+      else
+        head :ok
+      end
+    end
+
     private
 
     def show_vars

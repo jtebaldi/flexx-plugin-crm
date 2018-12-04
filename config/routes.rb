@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
           get :email_validate, on: :member
+          get :phone_validate, on: :member
         end
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
