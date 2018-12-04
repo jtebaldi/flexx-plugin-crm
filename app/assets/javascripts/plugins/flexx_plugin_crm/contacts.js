@@ -1,12 +1,12 @@
-function submitNewContactForm() {
-  if ($('#new-contact-form')[0].checkValidity()) {
-    $('#new-contact-add').toggleClass('disabled');
-    $('#new-contact-cancel').toggleClass('disabled');
-    $('#new-contact-spinner').toggleClass('invisible');
-  }
+  function submitNewContactForm() {
+    // if ($('#new-contact-form')[0].checkValidity()) {
+    // $('#new-contact-add').toggleClass('disabled');
+    // $('#new-contact-cancel').toggleClass('disabled');
+    // $('#new-contact-spinner').toggleClass('invisible');
+    // }
 
-  $('#new-contact-form').submit();
-}
+    $('#new-contact-form').submit();
+  }
 
 function cancelNewContactForm(button) {
   $('#new-contact-form')[0].reset();
@@ -137,6 +137,7 @@ app.ready(function() {
       t.setNumber(elm.value)
       if (elm.value.length) {
         var action = $elm.closest('form').attr('action');
+        action = action.match(/\d+/) ? action : action + '/new';
         $.get(action + '/phone_validate', { number: t.getNumber() }, (data) => {
           if (data.message) {
             $elm.addClass('is-invalid');
@@ -155,7 +156,7 @@ app.ready(function() {
   }
 
   var telInputs = [];
-  $('.row:not(.hidden) > div > div > input[type="tel"]').each((i, input) => {
+  $('form input[type="tel"]').each((i, input) => {
     telInputs.push(telInput(input));
   });
 
@@ -170,7 +171,7 @@ app.ready(function() {
     telInputs.push(telInput($newrow.find('input[type="tel"]')[0]));
   });
 
-  $('#tab_contact_details').validator().on('submit', (e) => {
+  $('#tab_contact_details, #new-contact-form').validator().on('submit', (e) => {
     if (e.isDefaultPrevented()) {
     } else {
       var $feedback = $(e.target).find('.invalid-feedback > ul');
@@ -181,7 +182,12 @@ app.ready(function() {
           scrollTop: ($input.offset().top - 100)
         }, 200);
         $input.focus();
-      } else telInputs.forEach((elm) => { elm.a.value = elm.getNumber() });
+      } else {
+        $('#new-contact-add').addClass('disabled');
+        $('#new-contact-cancel').addClass('disabled');
+        $('#new-contact-spinner').removeClass('invisible');
+        telInputs.forEach((elm) => { elm.a.value = elm.getNumber() });
+      }
     }
   });
 });
