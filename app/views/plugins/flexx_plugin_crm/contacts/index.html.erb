@@ -71,12 +71,23 @@
             <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-name', 'asc')">Name</a>
           </div>
         </div>
+
+        <div class="dropdown">
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
+          <div class="dropdown-menu">            
+            <a class="dropdown-item" href="#" data-contacts-filter="none">None</a>
+            <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
+            <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
+            <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
+          </div>
+        </div>
+        <span id="selected-filter">None</span>
       </div>
     </header>
 
     <div id="contact-list" class="media-list-body bg-white b-1">
       <% @active_contacts.each do |contact| %>
-        <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>">
+        <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
           <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_contact_path(contact.id) %>">
             <span class="avatar avatar-lg"><%= contact.initials %></span>
             <div class="media-body text-truncate">

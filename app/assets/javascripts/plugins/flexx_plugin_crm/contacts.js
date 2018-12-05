@@ -190,4 +190,15 @@ app.ready(function() {
       }
     }
   });
+
+  $('[data-contacts-filter]').click((e) => {
+    $('#selected-filter').html(e.target.innerHTML);
+    var $records = $('#contact-list').children('div');
+    if (e.target.dataset.contactsFilter === 'none') {
+      $records.removeClass('hidden');
+    } else {
+      $records.not(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).addClass('hidden');
+      $records.filter(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).removeClass('hidden');
+    }
+  });
 });
