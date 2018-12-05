@@ -1,7 +1,8 @@
 <% content_for :js do %>
+  <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/intlTelInput.min' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/intlTelInput.min' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
 <% end %>
 
 <script>
@@ -127,7 +128,7 @@
   </header>
 
 
-  <div class="quickview-body">
+  <div class="quickview-body" data-utils-script="<%= asset_path('plugins/flexx_plugin_crm/utils.js') %>">
     <%= form_tag admin_contacts_path, method: :post, id: 'new-contact-form', class: 'quickview-block form-type-material', data: { provide: 'validation' } do %>
 
       <div class="form-row">
@@ -157,8 +158,9 @@
       <div class="form-row">
         <div class="col-sm-6">
           <div class="form-group">
-            <input type="text" class="form-control" name="contact[phonenumbers_attributes][][number]">
-            <label>Phone Number</label>
+            <input type="tel" autocomplete="off" class="form-control" name="contact[phonenumbers_attributes][][number]">
+            <label style="top:-5px">Phone Number</label>
+            <div class="invalid-feedback"></div>
           </div>
         </div>
 

@@ -76,11 +76,12 @@ RSpec.configure do |config|
 end
 
 def sign_in
-  site = create(:site).decorate
-  user = create(:user, role: 'admin', parent_id: site.id).decorate
+  site = create(:site)
+  user = create(:user, role: 'admin', parent_id: site.id)
   expect_any_instance_of(Plugins::FlexxPluginCrm::ApplicationController).to receive(:cama_authenticate)
-  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_user).at_least(:once).and_return(user)
-  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_site).at_least(:once).and_return(site)
-  # expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:cama_current_user).at_least(:once).and_return(user)
+  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_user).at_least(:once).and_return(user.decorate)
+  expect_any_instance_of(CamaleonCms::CamaleonController).to receive(:current_site).at_least(:once).and_return(site.decorate)
+  # expect_any_instance_of(CamaleonCms::SessionHelper).to receive(:cama_current_user).at_least(:once).and_return(user.decorate)
+  # expect_any_instance_of(Draper::HelperProxy).to receive(:cama_current_user).at_least(:once).and_return(user)
   user
 end
