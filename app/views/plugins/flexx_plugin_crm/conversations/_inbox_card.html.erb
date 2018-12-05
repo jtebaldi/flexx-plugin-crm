@@ -1,6 +1,8 @@
 <% unless contact.blank? %>
   <% message = contact.messages.order(created_at: :desc).first %>
-  <a data-unread="<%= contact.messages.unread.count %>" data-date="<%= message.created_at.to_i %>" class="media align-items-center active" data-remote="true" href="<%= admin_conversation_path(contact.id) %>" onclick="loadConversation(this)">
+  <a data-unread="<%= contact.messages.unread.count %>" data-date="<%= message.created_at.to_i %>"
+    class="media align-items-center active" data-remote="true" href="<%= admin_conversation_path(contact.id) %>"
+    data-unanswered="<%= contact.unanswered_message? %>" onclick="loadConversation(this)">
     <div class="media-body">
       <div class="flexbox align-items-center">
         <strong class="title"><%= contact.print_name %></strong>

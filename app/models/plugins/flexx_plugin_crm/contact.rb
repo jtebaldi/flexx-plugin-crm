@@ -51,6 +51,10 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     tasks.pending.count
   end
 
+  def unanswered_message?
+    messages.order(:created_at).last.status == 'received'
+  end
+
   private
 
   def remove_pending_tasks

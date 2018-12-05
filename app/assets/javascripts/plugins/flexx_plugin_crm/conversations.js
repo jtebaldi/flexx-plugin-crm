@@ -115,4 +115,19 @@ app.ready(function() {
   //   wheelSpeed: .5,
   // });
   // $('#conversations-thread-panel').scrollToEnd();
+
+  $('#filter-unanswered').click((e) => {
+    var $contacts;
+    if ($(e.target).attr('aria-pressed') === 'true') {
+      $contacts = $('#inbox-list > a').removeClass('hidden');
+    } else {
+      $contacts = $('#inbox-list > a').not('[data-unanswered="true"]').addClass('hidden');
+    }
+
+    if ($contacts.not('.hidden').length) {
+      $contacts.first().trigger('click');
+    } else {
+      $('#thread-body').html('');
+    }
+  })
 });
