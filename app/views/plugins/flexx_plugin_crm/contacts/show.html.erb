@@ -214,7 +214,7 @@ input[type=radio].hide-control { display: none; }
                   <div class="form-group">
                     <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
                       <option>Type</option>
-                      <option value="mobile">Mobile</option>
+                      <option value="mobile" selected>Mobile</option>
                       <option value="home">Home</option>
                       <option value="other">Other</option>
                     </select>
@@ -225,6 +225,26 @@ input[type=radio].hide-control { display: none; }
                 </div>
               </div>
             <% end %>
+            <div class="row hidden" id="phone-row-template">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
+                  <input class="form-control" type="text" name="contact[phonenumbers_attributes][][number]" value="">
+                  <label>Phone</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select class="form-control" name="contact[phonenumbers_attributes][][phone_type]">
+                    <option>Type</option>
+                    <option value="mobile" selected>Mobile</option>
+                    <option value="home">Home</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 text-center"></div>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-6">
