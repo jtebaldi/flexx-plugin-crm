@@ -175,7 +175,7 @@ input[type=radio].hide-control { display: none; }
             <% if @contact.phonenumbers.present? %>
               <% @contact.phonenumbers.each_with_index do |phone, i| %>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-5 col-sm-5 col-6">
                     <div class="form-group">
                       <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="<%= phone.id %>">
                       <input class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="<%= phone.number %>">
@@ -183,7 +183,7 @@ input[type=radio].hide-control { display: none; }
                       <div class="invalid-feedback"></div>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 col-sm-3 col-6">
                     <div class="form-group">
                       <select class="form-control" data-provide="selectpicker" name="contact[phonenumbers_attributes][][phone_type]">
                         <option>Type</option>
@@ -193,9 +193,9 @@ input[type=radio].hide-control { display: none; }
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3 text-center">
+                  <div class="col-md-4 col-sm-4 text-center">
                     <% if i == 0%>
-                      <button class="btn btn-sm btn-info btn-outline mt-10" data-add="phone" type="button">Add Phone</button>
+                      <button class="btn btn-sm btn-info btn-outline mt-10" data-add="phone" type="button"><i class="ti-plus"></i> New Phone</button>
                     <% end %>
                   </div>
                 </div>
