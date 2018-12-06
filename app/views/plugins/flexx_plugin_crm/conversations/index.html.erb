@@ -43,13 +43,13 @@
                   </button>
                   <div class="dropdown-menu open" role="combobox" style="max-height: 219.2px; overflow: hidden; min-height: 0px; position: absolute; top: 26px; left: 0px; will-change: top, left;" x-placement="bottom-start">
                     <div class="dropdown-menu inner" role="listbox" aria-expanded="false" style="max-height: 219.2px; overflow-y: auto; min-height: 0px;">
-                      <a onclick="sortMe('#inbox-list', 'a', 'data-date', 'desc')" class="dropdown-item selected">
+                      <a onclick="sortMe('#inbox-list', 'a', 'data-date', 'desc')" data-sort-conversation="Newest" class="dropdown-item selected">
                         <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
                           <span class="text">Newest</span>
                           <span class=" ti-check check-mark"></span>
                         </span>
                       </a>
-                      <a onclick="sortMe('#inbox-list', 'a', 'data-unread', 'desc')" class="dropdown-item">
+                      <a onclick="sortMe('#inbox-list', 'a', 'data-unread', 'desc')" data-sort-conversation="Unread" class="dropdown-item">
                         <span tabindex="0" class="dropdown-item-inner " data-tokens="null" role="option" aria-disabled="false" aria-selected="false">
                           <span class="text">Unread</span>
                           <span class=" ti-check check-mark"></span>

@@ -117,17 +117,25 @@ app.ready(function() {
   // $('#conversations-thread-panel').scrollToEnd();
 
   $('#filter-unanswered').click((e) => {
-    var $contacts;
+    var $contacts = $('#inbox-list > a');
     if ($(e.target).attr('aria-pressed') === 'true') {
-      $contacts = $('#inbox-list > a').removeClass('hidden');
+      $contacts.removeClass('hidden');
     } else {
-      $contacts = $('#inbox-list > a').not('[data-unanswered="true"]').addClass('hidden');
+      $contacts.not('[data-unanswered="true"]').addClass('hidden');
     }
 
-    if ($contacts.not('.hidden').length) {
-      $contacts.first().trigger('click');
+    var $notHidden = $contacts.not('.hidden');
+    if ($notHidden.length) {
+      $notHidden.first().trigger('click');
     } else {
       $('#thread-body').html('');
     }
   })
+
+  $('[data-sort-conversation]').click((e) => {
+    var $this = $(e.currentTarget);
+    $this.closest('.btn-group').find('.filter-option').html($this.data('sortConversation'));
+    $('[data-sort-conversation').removeClass('selected');
+    $this.addClass('selected');
+  });
 });
