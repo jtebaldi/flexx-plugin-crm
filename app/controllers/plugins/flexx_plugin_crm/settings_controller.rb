@@ -1,7 +1,7 @@
 module Plugins::FlexxPluginCrm
   class SettingsController < Plugins::FlexxPluginCrm::ApplicationController
     layout 'flexx_next_admin'
-    before_action :set_business_email
+    before_action :set_vars, only: %i[index update]
 
     def index; end
 
@@ -39,8 +39,9 @@ module Plugins::FlexxPluginCrm
 
     private
 
-    def set_business_email
+    def set_vars
       @business_email = current_site.custom_field_values.find_by_custom_field_slug 'business_email'
+      @twilio_number  = current_site.custom_field_values.find_by_custom_field_slug 'twilio_default-number'
     end
 
     def user_params

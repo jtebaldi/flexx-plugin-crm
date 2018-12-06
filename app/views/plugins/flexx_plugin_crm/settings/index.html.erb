@@ -137,6 +137,12 @@
                         'canonical_identifier', 'friendly_identifier', current_site.timezone), class: 'form-control' %>
                       <label>Timezone</label>
                     </div>
+                    <% if @twilio_number %>
+                      <div class="form-group">
+                        <input class="form-control" readonly value="<%= @twilio_number.value %>">
+                        <label><%= @twilio_number.custom_fields.name %></input>
+                      </div>
+                    <% end %>
                   </div>
                 </div>
               </div>
