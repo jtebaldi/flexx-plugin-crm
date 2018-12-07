@@ -139,8 +139,8 @@
                     </div>
                     <% if @twilio_number %>
                       <div class="form-group">
-                        <input class="form-control" readonly value="<%= @twilio_number.value %>">
-                        <label><%= @twilio_number.custom_fields.name %></input>
+                        <input class="form-control" readonly value="<%= @twilio_number %>">
+                        <label>Your SMS Number</label>
                       </div>
                     <% end %>
                   </div>

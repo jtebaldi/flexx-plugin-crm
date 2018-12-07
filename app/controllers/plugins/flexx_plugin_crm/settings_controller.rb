@@ -41,7 +41,7 @@ module Plugins::FlexxPluginCrm
 
     def set_vars
       @business_email = current_site.custom_field_values.find_by_custom_field_slug 'business_email'
-      @twilio_number  = current_site.custom_field_values.find_by_custom_field_slug 'twilio_default-number'
+      @twilio_number  = current_site.get_option('twilio_campaigns_number')
     end
 
     def user_params
