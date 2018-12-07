@@ -91,6 +91,11 @@ Rails.application.routes.draw do
           get :email_validate, on: :collection
           get :username_validate, on: :collection
         end
+
+        scope :import, controller: 'plugins/flexx_plugin_crm/import' do
+          get '/', action: :index, as: :import
+          patch :contacts, as: :import_contacts
+        end
       end
 
       namespace 'plugins' do

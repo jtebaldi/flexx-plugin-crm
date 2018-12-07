@@ -1,0 +1,19 @@
+<div class="main-content">
+  <%= form_tag admin_import_contacts_path, method: :patch, multipart: true do %>
+    <div class="flexbox row">
+      <div class="col-sm-6">
+        <p>Import contacts from CSV</p>
+        <div class="input-group file-group">
+          <input class="form-control file-value" placeholder="Choose CSV file..." readonly type="text">
+          <%= file_field_tag "contacts" %>
+          <span class="input-group-append">
+            <button class="btn btn-light file-browser" type="button">
+              <i class="fa fa-upload"></i>
+            </button>
+            <button class="btn btn-primary" type="submit">Upload</button>
+          </span>         
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
