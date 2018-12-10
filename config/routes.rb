@@ -94,7 +94,7 @@ Rails.application.routes.draw do
 
         scope :import, controller: 'plugins/flexx_plugin_crm/import' do
           get '/', action: :index, as: :import
-          patch :contacts, as: :import_contacts
+          post :contacts, as: :import_contacts
         end
       end
 
