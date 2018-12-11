@@ -3,9 +3,12 @@ module Plugins::FlexxPluginCrm
     layout 'flexx_next_admin'
 
     def index
-      @active_contacts = current_site.contacts.active
+      @active_contacts = current_site.contacts.includes(cama_contact_form: :parent).active
       @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
       @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
+      @forms_completed = current_site.contact_forms.includes(:contact)
+                                     .where.not(contacts: { id: nil }, parent_id: nil)
+                                     .order(created_at: :desc)
     end
 
     def settings

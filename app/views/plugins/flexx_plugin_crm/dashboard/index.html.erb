@@ -107,7 +107,32 @@
       </div>
     </div>
 
+    <div class="col-md-6">
+      <div class="card">
+        <h5 class="card-title"><strong>Recent</strong> forms</h5>
+        <div class="media-list media-list-hover media-list-divided scrollable" style="height: 316px">
+          <% @forms_completed.each do |f| %>
+            <div class="media media-single">
+              <% if f.created_at > 24.hours.ago %>
+                <i class="fa fa-bolt text-yellow"></i>
+              <% end %>
+              <a href="<%= admin_contact_path(f.contact.id) %>">
+                <span class="avatar avatar-lg"><%= f.contact.initials %></span>
+              </a>
+              <div class="media-body">
+                <h6><%= f.contact.print_name %></h6>
+              </div>
+              <div class="media-body"><%= f.parent.name %></div>
+              <div class="media-body"><%= f.created_at.strftime '%m/%d%Y' %></div>
 
+              <div class="media-right">
+                <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px" href="#" data-from-form="<%= f.id %>">View</a>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
     <div class="col-12">
       <div class="divider text-uppercase fw-500">Analytics</div>

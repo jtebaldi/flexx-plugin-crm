@@ -23,6 +23,8 @@ Rails.application.config.to_prepare do
     has_many :automated_campaign_to_contact_form_associations, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignToContactFormAssociation'
     has_many :automated_campaigns, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', through: :automated_campaign_to_contact_form_associations
 
+    has_one :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
+
     belongs_to :parent, class_name: 'Plugins::CamaContactForm::CamaContactForm'
 
     after_create :add_contact
