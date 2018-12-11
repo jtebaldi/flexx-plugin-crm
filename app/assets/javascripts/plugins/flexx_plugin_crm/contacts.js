@@ -201,4 +201,18 @@ app.ready(function() {
       $records.filter(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).removeClass('hidden');
     }
   });
+
+  var $contacts = $('[data-name]');
+
+  $('#contact-search').keyup((e) => {
+    $contacts.each((i, elm) => {
+      var r = new RegExp(e.target.value.toLowerCase());
+      var $elm = $(elm);
+      if (r.test($elm.data('name').toLowerCase())) {
+        $elm.removeClass('hidden');
+      } else {
+        $elm.addClass('hidden');
+      }
+    });
+  });
 });
