@@ -79,7 +79,7 @@ Rails.application.config.to_prepare do
 
       phone = the_settings[:fields][cids[:phone_number]].gsub(/((?!^)\+|[^\+\d])/, '')
 
-      phone = "+#{phone}" if phone =~ /^\d/ && phone.size == 10
+      phone = "+1#{phone}" if phone =~ /^\d/ && phone.size == 10
 
       Plugins::FlexxPluginCrm::Phonenumber.find_or_create_by(
         site_id: parent.site_id, number: phone
