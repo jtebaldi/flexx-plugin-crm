@@ -1,22 +1,22 @@
 require 'mustache'
 
 class DynamicFieldsParserService
-  def self.parse(site:, template:)
-    self.new(site, template, nil).parse
+  def self.parse(site:, template:, escape: true)
+    self.new(site, template, nil, escape).parse
   end
 
-  def self.parse_contact(site:, template:, contact:)
-    self.new(site, template, contact).parse
+  def self.parse_contact(site:, template:, contact:, escape: true)
+    self.new(site, template, contact, escape).parse
   end
 
-  def initialize(site, template, contact)
+  def initialize(site, template, contact, escape = true)
     @site = site
-    @template = template
+    @template = escape ? template : template.gsub('{{', '{{{').gsub('}}', '}}}')
     @contact = contact
   end
 
   def parse
-    fields = Hash[ @site.stocks.snippets.pluck(:label, :contents) ]
+    fields = Hash[@site.stocks.snippets.pluck(:label, :contents)]
     fields.merge!(load_contact_fields)
 
     Mustache.render(@template, fields)

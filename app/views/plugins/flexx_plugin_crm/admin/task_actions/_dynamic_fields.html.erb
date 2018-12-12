@@ -1,0 +1,10 @@
+<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Insert Dynamic Fields</button>
+<div class="dropdown-menu">
+  <% @dynamic_fields.each do |df| %>
+    <% if df.first == '-' %>
+      <div class="dropdown-divider"></div>
+    <% else %>
+      <a href="#" class="dropdown-item" data-dynamic-field="<%= df.last %>"><%= df.first %></a>
+    <% end %>
+  <% end %>
+</div>

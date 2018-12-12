@@ -81,9 +81,7 @@ module Plugins::FlexxPluginCrm
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
       @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)
-      @dynamic_fields = {
-        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
-      }.to_json
+      @dynamic_fields = df_defaults + [['-', '']] + df_snippets
     end
 
     def contact_params

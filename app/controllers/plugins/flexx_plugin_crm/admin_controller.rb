@@ -1,6 +1,7 @@
 module Plugins::FlexxPluginCrm
   class AdminController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::MainHelper
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
     layout "layouts/flexx_next_admin"
 
@@ -64,6 +65,7 @@ module Plugins::FlexxPluginCrm
 
     def task_card
       @task = current_site.tasks.find(params[:id])
+      @dynamic_fields = df_defaults + [['-', '']] + df_snippets
 
       render partial: "plugins/flexx_plugin_crm/tasks/task_card"
     end

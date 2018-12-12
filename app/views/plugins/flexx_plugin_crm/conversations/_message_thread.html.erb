@@ -21,6 +21,9 @@
     <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
     <input name="body" style="width: 100%" id="conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+    <div class="gap-items btn-group">
+      <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
+    </div>
   <% end %>
   <div class="gap-items">
     <a class="publisher-btn" id="conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
