@@ -22,7 +22,7 @@
           <% end %>
         <% end %>
         <p style="color: #333">
-          <span class="h6"><%= task.title %></span> completed by <strong><%= task.updated_by_user.first_name %></strong>          
+          <span class="h6"><%= task.title %><%= task.email_recipient && !task.email_recipient.email.subject.blank? ? " (#{task.email_recipient.email.subject})" : '' %></span> completed by <strong><%= task.updated_by_user.first_name %></strong>          
         </p>
       </div>
     </li>
