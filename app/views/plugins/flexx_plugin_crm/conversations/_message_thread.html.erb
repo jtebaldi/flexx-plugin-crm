@@ -20,12 +20,15 @@
   <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
     <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
-    <input name="body" style="width: 100%" id="conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+    <input name="body" style="width: 90%" id="conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+    <div class="gap-items btn-group pull-right mr-10">
+      <%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %>
+    </div>
   <% end %>
   <div class="gap-items">
     <a class="publisher-btn" id="conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
   </div>
   <div class="gap-items">
-    <div id="conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow invisible"></div>
+    <div id="conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
   </div>
 </footer>

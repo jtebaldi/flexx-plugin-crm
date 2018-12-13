@@ -129,4 +129,12 @@ $(function(){
       $this.closest('tr').detach();
     }
   });
+
+  $(document).on('click', '[data-dynamic-field]', (e) => {
+    var $input = $(e.target).closest('form').find('#contact-conversations-text-message,\
+     #task-send-text-message, #conversations-text-message');
+    var pos = $input[0].selectionStart;
+    var text = $input.val();
+    $input.val(`${text.substr(0, pos)}{{${e.target.dataset.dynamicField}}}${text.substr(pos, text.length)}`);
+  });
 });

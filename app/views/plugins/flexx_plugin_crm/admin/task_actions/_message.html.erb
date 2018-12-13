@@ -14,6 +14,7 @@
       <input type="hidden" class="form-control" name="recipients" value="<%= task.contact.id %>">
       <input type="hidden" class="form-control" name="phonenumber" value="<%= task.contact.phonenumbers.mobile.first.number %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
+      <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
       <div class="publisher publisher-multi">
         <img class="publisher-avatar avatar avatar-md" src="<%= current_site.get_option("icon") %>" alt="...">
         <label for="textarea" class="pl-10">SMS Message</label>
@@ -22,7 +23,7 @@
     <% end %>
     <!--<div class="flexbox">
       <button class="btn btn-sm btn-bold btn-primary" id="task-send-text-button" onclick="submitTaskSendMessageForm()">Send</button>
-      <div id="task-send-text-spinner" class="spinner-circle-shadow invisible"></div>
+      <div id="task-send-text-spinner" class="spinner-circle-shadow hidden"></div>
     </div>    
     -->
   </div>

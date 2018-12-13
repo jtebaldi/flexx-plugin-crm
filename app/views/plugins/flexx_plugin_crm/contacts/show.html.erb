@@ -20,7 +20,7 @@
     });
   });
 
-  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+  window.dynamic_fields = <%= { flexxdynamicfields: @dynamic_fields }.to_json.html_safe %>;
 
 </script>
 
@@ -400,12 +400,15 @@ input[type=radio].hide-control { display: none; }
                   <input type="hidden" class="form-control" name="recipients" value="<%= @contact.id %>">
                   <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
                   <input name="body" style="width: 100%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+                  <div class="gap-items btn-group">
+                    <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
+                  </div>
                 <% end %>
                 <div class="gap-items">
                   <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
                 </div>
                 <div class="gap-items">
-                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow invisible"></div>
+                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
                 </div>
               </footer>
             <% end %>
@@ -529,7 +532,7 @@ input[type=radio].hide-control { display: none; }
     <% end %>
   </div>
   <footer class="quickview-footer flex-row-reverse">
-    <div id="new-contact-task-spinner" class="spinner-circle-shadow invisible"></div>
+    <div id="new-contact-task-spinner" class="spinner-circle-shadow hidden"></div>
     <button class="btn btn-success" id="new-contact-task-add" onclick="addNewContactTask()">Add</button>
     <button class="btn btn-danger" id="new-contact-task-cancel" onclick="closeTaskView(this)">Cancel</button>
   </footer>
