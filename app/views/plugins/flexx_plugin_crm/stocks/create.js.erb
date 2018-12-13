@@ -3,12 +3,12 @@
   $('#snippet-stock-form')[0].reset();
   $('#snippet-stock-save').toggleClass('disabled');
   $('#snippet-stock-cancel').toggleClass('disabled');
-  $('#snippet-stock-spinner').toggleClass('invisible');
+  $('#snippet-stock-spinner').toggleClass('hidden');
 <% when 'rich_text' %>
   $('#rich-text-stock-form')[0].reset();
   $('#rich-text-stock-save').toggleClass('disabled');
   $('#rich-text-stock-cancel').toggleClass('disabled');
-  $('#rich-text-stock-spinner').toggleClass('invisible');
+  $('#rich-text-stock-spinner').toggleClass('hidden');
 <% end %>
 
 quickview.close($('#qv-stock'));

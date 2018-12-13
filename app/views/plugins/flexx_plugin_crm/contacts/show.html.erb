@@ -408,7 +408,7 @@ input[type=radio].hide-control { display: none; }
                   <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
                 </div>
                 <div class="gap-items">
-                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow invisible"></div>
+                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
                 </div>
               </footer>
             <% end %>
@@ -532,7 +532,7 @@ input[type=radio].hide-control { display: none; }
     <% end %>
   </div>
   <footer class="quickview-footer flex-row-reverse">
-    <div id="new-contact-task-spinner" class="spinner-circle-shadow invisible"></div>
+    <div id="new-contact-task-spinner" class="spinner-circle-shadow hidden"></div>
     <button class="btn btn-success" id="new-contact-task-add" onclick="addNewContactTask()">Add</button>
     <button class="btn btn-danger" id="new-contact-task-cancel" onclick="closeTaskView(this)">Cancel</button>
   </footer>
