@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Plugins::FexxPluginCrm::WebhooksControllers", type: :request do
+RSpec.describe "Plugins::FexxPluginCrm::WebhooksController", type: :request do
   describe "POST /admin/next/webhooks/sendgrid_events" do
     before :each do
       @email = create :email, :with_site, :recipients, sg_message_id: 'tk_wpzmPSMGGQ3HWqJ6Bkg'

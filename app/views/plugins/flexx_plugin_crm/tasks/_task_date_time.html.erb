@@ -1,0 +1,17 @@
+<div class="col-4">
+  <div class="form-group mb-10">
+    <p class="form-control-plaintext pt-0"><%= @task.due_date.strftime('%m/%d/%Y') %></p>
+    <label class="label-floated">Date</label>
+  </div>
+</div>
+<div class="col-4">
+  <div class="form-group mb-10">
+    <p class="form-control-plaintext pt-0"><%= @task.due_date.strftime('%I:%M %p') %></p>
+    <label class="label-floated">Time</label>
+  </div>
+</div>
+<% unless @task.done? %>
+  <div class="col-4">
+    <button class="btn btn-square btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-alarm-clock"></i></button>
+  </div>
+<% end %>

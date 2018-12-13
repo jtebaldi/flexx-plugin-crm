@@ -137,4 +137,8 @@ $(function(){
     var text = $input.val();
     $input.val(`${text.substr(0, pos)}{{${e.target.dataset.dynamicField}}}${text.substr(pos, text.length)}`);
   });
+
+  $(document).on('submit', '#defer-task-form', (e) => {
+    e.preventDefault();
+  });
 });

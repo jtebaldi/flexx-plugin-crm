@@ -96,16 +96,16 @@ module Plugins::FlexxPluginCrm
     end
 
     def defer_task
-      task = current_site.tasks.find(params[:task_id])
+      @task = current_site.tasks.find(params[:task_id])
 
       params[:task].merge!(updated_by: current_user.id)
       params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
-      task.update(task_params)
+      @task.update(task_params)
 
       case params[:refresh_panel]
       when 'contact-detail'
-        @contact = task.contact
+        @contact = @task.contact
       when 'tasks-dashboard'
         @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
         @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)

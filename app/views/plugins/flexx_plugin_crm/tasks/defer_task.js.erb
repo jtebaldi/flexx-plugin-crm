@@ -2,11 +2,12 @@
   <% when 'contact-detail' %>
     $('#contact-open-tasks-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
     $('#contact-timeline-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/timeline', locals: { refresh_panel: 'view-contact-tasks-panels' }) %>');
-    quickview.close($('#qv_view_task'));
+    // quickview.close($('#qv_view_task'));
   <% when 'tasks-dashboard' %>
     $('#todays-tasks-list').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' }) %>');
     $('#upcoming-tasks-list').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' }) %>');
     $('#old-pending-tasks-list').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' }) %>');
 <% end %>
 
+$('#task-date-time').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/tasks/task_date_time') %>');
 $('#modal-defer-task').modal('hide');

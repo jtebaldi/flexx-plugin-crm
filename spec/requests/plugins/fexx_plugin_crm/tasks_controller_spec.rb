@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Plugins::FexxPluginCrm::TasksControllers', type: :request do
+RSpec.describe 'Plugins::FexxPluginCrm::TasksController', type: :request do
   describe 'GET /admin/next/tasks' do
     it 'show tasks list' do
       sign_in
