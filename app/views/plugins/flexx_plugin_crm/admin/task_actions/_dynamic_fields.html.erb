@@ -1,10 +1,12 @@
-<button class="btn btn-sm btn-bold btn-yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="ti-wand"></i></button>
-<div class="dropdown-menu">
-  <% @dynamic_fields.each do |df| %>
+<button class="btn btn-sm btn-bold btn-yellow dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false"><i class="ti-wand"></i></button>
+<div class="dropdown-menu dropdown-menu-right">
+  <h6 class="dropdown-header" style="padding: 5px 12px;">Contact</h6>
+  <% @dynamic_fields.each do |df| %>    
     <% if df.first == '-' %>
       <div class="dropdown-divider"></div>
+      <h6 class="dropdown-header" style="padding: 5px 12px;">Snippets</h6>
     <% else %>
-      <a href="#" class="dropdown-item" data-dynamic-field="<%= df.last %>"><%= df.first %></a>
+      <a style="padding: 0px 10px;" href="#" class="dropdown-item" data-dynamic-field="<%= df.last %>"><%= df.first %></a>
     <% end %>
   <% end %>
 </div>
