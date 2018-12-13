@@ -21,6 +21,7 @@ module Plugins::FlexxPluginCrm
 
     def show
       @contact = current_site.contacts.find(params[:id])
+      @dynamic_fields = df_defaults + [['-', '']] + df_snippets
 
       MessageBlastService.mark_contact_messages_read(contact: @contact)
 
