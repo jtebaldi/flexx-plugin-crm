@@ -33,8 +33,8 @@ function submitConversationsSendMessageForm(e) {
   }
 
   $('#conversations-text-message').toggleClass('disabled');
-  $('#conversations-text-button').toggleClass('disabled');
-  $('#conversations-text-spinner').toggleClass('invisible');
+  $('#conversations-text-button').toggleClass('hidden');
+  $('#conversations-text-spinner').toggleClass('hidden');
   $('#conversations-send-message-form :input').prop('readonly', true);
 }
 

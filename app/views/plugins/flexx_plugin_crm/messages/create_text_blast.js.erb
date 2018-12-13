@@ -2,7 +2,7 @@
 <% when 'task-panel' %>
   $('#task-send-message-form')[0].reset();
   $('#task-send-text-message').toggleClass('disabled');
-  $('#task-send-text-button').toggleClass('disabled');
+  $('#task-send-text-button').toggleClass('hidden');
   $('#task-send-text-spinner').toggleClass('hidden');
   $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :desc) })  %>');
 <% when 'contact-view' %>
@@ -11,14 +11,14 @@
 <% when 'contact-conversations-panel' %>
   $('#conversations-send-message-form')[0].reset();
   $('#contact-conversations-text-message').toggleClass('disabled');
-  $('#contact-conversations-text-button').toggleClass('disabled');
+  $('#contact-conversations-text-button').toggleClass('hidden');
   $('#contact-conversations-text-spinner').toggleClass('hidden');
   $("#conversations-send-message-form :input").prop("readonly", false);
   $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :asc) })  %>');
 <% when 'conversations-thread-panel' %>
   $('#conversations-send-message-form')[0].reset();
   $('#conversations-text-message').toggleClass('disabled');
-  $('#conversations-text-button').toggleClass('disabled');
+  $('#conversations-text-button').toggleClass('hidden');
   $('#conversations-text-spinner').toggleClass('hidden');
   $("#conversations-send-message-form :input").prop("readonly", false);
   $('#conversations-thread-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :asc) }) %>');

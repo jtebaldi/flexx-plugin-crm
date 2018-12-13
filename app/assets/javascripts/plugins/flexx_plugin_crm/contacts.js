@@ -81,8 +81,8 @@ function submitConversationsSendMessageForm(e) {
   }
 
   $('#contact-conversations-text-message').toggleClass('disabled');
-  $('#contact-conversations-text-button').toggleClass('disabled');
-  $('#contact-conversations-text-spinner').toggleClass('invisible');
+  $('#contact-conversations-text-button').toggleClass('hidden');
+  $('#contact-conversations-text-spinner').toggleClass('hidden');
   $("#conversations-send-message-form :input").prop("readonly", true);
 }
 

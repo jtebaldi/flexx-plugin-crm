@@ -11,8 +11,8 @@ function sendConfirmation(taskId) {
 
 function submitTaskSendMessageForm() {
   $('#task-send-text-message').toggleClass('disabled');
-  $('#task-send-text-button').toggleClass('disabled');
-  $('#task-send-text-spinner').toggleClass('invisible'); try { ckeditor.updateSourceElement(); } catch(err) { } finally { $('#task-send-message-form').submit();
+  $('#task-send-text-button').toggleClass('hidden');
+  $('#task-send-text-spinner').toggleClass('hidden'); try { ckeditor.updateSourceElement(); } catch(err) { } finally { $('#task-send-message-form').submit();
   }
 }
 
