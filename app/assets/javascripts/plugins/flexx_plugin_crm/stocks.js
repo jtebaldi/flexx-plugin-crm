@@ -52,4 +52,27 @@ app.ready(function() {
   });
 
   observer.observe(document.getElementById('qv-stock'), { childList: true });
+
+  $('#qv-stock').on('qv.loaded', () => {
+    $('#snippet-stock-form').validator({
+      custom: {
+        'snippet-code': ($elm) => {
+          if (['contact_email', 'contact_first_name', 'contact_last_name'].includes($elm.val())) {
+            return 'The code is reserver for system snippet.';
+          }
+        },
+        'snippet-name': ($elm) => {
+          if (['E-mail', 'First Name', 'Last Name'].includes($elm.val())) {
+            return 'The name is reserved for system snippet.';
+          }
+        }
+      }
+    }).on('submit', (e) => {
+      if (e.isDefaultPrevented()) {
+        e.stopPropagation();
+      } else {
+
+      }
+    });
+  });
 });

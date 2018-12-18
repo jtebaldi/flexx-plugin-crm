@@ -3,9 +3,9 @@ module Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
   def df_defaults
     [
-      ['E-mail', 'email'],
-      ['First Name', 'first_name'],
-      ['Last Name', 'last_name']
+      ['E-mail', 'contact_email'],
+      ['First Name', 'contact_first_name'],
+      ['Last Name', 'contact_last_name']
     ]
   end
 
