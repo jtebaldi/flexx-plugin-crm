@@ -25,8 +25,8 @@ function loadConversation(card) {
   $('#thread-body').html('');
 }
 
-function submitConversationsSendMessageForm(e) {
-  e.preventDefault();
+function submitConversationsSendMessageForm() {
+  // e.preventDefault();
 
   if($('#conversations-text-message').val() == ''){
     return false;
@@ -36,6 +36,7 @@ function submitConversationsSendMessageForm(e) {
   $('#conversations-text-button').toggleClass('hidden');
   $('#conversations-text-spinner').toggleClass('hidden');
   $('#conversations-send-message-form :input').prop('readonly', true);
+  $('#conversations-send-message-form').submit();
 }
 
 function submitConversationsSendNewMessageForm(e) {
@@ -80,7 +81,7 @@ app.ready(function() {
     clearContactId = false;
   });
 
-  $('#conversations-send-message-form').on('submit', submitConversationsSendMessageForm);
+  // $(document).on('submit', '#conversations-send-message-form', submitConversationsSendMessageForm);
   $('#conversations-send-new-message-form').on('submit', submitConversationsSendNewMessageForm);
 
   // -------------------------- START: Make thread fullscreen
