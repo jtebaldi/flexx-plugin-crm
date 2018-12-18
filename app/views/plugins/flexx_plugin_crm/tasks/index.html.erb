@@ -228,7 +228,7 @@
         </div>
       </div>
 
-      <div id="modal-assign-staff" class="modal fade" tabindex="-1" style="background-color:#7f7f7f;opacity:0.5" role="dialog" aria-hidden="true">
+      <div id="modal-assign-staff" class="modal fade" tabindex="-1" style="background-color:#7f7f7f;" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -237,6 +237,9 @@
             </div>
             <div class="modal-body">
               <%= render 'plugins/flexx_plugin_crm/tasks/owners' %>
+              <div class="text-right">
+                <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal">Done</button>
+              </div>
             </div>
           </div>
         </div>
