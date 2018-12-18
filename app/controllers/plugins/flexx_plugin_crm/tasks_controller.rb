@@ -19,7 +19,7 @@ module Plugins::FlexxPluginCrm
       params[:task].merge!(updated_by: current_user.id)
       params[:task][:due_date] = due_date if params[:task][:due_date].present?
 
-      task = current_site.tasks.create(task_params)
+      current_site.tasks.create(task_params)
 
       redirect_to action: :index
     end

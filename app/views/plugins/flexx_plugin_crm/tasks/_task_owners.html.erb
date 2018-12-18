@@ -1,18 +1,5 @@
 <%= form_tag admin_task_path(id: @task.id, format: :js), method: :patch, remote: true, authenticity_token: true do %>
-  <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
-  <input type="hidden" name="task[owner_ids][]" value="">
-  <div class="media-list media-list-xs media-list-divided media-list-hover" data-provide="selectable">
-    <% current_site.users.order(:username).each do |user| %>
-      <a class="media media-single" href="#">
-        <span class="avatar"><%= user.initials %></span>
-        <span class="title"><%= user.print_name %></span>
-        <div class="custom-control no-border custom-control-lg custom-checkbox">
-          <input name="task[owner_ids][]" type="checkbox" value="<%= user.id %>" class="custom-control-input" <%= @current_owners.include?(user.id) ? 'checked' : '' %>>
-          <label class="custom-control-label"></label>
-        </div>
-      </a>
-    <% end %>
-  </div>
+  <%= render 'plugins/flexx_plugin_crm/tasks/owners' %>
   <div class="text-right">
     <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
     <input type="submit" class="btn btn-bold btn-pure btn-primary" value="Save changes">

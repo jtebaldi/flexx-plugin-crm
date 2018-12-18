@@ -219,6 +219,27 @@
             <textarea class="form-control" rows="6" name="task[details]"></textarea>
           </div>
         </div>
+
+        <div class="pull-right">
+          <span class="pr-12">Assign to: </span>
+          <div class="avatar-list">
+          </div>
+          <button type="button" class="avatar avatar-add" data-assign="staff" data-target="#modal-assign-staff"></button>
+        </div>
+      </div>
+
+      <div id="modal-assign-staff" class="modal fade" tabindex="-1" style="background-color:#7f7f7f;opacity:0.5" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Assign staff</h5>
+              <button class="close" type="button" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <%= render 'plugins/flexx_plugin_crm/tasks/owners' %>
+            </div>
+          </div>
+        </div>
       </div>
 
     <% end %>
