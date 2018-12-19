@@ -11,7 +11,7 @@ class MessageBlastService
     @body = body
   end
 
-  def call(task = nil)
+  def call(task = false)
     send_at = @scheduled_at.present? ?
       Time.strptime("#{@scheduled_at} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone :
       Time.current
@@ -25,13 +25,13 @@ class MessageBlastService
         from_number: @site.get_option('twilio_campaigns_number'),
         to_number: with_country_code(contact.phonenumbers.mobile.first.number),
         message: DynamicFieldsParserService.parse_contact(site: @site, template: @body, contact: contact, escape: false),
-        aasm_state: (task ? :task_scheduled : :scheduled),
+        aasm_state: (task || task.nil? ? :task_scheduled : :scheduled),
         send_at: send_at,
         created_by: @user.id
       )
 
       unless @scheduled_at.present?
-        if task
+        if task || task.nil?
           message.send_task_message!
         else
           message.send_message!

@@ -81,9 +81,13 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_text
-      task = current_site.tasks.find params[:task_id]
+      task = current_site.tasks.find_by_id params[:task_id]
       text_blast from_task: task
-      head :created
+      if params[:task_id]
+        head :created
+      else
+        render :create_text_blast
+      end
     end
 
     def create_text_blast
@@ -109,7 +113,9 @@ module Plugins::FlexxPluginCrm
       ).call from_task
     end
 
-    def text_blast(from_task: nil)
+    # @param from_task [Plugind::FlexxPluginCrm::Task, FalseClass, NilClass]
+    #   Task if from task, false if from blast, nil if form conversations
+    def text_blast(from_task: false)
       recipients_list = params[:recipients].split(',')
       MessageBlastService.new(
         site: current_site,

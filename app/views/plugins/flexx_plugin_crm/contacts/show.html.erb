@@ -396,7 +396,7 @@ input[type=radio].hide-control { display: none; }
             <% if @contact.phonenumbers.mobile.present? %>
               <footer class="publisher">
                 <span class="avatar"><%= current_user.initials %></span>
-                <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+                <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
                   <input type="hidden" class="form-control" name="recipients" value="<%= @contact.id %>">
                   <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
                   <input name="body" style="width: 90%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
