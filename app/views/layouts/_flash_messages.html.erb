@@ -1,0 +1,12 @@
+<% flash.each do |k, v| %>
+  <div class="alert alert-dismissible fade show mb-0 alert-<%= k == 'notice' ? 'primary' : 'danger' %>" role="alert">
+    <% if v.is_a? String %>
+      <%= v %>
+    <% else %>
+      <%= v.map { |k, v| "#{k.to_s.capitalize} #{v.join ' '}" }.join '</br>' %>
+    <% end %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>

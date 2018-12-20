@@ -18,7 +18,7 @@
       <li class="dropdown">
         <span class="topbar-btn" data-toggle="dropdown"><span class="avatar"><%= current_user.initials %></span></span>
         <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="<%= admin_settings_path() %>"><i class="ti-user"></i> Profile</a>
+          <a id="link-to-profile" class="dropdown-item" href="<%= index_admin_settings_path(:profile) %>"><i class="ti-user"></i> Profile</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<%= cama_admin_logout_path() %>"><i class="ti-power-off"></i> Logout</a>
         </div>

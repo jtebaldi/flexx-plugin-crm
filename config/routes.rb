@@ -87,9 +87,13 @@ Rails.application.routes.draw do
           get :from_form, on: :collection
         end
 
-        resources :settings, controller: 'plugins/flexx_plugin_crm/settings', only: %i[index update] do
+        resources :settings, controller: 'plugins/flexx_plugin_crm/settings' do
           get :email_validate, on: :collection
           get :username_validate, on: :collection
+          patch :update, on: :collection
+          patch :profile_update, on: :collection
+          patch :password_update, on: :collection
+          get '/(:tab)', action: :index, on: :collection, as: :index
         end
 
         scope :import, controller: 'plugins/flexx_plugin_crm/import' do

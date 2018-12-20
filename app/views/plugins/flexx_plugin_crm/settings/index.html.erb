@@ -1,6 +1,6 @@
 <% content_for :js do %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/settings' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
   <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
   <%= javascript_include_tag 'camaleon_cms/admin/uploader/_media_manager' %>
@@ -25,102 +25,22 @@
       <div class="card">
         <ul class="nav nav-lg nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#tab_profile" data-toggle="tab">Settings</a>
+            <a class="<%= 'nav-link' + @settings_class %>" href="#tab_settings" data-toggle="tab">Settings</a>
           </li>
-          <!--<li class="nav-item">
-            <a class="nav-link" href="#tab_email_settings" data-toggle="tab">Email Settings</a>
-          </li>-->
+          <li class="nav-item">
+            <a class="<%= 'nav-link' + @profile_class %>" href="#tab_profile" data-toggle="tab">Profile</a>
+          </li>
         </ul>
       </div>
     </div>
 
     <div class="col-lg-9 tab-content">
-      <div id='tab_profile' class='tab-pane form-type-material fade active show card'>
-        <%= form_for current_user, as: :user, url: admin_setting_path(current_user), html: { id: 'user_form' }, class: 'form-type-material' do |f| %>
+
+      <div id='tab_settings' class="<%= 'tab-pane form-type-material fade show card' + @settings_class %>">
+        <%= form_tag admin_settings_path, method: :patch, id: 'settings-form', class: "form-type-material" do %>
           <h4 class="card-title fw-400">Settings</h4>
 
           <div class="card-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <h5 class='my-4 pb-3'>Profile Information</h5>                   
-
-                <div class="flexbox gap-items-4 mt-30">
-                  <div class="flex-grow">
-
-                    <div class="form-group">
-                      <%= f.text_field :first_name, class: 'form-control' %>
-                      <%= f.label :first_name %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= f.text_field :last_name, class: 'form-control' %>
-                      <%= f.label :last_name %>
-                    </div>
-
-                    <div class="form-group require">
-                      <%= f.email_field :email, required: true, class: "form-control" %>
-                      <%= f.label :email, class: 'required' %>
-                    </div>                  
-
-                  </div>
-                </div>
-
-              </div>
-              
-              <div class="col-lg-6">  
-                <div class="flexbox gap-items-4 mb-4">
-                  <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= current_user.initials %></span>
-
-                  <div class="flex-grow">
-                    <h5 class='mt-4'><%= current_user.the_name %></h5>
-                    <!--<div class="flexbox justify-content-start mt-16">
-                      <div class="file-group file-group-inline">
-                        <button class="btn btn-sm btn-w-lg btn-bold btn-secondary btn_change_photo" type="button">Change Picture</button>
-                        <input type="file">
-                      </div>
-
-                      <a class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
-                    </div>-->
-                    
-                  </div>
-                </div> 
-
-                <div class="flexbox gap-items-4">
-                  <div class="flex-grow">                    
-
-                    <div class="pt-1 form-group require">
-                      <%= f.text_field :username, required: true, class: "form-control" %>
-                      <%= f.label :username, class: 'required' %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= f.text_field :email, class: "form-control#{invalid_class(f.object.errors[:email])}" %>
-                      <%= invalid_feedback f.object.errors[:email] %>
-                      <%= f.label :email, class: 'required' %>
-                    </div>                       
-
-                    <!--<div class="form-group">
-                      <input class="form-control" type="text" name="" value="">
-                      <label>flexx Email Address</label>
-                    </div>-->
-
-                    <!--<div class="form-group">
-                      <select class="form-control" data-provide="selectpicker" name="">
-                        <option>Role</option>
-                        <option value="">Site Owner</option>
-                        <option value="">Editor</option>
-                        <option value="">Contributor</option>
-                      </select>
-                    </div>-->
-
-                    <!--<a class="btn btn-sm btn-w-lg btn-bold btn-warning" href="#" data-toggle="modal" data-target="#modal_update_pw">Update Password</a>-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <hr>
-
             <div class="row">
               <div class="col-lg-6">  
                 <div class="flexbox gap-items-4">
@@ -147,7 +67,84 @@
                 </div>
               </div>
             </div>
+          </div>
 
+          <footer class="card-footer text-right">
+            <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
+          </footer>
+        <% end %>
+      </div>
+
+      <div id='tab_profile' class="<%= 'tab-pane form-type-material show fade card' + @profile_class %>">
+        <%= form_for current_user, as: :user, url: profile_update_admin_settings_path, html: { id: 'user-form' }, class: 'form-type-material' do |f| %>
+          <h4 class="card-title fw-400">Profile</h4>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+
+                <div class="flexbox gap-items-4 mb-4">
+                  <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= current_user.initials %></span>
+
+                  <div class="flex-grow">
+                    <h5 class='mt-4'><%= current_user.the_name %></h5>
+                    <!--<div class="flexbox justify-content-start mt-16">
+                      <div class="file-group file-group-inline">
+                        <button class="btn btn-sm btn-w-lg btn-bold btn-secondary btn_change_photo" type="button">Change Picture</button>
+                        <input type="file">
+                      </div>
+
+                      <a class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
+                    </div>-->
+                    
+                  </div>
+                </div> 
+
+                <div class="flexbox gap-items-4 mt-30">
+                  <div class="flex-grow">
+                    <div class="form-group">
+                      <%= f.text_field :first_name, class: 'form-control' %>
+                      <%= f.label :first_name %>
+                    </div>
+
+                    <div class="form-group">
+                      <%= f.text_field :last_name, class: 'form-control' %>
+                      <%= f.label :last_name %>
+                    </div>
+
+                    <div class="form-group require">
+                      <%= f.text_field :email, class: "form-control#{invalid_class(f.object.errors[:email])}" %>
+                      <%= invalid_feedback f.object.errors[:email] %>
+                      <%= f.label :email, class: 'required' %>
+                    </div>                  
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-6">  
+
+                <div class="flexbox gap-items-4">
+                  <div class="flex-grow">                    
+
+                    <div class="pt-1 form-group require">
+                      <%= f.text_field :username, required: true, class: "form-control" %>
+                      <%= f.label :username, class: 'required' %>
+                    </div>
+
+                    <!--<div class="form-group">
+                      <select class="form-control" data-provide="selectpicker" name="">
+                        <option>Role</option>
+                        <option value="">Site Owner</option>
+                        <option value="">Editor</option>
+                        <option value="">Contributor</option>
+                      </select>
+                    </div>-->
+
+                    <a class="btn btn-sm btn-w-lg btn-bold btn-warning" href="#" data-toggle="modal" data-target="#modal_update_pw">Update Password</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <footer class="card-footer text-right">
@@ -270,26 +267,27 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form class="card form-type-material tab-pane fade active show">
+      <%= form_for current_user, url: password_update_admin_settings_path, html: { id: 'password-form' }, class: "card form-type-material tab-pane fade active show" do |f| %>
         <div class="modal-body">
+          <div id="password-flash-messages"><%= render 'layouts/flash_messages' %></div>
           <div class="form-group">
-            <input class="form-control" type="text" name="" value="">
+            <input class="form-control" type="password" autocomplete="off" name="old_password" value="">
             <label>Old Password</label>
           </div>
           <div class="form-group">
-            <input class="form-control" type="text" name="" value="">
+            <%= f.password_field :password, class: 'form-control' %>
             <label>New Password</label>
           </div>
           <div class="form-group">
-            <input class="form-control" type="text" name="" value="">
+            <%= f.password_field :password_confirmation, class: 'form-control' %>
             <label>Re-enter Password</label>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-bold btn-pure btn-success">Update</button>
+          <button type="submit" class="btn btn-bold btn-pure btn-success">Update</button>
         </div>
-      </form>
+      <% end %>
     </div>
   </div>
 </div>
