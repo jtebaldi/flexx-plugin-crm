@@ -399,7 +399,7 @@ input[type=radio].hide-control { display: none; }
                 <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
                   <input type="hidden" class="form-control" name="recipients" value="<%= @contact.id %>">
                   <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
-                  <input name="body" style="width: 90%" id="contact-conversations-text-message" class="publisher-input" rows="1" placeholder="Write something">
+                  <input name="body" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
                   <div class="gap-items btn-group pull-right mr-10 dropup">
                     <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
                   </div>
