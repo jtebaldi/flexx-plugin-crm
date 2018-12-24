@@ -16,6 +16,18 @@ function submitTaskSendMessageForm() {
   }
 }
 
+/**
+ * 
+ * @param {Boolean} ask true if we need to confirm phone or meeting task comletion without notes.
+ */
+function completeTask(ask) {
+  var form = $('#update-task-form');
+  if (!ask || form.find('.media').length || confirm('You haven\'t posted any notes. Are you sure you want to complete?')) {
+    $('#task-status').val('done');
+    form.submit();
+  }
+}
+
 function updateNotesCounter(taskId, $notes) {
   var $task = $('[data-open-task="' + taskId + '"]');
   var $commentsCounter = $task.find('.fa.fa-comment.mr-1').parent();

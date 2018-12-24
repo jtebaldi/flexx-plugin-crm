@@ -76,7 +76,7 @@
       </div>
 
       <div id='tab_profile' class="<%= 'tab-pane form-type-material show fade card' + @profile_class %>">
-        <%= form_for current_user, as: :user, url: profile_update_admin_settings_path, html: { id: 'user-form' }, class: 'form-type-material' do |f| %>
+        <%= form_for current_user, as: :user, url: profile_update_admin_settings_path, html: { id: 'user_form' }, class: 'form-type-material' do |f| %>
           <h4 class="card-title fw-400">Profile</h4>
 
           <div class="card-body">
@@ -88,14 +88,14 @@
 
                   <div class="flex-grow">
                     <h5 class='mt-4'><%= current_user.the_name %></h5>
-                    <!--<div class="flexbox justify-content-start mt-16">
+                    <div class="flexbox justify-content-start mt-16">
                       <div class="file-group file-group-inline">
                         <button class="btn btn-sm btn-w-lg btn-bold btn-secondary btn_change_photo" type="button">Change Picture</button>
                         <input type="file">
                       </div>
 
                       <a class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
-                    </div>-->
+                    </div>
                     
                   </div>
                 </div> 
@@ -293,5 +293,5 @@
 </div>
 <script type="application/javascript">
     var root_admin_url = '<%= cama_admin_url(locale: nil) %>';
-    // jQuery(function ($) { init_profile_form(); });
+    jQuery(function ($) { init_profile_form(); });
 </script>
