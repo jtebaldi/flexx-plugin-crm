@@ -122,7 +122,7 @@ module Plugins::FlexxPluginCrm
         user: current_user,
         scheduled_at: nil,
         recipients_list: recipients_list,
-        body: DynamicFieldsParserService.parse(site: current_site, template: params[:body], escape: false)
+        body: params[:body] # DynamicFieldsParserService.parse(site: current_site, template: params[:body], escape: false)
       ).call from_task
       @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
