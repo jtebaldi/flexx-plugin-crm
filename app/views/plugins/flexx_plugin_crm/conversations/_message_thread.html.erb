@@ -17,7 +17,7 @@
 
 <footer class="publisher">
   <span class="avatar"><%= current_user.initials %></span>
-  <%= form_tag create_text_blast_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+  <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
     <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
     <input name="body" style="width: 90%" id="conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
