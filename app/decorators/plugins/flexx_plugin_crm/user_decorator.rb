@@ -13,7 +13,7 @@ module Plugins
         style = "background-image:url(#{object.avatar && object.avatar.url})"
         style += '; ' + args[:style] if args[:style]
 
-        model = object.is_a?(Usr) ? 'user' : 'contact'
+        model = object.is_a?(CamaleonCms::User) ? 'user' : 'contact'
         data = { "#{model}-avatar": object.initials }
         data.merge! args[:data] if args[:data]
 
