@@ -16,7 +16,9 @@
 
     <ul class="topbar-btns">
       <li class="dropdown">
-        <span class="topbar-btn" data-toggle="dropdown"><span class="avatar"><%= current_user.initials %></span></span>
+        <span class="topbar-btn" data-toggle="dropdown">
+          <%= Plugins::FlexxPluginCrm::UserDecorator.decorate(current_user).avatar_presentation %>
+        </span>
         <div class="dropdown-menu dropdown-menu-right">
           <a id="link-to-profile" class="dropdown-item" href="<%= index_admin_settings_path(:profile) %>"><i class="ti-user"></i> Profile</a>
           <div class="dropdown-divider"></div>

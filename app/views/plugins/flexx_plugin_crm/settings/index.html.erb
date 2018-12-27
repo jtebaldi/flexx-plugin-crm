@@ -1,12 +1,10 @@
 <% content_for :js do %>
-  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/settings' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
-  <%= javascript_include_tag 'camaleon_cms/admin/jquery.validate' %>
   <%= javascript_include_tag 'camaleon_cms/admin/uploader/_media_manager' %>
   <%= javascript_include_tag 'camaleon_cms/admin/_modal' %>
   <%= javascript_include_tag 'camaleon_cms/admin/_i18n' %>
-  <%= javascript_include_tag 'camaleon_cms/admin/_user_profile' %>
+  <%= javascript_include_tag 'camaleon_cms/admin/_actions' %>
 <% end %>
 
 <header class="header">
@@ -84,17 +82,17 @@
               <div class="col-lg-6">
 
                 <div class="flexbox gap-items-4 mb-4">
-                  <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= current_user.initials %></span>
+                  <%= @user.avatar_presentation class: 'avatar-xl avatar-bordered', style: 'line-height: 58px' %>
 
                   <div class="flex-grow">
                     <h5 class='mt-4'><%= current_user.the_name %></h5>
                     <div class="flexbox justify-content-start mt-16">
                       <div class="file-group file-group-inline">
-                        <button class="btn btn-sm btn-w-lg btn-bold btn-secondary btn_change_photo" type="button">Change Picture</button>
-                        <input type="file">
+                        <%= f.label :avatar, 'Change Picture', class: 'btn btn-sm btn-w-lg btn-bold btn-secondary mb-0' %>
+                        <%= f.file_field :avatar, class: 'hidden' %>
                       </div>
 
-                      <a class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
+                      <a id="delete-avatar" class="btn btn-sm btn-w-lg btn-bold btn-danger" href="#">Delete Picture</a>
                     </div>
                     
                   </div>
@@ -293,5 +291,4 @@
 </div>
 <script type="application/javascript">
     var root_admin_url = '<%= cama_admin_url(locale: nil) %>';
-    jQuery(function ($) { init_profile_form(); });
 </script>

@@ -5,7 +5,9 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
+      @active_contacts = Plugins::FlexxPluginCrm::UserDecorator.decorate_collection(
+        current_site.contacts.active.order('created_at desc', :first_name)
+      )
     end
 
     def create
@@ -32,6 +34,22 @@ module Plugins::FlexxPluginCrm
         show_vars
         render :show
       end
+    end
+
+    def update_avatar
+      contact = current_site.contacts.find(params[:id])
+      if contact.update avatar: params[:avatar]
+        flash.now[:notice] = 'Picture changed successfully.'
+      else
+        flash.now[:alert] = contact.errors.messages
+      end
+    end
+
+    def delete_avatar
+      contact = current_site.contacts.find(params[:id])
+      contact.update avatar: nil
+      flash.now[:notice] = 'Picture deleted successfully.'
+      render :update_avatar
     end
 
     def add_task_recipe
@@ -77,7 +95,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def show_vars
-      @contact = current_site.contacts.find(params[:id])
+      @contact = Plugins::FlexxPluginCrm::UserDecorator.decorate current_site.contacts.find(params[:id])
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
       @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)

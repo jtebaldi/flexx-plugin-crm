@@ -12,6 +12,7 @@ module Plugins::FlexxPluginCrm
         @settings_class = ' active'
         @profile_class = ''
       end
+      @user = Plugins::FlexxPluginCrm::UserDecorator.decorate current_user
     end
 
     def update
@@ -30,14 +31,24 @@ module Plugins::FlexxPluginCrm
         r = { user: current_user, message: t('camaleon_cms.admin.users.message.updated'), params: params }; hooks_run('user_after_edited', r)
         flash.now[:notice] = r[:message]
         r = { user: current_user }; hooks_run('user_updated', r)
-        # if cama_current_user.id == current_user.id
-        #   redirect_to admin_settings_path
-        # else
-        #   redirect_to action: :index
-        # end
       else
-        flash.now[:lert] = current_user.errors.messages
+        flash.now[:alert] = current_user.errors.messages
       end
+      render :update
+    end
+
+    def avatar_update
+      if current_user.update avatar: params[:avatar]
+        flash.now[:notice] = 'Picture changed successfully.'
+      else
+        flash.now[:alert] = current_user.errors.messages
+      end
+      render :update
+    end
+
+    def avatar_delete
+      current_user.update avatar: nil
+      flash.now[:notice] = 'Picture deleted successfully.'
       render :update
     end
 

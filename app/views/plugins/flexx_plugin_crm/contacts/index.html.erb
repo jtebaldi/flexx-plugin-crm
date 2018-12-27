@@ -89,7 +89,7 @@
       <% @active_contacts.each do |contact| %>
         <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
           <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_contact_path(contact.id) %>">
-            <span class="avatar avatar-lg"><%= contact.initials %></span>
+            <%= contact.avatar_presentation class: 'avatar-lg' %>
             <div class="media-body text-truncate">
               <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
               <small class="contact-detail">
@@ -141,6 +141,13 @@
 
   <div class="quickview-body" data-utils-script="<%= asset_path('plugins/flexx_plugin_crm/utils.js') %>">
     <%= form_tag admin_contacts_path, method: :post, id: 'new-contact-form', class: 'quickview-block form-type-material', data: { provide: 'validation' } do %>
+      <!--<div data-contact-avatar-id class="media-left pr-6 file-group">
+        <button class="btn btn-pure file-browser px-1" type="button">
+          <span data-contact-avatar="NC" class="avatar avatar-lg">NC</span>
+        </button>
+        <input name="contact[avatar]" type="file" class="hidden">
+        <button data-delete-contact-avatar class="btn btn-pure px-1"><i class="fa fa-trash"></i></button>
+      </div>-->
 
       <div class="form-row">
         <div class="col-sm-6">

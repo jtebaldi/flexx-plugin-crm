@@ -90,6 +90,9 @@ Rails.application.config.to_prepare do
   user_class = (PluginRoutes.static_system_info['user_model'].presence || 'CamaleonCms::User').constantize
 
   user_class.class_eval do
+    extend Dragonfly::Model
+    dragonfly_accessor :avatar
+
     def initials
       result = if first_name.present? && last_name.present?
         "#{first_name[0]}#{last_name[0]}"

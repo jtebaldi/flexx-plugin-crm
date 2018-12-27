@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "aasm", "~> 5.0.1"
+  s.add_dependency 'dragonfly', '~> 1.2.0'
+  s.add_dependency 'dragonfly-s3_data_store'
   s.add_dependency "acts-as-taggable-on", "~> 5.0"
   s.add_dependency "cama_contact_form", "~> 0.0.23"
   s.add_dependency "camaleon_cms", "~> 2.4.3.8"

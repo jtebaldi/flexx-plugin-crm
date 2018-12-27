@@ -39,8 +39,12 @@ input[type=radio].hide-control { display: none; }
             <% unless @contact.sales_stage.downcase == "archived" %><a href="#" class="pull-right text-white" data-toggle="modal" data-target="#update_status_modal">Update</a><% end %>
           </header>
           <div class="media card-body">
-            <div class="media-left pr-6">
-              <span class="avatar avatar-xl avatar-bordered" style="line-height: 58px;"><%= @contact.initials %></span>
+            <div data-contact-avatar-id="<%= @contact.id %>" class="media-left pr-6 file-group">
+              <button class="btn btn-pure file-browser px-1" type="button">
+                <%= @contact.avatar_presentation class: 'avatar-xl avatar-bordered', style: 'line-height: 58px' %>
+              </button>
+              <input type="file" class="hidden">
+              <button data-delete-contact-avatar class="btn btn-pure px-1"><i class="fa fa-trash"></i></button>
             </div>
 
             <div class="media-body">

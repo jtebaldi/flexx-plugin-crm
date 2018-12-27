@@ -215,4 +215,43 @@ app.ready(function() {
       }
     });
   });
+
+  $('[data-contact-avatar-id] > input').change((ev) => {
+    if (ev.target.files && ev.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (e) => {
+        var $avatar = $(ev.target).closest('[data-contact-avatar-id]');
+        $avatar.find('[data-contact-avatar]').css('background-image', `url(${e.target.result})`).hide().html('').fadeIn(650);
+        var contactId = $avatar.data('contactAvatarId');
+        if (!contactId) return;
+        var formdata = new FormData();
+        formdata.append('avatar', ev.target.files[0]);
+        $.ajax({
+          url: `/admin/next/contacts/${contactId}/avatar`,
+          method: 'patch',
+          processData: false,
+          contentType: false,
+          data: formdata,
+        });
+      }
+      reader.readAsDataURL(ev.target.files[0]);
+    }
+  });
+
+  $('[data-delete-contact-avatar]').click((e) => {
+    e.preventDefault();
+    var $avatars = $(e.target).closest('[data-contact-avatar-id]').find('[data-contact-avatar]');
+    var $avatar = $avatars.last();
+    if ($avatar.html() !== $avatar.data('contact-avatar') && confirm('Are you sure?')) {
+      $avatars.css('background-image', '').html($avatar.data('contact-avatar'));
+      var inputGroup = $('[data-contact-avatar-id]');
+      inputGroup.find('input').val(null);
+      var contactId = inputGroup.data('contactAvatarId');
+      if (!contactId) return;
+      $.ajax({
+        url: `/admin/next/contacts/${contactId}/avatar`,
+        method: 'delete',
+      });
+    }
+  });
 });

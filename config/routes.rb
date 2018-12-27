@@ -45,6 +45,8 @@ Rails.application.routes.draw do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
           get :email_validate, on: :member
           get :phone_validate, on: :member
+          patch :avatar, on: :member, action: :update_avatar
+          delete :avatar, on: :member, action: :delete_avatar
         end
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
@@ -92,6 +94,8 @@ Rails.application.routes.draw do
           get :username_validate, on: :collection
           patch :update, on: :collection
           patch :profile_update, on: :collection
+          patch :avatar_update, on: :collection
+          delete :avatar_delete, on: :collection
           patch :password_update, on: :collection
           get '/(:tab)', action: :index, on: :collection, as: :index
         end

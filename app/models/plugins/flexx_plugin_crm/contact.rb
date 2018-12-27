@@ -3,6 +3,9 @@ require 'aasm'
 class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   include AASM
 
+  extend Dragonfly::Model
+  dragonfly_accessor :avatar
+
   after_destroy :remove_pending_tasks
   after_update :remove_pending_tasks, if: proc { |c| c.archived? }
 
