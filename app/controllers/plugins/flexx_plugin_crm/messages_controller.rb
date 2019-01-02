@@ -4,10 +4,6 @@ module Plugins::FlexxPluginCrm
 
     layout "layouts/flexx_next_admin"
 
-    #TODO move this callback handle logic to its own controller
-    skip_before_action :verify_authenticity_token, only: [:inbound, :status, :confirmation]
-    skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
-
     def index
       @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
       @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
