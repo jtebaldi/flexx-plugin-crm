@@ -14,7 +14,7 @@ Rails.application.config.to_prepare do
     has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
     has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber'
     has_many :stocks, class_name: 'Plugins::FlexxPluginCrm::Stock'
-    has_many :sms_blasts, class_name: 'Plugins::FlexxPluginCrm::SmsBlast'
+    has_many :message_blasts, class_name: 'Plugins::FlexxPluginCrm::MessageBlast'
   end
 
   Plugins::CamaContactForm::CamaContactForm.class_eval do
