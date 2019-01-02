@@ -42,6 +42,10 @@ class MessagingToolsService
     result
   end
 
+  def self.mark_contact_messages_read(contact:)
+    contact.messages.where(read: false).update_all(read: true)
+  end
+
   private_class_method def self.find_email(recipient:, site:)
     return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
 

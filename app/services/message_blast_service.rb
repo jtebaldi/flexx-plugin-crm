@@ -1,8 +1,4 @@
 class MessageBlastService
-  def self.mark_contact_messages_read(contact:)
-    contact.messages.where(read: false).update_all(read: true)
-  end
-
   def initialize(site:, user:, scheduled_at:, recipients_list:, body:)
     @site = site
     @user = user
