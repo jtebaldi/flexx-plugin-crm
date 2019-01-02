@@ -16,17 +16,17 @@ module Plugins::FlexxPluginCrm
     end
 
     def emails
-      @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
-      @sent_emails = current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
-      @draft_emails = current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+      @recent_emails = current_site.emails.recent.limit(5)
+      @scheduled_emails = current_site.emails.scheduled.order(send_at: :desc)
+      @sent_emails = current_site.emails.sent.order(send_at: :desc)
+      @draft_emails = current_site.emails.draft.order(updated_at: :desc)
     end
 
     def sms
-      @recent_sms = [] # current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_sms = [] # current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
-      @sent_sms = [] # current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
-      @draft_sms = [] # current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+      @recent_sms = current_site.sms_blasts.recent.limit(5)
+      @scheduled_sms = current_site.sms_blasts.scheduled.order(send_at: :desc)
+      @sent_sms = current_site.sms_blasts.sent.order(send_at: :desc)
+      @draft_sms = current_site.sms_blasts.draft.order(updated_at: :desc)
     end
 
     def new_email
