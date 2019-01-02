@@ -1,7 +1,7 @@
-class Plugins::FlexxPluginCrm::SmsBlast < ActiveRecord::Base
+class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   include AASM
 
-  self.table_name = 'sms_blasts'
+  self.table_name = 'message_blasts'
 
   belongs_to :site, class_name: 'CamaleonCms::Site'
 
