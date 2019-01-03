@@ -11,4 +11,10 @@ class Plugins::FlexxPluginCrm::Email < ActiveRecord::Base
   scope :recent, -> { where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc) }
   scope :scheduled, -> { where(aasm_state: 'scheduled') }
   scope :sent, -> { where(aasm_state: 'sent') }
+
+  private
+
+  def run_worker
+    SendEmailWorker.perform_async(id)
+  end
 end

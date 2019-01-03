@@ -28,8 +28,8 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
     end
   end
 
+  # Must be implemented by the class that include this concern
   def run_worker
-    SendMessageWorker.perform_async self.id if self.class == Plugins::FlexxPluginCrm::Message
-    SendEmailWorker.perform_async   self.id if self.class == Plugins::FlexxPluginCrm::Email
+    raise 'run_worker not implemented'
   end
 end
