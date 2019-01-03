@@ -86,8 +86,8 @@ module Plugins::FlexxPluginCrm
       end
     end
 
-    def create_text_blast
-      text_blast
+    def create_message_blast
+      current_site.message_blasts.create!(message_blast_params)
 
       respond_to do |format|
         format.js
@@ -95,6 +95,18 @@ module Plugins::FlexxPluginCrm
     end
 
     private
+
+    def message_blast_params
+      send_at = if params[:timingOptions] == '2'
+        Time.strptime("#{params[:scheduled_date]} #{params[:scheduled_time]} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone
+      else
+        Time.current
+      end
+
+      params[:message_blast].merge!(send_at: send_at)
+
+      params.require(:message_blast).permit(:recipients_list, :message, :send_at)
+    end
 
     def email_blast(scheduled_at: nil, from_task: nil)
       EmailBlastService.new(
@@ -107,20 +119,6 @@ module Plugins::FlexxPluginCrm
         body: params[:message],
         email_id: params[:id]
       ).call from_task
-    end
-
-    # @param from_task [Plugind::FlexxPluginCrm::Task, FalseClass, NilClass]
-    #   Task if from task, false if from blast, nil if form conversations
-    def text_blast(from_task: false)
-      recipients_list = params[:recipients].split(',')
-      MessageBlastService.new(
-        site: current_site,
-        user: current_user,
-        scheduled_at: nil,
-        recipients_list: recipients_list,
-        body: params[:body] # DynamicFieldsParserService.parse(site: current_site, template: params[:body], escape: false)
-      ).call from_task
-      @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end
 end
