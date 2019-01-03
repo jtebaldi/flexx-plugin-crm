@@ -28,5 +28,19 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   private
 
   def run_worker
+    update!(recipients_label: EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list))
+
+    contacts = EngageToolsService.message_recipients_to_contact_list(recipients_list: recipients_list, site: site)
+
+    contacts.each do |c|
+      messages.create(
+        contact_id: c.id,
+        from_number: site.get_option('twilio_campaigns_number'),
+        to_number: with_country_code(c.phonenumbers.mobile.first.number),
+        message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: c, escape: false),
+        send_at: Time.current,
+        created_by: created_by.id
+      )
+    end
   end
 end
