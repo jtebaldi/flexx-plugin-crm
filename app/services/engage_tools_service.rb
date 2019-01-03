@@ -1,5 +1,5 @@
 class EngageToolsService
-  MESSAGE_GROUPS = { 'All Contacts' => :all,
+  CONTACT_GROUPS = { 'All Contacts' => :all,
                      'Leads' => :lead,
                      'Prospects' => :prospect,
                      'Customers' => :customer }
@@ -30,7 +30,7 @@ class EngageToolsService
         contacts += 1
       elsif r.to_i > 0
         contacts += 1
-      elsif MESSAGE_GROUPS.has_key? r
+      elsif CONTACT_GROUPS.has_key? r
         result[:groups].push(r)
       else
         result[:tags].push(r)
@@ -53,8 +53,8 @@ class EngageToolsService
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
       Array.new.tap { |a| a << [contact.id, contact.email] if contact.present? }
-    elsif MESSAGE_GROUPS.has_key? recipient
-      site.contacts.send(MESSAGE_GROUPS[recipient]).pluck(:id, :email)
+    elsif CONTACT_GROUPS.has_key? recipient
+      site.contacts.send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else
       site.contacts.tagged_with(recipient).pluck(:id, :email)
     end
