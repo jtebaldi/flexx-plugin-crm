@@ -86,8 +86,8 @@ module Plugins::FlexxPluginCrm
       end
     end
 
-    def create_text_blast
-      text_blast
+    def create_message_blast
+      current_site.message_blasts.create!(message_blast_params)
 
       respond_to do |format|
         format.js
@@ -95,6 +95,18 @@ module Plugins::FlexxPluginCrm
     end
 
     private
+
+    def message_blast_params
+      send_at = if params[:timingOptions] == '2'
+        Time.strptime("#{params[:scheduled_date]} #{params[:scheduled_time]} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone
+      else
+        Time.current
+      end
+
+      params[:message_blast].merge!(send_at: send_at)
+
+      params.require(:message_blast).permit(:recipients_list, :message, :send_at)
+    end
 
     def email_blast(scheduled_at: nil, from_task: nil)
       EmailBlastService.new(
