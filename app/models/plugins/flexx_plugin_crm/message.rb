@@ -10,4 +10,10 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
 
   scope :received, -> { where(status: 'received') }
   scope :unread, -> { where(status: 'received', read: false) }
+
+  private
+
+  def run_worker
+    SendMessageWorker.perform_async(id)
+  end
 end
