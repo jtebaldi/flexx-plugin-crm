@@ -13,7 +13,7 @@ module Plugins::FlexxPluginCrm
 
       unless @contact_ids.empty?
         @first_contact = Contact.find_by(id: @contact_ids.first.contact_id)
-        MessagingToolsService.mark_contact_messages_read(contact: @first_contact)
+        EngageToolsService.mark_contact_messages_read(contact: @first_contact)
       end
 
       @snippets = current_site.stocks.snippets.order(:name)
@@ -23,7 +23,7 @@ module Plugins::FlexxPluginCrm
       @contact = current_site.contacts.find(params[:id])
       @dynamic_fields = df_defaults + [['-', '']] + df_snippets
 
-      MessagingToolsService.mark_contact_messages_read(contact: @contact)
+      EngageToolsService.mark_contact_messages_read(contact: @contact)
 
       respond_to do |format|
         format.js

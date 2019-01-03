@@ -1,8 +1,8 @@
-class MessagingToolsService
-  MESSAGE_GROUPS = {'All Contacts' => :all,
-                    'Leads' => :lead,
-                    'Prospects' => :prospect,
-                    'Customers' => :customer}
+class EngageToolsService
+  MESSAGE_GROUPS = { 'All Contacts' => :all,
+                     'Leads' => :lead,
+                     'Prospects' => :prospect,
+                     'Customers' => :customer }
 
   def self.recipients_to_contact_email_list(recipients_list:, site:)
     result = Array.new
