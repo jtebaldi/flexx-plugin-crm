@@ -9,11 +9,12 @@ module Plugins::FlexxPluginCrm::Concerns::ActivityFeed
 
   # Must be implemented by the class that include this concern
   def activity_record_params
+    raise 'activity_record_params not implemented.'
   end
 
   # Must be implemented by the class that include this concern
   def has_activity_record?
-    false
+    raise 'has_activity_record? not implemented.'
   end
 
   def create_activity_record
