@@ -10,7 +10,7 @@ class EmailBlastService
     @recipients_list = recipients_list
     @subject = subject
     @body = body
-    @recipients_label = EngageToolsService.recipients_to_labels(recipients_list: recipients_list)
+    @recipients_label = EngageToolsService.email_recipients_to_labels(recipients_list: recipients_list)
     @contact_email_list = EngageToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
   end
 
