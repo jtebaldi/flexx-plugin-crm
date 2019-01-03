@@ -4,10 +4,10 @@ class EngageToolsService
                      'Prospects' => :prospect,
                      'Customers' => :customer }
 
-  def self.recipients_to_contact_email_list(recipients_list:, site:)
+  def self.email_recipients_to_contact_email_list(recipients_list:, site:)
     result = Array.new
 
-    return result if recipients_list.nil?
+    return result if recipients_list.blank?
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
@@ -16,7 +16,7 @@ class EngageToolsService
     result.uniq
   end
 
-  def self.recipients_to_labels(recipients_list:)
+  def self.email_recipients_to_labels(recipients_list:)
     result = Hash.new { |h, k| h[k] = Array.new }
 
     return result if recipients_list.nil?
@@ -42,6 +42,12 @@ class EngageToolsService
     result
   end
 
+  def self.message_recipients_to_contact_list(recipients_list:, site:)
+  end
+
+  def self.message_recipients_to_labels(recipients_list:)
+  end
+
   def self.mark_contact_messages_read(contact:)
     contact.messages.where(read: false).update_all(read: true)
   end
@@ -53,7 +59,7 @@ class EngageToolsService
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
       Array.new.tap { |a| a << [contact.id, contact.email] if contact.present? }
-    elsif CONTACT_GROUPS.has_key? recipient
+    elsif CONTACT_GROUPS.has_key?(recipient)
       site.contacts.send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else
       site.contacts.tagged_with(recipient).pluck(:id, :email)
