@@ -1,5 +1,6 @@
 class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   include Plugins::FlexxPluginCrm::Concerns::SendMessage
+  include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
 
   self.table_name = 'messages'
 
@@ -15,5 +16,19 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
 
   def run_worker
     SendMessageWorker.perform_async(id)
+  end
+
+  def has_activity_record?
+    message_blast.present?
+  end
+
+  def activity_record_params
+    if message_blast.present?
+      {
+        task_type: :message,
+        title: 'SMS Blast',
+        details: message
+      }
+    end
   end
 end
