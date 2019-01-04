@@ -59,7 +59,7 @@ Rails.application.routes.draw do
             post :create_email
             post :create_email_blast
             post :create_text
-            post :create_text_blast
+            post :create_message_blast
           end
           member do
             get :edit_email
