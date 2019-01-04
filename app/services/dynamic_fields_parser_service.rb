@@ -27,9 +27,9 @@ class DynamicFieldsParserService
   def load_contact_fields
     if @contact.present?
       {
-        first_name: @contact.first_name,
-        last_name: @contact.last_name,
-        email: @contact.email
+        contact_first_name: @contact.first_name,
+        contact_last_name: @contact.last_name,
+        contact_email: @contact.email
       }
     else
       {

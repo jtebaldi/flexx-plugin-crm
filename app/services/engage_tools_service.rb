@@ -52,6 +52,10 @@ class EngageToolsService
     contact.messages.where(read: false).update_all(read: true)
   end
 
+  def self.add_country_code(number)
+    number[0] == "+" ? number : "#{@site.get_meta("flexx_crm_settings")[:country_code]}#{number}"
+  end
+
   private_class_method def self.find_email(recipient:, site:)
     return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
 
