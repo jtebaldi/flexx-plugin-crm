@@ -5,6 +5,6 @@ class SendMessageWorker
 
   def perform(message_id)
     message = Plugins::FlexxPluginCrm::Message.find(message_id)
-    MessagesJobService.send_sms message
+    MessagesJobService.send_message message
   end
 end
