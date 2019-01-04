@@ -8,7 +8,7 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
 
     aasm do
       state :scheduled, initial: true
-      state :draft, :sending, :sent, :received
+      state :draft, :sending, :sent, :received, :error
 
       event :send_message, after_commit: :run_worker do
         transitions from: :scheduled, to: :sending

@@ -22,7 +22,7 @@ class MessagesJobService
     end
   end
 
-  def send_email(email)
+  def self.send_email(email)
     sender = CamaleonCms::User.find_by_email email.from
     if sender
       from = { email: email.from, name: sender.print_name }
@@ -56,22 +56,13 @@ class MessagesJobService
     end
   end
 
-  def send_sms(message)
+  def self.send_message(message)
     result = TwilioAdapter.new.send_sms(message: message)
-    if message.sending? # sms blast
-      message.create_task(
-        site: message.site,
-        contact: message.contact,
-        aasm_state: :done,
-        created_by: message.created_by,
-        details: 'SMS blast',
-        task_type: :message,
-        title: 'SMS blast',
-        updated_by: message.created_by
-      )
-      result.error_code.zero? && message.done! && message.update(sid: result.sid)
+
+    if result.error_code.zero?
+      message.update!(aasm_state: :done, sid: result.sid)
     else
-      result.error_code.zero? && message.task_done! && message.update(sid: result.sid)
+      message.update!(aasm_state: :error)
     end
   end
 end
