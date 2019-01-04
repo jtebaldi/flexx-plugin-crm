@@ -1,3 +1,5 @@
+require 'aasm'
+
 class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   include AASM
 
