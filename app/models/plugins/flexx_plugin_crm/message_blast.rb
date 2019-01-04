@@ -36,8 +36,8 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
       messages.create(
         contact_id: c.id,
         from_number: site.get_option('twilio_campaigns_number'),
-        to_number: with_country_code(c.phonenumbers.mobile.first.number),
-        message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: c, escape: false),
+        to_number: EngageToolsService.add_country_code(c.phonenumbers.mobile.first.number),
+        message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: c),
         send_at: Time.current,
         created_by: created_by.id
       )
