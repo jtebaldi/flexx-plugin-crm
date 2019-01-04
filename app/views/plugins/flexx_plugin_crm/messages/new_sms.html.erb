@@ -122,7 +122,7 @@
   <div class="tab-content mt-20" id="message-tab-content">
 
     <div class="tab-pane fade active show" id="tab-new-email">
-      <%= form_tag create_text_blast_admin_messages_path, method: :post, id: 'new-text-blast', name: 'newTextBlast', class: 'card form-type-combine' do %>
+      <%= form_tag create_message_blast_admin_messages_path, method: :post, id: 'new-text-blast', name: 'newTextBlast', class: 'card form-type-combine' do %>
         <input type="hidden" name="recipients" id="recipientsHidden">
         <h4 class="card-title">New <strong>SMS blast</strong></h4>
         <div class="card-body">
@@ -135,7 +135,7 @@
                 <input class="hide-control" type="radio" name="timingOptions" id="option2" value="2" autocomplete="off">Schedule</i>
               </label>
             </div>
-          </div>          
+          </div>
 
           <div id="timing_detail" class="form-groups-attached mt-30">
             <div class="row">
@@ -150,7 +150,7 @@
               </div>
             </div>
           </div>
-          
+
           <br>
           <div class="form-groups-attached">
 
