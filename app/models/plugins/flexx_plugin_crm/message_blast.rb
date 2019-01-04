@@ -30,7 +30,10 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   private
 
   def run_worker
-    update!(recipients_label: EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list))
+    update!(
+      recipients_label: EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list),
+      message: DynamicFieldsParserService.parse(site: site, template: message)
+    )
 
     contacts = EngageToolsService.message_recipients_to_contact_list(recipients_list: recipients_list, site: site)
 
