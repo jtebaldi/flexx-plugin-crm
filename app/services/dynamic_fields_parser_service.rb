@@ -33,9 +33,9 @@ class DynamicFieldsParserService
       }
     else
       {
-        contact_first_name: '{{first_name}}',
-        contact_last_name: '{{last_name}}',
-        contact_email: '{{email}}'
+        contact_first_name: '{{contact_first_name}}',
+        contact_last_name: '{{contact_last_name}}',
+        contact_email: '{{contact_email}}'
       }
     end
   end
