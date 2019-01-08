@@ -127,7 +127,7 @@
 
     <div class="tab-pane fade active show" id="tab-new-email">
       <%= form_tag create_message_blast_admin_messages_path, method: :post, id: 'new-text-blast', name: 'newTextBlast', class: 'card form-type-combine' do %>
-        <input type="hidden" name="recipients" id="recipientsHidden">
+        <input type="hidden" name="message_blast[recipients_list]" id="recipientsHidden">
         <h4 class="card-title">New <strong>SMS blast</strong></h4>
         <div class="card-body">
           <div class="no-border text-center">
@@ -165,7 +165,7 @@
 
             <div class="form-group">
               <label>Message</label>
-              <textarea class="form-control" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+              <textarea class="form-control" name="message_blast[message]" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
             </div>
 
           </div>

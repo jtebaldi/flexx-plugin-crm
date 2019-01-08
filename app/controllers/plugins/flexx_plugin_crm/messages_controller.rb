@@ -89,9 +89,7 @@ module Plugins::FlexxPluginCrm
     def create_message_blast
       current_site.message_blasts.create!(message_blast_params)
 
-      respond_to do |format|
-        format.js
-      end
+      redirect_to :new_sms
     end
 
     private
@@ -104,8 +102,9 @@ module Plugins::FlexxPluginCrm
       end
 
       params[:message_blast].merge!(send_at: send_at)
+      params[:message_blast].merge!(created_by: current_user.id)
 
-      params.require(:message_blast).permit(:recipients_list, :message, :send_at)
+      params.require(:message_blast).permit(:recipients_list, :message, :send_at, :created_by)
     end
 
     def email_blast(scheduled_at: nil, from_task: nil)
