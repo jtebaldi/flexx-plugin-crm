@@ -74,6 +74,14 @@ module Plugins::FlexxPluginCrm
       end
     end
 
+    def with_email
+      render json: current_site.contacts.active.map { |c| { name: "#{c.print_name} - #{c.email}", value: c.id } }
+    end
+
+    def with_mobile
+      render json: current_site.contacts.joins(:phonenumbers).where(phonenumbers: { phone_type: 'mobile' }).map { |c| { name: "#{c.print_name}", value: c.id } }
+    end
+
     private
 
     def show_vars
