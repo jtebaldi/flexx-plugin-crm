@@ -1,4 +1,8 @@
 <% content_for :js do %>
+  <script>
+    var contactlist_url = '/admin/next/contacts/with_email';
+  </script>
+
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>

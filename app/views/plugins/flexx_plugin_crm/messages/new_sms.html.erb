@@ -1,4 +1,8 @@
 <% content_for :js do %>
+  <script>
+    var contactlist_url = '/admin/next/contacts/with_mobile';
+  </script>
+
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
@@ -57,7 +61,7 @@
           </header>
 
           <% @contacts.each do |contact| %>
-            <a class="media items-center" href="#" onclick="pushTag('<%= contact.print_name %> - <%= contact.email %>', '<%= contact.id %>')">
+            <a class="media items-center" href="#" onclick="pushTag('<%= contact.print_name %>', '<%= contact.id %>')">
               <span class="avatar avatar-sm bg-secondary"><%= contact.initials %></span>
               <p class="title"><%= contact.print_name %></p>
               <span class="media-action text-success"><i class="ti-plus"></i></span>
