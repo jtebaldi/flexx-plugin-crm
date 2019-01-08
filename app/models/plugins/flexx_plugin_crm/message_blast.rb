@@ -15,8 +15,8 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   scope :sent, -> { where(aasm_state: 'sent') }
 
   aasm do
-    state :draft, initial: true
-    state :scheduled, :sending, :sent
+    state :scheduled, initial: true
+    state :draft, :sending, :sent
 
     event :send_messages, after_commit: :run_worker do
       transitions from: :scheduled, to: :sending
@@ -35,7 +35,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
       message: DynamicFieldsParserService.parse(site: site, template: message)
     )
 
-    contacts = EngageToolsService.message_recipients_to_contact_list(recipients_list: recipients_list, site: site)
+    contacts = EngageToolsService.message_recipients_to_contacts_list(recipients_list: recipients_list, site: site)
 
     contacts.each do |c|
       messages.create(
