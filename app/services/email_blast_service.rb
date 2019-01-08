@@ -11,7 +11,7 @@ class EmailBlastService
     @subject = subject
     @body = body
     @recipients_label = EngageToolsService.email_recipients_to_labels(recipients_list: recipients_list)
-    @contact_email_list = EngageToolsService.recipients_to_contact_email_list(recipients_list: recipients_list, site: site)
+    @contact_email_list = EngageToolsService.email_recipients_to_contacts_list(recipients_list: recipients_list, site: site)
   end
 
   def call(task = nil)

@@ -4,7 +4,7 @@ class EngageToolsService
                      'Prospects' => :prospect,
                      'Customers' => :customer }
 
-  def self.email_recipients_to_contact_email_list(recipients_list:, site:)
+  def self.email_recipients_to_contacts_list(recipients_list:, site:)
     result = Array.new
 
     return result if recipients_list.blank?
@@ -42,10 +42,22 @@ class EngageToolsService
     result
   end
 
-  def self.message_recipients_to_contact_list(recipients_list:, site:)
+  def self.message_recipients_to_contacts_list(recipients_list:, site:)
+    result = Array.new
+
+    return result if recipients_list.blank?
+
+    recipients_list.gsub('___', ' ').split(',').uniq.each do |r|
+      mobile = find_mobile(recipient: r, site: site)
+
+      result.concat(mobile) if mobile.present?
+    end
+
+    result.uniq
   end
 
   def self.message_recipients_to_labels(recipients_list:)
+
   end
 
   def self.mark_contact_messages_read(contact:)
@@ -62,11 +74,31 @@ class EngageToolsService
     if recipient.to_i > 0
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
-      Array.new.tap { |a| a << [contact.id, contact.email] if contact.present? }
+      [[contact.id, contact.email]] if contact.present?
     elsif CONTACT_GROUPS.has_key?(recipient)
       site.contacts.send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else
       site.contacts.tagged_with(recipient).pluck(:id, :email)
+    end
+  end
+
+  private_class_method def self.find_mobile(recipient:, site:)
+    if recipient.to_i > 0
+      mobile = site.phonenumbers.mobile.find_by(contact_id: recipient)
+
+      return [[mobile.contact_id, mobile.number]] if mobile.present?
+    elsif CONTACT_GROUPS.has_key?(recipient)
+      site.phonenumbers.mobile.
+        select('DISTINCT ON (contact_id) contact_id, number').
+        joins(:contact).
+        where(contacts: { sales_stage: CONTACT_GROUPS[recipient] }).
+        map { |r| [r.contact_id, r.number] }
+    else
+      site.phonenumbers.mobile.
+        select('DISTINCT ON (contact_id) contact_id, number').
+        joins(:contact).
+        where(contact_id: site.contacts.tagged_with(recipient).pluck(:id)).
+        map { |r| [r.contact_id, r.number] }
     end
   end
 end
