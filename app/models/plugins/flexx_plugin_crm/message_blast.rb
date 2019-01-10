@@ -39,6 +39,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
     contacts.each do |c|
       messages.create(
+        site_id: site_id,
         contact_id: c[0].id,
         from_number: site.get_option('twilio_campaigns_number'),
         to_number: EngageToolsService.add_country_code(site: site, number: c[1]),
