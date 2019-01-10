@@ -10,8 +10,8 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
 
   scope :draft, -> { where(aasm_state: 'draft') }
-  scope :recent, -> { where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc) }
-  scope :scheduled, -> { where(aasm_state: 'scheduled') }
+  scope :recent, -> { where(aasm_state: ['sending', 'sent', 'scheduled']).order(send_at: :desc) }
+  scope :scheduled, -> { where(aasm_state: ['sending', 'scheduled']) }
   scope :sent, -> { where(aasm_state: 'sent') }
 
   aasm do
@@ -39,12 +39,12 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
     contacts.each do |c|
       messages.create(
-        contact_id: c.id,
+        contact_id: c[0].id,
         from_number: site.get_option('twilio_campaigns_number'),
-        to_number: EngageToolsService.add_country_code(c.phonenumbers.mobile.first.number),
-        message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: c),
+        to_number: EngageToolsService.add_country_code(site: site, number: c[1]),
+        message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: c[0]),
         send_at: Time.current,
-        created_by: created_by.id
+        created_by: created_by
       )
     end
   end
