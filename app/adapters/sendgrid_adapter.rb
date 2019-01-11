@@ -114,9 +114,9 @@ class SendgridAdapter
 
     if contact.present?
       {
-        "{{first_name}}" => contact.first_name,
-        "{{last_name}}" => contact.last_name,
-        "{{email}}" => email
+        "{{contact_first_name}}" => contact.first_name,
+        "{{contact_last_name}}" => contact.last_name,
+        "{{contact_email}}" => email
       }
     else
       {}
@@ -126,7 +126,7 @@ class SendgridAdapter
   def site_snippets
     @site_snippets ||= Hash.new.tap do |result|
       @site.stocks.snippets.each do |row|
-        result["{#{row.label}}"] = row.contents
+        result["{{#{row.label}}}"] = row.contents
       end
     end
   end
