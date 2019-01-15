@@ -103,7 +103,7 @@ app.ready(function() {
     })
   });
 
-  var recipientIds = $('#recipientsHidden').val().split(',');
+  var recipientIds = $('#recipientsHidden').length > 0 ? $('#recipientsHidden').val().split(',') : [];
   $.each(recipientIds, function(idx, elm){
     var $recipient = $('[data-id="' + elm + '"]');
     pushTag($recipient.data('tag'), $recipient.data('id'));
