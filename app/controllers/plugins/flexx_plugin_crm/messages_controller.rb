@@ -89,7 +89,7 @@ module Plugins::FlexxPluginCrm
     def create_message_blast
       current_site.message_blasts.create!(message_blast_params)
 
-      redirect_to :new_sms
+      redirect_to action: :sms
     end
 
     private

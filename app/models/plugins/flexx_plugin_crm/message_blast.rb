@@ -9,6 +9,8 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
 
+  before_create :recipients_to_labels
+
   scope :draft, -> { where(aasm_state: 'draft') }
   scope :recent, -> { where(aasm_state: ['sending', 'sent', 'scheduled']).order(send_at: :desc) }
   scope :scheduled, -> { where(aasm_state: ['sending', 'scheduled']) }
@@ -29,11 +31,12 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
   private
 
+  def recipients_to_labels
+    self.recipients_label = EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list)
+  end
+
   def run_worker
-    update!(
-      recipients_label: EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list),
-      message: DynamicFieldsParserService.parse(site: site, template: message)
-    )
+    update!(message: DynamicFieldsParserService.parse(site: site, template: message))
 
     contacts = EngageToolsService.message_recipients_to_contacts_list(recipients_list: recipients_list, site: site)
 
