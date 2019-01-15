@@ -1,0 +1,112 @@
+<div id="qv-message-blast-report-<%= message_blast.id %>" class="quickview quickview-xxl backdrop-dark" data-fullscreen-on-mobile>
+  <header class="quickview-header">
+    <p class="quickview-title lead"><strong>SMS Blast</strong> Report</p>
+    <span class="close"><i class="ti-close"></i></span>
+  </header>
+
+  <div class="quickview-body">
+    <div class="row m-0 bb-1">
+      <div class="col-sm-6 p-0 bg-success">
+        <p class="mb-0 text-center py-10 px-15 text-white text-uppercase fs-16"><strong>Sent</strong></p>
+      </div>
+      <div class="col-sm-6">
+        <p class="mb-0 text-center py-10 px-15">Date: <strong><%= message_blast.send_at.strftime("%a, %b %d, %Y %I:%M %P") %></strong></p>
+      </div>
+    </div>
+
+    <ul class="nav nav-pills nav-justified">
+      <li class="nav-item">
+        <a class="nav-link py-10 active" data-toggle="tab" href="#tab-message-blast-report-overview-<%= message_blast.id %>">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-10" data-toggle="tab" href="#tab-message-blast-report-message-<%= message_blast.id %>">Message</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-10" data-toggle="tab" href="#tab-message-blast-report-recipients-<%= message_blast.id %>">Recipients</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade active show" id="tab-message-blast-report-overview-<%= message_blast.id %>">
+        <div class="row m-0">
+          <div class="col-12">
+            <h5 class="card-title">
+              <span class="pr-10 fw-400">Sent to:</span>
+              <%= render partial: "labels", object: message_blast.recipients_label if message_blast.recipients_label %>
+            </h5>
+          </div>
+
+          <div class="col-6 p-15 d-block d-sm-none">
+            <div class="card card-body text-center">
+              <div>Sent To</div>
+              <div class="fs-40 fw-100"><%= message_blast.recipients_count %></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-xl-3">
+            <div class="card card-body text-center">
+              <div class="fs-40 fw-100 text-warning"><%= message_blast.delivered_count %></div>
+              <div>Delivered</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab-message-blast-report-message-<%= message_blast.id %>">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-type-combine form-groups-attached">
+              <div class="form-group">
+                <label for="textarea">Message</label>
+                <div class="pt-15">
+                  <%= raw message_blast.message %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab-message-blast-report-recipients-<%= message_blast.id %>">
+        <div class="card">
+
+          <div class="media-list media-list-divided media-list-hover">
+            <header class="media-list-header b-0">
+              <form class="lookup lookup-lg w-100 bb-1 border-light">
+                <input class="w-100 no-radius no-border py-30" type="text" placeholder="Type name..." data-provide="media-search">
+              </form>
+            </header>
+            <div class="media-list-body">
+              <% message_blast.messages.each do |recipient| %>
+                <div class="media media-single">
+                  <div class="media-body">
+                    <span class="avatar avatar-sm"><%= recipient.contact ? recipient.contact.initials : "#{recipient.to[0]}#{recipient.to[1]}" %></span>
+                    <span><%= recipient.contact ? recipient.contact.print_name : recipient.to %></span>
+                  </div>
+                  <div class="media-right">
+                    <% if recipient.status == 'open' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-info w-100px">Opened</span>
+                    <% elsif recipient.status == 'click' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-success w-100px">Clicked</span>
+                    <% elsif recipient.status == 'delivered' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px text-fade">Delivered</span>
+                    <% elsif recipient.status == 'unsubscribe' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-warning w-100px">Unsubscribed</span>
+                    <% elsif recipient.status == 'bounced' %>
+                      <span class="btn btn-sm btn-bold btn-round btn-danger w-100px">Bounced</span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="quickview-footer flex-row-reverse">
+    <!-- <button class="btn btn-info">Replicate</button> -->
+  </footer>
+</div>

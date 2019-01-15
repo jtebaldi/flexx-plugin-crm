@@ -22,7 +22,7 @@
         </div>
       </a>
     <% elsif s.sent? %>
-      <a class="media" data-toggle="quickview" href="#qv-sms-report-<%= s.id %>">
+      <a class="media" data-toggle="quickview" href="#qv-message-blast-report-<%= s.id %>">
         <div class="media-body">
           <h5><%= s.message %></h5>
           <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= s.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
