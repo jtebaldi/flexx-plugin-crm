@@ -1,4 +1,8 @@
 <% content_for :js do %>
+  <script>
+    var contactlist_url = '/admin/next/contacts/with_mobile';
+  </script>
+
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
@@ -178,10 +182,9 @@
     </div>
 
   </div>
-    
+
 </div>
 
 <!-- Quickviews and Modals -->
 
-<!-- <%= render partial: "report", collection: @sent_sms, as: :sms %> -->
-
+<%= render partial: "message_blast_report", collection: @sent_sms, as: :message_blast %>
