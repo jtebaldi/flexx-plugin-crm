@@ -16,14 +16,11 @@ class MessagesJobService
     Plugins::FlexxPluginCrm::Email.scheduled.where('send_at <= ?', Time.current).each do |email|
       email.send_message!
     end
-
-    Plugins::FlexxPluginCrm::Email.task_scheduled.where('send_at <= ?', Time.current).each do |email|
-      email.send_task_message!
-    end
   end
 
   def self.send_email(email)
     sender = CamaleonCms::User.find_by_email email.from
+
     if sender
       from = { email: email.from, name: sender.print_name }
     else
@@ -37,23 +34,7 @@ class MessagesJobService
       body: email.body
     )
 
-    if email.sending? # email blast
-      email.email_recipients.includes(:contact).each do |r|
-        r.create_task(
-          contact: r.contact,
-          site: email.site,
-          aasm_state: :done,
-          created_by: email.created_by,
-          details: 'Email blast',
-          task_type: :email,
-          title: 'Email blast',
-          updated_by: email.created_by
-        )
-      end
-      email.update(sg_message_id: sg_message_id) && email.done!
-    else
-      email.update(sg_message_id: sg_message_id) && email.task_done!
-    end
+    email.update!(sg_message_id: sg_message_id) && email.done!
   end
 
   def self.send_message(message)
