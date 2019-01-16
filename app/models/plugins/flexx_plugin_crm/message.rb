@@ -12,6 +12,8 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   scope :received, -> { where(status: 'received') }
   scope :unread, -> { where(status: 'received', read: false) }
 
+  before_save :update_message_blast
+
   private
 
   def run_worker
@@ -29,6 +31,12 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
         title: 'SMS Blast',
         details: message
       }
+    end
+  end
+
+  def update_message_blast
+    if self.status_was.blank? && self.status == 'received' && self.message_blast.present?
+      self.message_blast.increment!(:delivered_count)
     end
   end
 end
