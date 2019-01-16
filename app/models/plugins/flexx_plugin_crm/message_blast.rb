@@ -13,7 +13,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
   scope :draft, -> { where(aasm_state: 'draft') }
   scope :recent, -> { where(aasm_state: ['sending', 'sent', 'scheduled']).order(send_at: :desc) }
-  scope :scheduled, -> { where(aasm_state: ['sending', 'scheduled']) }
+  scope :scheduled, -> { where(aasm_state: 'scheduled') }
   scope :sent, -> { where(aasm_state: 'sent') }
 
   aasm do
