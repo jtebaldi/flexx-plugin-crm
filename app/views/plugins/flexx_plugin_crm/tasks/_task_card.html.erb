@@ -20,14 +20,14 @@
   }
 
   #task_contact_badge .contact-highlights { position: relative; height: 100%; display: none; }
-    
+
   #task_contact_badge .contact-name { display: block; }
-  
-  #task_header.highlights #task_contact_badge .contact-highlights { display: block; }  
-    
+
+  #task_header.highlights #task_contact_badge .contact-highlights { display: block; }
+
   #task_header.highlights #task_contact_badge .contact-name,
   #task_header.highlights #task_details { display: none; }
-    
+
   #task_header.highlights #task_contact_badge_mobile #contact_link1,
   #task_contact_badge_mobile #contact_link2,
   #task_contact_badge_mobile .highlights-mobile,
@@ -57,7 +57,7 @@
             <h6><a href="<%= @task.contact && admin_contact_path(@task.contact.id) %>"><%= @task.contact && @task.contact.print_name %></a></h6>
             <div class="highlights-mobile">
               <p><i>Highlights</i></p>
-              <p><%= @task.contact && @task.contact.highlights %></p>              
+              <p><%= @task.contact && @task.contact.highlights %></p>
             </div>
           </div>
           <div class="media-right">
@@ -98,7 +98,7 @@
                       <p class="form-control-plaintext pt-0"><%= current_site.users.find_by(id: @task.updated_by).first_name %> <%= current_site.users.find(@task.updated_by).last_name %></p>
                       <label class="label-floated">Completed by</label>
                     </div>
-                  <% end %> 
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -127,10 +127,10 @@
     </div>
   </div>
   <hr class="mb-0">
-  <div class="quickview-block p-0">                         
+  <div class="quickview-block p-0">
     <% if @task.email_recipient %>
       <div class='p-20'>
-        <div class="form-type-combine form-groups-attached"> 
+        <div class="form-type-combine form-groups-attached">
           <div class="form-group">
             <label>
               <strong>Status:</strong>
@@ -150,7 +150,7 @@
                 <% end %>
               <% end %>
             </label>
-          </div>           
+          </div>
           <div class="form-group">
             <label>Subject</label>
             <input type="text" class="form-control" value="<%= @task.email_recipient.email.subject %>" readonly>
@@ -163,7 +163,7 @@
           </div>
         </div>
       </div>
-    <% elsif @task.message %>
+    <% elsif @task.message.present? && @task.message.message_blast.blank? %>
       <div class='p-20'><%= @task.message.message.html_safe %></div>
     <% end %>
 
@@ -180,7 +180,7 @@
       </div>
     <% end %>
   </div>
-  
+
 </div>
 
 <footer class="quickview-footer flex-row-reverse">
@@ -205,5 +205,5 @@
   <!-- <button class="btn btn-light" onclick="closeTaskView(this)">Close</button> -->
   <% unless @task.done? %>
     <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-confirm="Are you sure you want to delete this task?" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn btn-danger btn-outline"><i class='ti-trash'></i></a>
-  <% end %>    
+  <% end %>
 </footer>

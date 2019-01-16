@@ -41,7 +41,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
     contacts = EngageToolsService.message_recipients_to_contacts_list(recipients_list: recipients_list, site: site)
 
     contacts.each do |c|
-      messages.create(
+      messages.create!(
         site_id: site_id,
         contact_id: c[0].id,
         from_number: site.get_option('twilio_campaigns_number'),
@@ -51,5 +51,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
         created_by: created_by
       )
     end
+
+    done!
   end
 end
