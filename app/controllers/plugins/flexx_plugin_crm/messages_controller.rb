@@ -4,10 +4,6 @@ module Plugins::FlexxPluginCrm
 
     layout "layouts/flexx_next_admin"
 
-    #TODO move this callback handle logic to its own controller
-    skip_before_action :verify_authenticity_token, only: [:inbound, :status, :confirmation]
-    skip_before_action :cama_authenticate, only: [:inbound, :status, :confirmation]
-
     def index
       @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
       @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
@@ -16,17 +12,17 @@ module Plugins::FlexxPluginCrm
     end
 
     def emails
-      @recent_emails = current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_emails = current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
-      @sent_emails = current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
-      @draft_emails = current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+      @recent_emails = current_site.emails.recent.limit(5)
+      @scheduled_emails = current_site.emails.scheduled.order(send_at: :desc)
+      @sent_emails = current_site.emails.sent.order(send_at: :desc)
+      @draft_emails = current_site.emails.draft.order(updated_at: :desc)
     end
 
     def sms
-      @recent_sms = [] # current_site.emails.where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc).limit(5)
-      @scheduled_sms = [] # current_site.emails.where(aasm_state: 'scheduled').order(send_at: :desc)
-      @sent_sms = [] # current_site.emails.where(aasm_state: 'sent').order(send_at: :desc)
-      @draft_sms = [] # current_site.emails.where(aasm_state: 'draft').order(updated_at: :desc)
+      @recent_sms = current_site.message_blasts.recent.limit(5)
+      @scheduled_sms = current_site.message_blasts.scheduled.order(send_at: :desc)
+      @sent_sms = current_site.message_blasts.sent.order(send_at: :desc)
+      @draft_sms = current_site.message_blasts.draft.order(updated_at: :desc)
     end
 
     def new_email
@@ -90,15 +86,26 @@ module Plugins::FlexxPluginCrm
       end
     end
 
-    def create_text_blast
-      text_blast
+    def create_message_blast
+      current_site.message_blasts.create!(message_blast_params)
 
-      respond_to do |format|
-        format.js
-      end
+      redirect_to action: :sms
     end
 
     private
+
+    def message_blast_params
+      send_at = if params[:timingOptions] == '2'
+        Time.strptime("#{params[:scheduled_date]} #{params[:scheduled_time]} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone
+      else
+        Time.current
+      end
+
+      params[:message_blast].merge!(send_at: send_at)
+      params[:message_blast].merge!(created_by: current_user.id)
+
+      params.require(:message_blast).permit(:recipients_list, :message, :send_at, :created_by)
+    end
 
     def email_blast(scheduled_at: nil, from_task: nil)
       EmailBlastService.new(
@@ -111,20 +118,6 @@ module Plugins::FlexxPluginCrm
         body: params[:message],
         email_id: params[:id]
       ).call from_task
-    end
-
-    # @param from_task [Plugind::FlexxPluginCrm::Task, FalseClass, NilClass]
-    #   Task if from task, false if from blast, nil if form conversations
-    def text_blast(from_task: false)
-      recipients_list = params[:recipients].split(',')
-      MessageBlastService.new(
-        site: current_site,
-        user: current_user,
-        scheduled_at: nil,
-        recipients_list: recipients_list,
-        body: DynamicFieldsParserService.parse(site: current_site, template: params[:body], escape: false)
-      ).call from_task
-      @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end
 end

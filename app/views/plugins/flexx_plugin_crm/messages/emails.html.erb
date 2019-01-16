@@ -1,10 +1,14 @@
 <% content_for :js do %>
+  <script>
+    var contactlist_url = '/admin/next/contacts/with_email';
+  </script>
+
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/messages' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {   
+  document.addEventListener('DOMContentLoaded', function () {
     /*
     new Chart($("#chart-line-2"), {
       type: 'line',
@@ -213,16 +217,15 @@
           </nav>
         </footer>
         -->
-        
+
       </div>
 
     </div>
 
   </div>
-    
+
 </div>
 
 <!-- Quickviews and Modals -->
 
-<%= render partial: "report", collection: @sent_emails, as: :email %>
-
+<%= render partial: "emails_report", collection: @sent_emails, as: :email %>

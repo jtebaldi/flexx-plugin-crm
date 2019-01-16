@@ -1,7 +1,7 @@
 var contactlist = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: { url: '/admin/next/list_contacts_with_email', cache: false }
+  prefetch: { url: contactlist_url, cache: false }
 });
 
 var taglist = new Bloodhound({
@@ -50,7 +50,7 @@ app.ready(function() {
         $.rails.confirmed(link);
       } else {
         return;
-      }      
+      }
     });
   };
 
@@ -103,7 +103,7 @@ app.ready(function() {
     })
   });
 
-  var recipientIds = $('#recipientsHidden').val().split(',');
+  var recipientIds = $('#recipientsHidden').length > 0 ? $('#recipientsHidden').val().split(',') : [];
   $.each(recipientIds, function(idx, elm){
     var $recipient = $('[data-id="' + elm + '"]');
     pushTag($recipient.data('tag'), $recipient.data('id'));

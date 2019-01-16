@@ -13,8 +13,6 @@ Rails.application.routes.draw do
         post  'recipes/:id/forms', controller: 'plugins/flexx_plugin_crm/admin', action: :associate_recipe_to_form, as: :associate_recipe_to_form
 
         get 'list_tags', controller: 'plugins/flexx_plugin_crm/admin', action: :list_tags, as: :list_tags
-        get 'list_contacts_with_mobile', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_mobile, as: :list_contacts_with_mobile
-        get 'list_contacts_with_email', controller: 'plugins/flexx_plugin_crm/admin', action: :list_contacts_with_email, as: :list_contacts_with_email
 
         controller 'plugins/flexx_plugin_crm/admin' do
           get :from_form
@@ -45,6 +43,11 @@ Rails.application.routes.draw do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
           get :email_validate, on: :member
           get :phone_validate, on: :member
+
+          collection do
+            get :with_email
+            get :with_mobile
+          end
         end
 
         resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
@@ -59,7 +62,7 @@ Rails.application.routes.draw do
             post :create_email
             post :create_email_blast
             post :create_text
-            post :create_text_blast
+            post :create_message_blast
           end
           member do
             get :edit_email

@@ -1,56 +1,47 @@
 <% current_month = nil %>
-<% emails.each do |email| %>
-  <% email_month = email.draft? ? email.created_at.strftime('%B %Y') : email.send_at.strftime('%B %Y') %>
-  <% if current_month != email_month %>
+<% sms.each do |s| %>
+  <% sms_month = s.draft? ? s.created_at.strftime('%B %Y') : s.send_at.strftime('%B %Y') %>
+  <% if current_month != sms_month %>
     <% if current_month %>
       </div>
     <% end %>
     <div class="media-list media-list-divided media-list-hover">
-      <h5 class="card-title text-right text-fade"><strong><%= email_month %></strong></h5>
-      <% current_month = email_month %>
+      <h5 class="card-title text-right text-fade"><strong><%= sms_month %></strong></h5>
+      <% current_month = sms_month %>
     <% end %>
 
-    <% if email.scheduled? %>
+    <% if s.scheduled? || s.sending? %>
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
-          <h5><%= email.subject %></h5>
-          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <h5><%= s.message %></h5>
+          <p><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span><%= s.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
-            <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
+            <%= render partial: "labels", object: s.recipients_label if s.recipients_label %>
           </p>
         </div>
       </a>
-    <% elsif email.sent? %>
-      <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
+    <% elsif s.sent? %>
+      <a class="media" data-toggle="quickview" href="#qv-message-blast-report-<%= s.id %>">
         <div class="media-body">
-          <h5><%= email.subject %></h5>
-          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <h5><%= s.message %></h5>
+          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span><%= s.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
           <p class="d-none d-sm-block">
             <span><small>To:</small></span>
-            <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
+            <%= render partial: "labels", object: s.recipients_label if s.recipients_label %>
           </p>
         </div>
-
-        <div class="text-center d-none d-sm-block">
-          <div data-provide="easypie" data-percent="<%= email.recipients_count == 0 ? 0 : ((email.opened_count.to_f/email.recipients_count.to_f)*100).round %>" data-color="#926dde" data-scale-color="transparent" data-size="100">
-            <span class="easypie-data">
-              <h4 class="text-purple mb-0"><%= email.opened_count %></h4>
-              <small class="text-uppercase">opened</small>
-            </span>
-          </div>
-        </div>
       </a>
-    <% elsif email.draft? %>
+    <% elsif s.draft? %>
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
-          <h5><%= email.subject %></h5>
+          <h5><%= s.message %></h5>
           <p>
           <span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span>
-          <% if email.created_at == email.updated_at %>
-            <small class="text-uppercase">Created</small> <%= email.created_at.strftime('%A %b %-d, %I:%M %P') %>
+          <% if s.created_at == s.updated_at %>
+            <small class="text-uppercase">Created</small> <%= s.created_at.strftime('%A %b %-d, %I:%M %P') %>
         <% else %>
-          <small class="text-uppercase">Updated</small> <%= email.updated_at.strftime('%A %b %-d, %I:%M %P') %>
+          <small class="text-uppercase">Updated</small> <%= s.updated_at.strftime('%A %b %-d, %I:%M %P') %>
       <% end %>
           </p>
         </div>
