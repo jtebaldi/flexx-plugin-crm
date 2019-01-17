@@ -106,7 +106,7 @@ input[type=radio].hide-control { display: none; }
             <a class="btn btn-block btn-multiline b-2 border-success text-success" href="#modal-new-touchpoint" data-toggle="modal"><i class="ti-layout-list-thumb fs-20"></i><br>New touchpoint</a>
           </div>
         </div>
-      
+
 
         <div class="card">
           <ul id="contact-main-nav" class="nav nav-lg nav-pills flex-column">
@@ -225,7 +225,7 @@ input[type=radio].hide-control { display: none; }
                 </div>
               </div>
             <% end %>
-           
+
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -321,7 +321,7 @@ input[type=radio].hide-control { display: none; }
           <button class="btn btn-flat btn-primary" type="submit">Save Changes</button>
         </footer>
       <% end %>
-      
+
       <!-- Template for new phones -->
       <div class="row hidden" id="phone-row-template">
         <div class="col-md-6">
@@ -396,10 +396,10 @@ input[type=radio].hide-control { display: none; }
             <% if @contact.phonenumbers.mobile.present? %>
               <footer class="publisher">
                 <span class="avatar"><%= current_user.initials %></span>
-                <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
-                  <input type="hidden" class="form-control" name="recipients" value="<%= @contact.id %>">
+                <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+                  <input type="hidden" class="form-control" name="message[contact_id]" value="<%= @contact.id %>">
                   <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
-                  <input name="body" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
+                  <input name="message[body]" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
                   <div class="gap-items btn-group pull-right mr-10 dropup">
                     <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
                   </div>
@@ -623,7 +623,7 @@ input[type=radio].hide-control { display: none; }
         <p>
           <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('archived')">Archive Contact</button>
         </p>
-        <!-- 
+        <!--
         <p>
           <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('delete')">Delete Contact</button>
         </p>

@@ -76,14 +76,10 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :emails
     end
 
-    def create_text
-      task = current_site.tasks.find_by_id params[:task_id]
-      text_blast from_task: task
-      if params[:task_id]
-        head :created
-      else
-        render :create_text_blast
-      end
+    def create_message
+      MessageService.create!(site: current_site, sender: current_user, params: message_params)
+
+      @contact = current_site.contacts.find_by(id: message_params[:contact_id])
     end
 
     def create_message_blast
@@ -93,6 +89,10 @@ module Plugins::FlexxPluginCrm
     end
 
     private
+
+    def message_params
+      params.require(:message).permit(:contact_id, :body)
+    end
 
     def message_blast_params
       send_at = if params[:timingOptions] == '2'
