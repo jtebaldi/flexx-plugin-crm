@@ -35,7 +35,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   end
 
   def update_message_blast
-    if self.status_was.blank? && self.status == 'delivered' && self.message_blast.present?
+    if self.status == 'delivered' && self.message_blast.present?
       self.message_blast.increment!(:delivered_count)
     end
   end
