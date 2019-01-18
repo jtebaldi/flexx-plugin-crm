@@ -91,7 +91,7 @@ module Plugins::FlexxPluginCrm
     private
 
     def message_params
-      params.require(:message).permit(:contact_id, :body)
+      params.require(:message).permit(:contact_id, :body, :task_id)
     end
 
     def message_blast_params

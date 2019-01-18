@@ -9,22 +9,22 @@
     </div>
   </div>
 <% else %>
-  <div class="publisher publisher-multi bg-transparent b-1 mb-0">    
-    <%= form_tag create_text_admin_messages_path(task_id: task.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
-      <input type="hidden" class="form-control" name="recipients" value="<%= task.contact.id %>">
-      <input type="hidden" class="form-control" name="phonenumber" value="<%= task.contact.phonenumbers.mobile.first.number %>">
+  <div class="publisher publisher-multi bg-transparent b-1 mb-0">
+    <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine' do %>
+      <input type="hidden" class="form-control" name="message[contact_id]" value="<%= task.contact.id %>">
+      <input type="hidden" class="form-control" name="message[task_id]" value="<%= task.id %>">
       <input type="hidden" class="form-control" name="refresh_panel" value="task-panel">
       <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
       <div class="publisher publisher-multi">
         <img class="publisher-avatar avatar avatar-md" src="<%= current_site.get_option("icon") %>" alt="...">
         <label for="textarea" class="pl-10">SMS Message</label>
-        <textarea name="body" id="task-send-text-message" class="publisher-input auto-expand w-100 pt-10" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true" placeholder="Type message here..."></textarea>
+        <textarea name="message[body]" id="task-send-text-message" class="publisher-input auto-expand w-100 pt-10" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true" placeholder="Type message here..."></textarea>
       </div>
     <% end %>
     <!--<div class="flexbox">
       <button class="btn btn-sm btn-bold btn-primary" id="task-send-text-button" onclick="submitTaskSendMessageForm()">Send</button>
       <div id="task-send-text-spinner" class="spinner-circle-shadow hidden"></div>
-    </div>    
+    </div>
     -->
   </div>
 <% end %>

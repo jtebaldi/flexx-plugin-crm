@@ -18,7 +18,8 @@ class MessageService
       to_number: to_number,
       message: message,
       send_at: Time.current,
-      created_by: @sender.id
+      created_by: @sender.id,
+      task_id: @params[:task_id]
     )
   end
 
