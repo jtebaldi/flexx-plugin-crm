@@ -3,7 +3,7 @@
     <a href="#"><span class="avatar"><%= contact.initials %></span></a>
     <div class="media-body">
       <h6><a href="#"><%= contact.print_name %></a></h6>
-    </div>    
+    </div>
   </div>
   <a id="expand_thread" href="#" class="fs-16 text-gray fullscreen-toggle">
     <i class="ti-fullscreen fullscreen-default"></i>
@@ -17,10 +17,10 @@
 
 <footer class="publisher">
   <span class="avatar"><%= current_user.initials %></span>
-  <%= form_tag create_text_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
-    <input type="hidden" class="form-control" name="recipients" value="<%= contact.id %>">
+  <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+    <input type="hidden" class="form-control" name="message[contact_id]" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
-    <input name="body" style="width: 90%" id="conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
+    <input name="message[body]" style="width: 90%" id="conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
     <div class="gap-items btn-group pull-right mr-10 dropup">
       <%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %>
     </div>
