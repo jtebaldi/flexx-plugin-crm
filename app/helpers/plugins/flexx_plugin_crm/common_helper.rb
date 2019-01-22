@@ -29,9 +29,4 @@ module Plugins::FlexxPluginCrm::CommonHelper
   def rich_text_stocks
     current_site.stocks.rich_texts.order(:name)
   end
-
-  def senders_list
-    be = current_site.custom_field_values.find_by_custom_field_slug 'business_email'
-    current_site.users.order(:first_name, :last_name) << CamaleonCms::User.new(email: be.value, first_name: current_site.name)
-  end
 end

@@ -1,12 +1,12 @@
 <select class="form-control" data-provide="selectpicker" name="<%= input_field_name %>">
-  <% senders_list.each do |row| %>
+  <% EngageToolsService.senders_list(site: current_site).each do |row| %>
     <%
       selected = if defined?(value) && value
-        row.email == value
+        row[:email] == value
       else
-        row.email == current_user.email
+        row[:email] == current_user.email
       end
     %>
-    <option value="<%= row.email %>" <%= 'selected' if selected %>><%= row.print_name %> - <%= row.email %></option>
+    <option value="<%= row[:email] %>" <%= 'selected' if selected %>><%= row[:name] %> - <%= row[:email] %></option>
   <% end %>
 </select>

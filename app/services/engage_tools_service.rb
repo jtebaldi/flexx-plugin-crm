@@ -88,6 +88,20 @@ class EngageToolsService
     number[0] == "+" ? number : "#{site.get_meta("flexx_crm_settings")[:country_code]}#{number}"
   end
 
+  def self.senders_list(site:)
+    be = site.custom_field_values.find_by_custom_field_slug('business_email')
+
+    result = site.users.map do |user|
+      {
+        name: user.print_name,
+        email: user.email
+      }
+    end
+    result << { name: site.name, email: be.value } if be.present?
+
+    result.sort_by { |s| s[:name] }
+  end
+
   private_class_method def self.find_email(recipient:, site:)
     return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
 
