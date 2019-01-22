@@ -41,9 +41,13 @@ module Plugins::FlexxPluginCrm
     end
 
     def create_email
-      task = current_site.tasks.find params[:task_id]
-      email_blast from_task: task
-      head :created
+      email = current_site.emails.create!(email_params)
+
+      if email.task_id.present?
+        head :created
+      else
+        redirect_to action: :emails
+      end
     end
 
     def edit_email
@@ -55,24 +59,20 @@ module Plugins::FlexxPluginCrm
     end
 
     def update_email
-      scheduled = params[:timingOptions] == '2'
-      scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
-      email_blast scheduled_at: scheduled_at
-      redirect_to action: :emails
+      email = current_site.emails.find(params[:id]).tap do |email|
+        email.update_attributes!(email_params)
+      end
+
+      if email.task_id.present?
+        head :ok
+      else
+        redirect_to action: :emails
+      end
     end
 
     def delete_email
       current_site.emails.destroy params[:id]
       flash[:notice] = 'Scheduled email successfully deleted.'
-      redirect_to action: :emails
-    end
-
-    def create_email_blast
-      scheduled = params[:timingOptions] == '2'
-      scheduled_at = params[:scheduled_date] + ' ' + params[:scheduled_time] if scheduled
-      email_blast scheduled_at: scheduled_at
-
-      flash[:notice] = 'Email successfully created. You may need to refresh to see sent message.' if !scheduled
       redirect_to action: :emails
     end
 
@@ -90,6 +90,19 @@ module Plugins::FlexxPluginCrm
 
     private
 
+    def email_params
+      send_at = if params[:timingOptions] == '2'
+        Time.strptime("#{params[:scheduled_date]} #{params[:scheduled_time]} #{Time.current.zone}", '%m/%d/%Y %H:%M %p %Z').in_time_zone
+      else
+        Time.current
+      end
+
+      params[:email].merge!(send_at: send_at)
+      params[:email].merge!(created_by: current_user.id)
+
+      params.require(:email).permit(:from, :recipients_list, :subject, :body, :send_at, :created_by, :task_id)
+    end
+
     def message_params
       params.require(:message).permit(:contact_id, :body, :task_id)
     end
@@ -105,33 +118,6 @@ module Plugins::FlexxPluginCrm
       params[:message_blast].merge!(created_by: current_user.id)
 
       params.require(:message_blast).permit(:recipients_list, :message, :send_at, :created_by)
-    end
-
-    def email_blast(scheduled_at: nil, from_task: nil)
-      EmailBlastService.new(
-        site: current_site,
-        user: current_user,
-        scheduled_at: scheduled_at,
-        sender: params[:sender],
-        recipients_list: params[:recipients],
-        subject: params[:subject],
-        body: params[:message],
-        email_id: params[:id]
-      ).call from_task
-    end
-
-    # @param from_task [Plugind::FlexxPluginCrm::Task, FalseClass, NilClass]
-    #   Task if from task, false if from blast, nil if form conversations
-    def text_blast(from_task: false)
-      recipients_list = params[:recipients].split(',')
-      MessageBlastService.new(
-        site: current_site,
-        user: current_user,
-        scheduled_at: nil,
-        recipients_list: recipients_list,
-        body: DynamicFieldsParserService.parse(site: current_site, template: params[:body], escape: false)
-      ).call from_task
-      @contact = current_site.contacts.find(recipients_list[0]) if recipients_list.size == 1
     end
   end
 end

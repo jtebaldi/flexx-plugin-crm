@@ -60,7 +60,6 @@ Rails.application.routes.draw do
             post :status
             post :confirmation
             post :create_email
-            post :create_email_blast
             post :create_message
             post :create_message_blast
           end

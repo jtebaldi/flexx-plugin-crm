@@ -22,4 +22,12 @@ class Plugins::FlexxPluginCrm::EmailRecipient < ActiveRecord::Base
       }
     end
   end
+
+  def site
+    email.site
+  end
+
+  def created_by
+    email.created_by
+  end
 end

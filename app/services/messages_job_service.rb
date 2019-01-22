@@ -19,7 +19,7 @@ class MessagesJobService
   end
 
   def self.send_email(email)
-    sender = CamaleonCms::User.find_by_email email.from
+    sender = CamaleonCms::User.find_by_email(email).from
 
     if sender
       from = { email: email.from, name: sender.print_name }

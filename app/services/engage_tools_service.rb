@@ -102,6 +102,26 @@ class EngageToolsService
     result.sort_by { |s| s[:name] }
   end
 
+  def self.email_recipients_to_form_field(recipients_list:, site:)
+    result = []
+
+    return result if recipients_list.blank?
+
+    recipients = recipients_list.gsub('___', ' ').split(',')
+
+    recipients.each do |r|
+      if r.to_i > 0
+        c = site.contacts.find_by(id: r.to_i)
+
+        result.push({ label: c.print_name, value: c.id }) unless c.blank?
+      else
+        result.push({ label: r, value: r})
+      end
+    end
+
+    result
+  end
+
   private_class_method def self.find_email(recipient:, site:)
     return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
 

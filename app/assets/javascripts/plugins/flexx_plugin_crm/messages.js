@@ -92,7 +92,9 @@ app.ready(function() {
    * IMPORTANT: tagsManager must be called AFTER typeahead
    *
   ********************************************************/
-  var tm = $('#recipients').tagsManager();
+  var tm = $('#recipients').tagsManager({
+    prefilled: prefilled_tags
+  });
 
   $('#recipients').on('tm:refresh', function(){
     var pos = $('.tt-input').position();
