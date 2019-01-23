@@ -34,7 +34,7 @@ class MessagesJobService
       body: message.body
     )
 
-    email.update!(aasm_state: :sent, sg_message_id: sg_message_id)
+    message.update!(aasm_state: :sent, sg_message_id: sg_message_id)
   end
 
   def self.send_message(message)
