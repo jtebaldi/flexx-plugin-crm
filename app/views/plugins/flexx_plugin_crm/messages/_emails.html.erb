@@ -30,7 +30,7 @@
           </small>
         </div>
       <% end %>
-    <% elsif email.sent? %>
+    <% elsif email.sent? || email.sending? %>
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
           <h5><%= email.subject %></h5>

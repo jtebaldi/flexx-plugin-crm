@@ -18,23 +18,23 @@ class MessagesJobService
     end
   end
 
-  def self.send_email(email)
-    sender = CamaleonCms::User.find_by_email(email).from
+  def self.send_email(message)
+    sender = message.site.users.find_by(email: message.from)
 
-    if sender
-      from = { email: email.from, name: sender.print_name }
+    from = if sender
+      { email: message.from, name: sender.print_name }
     else
-      be = email.site.custom_field_values.find_by_custom_field_slug 'business_email'
-      from = { email: be.value, name: email.site.name }
+      { email: message.from, name: message.site.name }
     end
-    sg_message_id = SendgridAdapter.new(site: email.site).send_email(
+
+    sg_message_id = SendgridAdapter.new(site: message.site).send_email(
       from: from,
-      to: email.email_recipients.map { |r| { email: r.to, name: r.contact.print_name } },
-      subject: email.subject,
-      body: email.body
+      to: message.email_recipients.map { |r| { email: r.to, name: r.contact.print_name } },
+      subject: message.subject,
+      body: message.body
     )
 
-    email.update!(sg_message_id: sg_message_id) && email.done!
+    email.update!(aasm_state: :sent, sg_message_id: sg_message_id)
   end
 
   def self.send_message(message)

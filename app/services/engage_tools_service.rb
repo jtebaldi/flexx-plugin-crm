@@ -123,12 +123,12 @@ class EngageToolsService
   end
 
   private_class_method def self.find_email(recipient:, site:)
-    return [[nil, recipient]] if recipient =~ URI::MailTo::EMAIL_REGEXP
-
     if recipient.to_i > 0
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
       [[contact.id, contact.email]] if contact.present?
+    elsif recipient =~ URI::MailTo::EMAIL_REGEXP
+      [[nil, recipient]]
     elsif CONTACT_GROUPS.has_key?(recipient)
       site.contacts.send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else

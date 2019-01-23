@@ -10,13 +10,24 @@ class Plugins::FlexxPluginCrm::Email < ActiveRecord::Base
   before_save :recipients_to_labels
 
   scope :draft, -> { where(aasm_state: 'draft') }
-  scope :recent, -> { where(aasm_state: ['sent', 'scheduled']).order(send_at: :desc) }
-  scope :scheduled, -> { where(aasm_state: 'scheduled') }
+  scope :recent, -> { where(aasm_state: ['sent', 'scheduled', 'sending']).order(send_at: :desc) }
+  scope :scheduled, -> { where(aasm_state: ['scheduled', 'sending']) }
   scope :sent, -> { where(aasm_state: 'sent') }
 
   private
 
   def run_worker
+    contact_list = EngageToolsService.email_recipients_to_contacts_list(recipients_list: recipients_list, site: site)
+
+    update!(
+      body: DynamicFieldsParserService.parse(site: site, template: body),
+      recipients_count: contact_list.count
+    )
+
+    contact_list.each do |c|
+      email_recipients.create!(contact_id: c[0], to: c[1])
+    end
+
     SendEmailWorker.perform_async(id)
   end
 
