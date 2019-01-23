@@ -93,7 +93,7 @@ app.ready(function() {
    *
   ********************************************************/
   var tm = $('#recipients').tagsManager({
-    prefilled: prefilled_tags
+    prefilled: ('prefilled_tags' in window) ? prefilled_tags : []
   });
 
   $('#recipients').on('tm:refresh', function(){
