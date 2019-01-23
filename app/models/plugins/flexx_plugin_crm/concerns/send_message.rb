@@ -6,6 +6,8 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
   included do
     include AASM
 
+    after_create :send_immediate_message
+
     aasm do
       state :scheduled, initial: true
       state :draft, :sending, :sent, :received, :error
@@ -23,5 +25,9 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
   # Must be implemented by the class that include this concern
   def run_worker
     raise 'run_worker not implemented'
+  end
+
+  def send_immediate_message
+    self.send_message! if self.send_at <= Time.current
   end
 end
