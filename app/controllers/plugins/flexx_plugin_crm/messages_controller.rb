@@ -12,10 +12,10 @@ module Plugins::FlexxPluginCrm
     end
 
     def emails
-      @recent_emails = current_site.emails.recent.limit(5)
-      @scheduled_emails = current_site.emails.scheduled.order(send_at: :desc)
-      @sent_emails = current_site.emails.sent.order(send_at: :desc)
-      @draft_emails = current_site.emails.draft.order(updated_at: :desc)
+      @recent_emails = current_site.emails.blast.recent.limit(5)
+      @scheduled_emails = current_site.emails.blast.scheduled.order(send_at: :desc)
+      @sent_emails = current_site.emails.sent.blast.order(send_at: :desc)
+      @draft_emails = current_site.emails.draft.blast.order(updated_at: :desc)
     end
 
     def sms

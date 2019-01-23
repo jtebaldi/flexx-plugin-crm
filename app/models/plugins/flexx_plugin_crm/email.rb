@@ -11,8 +11,9 @@ class Plugins::FlexxPluginCrm::Email < ActiveRecord::Base
 
   scope :draft, -> { where(aasm_state: 'draft') }
   scope :recent, -> { where(aasm_state: ['sent', 'scheduled', 'sending']).order(send_at: :desc) }
-  scope :scheduled, -> { where(aasm_state: ['scheduled', 'sending']) }
+  scope :scheduled, -> { where(aasm_state: 'scheduled') }
   scope :sent, -> { where(aasm_state: 'sent') }
+  scope :blast, -> { where(task_id: nil) }
 
   private
 
@@ -25,7 +26,7 @@ class Plugins::FlexxPluginCrm::Email < ActiveRecord::Base
     )
 
     contact_list.each do |c|
-      email_recipients.create!(contact_id: c[0], to: c[1])
+      email_recipients.create!(contact_id: c[0], to: c[1], task_id: task_id)
     end
 
     SendEmailWorker.perform_async(id)
