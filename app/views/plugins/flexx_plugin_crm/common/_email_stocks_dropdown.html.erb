@@ -12,7 +12,7 @@
   var stocks = <%= rich_text_stocks.pluck(:metadata, :contents).to_json.html_safe %>;
 
   $('#stock-email-select-field').on('change', function(e) {
-    $('input[name="subject"]').val(stocks[e.target.value][0].subject);
+    $('input[name="email[subject]"]').val(stocks[e.target.value][0].subject);
     window.ckeditor.setData(stocks[e.target.value][1]);
   });
 </script>

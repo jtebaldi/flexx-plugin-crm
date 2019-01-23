@@ -30,7 +30,7 @@
           </small>
         </div>
       <% end %>
-    <% elsif email.sent? || email.sending? %>
+    <% elsif email.sent? %>
       <a class="media" data-toggle="quickview" href="#qv-email-report-<%= email.id %>">
         <div class="media-body">
           <h5><%= email.subject %></h5>
@@ -54,20 +54,17 @@
           </div>
         </div>
       </a>
-    <% elsif email.draft? %>
-      <a class="media" data-toggle="modal" href="#">
+    <% elsif email.sending? %>
+      <div class="media">
         <div class="media-body">
           <h5><%= email.subject %></h5>
-          <p>
-          <span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span>
-          <% if email.created_at == email.updated_at %>
-            <small class="text-uppercase">Created</small> <%= email.created_at.strftime('%A %b %-d, %I:%M %P') %>
-        <% else %>
-          <small class="text-uppercase">Updated</small> <%= email.updated_at.strftime('%A %b %-d, %I:%M %P') %>
-      <% end %>
+          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sending</span><%= email.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p class="d-none d-sm-block">
+            <span><small>To:</small></span>
+            <%= render partial: "labels", object: email.recipients_label if email.recipients_label %>
           </p>
         </div>
-      </a>
+      </div>
     <% end %>
 
 <% end %>
