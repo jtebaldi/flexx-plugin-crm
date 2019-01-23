@@ -4,7 +4,8 @@
   }
 </style>
 
-<%= form_tag create_email_admin_messages_path(task_id: task.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine pt-0' do %>
+<%= form_tag create_email_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine pt-0' do %>
+  <input type="hidden" name="email[task_id]" value="<%= task.id %>">
   <div class="card-body">
 
     <div class="mt-30">
@@ -17,22 +18,22 @@
       <div class="form-group">
         <label>To</label>
         <input class="form-control" type="text" id="recipients" value="<%= task.contact && task.contact.print_name %>" readonly>
-        <input type="hidden" id="recipient_id" name="recipients" value="<%= task.contact && task.contact.id %>" readonly>
+        <input type="hidden" id="recipient_id" name="email[recipients_list]" value="<%= task.contact && task.contact.id %>" readonly>
       </div>
 
       <div class="form-group">
         <label>Subject</label>
-        <input class="form-control" type="text" name="subject">
+        <input class="form-control" type="text" name="email[subject]">
       </div>
 
       <div class="form-group">
         <label>From</label>
-        <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'sender' } %>
+        <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'email[from]' } %>
       </div>
 
       <div class="form-group">
         <label>Message</label>
-        <textarea name="message" class="form-control editor" rows="10"></textarea>
+        <textarea name="email[body]" class="form-control editor" rows="10"></textarea>
       </div>
 
     </div>
