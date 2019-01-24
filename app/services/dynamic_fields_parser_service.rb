@@ -1,5 +1,3 @@
-require 'mustache'
-
 class DynamicFieldsParserService
   def self.parse(site:, template:)
     self.new(site, template, nil).parse
@@ -19,7 +17,7 @@ class DynamicFieldsParserService
     fields = Hash[ @site.stocks.snippets.pluck(:label, :contents) ]
     fields.merge!(load_contact_fields)
 
-    Mustache.render(@template, fields)
+    FlexxPluginCrm::FlexxMustache.render(@template, fields)
   end
 
   private
