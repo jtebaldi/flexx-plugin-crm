@@ -38,6 +38,6 @@ class MessageService
   end
 
   def message
-    DynamicFieldsParserService.parse_contact(site: @site, template: @params[:body], contact: contact)
+    DynamicFieldsParserService.parse(site: @site, template: @params[:body])
   end
 end

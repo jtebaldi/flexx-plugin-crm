@@ -17,6 +17,8 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   private
 
   def run_worker
+    update!(message: DynamicFieldsParserService.parse_contact(site: site, template: message, contact: contact))
+
     SendMessageWorker.perform_async(id)
   end
 
