@@ -28,6 +28,6 @@ module Plugins::FlexxPluginCrm::Concerns::SendMessage
   end
 
   def send_immediate_message
-    self.send_message! if self.send_at <= Time.current
+    self.send_message! if self.send_at.present? && self.send_at <= Time.current
   end
 end
