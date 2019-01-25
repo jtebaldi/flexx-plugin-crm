@@ -10,7 +10,7 @@
       <% current_month = sms_month %>
     <% end %>
 
-    <% if s.scheduled? || s.sending? %>
+    <% if s.scheduled? %>
       <a class="media" data-toggle="modal" href="#">
         <div class="media-body">
           <h5><%= s.message %></h5>
@@ -32,20 +32,17 @@
           </p>
         </div>
       </a>
-    <% elsif s.draft? %>
-      <a class="media" data-toggle="modal" href="#">
+    <% elsif s.sending? %>
+      <div class="media">
         <div class="media-body">
           <h5><%= s.message %></h5>
-          <p>
-          <span class="text-warning fw-400" style="padding-right:8px;"><i class="ti-write" style="padding-right:3px;"></i> Draft</span>
-          <% if s.created_at == s.updated_at %>
-            <small class="text-uppercase">Created</small> <%= s.created_at.strftime('%A %b %-d, %I:%M %P') %>
-        <% else %>
-          <small class="text-uppercase">Updated</small> <%= s.updated_at.strftime('%A %b %-d, %I:%M %P') %>
-      <% end %>
+          <p><span class="text-success fw-400" style="padding-right:8px;"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sending</span><%= s.send_at.strftime('%A %b %-d, %I:%M %P') %></p>
+          <p class="d-none d-sm-block">
+            <span><small>To:</small></span>
+            <%= render partial: "labels", object: s.recipients_label if s.recipients_label %>
           </p>
         </div>
-      </a>
+      </div>
     <% end %>
 
 <% end %>

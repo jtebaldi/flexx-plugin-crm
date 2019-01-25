@@ -10,6 +10,7 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message'
 
   before_create :recipients_to_labels
+  after_create :send_immediate_messages
 
   scope :draft, -> { where(aasm_state: 'draft') }
   scope :recent, -> { where(aasm_state: ['sending', 'sent', 'scheduled']).order(send_at: :desc) }
@@ -33,6 +34,10 @@ class Plugins::FlexxPluginCrm::MessageBlast < ActiveRecord::Base
 
   def recipients_to_labels
     self.recipients_label = EngageToolsService.message_recipients_to_labels(recipients_list: recipients_list)
+  end
+
+  def send_immediate_messages
+    self.send_messages! if self.send_at.present? && self.send_at <= Time.current
   end
 
   def run_worker
