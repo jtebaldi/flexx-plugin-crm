@@ -23,17 +23,17 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   end
 
   def has_activity_record?
-    message_blast.present?
+    message_blast.blank? && id_changed?
   end
 
   def activity_record_params
-    if message_blast.present?
-      {
-        task_type: :message,
-        title: 'SMS Blast',
-        details: message
-      }
-    end
+    {
+      feed_name: 'contact',
+      feed_id: self.contact.id,
+      actor: "User:#{self.created_by}",
+      verb: 'created',
+      object: "Message:#{self.id}"
+    }
   end
 
   def update_message_blast

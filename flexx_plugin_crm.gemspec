@@ -21,13 +21,15 @@ Gem::Specification.new do |s|
   s.add_dependency "acts-as-taggable-on", "~> 5.0"
   s.add_dependency "cama_contact_form", "~> 0.0.23"
   s.add_dependency "camaleon_cms", "~> 2.4.3.8"
+  s.add_dependency "json", "~> 1.7", ">= 1.7.7"
   s.add_dependency "mustache", "~> 1.1.0"
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
-  s.add_dependency 'sidekiq'
-  s.add_dependency 'timezone', '~> 1.0'
+  s.add_dependency "sidekiq", "~> 5.2.2"
+  s.add_dependency "stream-ruby", "~> 3.1.0"
+  s.add_dependency "timezone", "~> 1.0"
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
-  s.add_dependency "json", "~> 1.7", ">= 1.7.7"
+
 
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'factory_bot_rails'
