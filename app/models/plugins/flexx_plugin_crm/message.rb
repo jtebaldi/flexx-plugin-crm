@@ -27,13 +27,24 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   end
 
   def activity_record_params
-    {
-      feed_name: 'contact',
-      feed_id: self.contact.id,
-      actor: "User:#{self.created_by}",
-      verb: 'created',
-      object: "Message:#{self.id}"
-    }
+    if status == 'received' && self.contact.present?
+      {
+        feed_name: 'notifications',
+        feed_id: 'received_messages',
+        actor: "Contact:#{self.contact.id}",
+        verb: 'sent',
+        object: "Message:#{self.id}",
+        message: "A new message from #{self.contact.print_name} was received."
+      }
+    else
+      {
+        feed_name: 'contact',
+        feed_id: self.contact.id,
+        actor: "User:#{self.created_by}",
+        verb: 'created',
+        object: "Message:#{self.id}"
+      }
+    end
   end
 
   def update_message_blast

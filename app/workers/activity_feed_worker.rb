@@ -12,7 +12,8 @@ class ActivityFeedWorker
     ).add_activity(
       actor: params[:actor],
       verb: params[:verb],
-      object: params[:object]
+      object: params[:object],
+      message: params[:message]
     )
   end
 end
