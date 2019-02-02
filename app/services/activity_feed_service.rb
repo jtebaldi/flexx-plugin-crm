@@ -49,6 +49,8 @@ class ActivityFeedService
     case object_details[0]
     when 'Message'
       Plugins::FlexxPluginCrm::Message.find_by(id: object_details[1])
+    when 'EmailRecipient'
+      Plugins::FlexxPluginCrm::EmailRecipient.find_by(id: object_details[1])
     end
   end
 end

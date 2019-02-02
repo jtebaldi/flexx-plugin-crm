@@ -18,6 +18,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
     case activity_object
     when Plugins::FlexxPluginCrm::Message
       'comment'
+    when Plugins::FlexxPluginCrm::EmailRecipient
+      'envelope'
     else
       'list'
     end

@@ -5,9 +5,25 @@
     </div>
     <div class="timeline-content">
       <time><%= time_ago_in_words(activity.time) %> ago</time>
+      <% if activity.object.instance_of?(Plugins::FlexxPluginCrm::EmailRecipient) %>
+        <% if activity.object.status == 'open' %>
+          <span class="ml-10 text-info fw-400"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
+        <% elsif activity.object.status == 'click' %>
+          <span class="ml-10 text-success fw-400"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
+        <% elsif activity.object.status == 'delivered' %>
+          <span class="ml-10 text-gray fw-400"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
+        <% elsif activity.object.status == 'unsubscribe' %>
+          <span class="ml-10 text-pink fw-400"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
+        <% elsif activity.object.status == 'bounced' %>
+          <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
+        <% else %>
+          <span class="ml-10 text-warning fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
+        <% end %>
+      <% end %>
       <p style="color: #333">
         <% if activity.labels.present? %>
-          <span class="h6"><%= activity.labels.action_type %></span> <%= activity.labels.action %> by <strong><%= activity.labels.actor %></strong>
+          <% subject = activity.object.instance_of?(Plugins::FlexxPluginCrm::EmailRecipient) ? " (#{activity.object.email.subject})" : '' %>
+          <span class="h6"><%= "#{activity.labels.action_type}#{subject}" %></span> <%= activity.labels.action %> by <strong><%= activity.labels.actor %></strong>
         <% end %>
       </p>
     </div>
