@@ -14,6 +14,15 @@ module Plugins::FlexxPluginCrm::CommonHelper
     end
   end
 
+  def activity_feed_icon(activity_object)
+    case activity_object
+    when Plugins::FlexxPluginCrm::Message
+      'comment'
+    else
+      'list'
+    end
+  end
+
   def invalid_feedback(errors)
     errors.map do |err|
       content_tag :div, class: 'invalid-feedback' do
