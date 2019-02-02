@@ -34,7 +34,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
         actor: "Contact:#{self.contact.id}",
         verb: 'sent',
         object: "Message:#{self.id}",
-        message: "A new message from #{self.contact.print_name} was received."
+        message: "New SMS from #{self.contact.print_name} was received."
       }
     else
       {
