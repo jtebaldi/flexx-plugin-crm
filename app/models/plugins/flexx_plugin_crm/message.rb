@@ -5,9 +5,10 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   self.table_name = 'messages'
 
   belongs_to :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
+  belongs_to :message_blast, class_name: 'Plugins::FlexxPluginCrm::MessageBlast'
   belongs_to :site, class_name: 'CamaleonCms::Site'
   belongs_to :task, class_name: 'Plugins::FlexxPluginCrm::Task'
-  belongs_to :message_blast, class_name: 'Plugins::FlexxPluginCrm::MessageBlast'
+  belongs_to :user, class_name: '::CamaleonCms::User', foreign_key: 'created_by'
 
   scope :received, -> { where(status: 'received') }
   scope :unread, -> { where(status: 'received', read: false) }
@@ -23,26 +24,35 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   end
 
   def has_activity_record?
-    message_blast.blank? && id_changed?
+    self.id_changed? && (self.message_blast.present? || (self.status == 'received' && self.contact.present?))
   end
 
   def activity_record_params
-    if status == 'received' && self.contact.present?
-      {
-        feed_name: 'notifications',
-        feed_id: 'received_messages',
-        actor: "Contact:#{self.contact.id}",
-        verb: 'sent',
-        object: "Message:#{self.id}",
-        message: "New SMS from #{self.contact.print_name} was received."
-      }
-    else
+    if self.message_blast.present?
       {
         feed_name: 'contact',
         feed_id: self.contact.id,
-        actor: "User:#{self.created_by}",
-        verb: 'created',
-        object: "Message:#{self.id}"
+        args: {
+          actor: "User:#{self.created_by}",
+          verb: 'sent',
+          object: "Message:#{self.id}",
+          labels: {
+            action: 'sent',
+            action_type: 'SMS Blast',
+            actor: self.user.print_name
+          }
+        }
+      }
+    else
+      {
+        feed_name: 'notifications',
+        feed_id: 'received_messages',
+        args: {
+          actor: "Contact:#{self.contact.id}",
+          verb: 'sent',
+          object: "Message:#{self.id}",
+          message: "A new message from #{self.contact.print_name} was received."
+        }
       }
     end
   end
