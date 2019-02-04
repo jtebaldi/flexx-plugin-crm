@@ -20,6 +20,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
       'comment'
     when Plugins::FlexxPluginCrm::EmailRecipient
       'envelope'
+    when Plugins::FlexxPluginCrm::Task
+      task_type_icon(task_type: activity_object.task_type)
     else
       'list'
     end
