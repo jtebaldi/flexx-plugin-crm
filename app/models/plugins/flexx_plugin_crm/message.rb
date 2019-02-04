@@ -46,7 +46,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
     else
       {
         feed_name: 'notifications',
-        feed_id: 'received_messages',
+        feed_id: self.site.id,
         args: {
           actor: "Contact:#{self.contact.id}",
           verb: 'sent',

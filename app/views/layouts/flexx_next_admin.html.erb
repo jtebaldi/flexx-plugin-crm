@@ -57,8 +57,8 @@
     <%= render 'layouts/topbar' %>
 
     <!-- Main container -->
-    <main class="main-container">      
-      <div id="notification-feed">        
+    <main class="main-container">
+      <div id="notification-feed">
       </div>
       <div id="flash-messages"><%= render 'layouts/flash_messages' %></div>
 
@@ -94,7 +94,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
 
     <script type="text/javascript">
-      var client = stream.connect('<%= ENV['STREAM_API_KEY'] %>', '<%= StreamAdapter.client.create_user_token('received_messages') %>', '<%= ENV['STREAM_APP_ID'] %>');
+      var client = stream.connect('<%= ENV['STREAM_API_KEY'] %>', '<%= StreamAdapter.client.create_user_token(current_site.id.to_s) %>', '<%= ENV['STREAM_APP_ID'] %>');
       var notificationFeed = client.feed('notifications');
 
       function callback(data) {
