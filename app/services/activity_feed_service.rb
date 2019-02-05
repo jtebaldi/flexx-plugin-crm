@@ -53,6 +53,8 @@ class ActivityFeedService
       Plugins::FlexxPluginCrm::EmailRecipient.find_by(id: object_details[1])
     when 'Task'
       Plugins::FlexxPluginCrm::Task.find_by(id: object_details[1])
+    when 'Contact'
+      Plugins::FlexxPluginCrm::Contact.find_by(id: object_details[1])
     end
   end
 end

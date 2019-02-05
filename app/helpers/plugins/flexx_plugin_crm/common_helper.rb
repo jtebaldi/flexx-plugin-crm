@@ -22,6 +22,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
       'envelope'
     when Plugins::FlexxPluginCrm::Task
       task_type_icon(task_type: activity_object.task_type)
+    when Plugins::FlexxPluginCrm::Contact
+      'retweet'
     else
       'list'
     end

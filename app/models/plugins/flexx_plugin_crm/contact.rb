@@ -1,6 +1,7 @@
 require 'aasm'
 
 class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
+  include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
   include AASM
 
   after_destroy :remove_pending_tasks
@@ -55,7 +56,34 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     messages.order(:created_at).last.status == 'received'
   end
 
+  def updated_by_user
+    CamaleonCms::User.find_by(id: self.updated_by)
+  end
+
   private
+
+  def has_activity_record?
+    true
+  end
+
+  def activity_record_params
+    if self.sales_stage_changed?
+      {
+        feed_name: 'contact',
+        feed_id: self.id,
+        args: {
+          actor: "User:#{self.updated_by}",
+          verb: 'updated',
+          object: "Contact:#{self.id}",
+          labels: {
+            action: 'updated',
+            action_type: "Status from #{self.sales_stage_was.upcase} to #{self.sales_stage.upcase}",
+            actor: self.updated_by_user.print_name
+          }
+        }
+      }
+    end
+  end
 
   def remove_pending_tasks
     tasks.where(aasm_state: :pending).destroy_all
