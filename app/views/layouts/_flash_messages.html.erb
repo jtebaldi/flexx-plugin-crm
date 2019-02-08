@@ -3,7 +3,7 @@
     <% if v.is_a? String %>
       <%= v %>
     <% else %>
-      <%= v.map { |k, v| "#{k.to_s.gsub('_', ' ').capitalize} #{v.join ' '}" }.join('</br>').html_safe %>
+      <%= v.join('</br>').html_safe %>
     <% end %>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
