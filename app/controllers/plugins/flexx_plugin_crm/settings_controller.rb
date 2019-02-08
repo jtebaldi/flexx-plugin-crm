@@ -36,7 +36,7 @@ module Plugins::FlexxPluginCrm
         #   redirect_to action: :index
         # end
       else
-        flash.now[:lert] = current_user.errors.messages
+        flash.now[:alert] = current_user.errors.messages.map { |k, v| "#{k.to_s.gsub('_', ' ').capitalize} #{v.join ' '}" }
       end
       render :update
     end
@@ -51,7 +51,7 @@ module Plugins::FlexxPluginCrm
         bypass_sign_in current_user
         flash.now[:notice] = 'Pasword has been updated successfully.'
       else
-        flash.now[:alert] = current_user.errors.messages
+        flash.now[:alert] = current_user.errors.messages.map { |k, v| "#{k.to_s.gsub('_', ' ').capitalize} #{v.join ' '}" }
       end
     end
 
