@@ -5,6 +5,10 @@ class ActivityFeedService
     new(feed_name, feed_id).list_activities(limit)
   end
 
+  def self.list_aggregated_activities(feed_name:, feed_id:, limit: 6)
+    new(feed_name, feed_id).list_aggregated_activities(limit)
+  end
+
   def initialize(feed_name, feed_id)
     @feed_name = feed_name
     @feed_id = feed_id
@@ -26,6 +30,14 @@ class ActivityFeedService
     end
 
     result
+  end
+
+  def list_aggregated_activities(limit)
+    result = feed.get(limit: limit)['results']
+
+    result.
+      map { |a| parse_aggregated_activity(a) }.
+      sort { |x, y| y.time <=> x.time }
   end
 
   def feed
@@ -56,5 +68,36 @@ class ActivityFeedService
     when 'Contact'
       Plugins::FlexxPluginCrm::Contact.find_by(id: object_details[1])
     end
+  end
+
+  def parse_aggregated_activity(activities)
+    result = OpenStruct.new
+
+    group_split = activities['group'].split('/')
+
+    case group_split.first
+    when 'message_received'
+      if activities['activity_count'] == 1
+        prefix = 'A message'
+        suffix = 'was'
+      else
+        prefix = "#{activities['activity_count']} messages"
+        suffix = 'were'
+      end
+      contact = parse_actor(group_split[1])
+
+      result.message = "#{prefix} from #{contact.print_name} #{suffix} received."
+    when 'message_sent'
+      if activities['activity_count'] == 1
+        prefix = 'A SMS Blast was'
+      else
+        prefix = "#{activities['activity_count']} SMS Blasts were"
+      end
+      result.message = "#{prefix} sent."
+    end
+
+    result.time = Time.find_zone('UTC').parse(activities['updated_at'])
+
+    result
   end
 end

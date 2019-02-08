@@ -6,7 +6,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
 
   belongs_to :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
   belongs_to :message_blast, class_name: 'Plugins::FlexxPluginCrm::MessageBlast'
-  belongs_to :site, class_name: 'CamaleonCms::Site'
+  belongs_to :site, class_name: '::CamaleonCms::Site'
   belongs_to :task, class_name: 'Plugins::FlexxPluginCrm::Task'
   belongs_to :user, class_name: '::CamaleonCms::User', foreign_key: 'created_by'
 
@@ -24,34 +24,39 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
   end
 
   def has_activity_record?
-    self.id_changed? && (self.message_blast.present? || (self.status == 'received' && self.contact.present?))
+    self.id_changed? && (self.message_blast.present? || (self.status == 'received' && self.contact_id.present?))
   end
 
   def activity_record_params
     if self.message_blast.present?
       {
         feed_name: 'contact',
-        feed_id: self.contact.id,
+        feed_id: self.contact_id,
         args: {
           actor: "User:#{self.created_by}",
-          verb: 'sent',
+          verb: 'message_sent',
           object: "Message:#{self.id}",
           labels: {
             action: 'sent',
             action_type: 'SMS Blast',
             actor: self.user.print_name
-          }
+          },
+          to: ["system:#{self.site_id}"]
         }
       }
     else
       {
         feed_name: 'notifications',
-        feed_id: self.site.id,
+        feed_id: self.site_id,
         args: {
-          actor: "Contact:#{self.contact.id}",
-          verb: 'sent',
+          actor: "Contact:#{self.contact_id}",
+          verb: 'message_received',
           object: "Message:#{self.id}",
-          message: "A new message from #{self.contact.print_name} was received."
+          message: "A new message from #{self.contact.print_name} was received.",
+          labels: {
+            actor: self.contact.print_name
+          },
+          to: ["system:#{self.site_id}"]
         }
       }
     end
