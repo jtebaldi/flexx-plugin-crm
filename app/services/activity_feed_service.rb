@@ -94,6 +94,13 @@ class ActivityFeedService
         prefix = "#{activities['activity_count']} SMS Blasts were"
       end
       result.message = "#{prefix} sent."
+    when 'form_completed'
+      if activities['activity_count'] == 1
+        prefix = 'A Form was'
+      else
+        prefix = "#{activities['activity_count']} Forms were"
+      end
+      result.message = "#{prefix} completed."
     end
 
     result.time = Time.find_zone('UTC').parse(activities['updated_at'])
