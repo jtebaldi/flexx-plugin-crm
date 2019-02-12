@@ -54,7 +54,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
+        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [] do
           collection do
             get :emails
             get :sms
