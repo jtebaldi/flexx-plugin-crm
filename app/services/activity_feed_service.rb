@@ -101,6 +101,13 @@ class ActivityFeedService
         prefix = "#{activities['activity_count']} Forms were"
       end
       result.message = "#{prefix} completed."
+    when 'contact_created'
+      if activities['activity_count'] == 1
+        prefix = 'A Contact was'
+      else
+        prefix = "#{activities['activity_count']} Contacts were"
+      end
+      result.message = "#{prefix} created."
     end
 
     result.time = Time.find_zone('UTC').parse(activities['updated_at'])

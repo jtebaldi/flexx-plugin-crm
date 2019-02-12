@@ -56,6 +56,10 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     messages.order(:created_at).last.status == 'received'
   end
 
+  def created_by_user
+    CamaleonCms::User.find_by(id: self.created_by)
+  end
+
   def updated_by_user
     CamaleonCms::User.find_by(id: self.updated_by)
   end
@@ -63,11 +67,27 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   private
 
   def has_activity_record?
-    true
+    self.id_changed? || self.sales_stage_changed?
   end
 
   def activity_record_params
-    if self.sales_stage_changed?
+    if self.id_changed?
+      {
+        feed_name: 'contact',
+        feed_id: self.id,
+        args: {
+          actor: "User:#{self.created_by}",
+          verb: 'contact_created',
+          object: "Contact:#{self.id}",
+          labels: {
+            action: 'created',
+            action_type: 'Contact',
+            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'
+          },
+          to: ["system:#{self.site_id}"]
+        }
+      }
+    else
       {
         feed_name: 'contact',
         feed_id: self.id,
