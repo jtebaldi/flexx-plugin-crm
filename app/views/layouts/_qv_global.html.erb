@@ -1,0 +1,61 @@
+<div id="qv-global" class="quickview">
+
+  <ul class="quickview-header nav nav-tabs nav-justified nav-tabs-info">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#qv-tab-contacts">Contacts</a>
+    </li>
+    
+    <!--
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#qv-tab-noti">Notifications</a>
+    </li>
+    -->
+  </ul>
+
+  <div class="quickview-body">
+    <div class="tab-content">
+      <div class="tab-pane fade active show" id="qv-tab-contacts">
+        <div class="media-list media-list-hover">
+          <header class="media-list-header b-0">
+            <form class="lookup lookup-lg w-100 bb-1 border-light">
+              <input class="w-100 no-radius no-border py-30" type="text" placeholder="Search..." data-provide="media-search">
+            </form>
+          </header>
+
+          <% @active_contact_list.each do |contact| %>
+            <a class="media items-center" href="<%= admin_contact_path(contact.id) %>">
+              <span class="avatar avatar-sm bg-secondary"><%= contact.initials %></span>
+              <p class="title"><%= contact.print_name %></p>
+              <span class="media-action text-success"><i class="ti-arrow-right"></i></span>
+            </a>
+          <% end %>
+          
+          <%# <div class="media items-center">
+            <img class="avatar avatar-sm" src="../assets/img/avatar/1.jpg" alt="...">
+            <p class="title">Maryam Amiri</p>
+            <a class="media-action hover-primary" href="#"><i class="fa fa-phone"></i></a>
+            <a class="media-action hover-primary" href="#"><i class="fa fa-envelope"></i></a>
+          </div> %>
+
+        </div>
+      </div>
+
+      <!--
+      <div class="tab-pane fade" id="qv-tab-noti">
+        <div class="media-list media-list-hover media-list-divided">
+          
+          <a class="media media-new" href="#">
+            <span class="avatar bg-success"><i class="ti-user"></i></span>
+            <div class="media-body">
+              <p>New user registered</p>
+              <time datetime="2018-07-14 20:00">Just now</time>
+            </div>
+          </a>
+         
+        </div>
+      </div>
+      -->
+      
+    </div>
+  </div>
+</div>

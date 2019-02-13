@@ -13,7 +13,8 @@
   </div>
 
   <div class="topbar-right">
-
+    <a class="topbar-btn" href="#qv-global" data-toggle="quickview"><i class="ti-align-right"></i></a>
+    <div class="topbar-divider"></div>
     <ul class="topbar-btns">
       <li class="dropdown">
         <span class="topbar-btn" data-toggle="dropdown"><span class="avatar"><%= current_user.initials %></span></span>
@@ -24,28 +25,32 @@
         </div>
       </li>
 
-      <li class="d-none d-md-block">
-        <a href="#qv-notifications" data-toggle="quickview" class="topbar-btn has-new"><i class="ti-bell"></i></a>
+      <li class="dropdown d-none d-md-block">
+        <span class="topbar-btn has-new" data-toggle="dropdown"><i class="ti-bell"></i></span>
         <div class="dropdown-menu dropdown-menu-right">
 
-          <div class="media-list media-list-hover media-list-divided media-list-xs">
+          <div class="media-list media-list-divided media-list-hover media-list-xs scrollable" style="height: 290px">
             <a class="media media-new" href="#">
-              <span class="avatar bg-success"><i class="ti-user"></i></span>
+              <span class="avatar bg-white"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
               <div class="media-body">
-                <p>New contact registered</p>
+                <p>Contact form completed by <strong>Joe Tebaldi</strong></p>
                 <time datetime="2018-07-14 20:00">Just now</time>
               </div>
             </a>
+
+            <a class="media" href="#">
+              <span class="avatar bg-white"><i class="fs-25 text-info fa fa-comments" style="line-height: 38px;"></i></span>
+              <div class="media-body">
+                <p>New SMS received from <strong>Paulo Castro</strong></p>
+                <time datetime="2018-07-14 20:00">53 min ago</time>
+              </div>
+            </a>
+
           </div>
 
           <div class="dropdown-footer">
             <div class="left">
-              <a href="#">See all notifications</a>
-            </div>
-
-            <div class="right">
-              <a href="#" data-provide="tooltip" title="Mark all as read"><i class="fa fa-circle-o"></i></a>
-              <a href="#" data-provide="tooltip" title="Update"><i class="fa fa-repeat"></i></a>
+              <a href="#">Clear all</a>
             </div>
           </div>
 
