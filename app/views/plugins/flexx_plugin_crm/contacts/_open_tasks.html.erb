@@ -1,12 +1,7 @@
 <% if @contact.tasks.pending.empty? %>
   <div class="task justify-content-md-center">
-    <div class="col-md-offset-2 col-md-8 mb-20">
-      <div class="card card-transparent b-1" style="border-style:dotted !important;">
-        <div class="card-body text-center">
-          <h5 class="center-vh"><em>No pending tasks</em></h5>
-          <a href="#qv-add-task" data-toggle="quickview" class="btn btn-outline btn-primary btn-xs">Add a task</a>
-        </div>
-      </div>
+    <div class="center-vh h-200px">
+      <p class="text-fade"><em>No pending tasks</em></p>
     </div>
   </div>
 <% else %>
@@ -27,7 +22,7 @@
         </div>
         <div class="media-body">
           <div class="<%= 'mt-10' unless task.details.present? %>">
-            <span class="fs-18 pr-16"><strong><%= "#{task.contact.print_name}" %> </strong><span class="divider-dash"></span><%= task.title %></span>
+            <span class="fs-18 pr-16"><%= task.title %></span>
           </div>
           <% if task.done? %>
             <small class="fs-14 fw-300"><strong>Completed: </strong><%= task.updated_at.today? ? 'Today,' : task.updated_at.strftime('%B %d') %>&nbsp;<%= task.due_date.strftime('%I:%M %p') %></small>
