@@ -1,4 +1,6 @@
 class ActivityFeedService
+  include Rails.application.routes.url_helpers
+
   private_class_method :new
 
   def self.list_activities(feed_name:, feed_id:, limit: 50)
@@ -88,13 +90,16 @@ class ActivityFeedService
       contact = parse_actor(group_split[1])
 
       result.message = "#{prefix} from #{contact.print_name} #{suffix} received."
+      result.url = admin_contact_path(contact.id)
     when 'message_sent'
       if activities['activity_count'] == 1
         prefix = 'A SMS Blast was'
       else
         prefix = "#{activities['activity_count']} SMS Blasts were"
       end
+
       result.message = "#{prefix} sent."
+      result.url = sms_admin_messages_path()
     when 'form_completed'
       if activities['activity_count'] == 1
         prefix = 'A Form was'
@@ -111,7 +116,9 @@ class ActivityFeedService
       result.message = "#{prefix} created."
     end
 
+    result.id = activities['id']
     result.time = Time.find_zone('UTC').parse(activities['updated_at'])
+    result.is_seen = activities['is_seen']
 
     result
   end

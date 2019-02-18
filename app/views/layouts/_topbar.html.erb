@@ -26,32 +26,22 @@
       </li>
 
       <li class="dropdown d-none d-md-block">
-        <span class="topbar-btn has-new" data-toggle="dropdown"><i class="ti-bell"></i></span>
+        <%
+          unread_notifications = @notifications_feed.select { |n| !n.is_seen }
+        %>
+        <span class="topbar-btn <%= 'has-new' if unread_notifications.count() > 0 %>" data-toggle="dropdown" onclick="markFeedAsSeen(<%= unread_notifications.map { |n| n.id }.to_json %>)"><i class="ti-bell"></i></span>
         <div class="dropdown-menu dropdown-menu-right">
 
           <div class="media-list media-list-divided media-list-hover media-list-xs scrollable" style="height: 290px">
-            <a class="media media-new" href="#">
-              <span class="avatar bg-white"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
-              <div class="media-body">
-                <p>Contact form completed by <strong>Joe Tebaldi</strong></p>
-                <time datetime="2018-07-14 20:00">Just now</time>
-              </div>
-            </a>
-
-            <a class="media" href="#">
-              <span class="avatar bg-white"><i class="fs-25 text-info fa fa-comments" style="line-height: 38px;"></i></span>
-              <div class="media-body">
-                <p>New SMS received from <strong>Paulo Castro</strong></p>
-                <time datetime="2018-07-14 20:00">53 min ago</time>
-              </div>
-            </a>
-
-          </div>
-
-          <div class="dropdown-footer">
-            <div class="left">
-              <a href="#">Clear all</a>
-            </div>
+            <% @notifications_feed.each do |n| %>
+              <a class="media media-new" href="<%= n.url %>">
+                <span class="avatar bg-white"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
+                <div class="media-body">
+                  <p><%= n.message %></p>
+                  <time><%= time_ago_in_words(n.time) %> ago</time>
+                </div>
+              </a>
+            <% end %>
           </div>
 
         </div>
