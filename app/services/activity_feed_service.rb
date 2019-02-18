@@ -26,6 +26,7 @@ class ActivityFeedService
         os.time = Time.find_zone('UTC').parse(activity['time'])
         os.message = activity['message']
         os.labels = activity['labels'].present? ? OpenStruct.new(activity['labels']) : {}
+        os.url = activity['url']
       end
     end
 

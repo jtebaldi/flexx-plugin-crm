@@ -1,4 +1,5 @@
 class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
   include Plugins::FlexxPluginCrm::Concerns::SendMessage
   include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
 
@@ -36,11 +37,13 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
           actor: "User:#{self.created_by}",
           verb: 'message_sent',
           object: "Message:#{self.id}",
+          message: "A SMS Blast was sent by #{self.user.print_name}.",
           labels: {
             action: 'sent',
             action_type: 'SMS Blast',
             actor: self.user.print_name
           },
+          url: sms_admin_messages_path(),
           to: ["system:#{self.site_id}"]
         }
       }
@@ -53,10 +56,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
           verb: 'message_received',
           object: "Message:#{self.id}",
           message: "A new message from #{self.contact.print_name} was received.",
-          labels: {
-            actor: self.contact.print_name
-          },
-          to: ["system:#{self.site_id}"]
+          url: admin_contact_path(self.contact_id)
         }
       }
     end

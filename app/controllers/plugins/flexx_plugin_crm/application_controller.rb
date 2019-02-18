@@ -2,8 +2,8 @@ module Plugins::FlexxPluginCrm
   class ApplicationController < CamaleonCms::Apps::PluginsAdminController
     around_action :set_time_zone, if: :current_site
     before_action :load_system_feed
-    before_action :get_active_contacts    
-    
+    before_action :get_active_contacts
+
     private
 
     def set_time_zone(&block)
@@ -12,9 +12,9 @@ module Plugins::FlexxPluginCrm
     end
 
     def load_system_feed
-      @system_feed = ActivityFeedService.list_aggregated_activities(feed_name: 'system', feed_id: current_site.id, limit: 6)
-    end 
-    
+      @system_feed = ActivityFeedService.list_activities(feed_name: 'system', feed_id: current_site.id, limit: 30)
+    end
+
     def get_active_contacts
       @active_contact_list = current_site.contacts.active.order(:first_name)
     end

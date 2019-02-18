@@ -1,6 +1,7 @@
 require 'aasm'
 
 class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
   include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
   include AASM
 
@@ -84,6 +85,8 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
             action_type: 'Contact',
             actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'
           },
+          message: "New contact - #{self.print_name} - created.",
+          url: admin_contact_path(self.id),
           to: ["system:#{self.site_id}"]
         }
       }
@@ -97,9 +100,12 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
           object: "Contact:#{self.id}",
           labels: {
             action: 'updated',
-            action_type: "Status from #{self.sales_stage_was.upcase} to #{self.sales_stage.upcase}",
+            action_type: "Status from #{self.sales_stage_was.humanize} to #{self.sales_stage.humanize}",
             actor: self.updated_by_user.print_name
-          }
+          },
+          message: "#{self.updated_by_user.print_name} updated #{self.print_name} status from #{self.sales_stage_was.humanize} to #{self.sales_stage.humanize}.",
+          url: admin_contact_path(self.id),
+          to: ["system:#{self.site_id}"]
         }
       }
     end

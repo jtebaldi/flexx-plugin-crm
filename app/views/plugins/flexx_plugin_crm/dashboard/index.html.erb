@@ -16,20 +16,11 @@
             <div class="media media-single">
               <span class="avatar bg-success"><i class="ti-user"></i></span>
               <div class="media-body">
-                <p><%= f.message %></p>
+                <p><a href="<%= f.url %>"><%= f.message %></a></p>
                 <time><%= time_ago_in_words(f.time) %> ago</time>
               </div>
             </div>
           <% end %>
-        </div>
-        <div class="text-center bt-1 border-light p-2 px-20 flexbox">
-          <div>
-            <a href="#" class="text-uppercase d-block fs-10 fw-500 ls-1">See all activity</a>
-          </div>
-          <div>
-            <a href="#" data-provide="tooltip" title="Update"><i class="fa fa-repeat"></i></a>
-            <a href="#" data-provide="tooltip" title="Settings"><i qclass="fa fa-gear"></i></a>
-          </div>
         </div>
       </div>
     </div>
@@ -81,7 +72,7 @@
                         <%= "Form - #{contact.cama_contact_form.parent.name}" %>
                       </a>
                     </small>
-                  <% else %> 
+                  <% else %>
                     <small class="text-fader">Manually entered by <strong><%= current_site.users.find_by(id: contact.created_by).print_name %></strong></small>
                   <% end %>
                 </div>

@@ -41,8 +41,7 @@ module Plugins::FlexxPluginCrm::MainHelper
         actor: "Contact:#{args[:form].contact_id}",
         verb: 'form_completed',
         object: "Form:#{args[:form].id}",
-        message: "Form #{args[:form].name} #{suffix}",
-        to: ["system:#{args[:form].site_id}"]
+        message: "Form #{args[:form].name} #{suffix}"
       }
     }
 
