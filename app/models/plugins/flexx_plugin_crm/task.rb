@@ -58,7 +58,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   private
 
   def has_activity_record?
-    self.done?
+    self.aasm_state_changed? && self.done?
   end
 
   def activity_record_params
