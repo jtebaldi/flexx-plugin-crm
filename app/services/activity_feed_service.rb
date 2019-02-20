@@ -101,12 +101,18 @@ class ActivityFeedService
       result.message = "#{prefix} sent."
       result.url = sms_admin_messages_path()
     when 'form_completed'
+      contact = parse_actor(group_split[1])
+
       if activities['activity_count'] == 1
         prefix = 'A Form was'
       else
         prefix = "#{activities['activity_count']} Forms were"
       end
-      result.message = "#{prefix} completed."
+
+      suffix = contact.present? ? "completed by #{contact.print_name}." : 'completed.'
+
+      result.message = "#{prefix} #{suffix}"
+      result.url = contact.present? ? admin_contact_path(contact.id) : ''
     when 'contact_created'
       if activities['activity_count'] == 1
         prefix = 'A Contact was'

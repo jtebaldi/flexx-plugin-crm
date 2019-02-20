@@ -33,15 +33,17 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def flexx_plugin_crm_on_contact_form_after_submit(args)
-    suffix = args[:form].contact.present? ? "completed by #{args[:form].contact.print_name}." : "completed."
+    suffix = args[:form_received].contact.present? ? "completed by #{args[:form_received].contact.print_name}." : "completed."
+
     activity_record_params = {
       feed_name: 'notifications',
       feed_id: args[:form].site_id,
       args: {
-        actor: "Contact:#{args[:form].contact_id}",
+        actor: "Contact:#{args[:form_received].contact_id}",
         verb: 'form_completed',
         object: "Form:#{args[:form].id}",
-        message: "Form #{args[:form].name} #{suffix}"
+        message: "Form #{args[:form].name} #{suffix}",
+        url: args[:form_received].contact.present? ? admin_contact_path(args[:form_received].contact_id) : ''
       }
     }
 
