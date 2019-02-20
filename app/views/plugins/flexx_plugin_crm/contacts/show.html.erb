@@ -19,7 +19,20 @@
       $("#tab_conversations").addClass('active show');
     });
 
-    $('#add_phone').click(function(){ $('#phone_field').focus();});
+    $('#add_phone').click(function(){
+      $('.nav-tabs #contact_details_link').tab('show');
+      setTimeout(function() {
+        $('#phone_field').focus();
+      }, 1000);       
+    });
+
+    // $('#edit_tags').click(function(){
+    //   $('.nav-tabs #contact_details_link').tab('show');
+    //   setTimeout(function() {
+    //     $('#typeahed-tags').focus();
+    //   }, 1000);       
+    // });
+
   });
 
   window.dynamic_fields = <%= { flexxdynamicfields: @dynamic_fields }.to_json.html_safe %>;
@@ -27,12 +40,19 @@
 </script>
 
 <style>
+  p { font-size: 14px; }
+
+  .nav-link.active { background-color: #f5f6fa !important; }
+
   input[type=radio].hide-control { display: none; }
 
   @media (max-width: 576px) { 
     .xs-text-center { text-align: center; }
-    #action_buttons { margin-top: 30px; }  
+    .hidden-xs { display: none; }
 
+    #header_contact_name { margin-top: 15px; margin-bottom: 20px !important; }
+
+    #action_buttons { margin-top: 30px; }  
     #action_buttons button:not(:first-child) { margin-right: 8px; margin-left: 8px; }
     #action_buttons button:first-child { margin-right: 8px; }
   }
@@ -43,27 +63,47 @@
 
   #action_buttons button:not(:first-child) { margin-right: 10px; margin-left: 10px; }
   #action_buttons button:first-child { margin-right: 10px; }
+
+  #contact-timeline-panel > li:last-of-type .timeline-point::before { content: none; }
+  #contact-timeline-panel .timeline-content p { margin-bottom: 0; line-height: 10px; }
 </style>
 
 <header class="header mb-0">
   <div class="header-info my-10">
     <div class="left">
-      <div class="media align-items-center pl-0 py-30 bg-white">        
-        <span class="d-none d-sm-block avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;"><%= @contact.initials %></span>
+      <div class="flexbox align-items-center pt-20 pull-right">
+        <div class="dropdown">
+          <a data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90 text-muted"></i></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <button class="dropdown-item" onclick="updateSalesStage('archived')" style="width: 95%;"><i class="ti-trash"></i> Archive</button>
+            <% if current_user.role == 'admin' %>
+              <button class="btn btn-block btn-bold text-danger" onclick="updateSalesStage('delete')">Delete Contact</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="media align-items-center px-0 py-30 ml-10 bg-white">        
+        <span class="d-none d-sm-block avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;border-radius: 6px;"><%= @contact.initials %></span>
         <div class="media-body">          
           <div class="row">          
             <div class="col-md-6 xs-text-center">              
-              <span class="d-sm-none avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;"><%= @contact.initials %></span>
-              <h2 class="header-title pt-20" style="margin-bottom: 5px;"><strong><%= @contact.print_name %></strong></h2>
-              <p class="lead mb-0 text-<%= @contact.sales_stage.downcase %>">
-                <em><%= @contact.sales_stage.humanize %></em>
-                <% unless @contact.sales_stage.downcase == "archived" %><small><a href="#" class="ml-10" data-toggle="modal" data-target="#update_status_modal">Update</a></small><% end %>
-              </p>
-              <div class="mb-15">
-                <% @contact.all_tags_list.each do |tag| %>
-                  <span class="badge badge-info ml-0"><%= tag %></span>
+              <span class="d-sm-none avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;border-radius: 6px;"><%= @contact.initials %></span>
+              <h2 id="header_contact_name" class="header-title pt-10 mb-0">
+                <strong><%= @contact.print_name %></strong><span class="text-fade"> | </span>
+                <a href="#" data-toggle="modal" data-target="#update_status_modal" class="fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>" style="border-bottom: dotted .5px;"><%= @contact.sales_stage.humanize %></a>                
+              </h2>
+              <div id="action_buttons" class="xs-text-center mt-10 mb-20">
+                <% if @contact.email.present? %>
+                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send Email"><i class="fa fa-envelope"></i></button>
                 <% end %>
-              </div>
+                <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
+                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-comment"></i></button>
+                <% end %>
+
+                <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Call"><i class="fa fa-phone"></i></button>
+                <button id='new-meeting-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Meeting"><i class="fa fa-calendar"></i></button>
+                <button id='new-general-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline hidden-xs" data-provide="tooltip" data-placement="top" title="Log Note"><i class="ti-notepad"></i></button>
+              </div>              
             </div>
             <div class="col-md-6">
               <div class="flex-grow pt-10">
@@ -76,18 +116,11 @@
                     <small><a id="add_phone" href="#" class="alert-link">add a number</a></small>
                   <% end %>  
                 </div>   
-                <div id="action_buttons" class="xs-text-center">   
-                  <% if @contact.email.present? %>
-                    <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-success btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send Email"><i class="fa fa-envelope"></i></button>
-                  <% end %>
-                  <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
-                    <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-vimeo btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-comment"></i></button>
-                  <% end %>
-
-                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Call"><i class="fa fa-phone"></i></button>
-                  <button id='new-meeting-touchpoint' class="btn btn-square btn-round btn-google btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Meeting"><i class="fa fa-calendar"></i></button>
-                  <button id='new-general-touchpoint' class="btn btn-square btn-round btn-yellow btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Note"><i class="ti-notepad"></i></button>
-                </div>
+                <div class="">
+                <% @contact.all_tags_list.each do |tag| %>
+                  <span class="badge badge-info ml-0"><%= tag %></span>
+                <% end %>
+              </div>
               </div>
             </div>
           </div>    
@@ -95,27 +128,16 @@
       </div>
     </div>
 
-    <div class="pt-20">
-      <div class="dropdown">
-        <a data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90 text-muted"></i></a>
-        <div class="dropdown-menu dropdown-menu-right">
-          <button class="dropdown-item" onclick="updateSalesStage('archived')" style="width: 95%;"><i class="ti-trash"></i> Archive</button>
-          <!--
-            <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('delete')">Delete Contact</button>
-          -->
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div class="header-action">
+  <div class="header-action" style="background-color: #EDEEF2;">
     <ul class="nav nav-tabs nav-justified nav-tabs-info" style="width: 100%; flex-wrap: wrap;">
       
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#tab_activity">Activity</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#tab_contact_details">Profile</a>
+        <a id="contact_details_link" class="nav-link" data-toggle="tab" href="#tab_contact_details">Details</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#tab_conversations">SMS</a>
@@ -150,7 +172,7 @@
                 </div>
               </header>
 
-              <div id="contact-open-tasks-panel" class="pt-20 px-20 h-400px scrollable">
+              <div id="contact-open-tasks-panel" class="pt-20 px-20 scrollable" style="max-height: 400px;">
                 <%= render partial: 'open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </div>
 
@@ -160,19 +182,26 @@
           <div class="col-lg-6">
             <div class="card">
               <header class="card-header">
-                <h4 class="card-title"><strong>History</strong> timeline</h4>
+                <h4 class="card-title">Activity <strong>timeline</strong></h4>
               </header>
 
-              <ol id="contact-timeline-panel" class="timeline timeline-activity timeline-sm timeline-content-right w-100 py-20 pr-20">
+              <ol id="contact-timeline-panel" class="timeline timeline-activity timeline-sm timeline-content-right w-100 pt-20">
                 <%= render partial: 'timeline', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </ol>
 
-            </div>
-            <% unless @contact.contact_forms.empty? %>
-              <div class="card">
-                <h5 class="card-title"><strong>Completed Forms</strong></h5>
-                <div class="media-list media-list-hover media-list-divided">
-                  <table class="table">
+            </div>            
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <h5 class="card-title">Completed <strong>forms</strong></h5>
+              <div class="media-list media-list-hover media-list-divided scrollable">
+                <% if @contact.contact_forms.empty? %>
+                  <div class="task justify-content-center h-100px my-20">
+                    <h5 class="center-vh text-fade"><em>No forms to show</em></h5>
+                  </div>
+                <% else %>
+                  <table class="table" style="max-height: 400px;">
                     <thead><tr><th>Submited Date</th><th>Form Name</th><th>Actions</th></thead>
                     <tbody>
                       <% @contact.contact_forms.each do |cf| %>
@@ -190,15 +219,16 @@
                       <% end %>
                     </tbody>
                   </table>
-                </div>
+                <% end %>
               </div>
-            <% end %>
+            </div>
           </div>
+
         </div>
       </div>
 
       <%= form_tag admin_contact_path(@contact.id), method: :patch, id: 'tab_contact_details', class: 'col-lg-11 card form-type-material tab-pane fade', style: 'margin: 0 auto;', data: { provide: 'validation' } do %>
-        <h4 class="card-title fw-400">Contact Details</h4>
+        <h4 class="card-title">Contact <strong>details</strong></h4>
 
         <div class="card-body">
           <div class="flexbox gap-items-4">
@@ -416,88 +446,100 @@
       </div>
 
       <div class="tab-pane fade" id="tab_conversations">
-        <div class="card">
-          <h5 class="card-title"><strong>SMS</strong> Conversation</h5>
-          <div class="card-body flex-column">
-            <% if @contact.phonenumbers.mobile.empty? %>
-              <div class="media flex-column text-center p-40 b-2 border-warning">
-                <span class="avatar avatar-xxl bg-warning opacity-60 mx-auto">
-                  <i class="ti-info-alt fs-35 align-sub"></i>
-                </span>
-                <div class="text-center">
-                  <h5 class="text-uppercase fw-500 mt-3 text-warning">Uh oh!</h6>
-                  <small class="fs-14"><%= @contact.first_name %> does not have a mobile number stored.<br>Go to the <span class="text-info">User Details</span> tab and add a mobile number to send SMS messages.</small>
-                </div>
-              </div>
-            <% else %>
-              <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
-                <div id="conversations-panel">
-                  <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
-                </div>
-              </div>
-            <% end %>
-            <% if @contact.phonenumbers.mobile.present? %>
-              <footer class="publisher">
-                <span class="avatar"><%= current_user.initials %></span>
-                <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
-                  <input type="hidden" class="form-control" name="message[contact_id]" value="<%= @contact.id %>">
-                  <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
-                  <input name="message[body]" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
-                  <div class="gap-items btn-group pull-right mr-10 dropup">
-                    <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card">
+              <h5 class="card-title"><strong>SMS</strong> Conversation</h5>
+              <div class="card-body flex-column">
+                <% if @contact.phonenumbers.mobile.empty? %>
+                  <div class="media flex-column text-center p-40 b-2 border-warning">
+                    <span class="avatar avatar-xxl bg-warning opacity-60 mx-auto">
+                      <i class="ti-info-alt fs-35 align-sub"></i>
+                    </span>
+                    <div class="text-center">
+                      <h5 class="text-uppercase fw-500 mt-3 text-warning">Uh oh!</h6>
+                      <small class="fs-14"><%= @contact.first_name %> does not have a mobile number stored.<br>Go to the <span class="text-info">User Details</span> tab and add a mobile number to send SMS messages.</small>
+                    </div>
+                  </div>
+                <% else %>
+                  <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 400px;">
+                    <div id="conversations-panel">
+                      <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
+                    </div>
                   </div>
                 <% end %>
-                <div class="gap-items">
-                  <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
-                </div>
-                <div class="gap-items">
-                  <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
-                </div>
-              </footer>
-            <% end %>
+                <% if @contact.phonenumbers.mobile.present? %>
+                  <footer class="publisher">
+                    <span class="avatar"><%= current_user.initials %></span>
+                    <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
+                      <input type="hidden" class="form-control" name="message[contact_id]" value="<%= @contact.id %>">
+                      <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
+                      <input name="message[body]" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
+                      <div class="gap-items btn-group pull-right mr-10 dropup">
+                        <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
+                      </div>
+                    <% end %>
+                    <div class="gap-items">
+                      <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
+                    </div>
+                    <div class="gap-items">
+                      <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
+                    </div>
+                  </footer>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
 
       <div class="tab-pane fade" id="tab_recipes_campaigns">
-
-        <div class="card">
-          <h5 class="card-title">Available <strong>Recipes</strong></h5>
-          <div class="media-list media-list-hover media-list-divided">
-            <% @available_recipes.each do |recipe| %>
-              <div class="media align-items-center">
-                <div class="media-body">
-                  <p><strong><%= recipe.title %></strong></p>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <header class="card-header">
+                <h5 class="card-title">Available <strong>recipes</strong></h5>
+                <div class="card-header-actions">    
+                  <a href="<%= admin_recipes_path() %>" class="btn btn-sm btn-label btn-default"><label><i class="ti-arrow-right"></i></label>Go to recipes</a>                
                 </div>
-                <div>
-                  <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>">Add tasks</a>
-                </div>
+              </header>
+              <div class="media-list media-list-hover media-list-divided">
+                <% @available_recipes.each do |recipe| %>
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <p><strong><%= recipe.title %></strong></p>
+                    </div>
+                    <div>
+                      <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_contact_add_task_recipe_path(contact_id: @contact.id, task_recipe_id: recipe.id) %>">Add tasks</a>
+                    </div>
+                  </div>
+                <% end %>
               </div>
-            <% end %>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <h5 class="card-title text-fade">Active <strong>Campaigns</strong><span class="pull-right"><small>Coming soon</small></span></h5>
+              <div class="media-list media-list-hover media-list-divided">
+                <% @automated_campaigns.each do |campaign| %>
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <p><strong><%= campaign.name %></strong></p>
+                    </div>
+                    <div>
+                      <% if @subscribed_campaigns.include?(campaign.id) %>
+                        <a class="btn btn-sm btn-twitter" href="#">Added</a>
+                      <% else %>
+                        <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="card">
-          <h5 class="card-title text-fade">Active <strong>Campaigns</strong><span class="pull-right"><small>Coming soon</small></span></h5>
-          <div class="media-list media-list-hover media-list-divided">
-            <% @automated_campaigns.each do |campaign| %>
-              <div class="media align-items-center">
-                <div class="media-body">
-                  <p><strong><%= campaign.name %></strong></p>
-                </div>
-                <div>
-                  <% if @subscribed_campaigns.include?(campaign.id) %>
-                    <a class="btn btn-sm btn-twitter" href="#">Added</a>
-                  <% else %>
-                    <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
       </div>
 
     </div>
