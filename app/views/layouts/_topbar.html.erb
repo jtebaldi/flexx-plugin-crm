@@ -3,7 +3,11 @@
   .topbar .dropdown-menu, .topbar .dropdown-grid { margin-top: 0 !important; }
 
   @media (max-width: 575px) { .topbar-mobile.logo { display: block; } }
-  @media (min-width: 576px) { .topbar-mobile.logo { display: none; } }
+  @media (min-width: 576px) {
+    .topbar-mobile.logo { display: none; }
+    .topbar .media-list { width: 440px !important; }
+    .topbar .dropdown-menu:not(.dropdown-grid) { max-width: 440px; }
+  }
 </style>
 
 <header class="topbar">
@@ -43,7 +47,7 @@
           <div class="media-list media-list-divided media-list-xs scrollable" style="height: 290px">
             <% @notifications_feed.each do |n| %>
               <a class="media media-new bg-white" href="<%= n.url %>">
-                <span class="avatar bg-white ml-0"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
+                <span class="avatar bg-white ml-0"><i class="fs-25 text-info fas fa-sms" style="line-height: 38px;"></i></span>
                 <div class="media-body">
                   <p style="line-height: 16px;"><%= n.message %></p>
                   <time><%= time_ago_in_words(n.time) %> ago</time>

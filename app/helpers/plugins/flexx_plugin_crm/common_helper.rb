@@ -6,7 +6,7 @@ module Plugins::FlexxPluginCrm::CommonHelper
     when 'email'
       'envelope'
     when 'message'
-      'comment'
+      'sms'
     when 'meeting'
       'calendar'
     else
