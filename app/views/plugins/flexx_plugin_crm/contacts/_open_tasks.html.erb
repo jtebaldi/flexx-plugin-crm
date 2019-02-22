@@ -64,13 +64,13 @@
             -->
           </div>
           <div class="pull-right">
-            <span class="pr-12">Assigned to: </span>
+            <span class="pr-12 fs-12">Assigned to: </span>
             <div class="avatar-list">
               <% unless task.done? %>
                 <% task.owners.each do |owner| %>
                   <span class="avatar bg-dark"><%= owner.initials %></span>
                 <% end %>
-                <button class="avatar avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: task.id, refresh_panel: refresh_panel) %>"></button>
+                <button class="avatar avatar-sm avatar-add" data-provide="modaler" data-title="Assign staff" data-footer-visible="false" data-url="<%= admin_task_task_owners_path(task_id: task.id, refresh_panel: refresh_panel) %>"></button>
               <% end %>
             </div>
           </div>
