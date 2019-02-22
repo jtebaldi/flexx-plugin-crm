@@ -46,14 +46,20 @@
         <div class="dropdown-menu dropdown-menu-right">
 
           <div class="media-list media-list-divided media-list-xs scrollable" style="height: 290px">
-            <% @notifications_feed.each do |n| %>
-              <a class="media media-new bg-white" href="<%= n.url %>">
-                <span class="avatar bg-white ml-0"><i class="fs-25 text-info fas fa-sms" style="line-height: 38px;"></i></span>
-                <div class="media-body">
-                  <p style="line-height: 16px;"><%= n.message %></p>
-                  <time><%= time_ago_in_words(n.time) %> ago</time>
-                </div>
-              </a>
+            <% if !@notifications_feed.empty? %>
+              <% @notifications_feed.each do |n| %>
+                <a class="media media-new bg-white" href="<%= n.url %>">
+                  <span class="avatar bg-white ml-0"><i class="fs-25 text-info fas fa-sms" style="line-height: 38px;"></i></span>
+                  <div class="media-body">
+                    <p style="line-height: 16px;"><%= n.message %></p>
+                    <time><%= time_ago_in_words(n.time) %> ago</time>
+                  </div>
+                </a>
+              <% end %>
+            <% else %>
+              <div class="center-vh h-275px">
+                <p>No recent notifications</p>
+              </div>
             <% end %>
           </div>
 

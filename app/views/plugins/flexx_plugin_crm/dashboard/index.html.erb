@@ -72,8 +72,10 @@
                         <%= "Form - #{contact.cama_contact_form.parent.name}" %>
                       </a>
                     </small>
-                  <% else %>
+                  <% elsif !current_site.users.find_by(id: contact.created_by).nil? %>
                     <small class="text-fader">Manually entered by <strong><%= current_site.users.find_by(id: contact.created_by).print_name %></strong></small>
+                  <% else %>
+                    <small class="text-fader">Imported contact</small>
                   <% end %>
                 </div>
 
