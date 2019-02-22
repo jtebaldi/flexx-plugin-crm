@@ -97,7 +97,7 @@
                   <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send Email"><i class="fa fa-envelope"></i></button>
                 <% end %>
                 <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
-                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-comment"></i></button>
+                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-sms"></i></button>
                 <% end %>
 
                 <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Call"><i class="fa fa-phone"></i></button>

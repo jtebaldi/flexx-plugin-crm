@@ -17,7 +17,7 @@ module Plugins::FlexxPluginCrm::CommonHelper
   def activity_feed_icon(activity_object)
     case activity_object
     when Plugins::FlexxPluginCrm::Message
-      'comment'
+      'sms'
     when Plugins::FlexxPluginCrm::EmailRecipient
       'envelope'
     when Plugins::FlexxPluginCrm::Task
