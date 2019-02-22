@@ -17,7 +17,7 @@ function submitTaskSendMessageForm() {
 }
 
 /**
- * 
+ *
  * @param {Boolean} ask true if we need to confirm phone or meeting task comletion without notes.
  */
 function completeTask(ask) {
@@ -79,6 +79,12 @@ function observeTaskPanelForCKEditor() {
   });
 
   observer.observe(document.querySelector('#qv_view_task'), { childList: true });
+}
+
+function markFeedAsSeen(ids) {
+  if (ids && ids.length > 0) {
+    window.notificationsFeed.get({ mark_seen: ids });
+  }
 }
 
 $(function(){

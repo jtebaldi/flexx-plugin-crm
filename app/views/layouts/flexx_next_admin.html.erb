@@ -13,11 +13,32 @@
     <!-- Styles -->
     <%= stylesheet_link_tag    'plugins/flexx_plugin_next_admin/main', media: 'all', 'data-turbolinks-track' => true %>
     <%= stylesheet_link_tag    'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'https://use.fontawesome.com/releases/v5.7.2/css/all.css', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'https://use.fontawesome.com/releases/v5.7.2/css/v4-shims.css', media: 'all', 'data-turbolinks-track' => true %>
     <%= yield :css %>
 
     <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/base' %>
 
     <%= csrf_meta_tags %>
+
+    <style>
+      #notification-feed {
+        position: absolute;
+        width: 100%;
+        top: 64px;
+        right: 0;
+        z-index: 1000;
+      }
+
+      #notification-feed .alert {
+        width: 400px;
+        max-width: 100%;
+        border-radius: 0 !important;
+        float: right;
+        clear: both;
+        margin-bottom: 5px;
+      }
+    </style>
   </head>
 
   <body>
@@ -39,6 +60,8 @@
 
     <!-- Main container -->
     <main class="main-container">
+      <div id="notification-feed">
+      </div>
       <div id="flash-messages"><%= render 'layouts/flash_messages' %></div>
 
       <%= yield %>
@@ -46,22 +69,13 @@
       <!-- Fullscreen Search -->
       <%= render 'layouts/search_layer' %>
 
-      <!-- FAB <%= render 'next/partials/fab_lightning' %>
-
-      <%= render 'layouts/qv_notifications' %>
+      <!-- Global Quickview -->
+      <%= render 'layouts/qv_global' %>
 
       <!-- Footer -->
       <%= render 'layouts/footer' %>
     </main>
     <!-- END Main container -->
-
-    <!-- Global quickview -->
-    <div id="qv-global" class="quickview" data-url="assets/data/quickview-global.html">
-      <div class="spinner-linear">
-        <div class="line"></div>
-      </div>
-    </div>
-    <!-- END Global quickview -->
 
     <!-- Scripts -->
     <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/core.min' %>
@@ -70,5 +84,24 @@
     <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/next_admin' %>
     <%= yield :js %>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+
+    <script type="text/javascript">
+      window.feedClient = stream.connect('<%= ENV['STREAM_API_KEY'] %>', '<%= StreamAdapter.client.create_user_token(current_site.id.to_s) %>', '<%= ENV['STREAM_APP_ID'] %>');
+      window.notificationsFeed = window.feedClient.feed('notifications');
+
+      function callback(data) {
+        data.new.forEach(function (row) {
+          $("#notification-feed").append("<div class='alert alert-info alert-dismissible fade show' role='alert'> " +
+                                            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                                              "<span aria-hidden='true'>&times;</span>" +
+                                            "</button>" +
+                                            "<a href='" + row.url + "' class='alert-link'><i class='fas fa-sms mr-10'></i>" + row.message + "</a>" +
+                                          "</div>");
+        });
+      }
+
+      window.notificationsFeed.subscribe(callback);
+    </script>
   </body>
 </html>

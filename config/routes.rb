@@ -19,6 +19,10 @@ Rails.application.routes.draw do
           delete :delete_form
         end
 
+        scope :engage, controller: 'plugins/flexx_plugin_crm/engage' do
+          get '/', action: :index
+        end
+
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle
           post :create_direction
@@ -50,7 +54,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [:index] do
+        resources :messages, controller: 'plugins/flexx_plugin_crm/messages', only: [] do
           collection do
             get :emails
             get :sms

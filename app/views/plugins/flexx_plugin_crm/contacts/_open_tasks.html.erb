@@ -1,6 +1,8 @@
 <% if @contact.tasks.pending.empty? %>
-  <div class="task justify-content-center h-100px mb-20">
-    <h5 class="center-vh text-fade"><em>No pending tasks</em></h5>
+  <div class="task justify-content-md-center">
+    <div class="center-vh h-200px">
+      <p class="text-fade"><em>No pending tasks</em></p>
+    </div>
   </div>
 <% else %>
   <% @contact.tasks.pending.order(:due_date).each do |task| %>

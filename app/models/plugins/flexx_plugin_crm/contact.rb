@@ -1,6 +1,8 @@
 require 'aasm'
 
 class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+  include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
   include AASM
 
   after_destroy :remove_pending_tasks
@@ -55,7 +57,59 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     messages.order(:created_at).last.status == 'received'
   end
 
+  def created_by_user
+    CamaleonCms::User.find_by(id: self.created_by)
+  end
+
+  def updated_by_user
+    CamaleonCms::User.find_by(id: self.updated_by)
+  end
+
   private
+
+  def has_activity_record?
+    self.id_changed? || self.sales_stage_changed?
+  end
+
+  def activity_record_params
+    if self.id_changed?
+      {
+        feed_name: 'contact',
+        feed_id: self.id,
+        args: {
+          actor: "User:#{self.created_by}",
+          verb: 'contact_created',
+          object: "Contact:#{self.id}",
+          labels: {
+            action: 'created',
+            action_type: 'Contact',
+            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'    
+          },
+          message: "New contact created - #{self.print_name}",
+          url: admin_contact_path(self.id),
+          to: ["system:#{self.site_id}"]          
+        }
+      }
+    else
+      {
+        feed_name: 'contact',
+        feed_id: self.id,
+        args: {
+          actor: "User:#{self.updated_by}",
+          verb: 'updated',
+          object: "Contact:#{self.id}",
+          labels: {
+            action: 'updated',
+            action_type: "Status from #{self.sales_stage_was.humanize} to #{self.sales_stage.humanize}",
+            actor: self.updated_by_user.print_name
+          },
+          message: "#{self.updated_by_user.print_name} updated #{self.print_name} status from #{self.sales_stage_was.humanize} to #{self.sales_stage.humanize}.",
+          url: admin_contact_path(self.id),
+          to: ["system:#{self.site_id}"]
+        }
+      }
+    end
+  end
 
   def remove_pending_tasks
     tasks.where(aasm_state: :pending).destroy_all

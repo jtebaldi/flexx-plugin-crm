@@ -37,6 +37,7 @@ module Plugins::FlexxPluginCrm
         @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       when 'view-contact-tasks-panels'
         @contact = task.contact
+        @feed_activities = ActivityFeedService.list_activities(feed_name: 'contact', feed_id: @contact.id)
       end
 
       respond_to do |format|
@@ -70,6 +71,7 @@ module Plugins::FlexxPluginCrm
         @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       when 'view-contact-tasks-panels'
         @contact = task.contact
+        @feed_activities = ActivityFeedService.list_activities(feed_name: 'contact', feed_id: @contact.id)
       end
 
       respond_to do |format|

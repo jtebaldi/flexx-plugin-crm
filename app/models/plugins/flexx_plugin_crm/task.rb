@@ -2,6 +2,7 @@ require 'aasm'
 
 class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   include Plugins::FlexxPluginCrm::Concerns::HasUsers
+  include Plugins::FlexxPluginCrm::Concerns::ActivityFeed
   include AASM
 
   acts_as_taggable
@@ -52,5 +53,28 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
 
   def cancel
     self.notes.new(details: "Task cancelled.")
+  end
+
+  private
+
+  def has_activity_record?
+    self.aasm_state_changed? && self.done?
+  end
+
+  def activity_record_params
+    {
+      feed_name: 'contact',
+      feed_id: self.contact.id,
+      args: {
+        actor: "User:#{self.updated_by}",
+        verb: 'done',
+        object: "Task:#{self.id}",
+        labels: {
+          action: 'completed',
+          action_type: self.task_type.humanize,
+          actor: self.updated_by_user.print_name
+        }
+      }
+    }
   end
 end

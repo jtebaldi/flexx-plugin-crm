@@ -6,9 +6,24 @@ module Plugins::FlexxPluginCrm::CommonHelper
     when 'email'
       'envelope'
     when 'message'
-      'comment'
+      'sms'
     when 'meeting'
       'calendar'
+    else
+      'list'
+    end
+  end
+
+  def activity_feed_icon(activity_object)
+    case activity_object
+    when Plugins::FlexxPluginCrm::Message
+      'sms'
+    when Plugins::FlexxPluginCrm::EmailRecipient
+      'envelope'
+    when Plugins::FlexxPluginCrm::Task
+      task_type_icon(task_type: activity_object.task_type)
+    when Plugins::FlexxPluginCrm::Contact
+      'retweet'
     else
       'list'
     end

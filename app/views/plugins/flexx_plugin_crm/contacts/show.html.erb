@@ -40,6 +40,10 @@
 </script>
 
 <style>
+  p { font-size: 14px; }
+
+  .nav-link.active { background-color: #f5f6fa !important; }
+
   input[type=radio].hide-control { display: none; }
 
   @media (max-width: 576px) { 
@@ -59,6 +63,9 @@
 
   #action_buttons button:not(:first-child) { margin-right: 10px; margin-left: 10px; }
   #action_buttons button:first-child { margin-right: 10px; }
+
+  #contact-timeline-panel > li:last-of-type .timeline-point::before { content: none; }
+  #contact-timeline-panel .timeline-content p { margin-bottom: 0; line-height: 10px; }
 </style>
 
 <header class="header mb-0">
@@ -69,9 +76,9 @@
           <a data-toggle="dropdown" href="#"><i class="ti-more-alt rotate-90 text-muted"></i></a>
           <div class="dropdown-menu dropdown-menu-right">
             <button class="dropdown-item" onclick="updateSalesStage('archived')" style="width: 95%;"><i class="ti-trash"></i> Archive</button>
-            <!--
-              <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('delete')">Delete Contact</button>
-            -->
+            <% if current_user.role == 'admin' %>
+              <button class="btn btn-block btn-bold text-danger" onclick="updateSalesStage('delete')">Delete Contact</button>
+            <% end %>
           </div>
         </div>
       </div>
@@ -90,7 +97,7 @@
                   <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send Email"><i class="fa fa-envelope"></i></button>
                 <% end %>
                 <% if @contact.phonenumbers.present? && @contact.phonenumbers.first.phone_type == 'mobile' %>
-                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-comment"></i></button>
+                  <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Send SMS"><i class="fa fa-sms"></i></button>
                 <% end %>
 
                 <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline" data-provide="tooltip" data-placement="top" title="Log Call"><i class="fa fa-phone"></i></button>
@@ -168,7 +175,6 @@
               <div id="contact-open-tasks-panel" class="pt-20 px-20 scrollable" style="max-height: 400px;">
                 <%= render partial: 'open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </div>
-
             </div>
      
           </div>
@@ -440,7 +446,7 @@
 
       <div class="tab-pane fade" id="tab_conversations">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-8">
             <div class="card">
               <h5 class="card-title"><strong>SMS</strong> Conversation</h5>
               <div class="card-body flex-column">
@@ -455,7 +461,7 @@
                     </div>
                   </div>
                 <% else %>
-                  <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 500px;">
+                  <div class="scrollable flex-grow" id="chat-content" data-provide="emoji" style="height: 400px;">
                     <div id="conversations-panel">
                       <%= render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) } %>
                     </div>

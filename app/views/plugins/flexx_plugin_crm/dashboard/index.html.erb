@@ -7,7 +7,25 @@
 
   <div class="row">
 
-    <div class="col-lg-3 col-md-6">
+    <div class="col-md-6">
+      <div class="card">
+        <h5 class="card-title">Recent <strong>activity</strong></h5>
+
+        <div class="media-list media-list-hover media-list-divided scrollable" style="height: 275px">
+          <% @system_feed.each do |f| %>
+            <div class="media media-single">
+              <span class="avatar" style="background: transparent;"><i class="ti-user fs-24"></i></span>
+              <div class="media-body">
+                <p><a href="<%= f.url %>"><%= f.message %></a></p>
+                <time><%= time_ago_in_words(f.time) %> ago</time>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
       <div class="card">
         <div class="card-body">
           <div class="flexbox">
@@ -29,75 +47,44 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card card-transparent b-1 h-200px">
-        <header class="card-header">
-          <h4 class="card-title">EMPTY</h4>
-          <a class="btn btn-sm btn-flat btn-info" href="#">Add Widget</a>
-        </header>
-
-        <div class="card-body">
-          <p>Click the "Add Widget" button to select from the widget options.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <div class="card card-transparent b-1 h-200px">
-        <header class="card-header">
-          <h4 class="card-title">EMPTY</h4>
-          <a class="btn btn-sm btn-flat btn-info" href="#">Add Widget</a>
-        </header>
-
-        <div class="card-body">
-          <p>Click the "Add Widget" button to select from the widget options.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <div class="card card-transparent b-1 h-200px">
-        <header class="card-header">
-          <h4 class="card-title">EMPTY</h4>
-          <a class="btn btn-sm btn-flat btn-info" href="#">Add Widget</a>
-        </header>
-
-        <div class="card-body">
-          <p>Click the "Add Widget" button to select from the widget options.</p>
-        </div>
-      </div>
-    </div>
-
     <div class="col-md-6">
       <div class="card">
-        <h5 class="card-title"><strong>Recent</strong> contacts</h5>
+        <h5 class="card-title">New <strong>contacts</strong></h5>
 
         <div class="media-list media-list-hover media-list-divided scrollable" style="height: 275px">
-          <% @active_contacts.order('unarchived_at, created_at DESC').each do |contact| %>
-            <div class="media media-single">
-              <% if contact.created_at > 24.hours.ago %>
-                <i class="fa fa-bolt text-yellow"></i>
-              <% elsif contact.unarchived_at && contact.unarchived_at > 24.hours.ago %>
-                <i class="fa fa-bolt text-primary"></i>
-              <% end %>
-              <a href="<%= admin_contact_path(contact.id) %>">
-                <span class="avatar avatar-lg"><%= contact.initials %></span>
-              </a>
-
-              <div class="media-body">
-                <h6><%= contact.print_name %></h6>
-                <% if contact.cama_contact_form && contact.cama_contact_form.parent %>
-                  <small class="text-fader">
-                    <a href="#" data-from-form="<%= contact.cama_contact_form.id %>" class="text-blue">
-                      <%= "Form - #{contact.cama_contact_form.parent.name}" %>
-                    </a>
-                  </small>
+          <% if @active_contacts.where('created_at >= ?', 1.week.ago).count > 0 %>
+            <% @active_contacts.where('created_at >= ?', 1.week.ago).order('unarchived_at, created_at DESC').each do |contact| %>
+              <div class="media media-single">
+                <% if contact.created_at > 24.hours.ago %>
+                  <i class="fa fa-bolt text-yellow"></i>
+                <% elsif contact.unarchived_at && contact.unarchived_at > 24.hours.ago %>
+                  <i class="fa fa-bolt text-primary"></i>
                 <% end %>
-              </div>
+                <a href="<%= admin_contact_path(contact.id) %>">
+                  <span class="avatar avatar-lg"><%= contact.initials %></span>
+                </a>
 
-              <div class="media-right">
-                <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px" href="<%= admin_contact_path(contact.id) %>">View</a>
+                <div class="media-body">
+                  <h6><%= contact.print_name %></h6>
+                  <% if contact.cama_contact_form && contact.cama_contact_form.parent %>
+                    <small class="text-fader">
+                      <a href="#" data-from-form="<%= contact.cama_contact_form.id %>" class="text-blue">
+                        <%= "Form - #{contact.cama_contact_form.parent.name}" %>
+                      </a>
+                    </small>
+                  <% else %>
+                    <small class="text-fader">Manually entered by <strong><%= current_site.users.find_by(id: contact.created_by).print_name %></strong></small>
+                  <% end %>
+                </div>
+
+                <div class="media-right">
+                  <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary" href="<%= admin_contact_path(contact.id) %>"><i class="ti-arrow-right"></i></a>
+                </div>
               </div>
+            <% end %>
+          <% else %>
+            <div class="center-vh h-275px">
+              <p>No new contacts in last 7 days</p>
             </div>
           <% end %>
         </div>
@@ -116,17 +103,13 @@
               <% if f.created_at > 24.hours.ago %>
                 <i class="fa fa-bolt text-yellow"></i>
               <% end %>
-              <a href="<%= admin_contact_path(f.contact.id) %>">
-                <span class="avatar avatar-lg"><%= f.contact.initials %></span>
-              </a>
               <div class="media-body">
-                <h6><%= f.contact.print_name %></h6>
+                <a href="<%= admin_contact_path(f.contact.id) %>"><h6 class="mb-0"><%= f.contact.print_name %></h6></a>
+                <small class="text-fader"><%= f.parent.name %> - <%= f.created_at.strftime '%m/%d/%Y' %></small>
               </div>
-              <div class="media-body"><%= f.parent.name %></div>
-              <div class="media-body"><%= f.created_at.strftime '%m/%d%Y' %></div>
 
               <div class="media-right">
-                <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary w-100px" href="#" data-from-form="<%= f.id %>">View</a>
+                <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary" href="#" data-from-form="<%= f.id %>">View</a>
               </div>
             </div>
           <% end %>

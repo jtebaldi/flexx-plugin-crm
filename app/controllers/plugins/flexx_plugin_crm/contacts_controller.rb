@@ -4,6 +4,8 @@ module Plugins::FlexxPluginCrm
 
     layout "layouts/flexx_next_admin"
 
+    before_action :load_records, only: [:show, :update]
+
     def index
       @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
     end
@@ -16,20 +18,16 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :show, id: new_contact.id
     end
 
-    def show
-      show_vars
-    end
+    def show; end
 
     def update
-      @contact = current_site.contacts.find(params[:id])
-
       params[:contact].merge!(updated_by: current_user.id)
 
       if @contact.update(contact_params)
         current_site.tag(@contact, with: params[:contact][:tag_list], on: :tags)
+
         redirect_to action: :show, id: params[:id]
       else
-        show_vars
         render :show
       end
     end
@@ -84,8 +82,9 @@ module Plugins::FlexxPluginCrm
 
     private
 
-    def show_vars
+    def load_records
       @contact = current_site.contacts.find(params[:id])
+      @feed_activities = ActivityFeedService.list_activities(feed_name: 'contact', feed_id: @contact.id)
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = AutomatedCampaignJob.where(contact_id: @contact.id).pluck(:automated_campaign_id)
       @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)

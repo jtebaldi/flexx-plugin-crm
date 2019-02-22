@@ -1,36 +1,37 @@
-<% if @contact.tasks.done.empty? %>
-  <div class="task justify-content-center h-100px">
-    <h5 class="center-vh text-fade mb-0"><em>No activity to show</em></h5>
-  </div>
-<% else %>
-  <% @contact.tasks.done.order(updated_at: :desc).each do |task| %>
-    <a data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: task.id, refresh_panel: refresh_panel) %>">  
-      <li class="timeline-block">
-        <div class="timeline-point">
-          <span class="avatar bg-white"><i class="fs-25 text-fade hover-info fa fa-<%= task_type_icon(task_type: task.task_type) %>" style="line-height: 38px;"></i></span>
-        </div>
-        <div class="timeline-content">
-          <time><%= time_ago_in_words(task.updated_at) %> ago</time>
-          <% if task.email_recipient %>
-            <% if task.email_recipient.status == 'open' %>
-              <span class="ml-10 text-info fw-400"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
-            <% elsif task.email_recipient.status == 'click' %>
-              <span class="ml-10 text-success fw-400"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
-            <% elsif task.email_recipient.status == 'delivered' %>
-              <span class="ml-10 text-gray fw-400"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
-            <% elsif task.email_recipient.status == 'unsubscribe' %>
-              <span class="ml-10 text-pink fw-400"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
-            <% elsif task.email_recipient.status == 'bounced' %>
-              <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
-            <% else %>
-              <span class="ml-10 text-warning fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
-            <% end %>
+<% @feed_activities.each do |activity| %>
+  <% if activity.object.instance_of?(Plugins::FlexxPluginCrm::Task) %>
+    <a data-toggle="quickview" href="#qv_view_task" data-url="<%= admin_task_card_path(id: activity.object.id, refresh_panel: refresh_panel) %>">
+  <% end %>
+    <li class="timeline-block">
+      <div class="timeline-point">
+        <span class="avatar bg-white"><i class="fs-25 text-fade hover-info fa fa-<%= activity_feed_icon(activity.object) %>" style="line-height: 38px;"></i></span>
+      </div>
+      <div class="timeline-content">
+        <time><%= time_ago_in_words(activity.time) %> ago</time>
+        <% if activity.object.instance_of?(Plugins::FlexxPluginCrm::EmailRecipient) %>
+          <% if activity.object.status == 'open' %>
+            <span class="ml-10 text-info fw-400"><i class="fa fa-envelope-open" style="padding-right:3px;"></i> Opened</span>
+          <% elsif activity.object.status == 'click' %>
+            <span class="ml-10 text-success fw-400"><i class="fa fa-hand-o-up" style="padding-right:3px;"></i> Clicked</span>
+          <% elsif activity.object.status == 'delivered' %>
+            <span class="ml-10 text-gray fw-400"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
+          <% elsif activity.object.status == 'unsubscribe' %>
+            <span class="ml-10 text-pink fw-400"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
+          <% elsif activity.object.status == 'bounced' %>
+            <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
+          <% else %>
+            <span class="ml-10 text-warning fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
           <% end %>
-          <p style="color: #333">
-            <span class="h6"><%= task.title %><%= task.email_recipient && !task.email_recipient.email.subject.blank? ? " (#{task.email_recipient.email.subject})" : '' %></span> completed by <strong><%= task.updated_by_user.first_name %></strong>          
-          </p>
-        </div>
-      </li>
+        <% end %>
+        <p style="color: #333">
+          <% if activity.labels.present? %>
+            <% subject = activity.object.instance_of?(Plugins::FlexxPluginCrm::EmailRecipient) ? " (#{activity.object.email.subject})" : '' %>
+            <span class="h6"><%= "#{activity.labels.action_type}#{subject}" %></span> <%= activity.labels.action %> by <strong><%= activity.labels.actor %></strong>
+          <% end %>
+        </p>
+      </div>
+    </li>
+  <% if activity.object.instance_of?(Plugins::FlexxPluginCrm::Task) %>
     </a>
   <% end %>
 <% end %>
