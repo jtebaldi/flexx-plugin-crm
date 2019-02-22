@@ -89,7 +89,7 @@ class ActivityFeedService
       end
       contact = parse_actor(group_split[1])
 
-      result.message = "#{prefix} from #{contact.print_name} #{suffix} received."
+      result.message = "#{prefix} #{suffix} received from #{contact.print_name}."
       result.url = admin_contact_path(contact.id)
     when 'message_sent'
       if activities['activity_count'] == 1

@@ -83,11 +83,11 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
           labels: {
             action: 'created',
             action_type: 'Contact',
-            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'
+            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'    
           },
-          message: "New contact - #{self.print_name} - created.",
+          message: "New contact created - #{self.print_name}",
           url: admin_contact_path(self.id),
-          to: ["system:#{self.site_id}"]
+          to: ["system:#{self.site_id}"]          
         }
       }
     else

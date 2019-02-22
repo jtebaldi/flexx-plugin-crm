@@ -14,7 +14,7 @@
         <div class="media-list media-list-hover media-list-divided scrollable" style="height: 275px">
           <% @system_feed.each do |f| %>
             <div class="media media-single">
-              <span class="avatar bg-success"><i class="ti-user"></i></span>
+              <span class="avatar" style="background: transparent;"><i class="ti-user fs-24"></i></span>
               <div class="media-body">
                 <p><a href="<%= f.url %>"><%= f.message %></a></p>
                 <time><%= time_ago_in_words(f.time) %> ago</time>

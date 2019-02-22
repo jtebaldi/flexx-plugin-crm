@@ -1,3 +1,11 @@
+<style>
+  .topbar .dropdown-menu::before, .topbar .dropdown-menu::after, .topbar .dropdown-grid::before, .topbar .dropdown-grid::after { content: none; }
+  .topbar .dropdown-menu, .topbar .dropdown-grid { margin-top: 0 !important; }
+
+  @media (max-width: 575px) { .topbar-mobile.logo { display: block; } }
+  @media (min-width: 576px) { .topbar-mobile.logo { display: none; } }
+</style>
+
 <header class="topbar">
   <div class="topbar-left">
     <span class="topbar-btn sidebar-toggler"><i>&#9776;</i></span>
@@ -5,9 +13,9 @@
       <i class="ti-fullscreen fullscreen-default"></i>
       <i class="fa fa-compress fullscreen-active"></i>
     </a>
-    <div class="topbar-divider"></div>
-    <span class="topbar-mobile logo">
-      <img style="width: 100%; max-width: 120px; opacity: .8;" src="https://d15fieipd5pxyz.cloudfront.net/flexxco/flexx_final_dark_copy.png" alt="logo">
+    <div class="topbar-divider d-none d-md-block"></div>
+    <span class="topbar-mobile logo" style="margin-left: 8px;">
+      <img style="width: 80%; max-width: 100px; opacity: .7;" src="https://d15fieipd5pxyz.cloudfront.net/flexxco/flexx_final_dark_copy.png" alt="logo">
     </span>
     <h4 class="topbar-title text-uppercase d-none d-sm-block"><%= current_site.the_title %></h4>
   </div>
@@ -16,7 +24,7 @@
     <a class="topbar-btn" href="#qv-global" data-toggle="quickview"><i class="ti-align-right"></i></a>
     <div class="topbar-divider"></div>
     <ul class="topbar-btns">
-      <li class="dropdown">
+      <li class="dropdown d-none d-md-block">
         <span class="topbar-btn" data-toggle="dropdown"><span class="avatar"><%= current_user.initials %></span></span>
         <div class="dropdown-menu dropdown-menu-right">
           <a id="link-to-profile" class="dropdown-item" href="<%= index_admin_settings_path(:profile) %>"><i class="ti-user"></i> Profile</a>
@@ -25,19 +33,19 @@
         </div>
       </li>
 
-      <li class="dropdown d-none d-md-block">
+      <li class="dropdown">
         <%
           unread_notifications = @notifications_feed.select { |n| !n.is_seen }
         %>
         <span class="topbar-btn <%= 'has-new' if unread_notifications.count() > 0 %>" data-toggle="dropdown" onclick="markFeedAsSeen(<%= unread_notifications.map { |n| n.id }.to_json %>)"><i class="ti-bell"></i></span>
         <div class="dropdown-menu dropdown-menu-right">
 
-          <div class="media-list media-list-divided media-list-hover media-list-xs scrollable" style="height: 290px">
+          <div class="media-list media-list-divided media-list-xs scrollable" style="height: 290px">
             <% @notifications_feed.each do |n| %>
-              <a class="media media-new" href="<%= n.url %>">
-                <span class="avatar bg-white"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
+              <a class="media media-new bg-white" href="<%= n.url %>">
+                <span class="avatar bg-white ml-0"><i class="fs-25 text-info fa fa-wpforms" style="line-height: 38px;"></i></span>
                 <div class="media-body">
-                  <p><%= n.message %></p>
+                  <p style="line-height: 16px;"><%= n.message %></p>
                   <time><%= time_ago_in_words(n.time) %> ago</time>
                 </div>
               </a>
