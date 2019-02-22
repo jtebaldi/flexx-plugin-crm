@@ -37,6 +37,7 @@
         </div>
       </li>
 
+      <% unless @notifications_feed.nil? %>
       <li class="dropdown">
         <%
           unread_notifications = @notifications_feed.select { |n| !n.is_seen }
@@ -58,6 +59,7 @@
 
         </div>
       </li>
+      <% end %>
 
       <!-- START Search
       <li>
