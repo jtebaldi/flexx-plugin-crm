@@ -106,6 +106,8 @@ Rails.application.routes.draw do
           get '/', action: :index, as: :import
           post :contacts, as: :import_contacts
         end
+
+        resources :forms, controller: 'plugins/flexx_plugin_crm/forms', only: [:index, :edit]
       end
 
       namespace 'plugins' do
