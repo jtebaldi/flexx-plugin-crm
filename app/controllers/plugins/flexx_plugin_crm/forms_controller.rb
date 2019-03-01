@@ -5,5 +5,7 @@ module Plugins::FlexxPluginCrm
     def index; end
 
     def edit; end
+
+    def view; end
   end
 end

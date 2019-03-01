@@ -1,3 +1,9 @@
+<style>
+  .website-form .avatar-list { display: block; }
+  .website-form .avatar-list .avatar { border: 2px solid #fff; box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); }
+  .website-form .avatar-list .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
+</style>
+
 <header class="header">
   <div class="header-info">
     <h2 class="header-title">Your <strong>Forms</strong></h2>
@@ -5,4 +11,51 @@
 </header>
 
 <div class="main-content">
+  <div class="row">
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card website-form hover-shadow-4">
+        <a href="#" class="card-header">
+          <h4 class="card-title"><strong>Form name</strong> <small class="subtitle">Description of the form below the name</small></h4>
+          <ul class="card-controls">
+            <li><i class="fas fa-sliders-h fs-16  "></i></li>
+          </ul>
+        </a>
+
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-gray">Total responses</h6>
+          <div class="mt-2 fs-30">
+            <span class="fab fa-wpforms text-info fs-30 mr-10"></span> 93
+          </div>
+          <div class="text-center">
+            <small class="fw-300">Last submission: 3/12/19 12:07 AM</small>
+          </div>
+        </div>
+
+        <footer class="card-footer ">
+          <h6>On form submission...</h6>
+          <div class="flexbox">
+            <div class="">
+              <label class="mr-10">Actions</label>
+              <div class="avatar-list">              
+                <span class="avatar active" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
+                <span class="avatar active" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span> 
+                <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span>
+                <span class="avatar" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+              </div>
+            </div>
+
+            <div class="">
+              <label class="mr-10">Notifications</label>
+              <div class="avatar-list">
+                <span class="avatar active" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>
+                <span class="avatar" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
 </div>

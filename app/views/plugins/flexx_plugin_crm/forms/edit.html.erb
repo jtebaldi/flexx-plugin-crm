@@ -1,0 +1,279 @@
+<style>
+  .form-actions .avatar { border: 2px solid #fff; box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); }
+  .form-actions .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
+</style>
+
+<%= render 'next/partials/breadcrumb', link: admin_forms_path(), page: 'Website Forms' %>
+
+<header class="header no-border">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Form name</strong> <small class="subtitle">Description of the form below the name</small></h2>
+    </div>
+  </div>
+  <div class="header-action">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tab-settings" role="tab">Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab-responses" role="tab">Responses <small>(96)</small></a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<div class="main-content">
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab-settings" role="tabpanel">
+      <div class="row">
+
+        <div class="col-lg-5">
+
+          <div class="card form-type-combine form-actions">
+            <h4 class="card-title">Notifications</h4>
+
+            <div class="media">
+              <span class="avatar active" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>      
+              <div class="media-body">
+                <p><strong>Email</strong></p>
+                <p>Receive an email when contact submits a form</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="switch-indicator"></span>
+              </label>              
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <div class="form-group require">
+                  <label for="input-required">Email address(es)</label>
+                  <input type="text" class="form-control">
+                </div>
+                <small class="form-text">Separate multiple email addresses with a comma.</small>
+              </div>
+            </div>
+
+            <hr class="hr-sm">
+            
+            <div class="media">
+              <span class="avatar" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
+              <div class="media-body">
+                <p><strong>Text Message</strong></p>
+                <p>Receive a text message when contact submits a form</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+              </label>
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <div class="form-group">
+                  <label for="input-required">Phone Number</label>
+                  <input type="text" class="form-control">
+                </div>
+                <small class="form-text">Only a single SMS-ready number can be notified.</small>
+              </div>
+            </div>
+
+            <hr class="hr-sm">
+
+            <div class="media">
+              <div class="media-body">
+                <p><strong>Activity Feed</strong></p>
+                <p>Show in dashboard Recent Acivity</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+              </label>
+            </div>
+
+            <div class="media">
+              <div class="media-body">
+                <button class="btn btn-block btn-bold btn-primary" type="submit">Save</button>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card form-type-combine form-actions">
+            <h4 class="card-title">Actions</h4>
+            
+            <div class="media">
+              <div class="media-body">
+                <p>When a contact completes a form on your website...</p>
+              </div>
+            </div>
+
+            <div class="media">
+              <span class="avatar active" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
+              <div class="media-body">
+                <p><strong>Redirect</strong></p>
+                <p>The contact will be redirected from the form page to the URL listed.</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="switch-indicator"></span>
+              </label>              
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <div class="form-group">
+                  <label for="input-required">URL</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <hr class="hr-sm">
+            
+            <div class="media">
+              <span class="avatar" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span> 
+              <div class="media-body">
+                <p><strong>Email Response</strong></p>
+                <p>Select a stock message to be sent automatically</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+              </label>
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <%= render partial: 'plugins/flexx_plugin_crm/common/email_stocks_dropdown' %>
+              </div>
+            </div>
+
+            <hr class="hr-sm">
+
+            <div class="media">
+              <span class="avatar" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+              <div class="media-body">
+                <p><strong>Zapier</strong> Webhook</p>
+                <p>The contact information will be sent via Zapier's webhook.</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+              </label>              
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <div class="form-group">
+                  <label for="input-required">Webhook URL</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <hr class="hr-sm">
+
+            <div class="media">
+              <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span>
+              <div class="media-body">
+                <p><strong>Recipes</strong></p>
+                <p>These recipes will be automatically applied to contact.</p>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox">
+                <span class="switch-indicator"></span>
+              </label>              
+            </div>
+
+            <div class="media pt-0">
+              <div class="media-body">
+                <div class="form-group">
+                  <label for="input-required">Recipes</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+
+          </div> 
+        </div>        
+
+      </div>
+    </div> <!-- End Settings tab -->
+
+    <div class="tab-pane" id="tab-responses" role="tabpanel">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <header class="card-header">
+              <h4 class="card-title"><strong>Form</strong> submissions</h4>
+              <div class="card-header-actions">    
+                <a href="#" class="btn btn-sm btn-label btn-default"><label><i class="ti-download"></i></label>Download CSV</a>  
+              </div>
+            </header>
+
+            <div class="card-body">
+              <p>This table will display the form submissions.</p>
+
+              <div class="table-responsive-sm">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Table heading</th>
+                      <th>Table heading</th>
+                      <th>Table heading</th>
+                      <th>Table heading</th>
+                      <th>Table heading</th>
+                      <th>Table heading</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                      <td>Table cell</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- End Responses tab -->
+  </div>  
+</div>
