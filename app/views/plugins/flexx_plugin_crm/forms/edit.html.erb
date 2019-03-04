@@ -8,7 +8,7 @@
 <header class="header no-border">
   <div class="header-info">
     <div class="left">
-      <h2 class="header-title"><strong>Form name</strong> <small class="subtitle">Description of the form below the name</small></h2>
+      <h2 class="header-title"><strong><%= @form.name %></strong> <small class="subtitle"><%= @form.description %></small></h2>
     </div>
   </div>
   <div class="header-action">
@@ -22,258 +22,269 @@
     </ul>
   </div>
 </header>
+<%= form_tag admin_form_path(@form.id), method: :patch do %>
+  <div class="main-content">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-settings" role="tabpanel">
+        <div class="row">
 
-<div class="main-content">
-  <div class="tab-content">
-    <div class="tab-pane active" id="tab-settings" role="tabpanel">
-      <div class="row">
+          <div class="col-lg-5">
 
-        <div class="col-lg-5">
+            <div class="card form-type-combine form-actions">
+              <h4 class="card-title">Notifications</h4>
 
-          <div class="card form-type-combine form-actions">
-            <h4 class="card-title">Notifications</h4>
-
-            <div class="media">
-              <span class="avatar active" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>      
-              <div class="media-body">
-                <p><strong>Email</strong></p>
-                <p>Receive an email when contact submits a form</p>
-              </div>
-
-              <label class="switch">
-                <input type="checkbox" checked>
-                <span class="switch-indicator"></span>
-              </label>              
-            </div>
-
-            <div class="media pt-0">
-              <div class="media-body">
-                <div class="form-group require">
-                  <label for="input-required">Email address(es)</label>
-                  <input type="text" class="form-control">
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_mail').try(:[], 'to').present? ? 'active' : '' %>" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>
+                <div class="media-body">
+                  <p><strong>Email</strong></p>
+                  <p>Receive an email when contact submits a form</p>
                 </div>
-                <small class="form-text">Separate multiple email addresses with a comma.</small>
-              </div>
-            </div>
-
-            <hr class="hr-sm">
-            
-            <div class="media">
-              <span class="avatar" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
-              <div class="media-body">
-                <p><strong>Text Message</strong></p>
-                <p>Receive a text message when contact submits a form</p>
               </div>
 
-              <label class="switch">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-              </label>
-            </div>
-
-            <div class="media pt-0">
-              <div class="media-body">
-                <div class="form-group">
-                  <label for="input-required">Phone Number</label>
-                  <input type="text" class="form-control">
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input">Email address(es)</label>
+                    <input type="text" class="form-control" name="railscf_mail[to]" value="<%= @form.the_settings[:railscf_mail][:to] rescue '' %>">
+                  </div>
+                  <small class="form-text">Separate multiple email addresses with a comma.</small>
                 </div>
-                <small class="form-text">Only a single SMS-ready number can be notified.</small>
-              </div>
-            </div>
-
-            <hr class="hr-sm">
-
-            <div class="media">
-              <div class="media-body">
-                <p><strong>Activity Feed</strong></p>
-                <p>Show in dashboard Recent Acivity</p>
               </div>
 
-              <label class="switch">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-              </label>
-            </div>
-
-            <div class="media">
-              <div class="media-body">
-                <button class="btn btn-block btn-bold btn-primary" type="submit">Save</button>
-              </div>
-            </div>
-          </div>          
-        </div>
-
-        <div class="col-lg-7">
-          <div class="card form-type-combine form-actions">
-            <h4 class="card-title">Actions</h4>
-            
-            <div class="media">
-              <div class="media-body">
-                <p>When a contact completes a form on your website...</p>
-              </div>
-            </div>
-
-            <div class="media">
-              <span class="avatar active" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
-              <div class="media-body">
-                <p><strong>Redirect</strong></p>
-                <p>The contact will be redirected from the form page to the URL listed.</p>
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input">Subject</label>
+                    <input type="text" class="form-control" name="railscf_mail[subject]" value="<%= @form.the_settings[:railscf_mail][:subject] rescue '' %>">
+                  </div>
+                  <small class="form-text"></small>
+                </div>
               </div>
 
-              <label class="switch">
-                <input type="checkbox" checked>
-                <span class="switch-indicator"></span>
-              </label>              
-            </div>
+              <% if current_site.get_field('twilio_default-number').present? %>
+                <hr class="hr-sm">
 
-            <div class="media pt-0">
-              <div class="media-body">
-                <div class="form-group">
-                  <label for="input-required">URL</label>
-                  <input type="text" class="form-control">
+                <div class="media">
+                  <span class="avatar <%= @form.the_settings.try(:[], 'railscf_twilio').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
+                  <div class="media-body">
+                    <p><strong>Text Message</strong></p>
+                    <p>Receive a text message when contact submits a form</p>
+                  </div>
+
+                  <%= hidden_field_tag "railscf_twilio[enabled]", false %>
+
+                  <label class="switch">
+                    <%= check_box_tag "railscf_twilio[enabled]", true, (@form.the_settings[:railscf_twilio][:enabled] == "true" rescue false), id: "railscf_twilio_enabled_check", class: 'hidden' %>
+                    <span class="switch-indicator" onclick="$('#railscf_twilio_enabled_check').attr('checked', !$('#railscf_twilio_enabled_check').attr('checked'))"></span>
+                  </label>
+                </div>
+
+                <div class="media pt-0">
+                  <div class="media-body">
+                    <div class="form-group">
+                      <label for="input-required">Phone Number</label>
+                      <input type="text" class="form-control" name="railscf_twilio[phone]" value="<%= @form.the_settings[:railscf_twilio][:phone] rescue '' %>">
+                    </div>
+                    <small class="form-text">Only a single SMS-ready number can be notified.</small>
+                  </div>
+                </div>
+              <% end %>
+
+              <!--
+              <hr class="hr-sm">
+
+              <div class="media">
+                <div class="media-body">
+                  <p><strong>Activity Feed</strong></p>
+                  <p>Show in dashboard Recent Acivity</p>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                </label>
+              </div>
+              -->
+              <div class="media">
+                <div class="media-body">
+                  <button class="btn btn-block btn-bold btn-primary" type="submit">Save</button>
                 </div>
               </div>
             </div>
+          </div>
 
-            <hr class="hr-sm">
-            
-            <div class="media">
-              <span class="avatar" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span> 
-              <div class="media-body">
-                <p><strong>Email Response</strong></p>
-                <p>Select a stock message to be sent automatically</p>
-              </div>
+          <div class="col-lg-7">
+            <div class="card form-type-combine form-actions">
+              <h4 class="card-title">Actions</h4>
 
-              <label class="switch">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-              </label>
-            </div>
-
-            <div class="media pt-0">
-              <div class="media-body">
-                <%= render partial: 'plugins/flexx_plugin_crm/common/email_stocks_dropdown' %>
-              </div>
-            </div>
-
-            <hr class="hr-sm">
-
-            <div class="media">
-              <span class="avatar" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
-              <div class="media-body">
-                <p><strong>Zapier</strong> Webhook</p>
-                <p>The contact information will be sent via Zapier's webhook.</p>
-              </div>
-
-              <label class="switch">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-              </label>              
-            </div>
-
-            <div class="media pt-0">
-              <div class="media-body">
-                <div class="form-group">
-                  <label for="input-required">Webhook URL</label>
-                  <input type="text" class="form-control">
+              <div class="media">
+                <div class="media-body">
+                  <p>When a contact completes a form on your website...</p>
                 </div>
               </div>
-            </div>
 
-            <hr class="hr-sm">
+              <div class="media">
+                <span class="avatar active" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
+                <div class="media-body">
+                  <p><strong>Redirect</strong></p>
+                  <p>The contact will be redirected from the form page to the URL listed.</p>
+                </div>
 
-            <div class="media">
-              <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span>
-              <div class="media-body">
-                <p><strong>Recipes</strong></p>
-                <p>These recipes will be automatically applied to contact.</p>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="switch-indicator"></span>
+                </label>
               </div>
 
-              <label class="switch">
-                <input type="checkbox">
-                <span class="switch-indicator"></span>
-              </label>              
-            </div>
-
-            <div class="media pt-0">
-              <div class="media-body">
-                <div class="form-group">
-                  <label for="input-required">Recipes</label>
-                  <input type="text" class="form-control">
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">URL</label>
+                    <input type="text" class="form-control">
+                  </div>
                 </div>
               </div>
-            </div>
 
-          </div> 
-        </div>        
+              <hr class="hr-sm">
 
-      </div>
-    </div> <!-- End Settings tab -->
+              <div class="media">
+                <span class="avatar" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span>
+                <div class="media-body">
+                  <p><strong>Email Response</strong></p>
+                  <p>Select a stock message to be sent automatically</p>
+                </div>
 
-    <div class="tab-pane" id="tab-responses" role="tabpanel">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <header class="card-header">
-              <h4 class="card-title"><strong>Form</strong> submissions</h4>
-              <div class="card-header-actions">    
-                <a href="#" class="btn btn-sm btn-label btn-default"><label><i class="ti-download"></i></label>Download CSV</a>  
-              </div>
-            </header>
-
-            <div class="card-body">
-              <p>This table will display the form submissions.</p>
-
-              <div class="table-responsive-sm">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                </label>
               </div>
 
+              <div class="media pt-0">
+                <div class="media-body">
+                  <%= render partial: 'plugins/flexx_plugin_crm/common/email_stocks_dropdown' %>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+                <div class="media-body">
+                  <p><strong>Zapier</strong> Webhook</p>
+                  <p>The contact information will be sent via Zapier's webhook.</p>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">Webhook URL</label>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span>
+                <div class="media-body">
+                  <p><strong>Recipes</strong></p>
+                  <p>These recipes will be automatically applied to contact.</p>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">Recipes</label>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
+
         </div>
-      </div>
-    </div> <!-- End Responses tab -->
-  </div>  
-</div>
+      </div> <!-- End Settings tab -->
+
+      <div class="tab-pane" id="tab-responses" role="tabpanel">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <header class="card-header">
+                <h4 class="card-title"><strong>Form</strong> submissions</h4>
+                <div class="card-header-actions">
+                  <a href="#" class="btn btn-sm btn-label btn-default"><label><i class="ti-download"></i></label>Download CSV</a>
+                </div>
+              </header>
+
+              <div class="card-body">
+                <p>This table will display the form submissions.</p>
+
+                <div class="table-responsive-sm">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Table heading</th>
+                        <th>Table heading</th>
+                        <th>Table heading</th>
+                        <th>Table heading</th>
+                        <th>Table heading</th>
+                        <th>Table heading</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                        <td>Table cell</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Responses tab -->
+    </div>
+  </div>
+<% end %>

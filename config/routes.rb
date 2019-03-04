@@ -107,7 +107,7 @@ Rails.application.routes.draw do
           post :contacts, as: :import_contacts
         end
 
-        resources :forms, controller: 'plugins/flexx_plugin_crm/forms', only: [:index, :edit]
+        resources :forms, controller: 'plugins/flexx_plugin_crm/forms', only: [:index, :edit, :update]
       end
 
       namespace 'plugins' do
