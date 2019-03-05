@@ -3,6 +3,31 @@
   .form-actions .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
 </style>
 
+<script>
+  // Enables/Disables input fields associated with switch
+  function toggleDisableInput(checkboxElem) {
+    if (checkboxElem.checked) {
+      $(checkboxElem).parent().parent().find('.avatar').addClass("active");
+      $('.' + checkboxElem.id).find('div.form-group').removeClass("disabled");
+    } else {
+      $(checkboxElem).parent().parent().find('.avatar').removeClass("active");
+      $('.' + checkboxElem.id).find('div.form-group').addClass("disabled");
+    }
+  }
+
+  $(document).ready(function(){
+    // Intially disables all input fields if switch is off
+    $('.setting-switch:checkbox:not(:checked)').each(function () {
+      $('.' + this.id).find('div.form-group').addClass("disabled");
+    });
+
+    // Show "save changes" bar on input change
+    $('form :input').on('change input', function() {
+      $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+    });
+  });
+</script>
+
 <%= render 'next/partials/breadcrumb', link: admin_forms_path(), page: 'Website Forms' %>
 
 <header class="header no-border">
@@ -23,6 +48,7 @@
   </div>
 </header>
 <%= form_tag admin_form_path(@form.id), method: :patch do %>
+  <%= render 'next/partials/save_changes', form_id: @form.id %>
   <div class="main-content">
     <div class="tab-content">
       <div class="tab-pane active" id="tab-settings" role="tabpanel">
@@ -48,47 +74,41 @@
                     <input type="text" class="form-control" name="railscf_mail[to]" value="<%= @form.the_settings[:railscf_mail][:to] rescue '' %>">
                   </div>
                   <small class="form-text">Separate multiple email addresses with a comma.</small>
-                </div>
-              </div>
-
-              <div class="media pt-0">
-                <div class="media-body">
-                  <div class="form-group">
+                  <div class="form-group mt-20">
                     <label for="input">Subject</label>
                     <input type="text" class="form-control" name="railscf_mail[subject]" value="<%= @form.the_settings[:railscf_mail][:subject] rescue '' %>">
                   </div>
                   <small class="form-text"></small>
                 </div>
               </div>
+            
+              <hr class="hr-sm">
 
-              <% if current_site.get_field('twilio_default-number').present? %>
-                <hr class="hr-sm">
-
-                <div class="media">
-                  <span class="avatar <%= @form.the_settings.try(:[], 'railscf_twilio').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
-                  <div class="media-body">
-                    <p><strong>Text Message</strong></p>
-                    <p>Receive a text message when contact submits a form</p>
-                  </div>
-
-                  <%= hidden_field_tag "railscf_twilio[enabled]", false %>
-
-                  <label class="switch">
-                    <%= check_box_tag "railscf_twilio[enabled]", true, (@form.the_settings[:railscf_twilio][:enabled] == "true" rescue false), id: "railscf_twilio_enabled_check", class: 'hidden' %>
-                    <span class="switch-indicator" onclick="$('#railscf_twilio_enabled_check').attr('checked', !$('#railscf_twilio_enabled_check').attr('checked'))"></span>
-                  </label>
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_twilio').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="SMS Notification" data-provide="tooltip"><i class="fas fa-sms"></i></span>
+                <div class="media-body">
+                  <p><strong>Text Message</strong></p>
+                  <p>Receive a text message when contact submits a form</p>
                 </div>
 
-                <div class="media pt-0">
-                  <div class="media-body">
-                    <div class="form-group">
-                      <label for="input-required">Phone Number</label>
-                      <input type="text" class="form-control" name="railscf_twilio[phone]" value="<%= @form.the_settings[:railscf_twilio][:phone] rescue '' %>">
-                    </div>
-                    <small class="form-text">Only a single SMS-ready number can be notified.</small>
+                <%= hidden_field_tag "railscf_twilio[enabled]", false %>
+
+                <label class="switch">
+                  <%= check_box_tag "railscf_twilio[enabled]", true, (@form.the_settings[:railscf_twilio][:enabled] == "true" rescue false), id: "railscf_twilio_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_twilio_enabled_check').attr('checked', !$('#railscf_twilio_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 railscf_twilio_enabled_check">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">Phone Number</label>
+                    <input type="text" class="form-control" name="railscf_twilio[phone]" value="<%= @form.the_settings[:railscf_twilio][:phone] rescue '' %>">
+                    <div class="invalid-feedback"></div>
                   </div>
+                  <small class="form-text">Only a single SMS-ready number can be notified.</small>
                 </div>
-              <% end %>
+              </div>
 
               <!--
               <hr class="hr-sm">
@@ -104,12 +124,13 @@
                   <span class="switch-indicator"></span>
                 </label>
               </div>
-              -->
+              
               <div class="media">
                 <div class="media-body">
                   <button class="btn btn-block btn-bold btn-primary" type="submit">Save</button>
                 </div>
               </div>
+              -->
             </div>
           </div>
 
@@ -124,23 +145,26 @@
               </div>
 
               <div class="media">
-                <span class="avatar active" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_redirect').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
                 <div class="media-body">
                   <p><strong>Redirect</strong></p>
                   <p>The contact will be redirected from the form page to the URL listed.</p>
                 </div>
 
+                <%= hidden_field_tag "railscf_redirect[enabled]", false %>
+
                 <label class="switch">
-                  <input type="checkbox" checked>
-                  <span class="switch-indicator"></span>
+                  <%= check_box_tag "railscf_redirect[enabled]", true, (@form.the_settings[:railscf_redirect][:enabled] == "true" rescue false), id: "railscf_redirect_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_redirect_enabled_check').attr('checked', !$('#railscf_redirect_enabled_check').attr('checked'))"></span>
                 </label>
               </div>
 
-              <div class="media pt-0">
+              <div class="media pt-0 railscf_redirect_enabled_check">
                 <div class="media-body">
                   <div class="form-group">
                     <label for="input-required">URL</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" name="railscf_redirect[url]" value="<%= @form.the_settings[:railscf_redirect][:url] rescue '' %>">
+                    <div class="invalid-feedback"></div>
                   </div>
                 </div>
               </div>
@@ -169,27 +193,31 @@
               <hr class="hr-sm">
 
               <div class="media">
-                <span class="avatar" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_webhook').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
                 <div class="media-body">
                   <p><strong>Zapier</strong> Webhook</p>
                   <p>The contact information will be sent via Zapier's webhook.</p>
                 </div>
 
+                <%= hidden_field_tag "railscf_webhook[enabled]", false %>
+
                 <label class="switch">
-                  <input type="checkbox">
-                  <span class="switch-indicator"></span>
+                  <%= check_box_tag "railscf_webhook[enabled]", true, (@form.the_settings[:railscf_webhook][:enabled] == "true" rescue false), id: "railscf_webhook_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_webhook_enabled_check').attr('checked', !$('#railscf_webhook_enabled_check').attr('checked'))"></span>
                 </label>
               </div>
 
-              <div class="media pt-0">
+              <div class="media pt-0 railscf_webhook_enabled_check">
                 <div class="media-body">
                   <div class="form-group">
                     <label for="input-required">Webhook URL</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
+                    <div class="invalid-feedback"></div>
                   </div>
                 </div>
               </div>
 
+              <!-- 
               <hr class="hr-sm">
 
               <div class="media">
@@ -213,6 +241,7 @@
                   </div>
                 </div>
               </div>
+              -->
 
             </div>
           </div>
