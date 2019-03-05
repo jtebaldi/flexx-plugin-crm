@@ -2,6 +2,12 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/recipes' %>
 <% end %>
 
+<style>
+  @media (max-width: 576px) { .shared-recipe { padding: 0; } }
+  .shared-recipe.left { padding-left: 0; }
+  .shared-recipe.right { padding-right: 0; }
+</style>
+
 <header class="header">
   <div class="header-info">
     <h2 class="header-title">Your <strong>Recipes</strong></h2>
@@ -15,16 +21,19 @@
 
 <div class="main-content">
 
-  <p class="lead text-center text-fade">Active recipes</p>
+  <div class="divider fs-16 text-success">Active Recipes</div>
   <% @active_task_recipes.each do |recipe| %>
     <div class="card b-1 hover-shadow-2 mb-20">
       <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
 
         <div class="media-body">
           <div class="mb-2">
-            <span class="fs-20 pr-16"><%= recipe.title %></span>
-          </div>
-          <small class="fs-16 fw-300 ls-1"><% recipe.description %></small>
+            <span class="fs-20 pr-16"><%= recipe.title %></span><br>            
+            <small class="fs-16 fw-300 ls-1"><%= recipe.description %></small>
+          </div>          
+          <% if recipe.shared %>
+            <span class="fs-12 pr-16 text-uppercase text-success"><strong>Shared</strong></span>
+          <% end %>
         </div>
 
         <div class="media-right text-right d-none d-md-block">
@@ -38,50 +47,127 @@
       </a>
       <footer class="card-footer flexbox align-items-center">
         <div>
-          <strong>Created on:</strong>
-          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+          <strong>Created:</strong>
+          <span class="mr-20"><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+          <% unless recipe.updated_at == recipe.created_at %>
+            <strong>Updated:</strong>
+            <span><%= recipe.updated_at.strftime('%b, %d %Y') %></span>
+          <% end %>
         </div>
-        <div class="card-hover-show">
-          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
+        <div class="card-hover-show d-none d-sm-block">
           <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_recipe_path(id: recipe.id) %>" data-method="delete">Delete</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
         </div>
       </footer>
     </div>
   <% end %>
   <br>
-  <div class="divider text-uppercase fw-500">Drafts</div>
+  
+  <% unless @paused_task_recipes.length == 0 %>
+    <div class="divider fs-16 text-warning">Paused Recipes</div>
+    <% @paused_task_recipes.each do |recipe| %>
+      <div class="card b-1 hover-shadow-2 mb-20">
+        <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
 
-  <% @paused_task_recipes.each do |recipe| %>
-    <div class="card b-1 hover-shadow-2 mb-20">
-      <a class="media card-body" href="<%= admin_recipe_path(recipe.id) %>">
-
-        <div class="media-body">
-          <div class="mb-2">
-            <span class="fs-20 pr-16"><%= recipe.title %></span>
+          <div class="media-body">
+            <div class="mb-2">
+              <span class="fs-20 pr-16"><%= recipe.title %></span><br>
+              <small class="fs-16 fw-300 ls-1"><%= recipe.description %></small>
+            </div>
+            
           </div>
-          <small class="fs-16 fw-300 ls-1"><% recipe.description %></small>
-        </div>
 
-        <div class="media-right text-right d-none d-md-block">
-          <p class="fs-14 text-fade mb-12">
-            <% recipe.cama_contact_forms.each do |form| %>
-              <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+          <div class="media-right text-right d-none d-md-block">
+            <p class="fs-14 text-fade mb-12">
+              <% recipe.cama_contact_forms.each do |form| %>
+                <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+              <% end %>
+            </p>
+            <span class="text-fade fs-12">Total tasks: <strong><%= recipe.directions.count %></strong></span>
+          </div>
+        </a>
+        <footer class="card-footer flexbox align-items-center">
+          <div>
+            <strong>Created:</strong>
+            <span class="mr-20"><%= recipe.created_at.strftime('%b, %d %Y') %></span>
+            <% unless recipe.updated_at == recipe.created_at %>
+              <strong>Updated:</strong>
+              <span><%= recipe.updated_at.strftime('%b, %d %Y') %></span>
             <% end %>
-          </p>
-          <span class="text-fade fs-12">Total tasks: <strong><%= recipe.directions.count %></strong></span>
+          </div>
+          <div class="card-hover-show d-none d-sm-block">
+            <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_recipe_path(id: recipe.id) %>" data-method="delete">Delete</a>
+            <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
+          </div>
+        </footer>
+      </div>
+    <% end %>
+    <br>
+  <% end %>
+
+  <% unless @shared_task_recipes.length == 0 %>
+    <div class="divider fs-16 text-info">Shared Recipes</div>
+    <% @shared_task_recipes.uniq.each_with_index do |recipe, index| %>
+      <div class="col-md-6 shared-recipe <%= index.even? ? 'left' : 'right' %>">
+        <div class="card">
+          <header class="card-header">
+            <span class="fs-20 pr-16"><%= recipe.title %></span>
+          </header>
+
+          <ul class="nav nav-tabs nav-tabs-info nav-justified" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#details" role="tab">Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#steps" role="tab">Steps (<%= recipe.directions.count %>)</a>
+            </li>
+          </ul>
+
+          <div class="card-body tab-content">
+            <div class="tab-pane fade active show" id="details">
+              <div class="row">
+                <div class="col-sm-2">
+                  <img class="w-100px mb-25" src="<%= CamaleonCms::Site.find(recipe.site_id).get_option("logo") %>" alt="<%= CamaleonCms::Site.find(recipe.site_id).name %>">
+                </div>
+                <div class="col-sm-10">
+                  <p>
+                    <i class="text-fade">Description</i><br>
+                    <%= recipe.description.present? ? recipe.description : 'None given' %>
+                  </p>
+                  <span class="fs-14 pr-16">Shared by: <strong><%= CamaleonCms::Site.find(recipe.site_id).name %></strong></span><br>
+                  <span>Created: <strong><%= recipe.created_at.strftime('%b, %d %Y') %></strong></span><br>
+                  <% unless recipe.updated_at == recipe.created_at %>
+                    <span>Updated: <strong><%= recipe.updated_at.strftime('%b, %d %Y') %></strong></span>
+                  <% end %>
+                </div>                
+              </div>
+              <small class="fs-16 fw-300 ls-1"><%= recipe.description %></small>
+            </div>
+            <div class="tab-pane fade" id="steps">
+              <ol class="timeline timeline-activity timeline-point-sm timeline-content-right w-100 py-20 pr-20">
+                <% recipe.ordered_directions.each do |direction| %>
+                  <li class="timeline-block">
+                    <div class="timeline-point">
+                      <span class="badge badge-ring badge-primary"></span>
+                    </div>
+                    <div class="timeline-content">
+                      <time datetime="2018"><%= distance_of_time_in_words(Time.now, Time.now + direction.due_on_value.send(direction.due_on_unit)) %></time>
+                      <p class="mb-0"><%= direction.title %> (<%= direction.task_type.humanize %>)</p>
+                      <% if direction.details %> <p class="text-italic"><%= direction.details %></p> <% end %>
+                    </div>
+                  </li>
+                <% end %>
+              </ol>
+            </div>
+          </div>
+
+          <footer class="card-footer text-right p-0">
+            <a href="<%= admin_recipe_add_shared_path(recipe.id) %>" class="btn btn-info no-radius"><i class="ti-plus"></i> ADD TO CRM</a>
+          </footer>
         </div>
-      </a>
-      <footer class="card-footer flexbox align-items-center">
-        <div>
-          <strong>Created on:</strong>
-          <span><%= recipe.created_at.strftime('%b, %d %Y') %></span>
-        </div>
-        <div class="card-hover-show">
-          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-recipe-overview" data-url="recipe_card/<%= recipe.id %>" data-toggle="quickview">Quickview</a>
-          <a class="btn btn-xs fs-10 btn-bold btn-danger recipe-delete" href="<%= admin_recipe_path(recipe.id) %>" data-method="delete">Delete</a>
-        </div>
-      </footer>
-    </div>
+      </div>
+    <% end %>
+    <br>
   <% end %>
 </div>
 
