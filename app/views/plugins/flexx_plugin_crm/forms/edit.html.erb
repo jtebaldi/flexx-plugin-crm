@@ -191,9 +191,18 @@
                   <select name="railscf_response[stock_id]" id="stock-email-select-field" class="form-control" data-provide="selectpicker">
                     <option>None</option>
                     <% rich_text_stocks.each do |row| %>
-                      <option value="<%= row.id %>" <%= 'selected' if @form.the_settings[:railscf_response][:stock_id] == row.id.to_s rescue false %>><%= row.name %></option>
+                      <option value="<%= row.id %>" <%= 'selected' if @form.the_settings.try(:[], 'railscf_response').try(:[], 'stock_id') == row.id.to_s %>><%= row.name %></option>
                     <% end %>
                   </select>
+                </div>
+              </div>
+
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">From</label>
+                    <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'railscf_response[from]', value: @form.the_settings.try(:[], 'railscf_response').try(:[], 'from') } %>
+                  </div>
                 </div>
               </div>
 
