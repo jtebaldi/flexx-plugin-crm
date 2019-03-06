@@ -18,6 +18,7 @@ module Plugins::FlexxPluginCrm
       settings["railscf_twilio"] = params[:railscf_twilio]
       settings["railscf_redirect"] = params[:railscf_redirect]
       settings["railscf_webhook"] = params[:railscf_webhook]
+      settings["railscf_response"] = params[:railscf_response]
 
       @form.update!(settings: settings.to_json)
 
