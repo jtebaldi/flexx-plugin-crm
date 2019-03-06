@@ -23,6 +23,11 @@ Rails.application.routes.draw do
           get '/', action: :index
         end
 
+        scope :website, controller: 'plugins/flexx_plugin_crm/website' do
+          root to: :index
+          get :new_page
+        end
+
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle
           post :create_direction

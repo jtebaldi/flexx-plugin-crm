@@ -8,6 +8,10 @@ module Plugins::FlexxPluginCrm
 
     def edit
       @form = current_site.contact_forms.find(params[:id])
+      values = JSON.parse(@form.value).to_sym
+      @op_fields = values[:fields].select{ |field| relevant_field? field }
+      @forms = current_site.contact_forms.where({parent_id: @form.id})
+      # @forms = @forms.paginate(:page => params[:page], :per_page => 50)
     end
 
     def update
@@ -23,6 +27,10 @@ module Plugins::FlexxPluginCrm
       @form.update!(settings: settings.to_json)
 
       redirect_to action: :edit, id: @form.id
+    end
+
+    def relevant_field?(field)
+      !%w(captcha recaptcha submit button stripe twilio).include? field[:field_type]
     end
   end
 end
