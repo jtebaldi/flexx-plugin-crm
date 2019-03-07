@@ -18,9 +18,24 @@
         select.prop('selectedIndex', 0);
       }
     });
+
+    
   });
 
+  $(document).ready(function(){
+    // Intially disables all input fields if switch is off
+    // $('.setting-switch:checkbox:not(:checked)').each(function () {
+    //   $('.' + this.id).find('div.form-group').addClass("disabled");
+    // });
+    // // Show "save changes" bar on input change
+    $('#contact-list checkbox').on('change input', function() {
+      $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+    });
 
+
+
+    // $('#mass_action_btns').hide();
+  });
 </script>
 
 <style>
@@ -29,6 +44,8 @@
   .contact-table .custom-checkbox .custom-control-label:empty::after { top: 1px; }
   .contact-table tr:hover { background-color: #e3f3fc; }
   .contact-table tr.active { background-color: #e3f3fc; }
+
+  @media only screen and (max-width: 768px) { #mass_action_btns { display: none; } }
 </style>
 
 <header class="header">
@@ -93,7 +110,7 @@
       <span id="selected-filter" class="badge badge-lg badge-dark">None</span>
     </div>
 
-    <div id="mass_action_btns" class="btn-group mr-15 d-none d-md-block">
+    <div id="mass_action_btns" class="btn-group mr-15">
       <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Actions</button>
       <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="#">Action</a>
@@ -126,7 +143,7 @@
           <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.strip %>" data-lname="<%= contact.last_name.strip %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
             <td class="pl-20 pt-25 d-none d-md-table-cell">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input">
+                <input id="<%= contact.id %>" type="checkbox" class="custom-control-input contact-checkbox">
                 <label class="custom-control-label"></label>
               </div>
             </td>
