@@ -19,6 +19,8 @@
       }
     });
   });
+
+
 </script>
 
 <style>
@@ -88,7 +90,18 @@
           <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
         </div>
       </div>
-      <span id="selected-filter" class="badge badge-lg badge-info">None</span>
+      <span id="selected-filter" class="badge badge-lg badge-dark">None</span>
+    </div>
+
+    <div id="mass_action_btns" class="btn-group mr-15 d-none d-md-block">
+      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Actions</button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+      </div>
     </div>
   </header>
 
@@ -103,14 +116,14 @@
             </div>
           </th>
           <th class="text-fade pl-30">General Info</th>
-          <th class="text-fade d-none d-md-table-cell w-450px">Tags</th>
-          <th class="text-fade d-none d-md-table-cell w-150px">Added</th>
+          <th class="text-fade d-none d-xl-table-cell w-350px">Tags</th>
+          <th class="text-fade d-none d-md-table-cell w-100px">Added</th>
           <th class="w-40px"></th>
         </tr>
       </thead>
       <tbody id="contact-list">
         <% @active_contacts.each do |contact| %>
-          <tr class="shadow-1" data-fname="<%= contact.first_name %>" data-lname="<%= contact.last_name %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
+          <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.strip %>" data-lname="<%= contact.last_name.strip %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
             <td class="pl-20 pt-25 d-none d-md-table-cell">
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input">
@@ -137,7 +150,7 @@
                 </div>
               </div>
             </td>
-            <td class="pt-25 d-none d-md-table-cell">
+            <td class="pt-25 d-none d-xl-table-cell">
               <% contact.all_tags_list.first(3).each do |tag| %>
                 <span class="badge badge-default ml-0"><%= tag %></span>
               <% end %>
@@ -153,7 +166,7 @@
               <% end %>
             </td>
             <td class="pt-25 d-none d-md-table-cell">
-              <%= contact.created_at.strftime('%b %d %Y') %>
+              <small><%= contact.created_at.strftime('%b %d %Y') %></small>
             </td>
             <td class="text-right table-actions pt-25">
               <div class="dropdown table-action">
