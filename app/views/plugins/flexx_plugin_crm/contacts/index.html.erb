@@ -21,6 +21,14 @@
   });
 </script>
 
+<style>
+  .contact-table { table-layout: fixed; }
+  .contact-table .media-body { padding-top: 6px; }
+  .contact-table .custom-checkbox .custom-control-label:empty::after { top: 1px; }
+  .contact-table tr:hover { background-color: #e3f3fc; }
+  .contact-table tr.active { background-color: #e3f3fc; }
+</style>
+
 <header class="header">
   <div class="header-info">
     <div class="left">
@@ -41,87 +49,125 @@
     </form>
   </div>
 
-  <div id="contact_list" class="media-list media-list-divided media-list-hover">
+  <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16">
+    <div class="flexbox align-items-center row">
 
-    <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16">
-      <div class="flexbox align-items-center row">
-
-        <div class="col-sm-8 pl-0">
-          <div class="btn-group btn-group-justified hidden" data-toggle="buttons">
-            <label class="btn btn-light m-0 active">
-              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>All</input>
-            </label>
-            <label class="btn btn-light m-0">
-              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Leads</input>
-            </label>
-            <label class="btn btn-light m-0">
-              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Prospects</input>
-            </label>
-            <label class="btn btn-light m-0">
-              <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Customers</input>
-            </label>
-          </div>
+      <div class="col-sm-8 pl-0">
+        <div class="btn-group btn-group-justified hidden" data-toggle="buttons">
+          <label class="btn btn-light m-0 active">
+            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>All</input>
+          </label>
+          <label class="btn btn-light m-0">
+            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Leads</input>
+          </label>
+          <label class="btn btn-light m-0">
+            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Prospects</input>
+          </label>
+          <label class="btn btn-light m-0">
+            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Customers</input>
+          </label>
         </div>
-
-        <div class="dropdown">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
-          <div class="dropdown-menu">            
-            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'desc')">Newest</a>
-            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-added-on', 'asc')">Oldest</a>
-            <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'div', 'data-name', 'asc')">Name</a>
-          </div>
-        </div>
-
-        <div class="dropdown">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
-          <div class="dropdown-menu">            
-            <a class="dropdown-item" href="#" data-contacts-filter="none">All</a>
-            <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
-            <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
-            <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
-          </div>
-        </div>
-        <span id="selected-filter" class="badge badge-lg badge-info">None</span>
       </div>
-    </header>
 
-    <div id="contact-list" class="media-list-body bg-white b-1">
-      <% @active_contacts.each do |contact| %>
-        <div class="media align-items-center" data-name="<%= contact.print_name %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
-          <a class="flexbox align-items-center flex-grow gap-items" href="<%= admin_contact_path(contact.id) %>">
-            <span class="avatar avatar-lg"><%= contact.initials %></span>
-            <div class="media-body text-truncate">
-              <h6><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></span></h6>
-              <small class="contact-detail">
-                <!--
-                <span>Last activity: </span>
-                <time datetime="2018-07-14 20:00">*** TO BE DONE ***</time>
-                -->
-                <span class="divider-dash"><span class="<%= 'text-info' unless contact.pending_tasks_count == 0 %>">
-                  <%=
-                    case contact.pending_tasks_count
-                    when 0
-                      'No pending tasks'
-                    when 1
-                      '1 pending task'
-                    else
-                      "#{contact.pending_tasks_count} pending tasks"
-                    end
-                  %>
-                </span></span>
-              </small>
-            </div>
-            <div class="media-right text-right d-none d-md-block">
-              <p class="fs-11 text-fade mb-12"><i class="fa fa-calendar pr-1"></i> Added <%= contact.created_at.strftime('%m/%d/%Y') %></p>
-            </div>
-          </a>
-          <!-- <div class="media-right gap-items">
-            <a class="media-action lead fs-26" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>" data-provide="tooltip" title="" data-original-title="Quick actions"><i class="ti-bolt-alt"></i></a>
-          </div> -->
+      <div class="dropdown">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
+        <div class="dropdown-menu">            
+          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'desc')">Newest</a>
+          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'asc')">Oldest</a>
+          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-fname', 'asc')">First Name</a>
+          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-lname', 'asc')">Last Name</a>
         </div>
-      <% end %>
-    </div>
+      </div>
 
+      <div class="dropdown">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
+        <div class="dropdown-menu">            
+          <a class="dropdown-item" href="#" data-contacts-filter="none">All</a>
+          <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
+          <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
+          <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
+        </div>
+      </div>
+      <span id="selected-filter" class="badge badge-lg badge-info">None</span>
+    </div>
+  </header>
+
+  <div class="card card-transparent">
+    <table class="table table-separated contact-table" data-provide="selectall">
+      <thead>
+        <tr>
+          <th class="w-40px pl-20 d-none d-md-table-cell">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <label class="custom-control-label"></label>
+            </div>
+          </th>
+          <th class="text-fade pl-30">General Info</th>
+          <th class="text-fade d-none d-md-table-cell w-450px">Tags</th>
+          <th class="text-fade d-none d-md-table-cell w-150px">Added</th>
+          <th class="w-40px"></th>
+        </tr>
+      </thead>
+      <tbody id="contact-list">
+        <% @active_contacts.each do |contact| %>
+          <tr class="shadow-1" data-fname="<%= contact.first_name %>" data-lname="<%= contact.last_name %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
+            <td class="pl-20 pt-25 d-none d-md-table-cell">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input">
+                <label class="custom-control-label"></label>
+              </div>
+            </td>
+            <td>
+              <div class="media">
+                <a href="<%= admin_contact_path(contact.id) %>" class="avatar avatar-lg"><%= contact.initials %></a>
+                <div class="media-body">
+                  <h6 class="lh-1"><a href="<%= admin_contact_path(contact.id) %>"><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></a></h6>
+                  <small class="<%= 'text-info' unless contact.pending_tasks_count == 0 %>">
+                    <%=
+                      case contact.pending_tasks_count
+                      when 0
+                        'No pending tasks'
+                      when 1
+                        '1 pending task'
+                      else
+                        "#{contact.pending_tasks_count} pending tasks"
+                      end
+                    %>
+                  </small>
+                </div>
+              </div>
+            </td>
+            <td class="pt-25 d-none d-md-table-cell">
+              <% contact.all_tags_list.first(3).each do |tag| %>
+                <span class="badge badge-default ml-0"><%= tag %></span>
+              <% end %>
+              <% if contact.all_tags_list.count > 3 %>
+                <div class="dropdown table-action" style="display: inline-block;">
+                  <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-secondary ml-0">+<%= (contact.all_tags_list.count - 3 ) %></span></span>
+                  <div class="dropdown-menu dropdown-menu-right p-2">
+                    <% contact.all_tags_list.drop(3).each do |tag| %>
+                      <span class="badge badge-default ml-0"><%= tag %></span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </td>
+            <td class="pt-25 d-none d-md-table-cell">
+              <%= contact.created_at.strftime('%b %d %Y') %>
+            </td>
+            <td class="text-right table-actions pt-25">
+              <div class="dropdown table-action">
+                <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>"><i class="ti-menu-alt"></i> Details</a>
+                  <a class="dropdown-item" href="#"><i class="ti-trash"></i> Archive</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 
 </div>

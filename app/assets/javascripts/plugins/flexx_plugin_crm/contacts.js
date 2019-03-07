@@ -193,7 +193,7 @@ app.ready(function() {
 
   $('[data-contacts-filter]').click((e) => {
     $('#selected-filter').html(e.target.innerHTML);
-    var $records = $('#contact-list').children('div');
+    var $records = $('#contact-list').children('tr');
     if (e.target.dataset.contactsFilter === 'none') {
       $records.removeClass('hidden');
     } else {
