@@ -8,6 +8,7 @@ module Plugins::FlexxPluginCrm
 
     def index
       @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
+      @tags = current_site.owned_tags.order(:name)
     end
 
     def create

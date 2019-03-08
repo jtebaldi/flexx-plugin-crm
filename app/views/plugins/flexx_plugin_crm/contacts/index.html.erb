@@ -18,23 +18,52 @@
         select.prop('selectedIndex', 0);
       }
     });
-
-    
   });
 
+  function archiveContacts() {
+    swal({
+      title: 'Archive 32 contacts',
+      text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, archive them!',
+      cancelButtonText: 'Nevermind'
+    }).then((result) => {
+      if (result.value) {
+
+        // TO DO: Set all contacts selected to archived
+
+      } else {
+        return;
+      }
+    })
+  }
+
   $(document).ready(function(){
-    // Intially disables all input fields if switch is off
-    // $('.setting-switch:checkbox:not(:checked)').each(function () {
-    //   $('.' + this.id).find('div.form-group').addClass("disabled");
-    // });
-    // // Show "save changes" bar on input change
-    $('#contact-list checkbox').on('change input', function() {
-      $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+    // Intially hide mass action button group
+    $('#mass_action_btns').hide();
+    // Conditionally show/hide mass action button group if any contact is selected    
+    $('.contact-checkbox').change(function() {
+      // Need to delay checkbox check to account for short lag after Select All is unchecked
+      setTimeout(function() { 
+        if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
+          $('#mass_action_btns').show();
+        } else {
+          $('#mass_action_btns').hide();
+        }
+       }, 10);        
     });
+    
+    // taglist.initialize();
 
-
-
-    // $('#mass_action_btns').hide();
+    // $('#typeahed-tags').tagsinput({
+    //   typeaheadjs: {
+    //     name: 'taglist',
+    //     source: taglist.ttAdapter(),
+    //     displayKey: 'name',
+    //     valueKey: 'name'
+    //   }
+    // });
   });
 </script>
 
@@ -113,11 +142,9 @@
     <div id="mass_action_btns" class="btn-group mr-15">
       <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Actions</button>
       <div class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag">Tag</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Separated link</a>
+        <a class="dropdown-item" href="#" onclick="archiveContacts()">Archive All</a>
       </div>
     </div>
   </header>
@@ -128,7 +155,7 @@
         <tr>
           <th class="w-40px pl-20 d-none d-md-table-cell">
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input">
+              <input type="checkbox" class="custom-control-input contact-checkbox">
               <label class="custom-control-label"></label>
             </div>
           </th>
@@ -202,7 +229,7 @@
 
 </div>
 
-<!------------------------------------- MODALS ---------------------------------------->
+<!------------------------------------- QUICKVIEWS & MODALS ---------------------------------------->
 
 <!-- QUICKVIEW: Contact Action -->
 <div id="qv-user-details" class="quickview"></div>
@@ -309,4 +336,52 @@
     <button id="new-contact-cancel" class="btn btn-secondary" type="button" onclick="cancelNewContactForm(this)">Cancel</button>
     <div id="new-contact-spinner" class="spinner-circle-shadow hidden"></div>
   </footer>
+</div>
+
+<!-- MODAL: Bulk Tag -->
+<div class="modal fade" id="modal-bulk-tag" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Bulk Tag Contacts</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body py-0">
+        <div class="row">
+          <div class="col-4 pl-0">
+            <div class="media-list media-list-xs media-list-hover media-list-divided scrollable br-2" style="height: 350px;">
+              <header class="media-list-header b-0">
+                <form class="lookup lookup-lg w-100 bb-1 border-light">
+                  <input class="w-100 no-radius no-border py-20" type="text" placeholder="Search tags..." data-provide="media-search">
+                </form>
+              </header>
+
+              <% @tags.each do |tag| %>
+                <a class="media media-single" href="#">
+                  <span class="badge badge-pill badge-secondary"><%= tag.name %></span>
+                </a>
+              <% end %>
+
+            </div>
+          </div>
+          <div class="col-8">
+            <form class="py-20">
+              <p>Select existing tag(s) from the list or type new ones.</p>
+              <label>Tags</label>
+              <div class="form-group">
+                <input type="text" id="typeahed-tags" name="contact[tag_list]">
+                <small class="form-text">Press enter after typing tag</small>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bt-1">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-bold btn-primary">Tag 12 Contacts</button>
+      </div>
+    </div>
+  </div>
 </div>
