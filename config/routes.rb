@@ -24,7 +24,7 @@ Rails.application.routes.draw do
         end
 
         scope :website, controller: 'plugins/flexx_plugin_crm/website' do
-          root to: :index
+          root action: :index
           get :new_page
         end
 
