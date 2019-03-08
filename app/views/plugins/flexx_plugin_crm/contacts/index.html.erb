@@ -19,10 +19,16 @@
       }
     });
   });
+  
+  function selectedContactsCount() {
+    var checkedCount = $("input:checkbox.contact-checkbox:checked").length;
+    return checkedCount;
+  }
 
   function archiveContacts() {
+    var totalChecked = selectedContactsCount();
     swal({
-      title: 'Archive 32 contacts',
+      title: 'Archive ' + totalChecked + ' contacts',
       text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
       type: 'warning',
       showCancelButton: true,
@@ -52,22 +58,14 @@
           $('#mass_action_btns').hide();
         }
        }, 10);        
-    });
-    
-    // taglist.initialize();
-
-    // $('#typeahed-tags').tagsinput({
-    //   typeaheadjs: {
-    //     name: 'taglist',
-    //     source: taglist.ttAdapter(),
-    //     displayKey: 'name',
-    //     valueKey: 'name'
-    //   }
-    // });
+    });        
   });
 </script>
 
 <style>
+  .badge-gray { color: #fff; }
+  #contact-list .badge { letter-spacing: .5px; }
+
   .contact-table { table-layout: fixed; }
   .contact-table .media-body { padding-top: 6px; }
   .contact-table .custom-checkbox .custom-control-label:empty::after { top: 1px; }
@@ -80,7 +78,7 @@
 <header class="header">
   <div class="header-info">
     <div class="left">
-      <h2 class="header-title">CRM <strong>Contacts</strong></h2>
+      <h2 class="header-title">Your <strong>Contacts</strong></h2>
     </div>
   </div>
   <div class="header-action">
@@ -196,14 +194,14 @@
             </td>
             <td class="pt-25 d-none d-xl-table-cell">
               <% contact.all_tags_list.first(3).each do |tag| %>
-                <span class="badge badge-default ml-0"><%= tag %></span>
+                <span class="badge badge-secondary ml-0"><%= tag %></span>
               <% end %>
               <% if contact.all_tags_list.count > 3 %>
                 <div class="dropdown table-action" style="display: inline-block;">
-                  <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-secondary ml-0">+<%= (contact.all_tags_list.count - 3 ) %></span></span>
+                  <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-gray ml-0">+<%= (contact.all_tags_list.count - 3 ) %></span></span>
                   <div class="dropdown-menu dropdown-menu-right p-2">
                     <% contact.all_tags_list.drop(3).each do |tag| %>
-                      <span class="badge badge-default ml-0"><%= tag %></span>
+                      <span class="badge badge-secondary ml-0"><%= tag %></span>
                     <% end %>
                   </div>
                 </div>
@@ -323,9 +321,9 @@
         <small class="form-text">Press enter after typing tag</small>
       </div>
 
-      <div class="form-group">
-        <textarea class="form-control" rows="6" name="contact[highlights]"></textarea>
-        <label>Highlights</label>
+      <label>Highlights</label>
+      <div class="form-group form-type-fill">            
+        <textarea class="form-control px-15" placeholder="Include any details you may want to remember about the contact." rows="6" name="contact[highlights]"></textarea>
       </div>
 
     <% end %>
@@ -371,7 +369,7 @@
               <p>Select existing tag(s) from the list or type new ones.</p>
               <label>Tags</label>
               <div class="form-group">
-                <input type="text" id="typeahed-tags" name="contact[tag_list]">
+                <input type="text" id="typeahed-tags" name="">
                 <small class="form-text">Press enter after typing tag</small>
               </div>
             </form>
