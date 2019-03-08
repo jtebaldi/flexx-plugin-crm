@@ -1,0 +1,68 @@
+<header class="header">
+
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong>Website</strong> <small class="subtitle">Manage different aspects of the items related to your website.</small></h2>
+    </div>
+  </div>
+
+</header>
+
+<div class="main-content">
+
+  <div class="row">
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card hover-shadow-4">
+        <a href="<%= admin_forms_path() %>" class="card-body text-center hover-info">
+          <i class="fab fa-wpforms fs-90 text-dark"></i>
+          <h5 class="m-1 mt-20">Website Forms</h5>
+          <p>Manage your website forms</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card hover-shadow-4">
+        <a href="/admin/settings/theme" class="card-body text-center hover-info">
+          <i class="far fa-edit fs-90 text-dark"></i>
+          <h5 class="m-1 mt-20">Edit Your Site</h5>
+          <p>Update the content on your website</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card hover-shadow-4">
+        <a href="<%= current_site.the_url(locale: nil) %>" class="card-body text-center hover-info">
+          <i class="fas fa-external-link-alt fs-90 text-dark"></i>
+          <h5 class="m-1 mt-20">Visit Your Site</h5>
+          <p>Update the content on your website</p>
+        </a>
+      </div>
+    </div>
+
+    <!--
+    <div class="col-md-6 col-xl-4">
+      <div class="card hover-shadow-4">
+        <div class="card-body text-center">
+          <i class="fas fa-laptop fs-90 text-dark"></i>
+          <h5 class="m-1 mt-20">Landing Pages</h5>
+          <p>Create new landing pages.</p>
+        </div>
+        <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
+          <a class="text-muted pt-2" href="<%= admin_next_website_new_page_url %>">
+            <i class="ti-plus fs-25"></i><br>
+            Create
+          </a>
+          <a class="text-muted pt-2" href="#">
+            <i class="ti-view-grid fs-25"></i><br>
+            View
+          </a>
+        </div>
+      </div>
+    </div>
+    -->
+
+  </div>
+</div>

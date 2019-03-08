@@ -23,6 +23,11 @@ Rails.application.routes.draw do
           get '/', action: :index
         end
 
+        scope :website, controller: 'plugins/flexx_plugin_crm/website' do
+          root action: :index
+          get :new_page
+        end
+
         resources :recipes, controller: 'plugins/flexx_plugin_crm/recipes' do
           get  :toggle
           post :create_direction
@@ -106,6 +111,8 @@ Rails.application.routes.draw do
           get '/', action: :index, as: :import
           post :contacts, as: :import_contacts
         end
+
+        resources :forms, controller: 'plugins/flexx_plugin_crm/forms', only: [:index, :edit, :update]
       end
 
       namespace 'plugins' do
