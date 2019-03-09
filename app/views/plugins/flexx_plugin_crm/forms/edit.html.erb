@@ -66,7 +66,7 @@
                 <span class="avatar <%= @form.the_settings.try(:[], 'railscf_mail').try(:[], 'to').present? ? 'active' : '' %>" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>
                 <div class="media-body">
                   <p><strong>Email</strong></p>
-                  <p>Receive an email when contact submits a form</p>
+                  <p>Receive an email notification when a contact submits this form.</p>
                 </div>
               </div>
 
@@ -95,7 +95,7 @@
                 <span class="avatar <%= @form.the_settings.try(:[], 'railscf_twilio').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="SMS Notification" data-provide="tooltip"><i class="fas fa-mobile-alt"></i></span>
                 <div class="media-body">
                   <p><strong>Text Message</strong></p>
-                  <p>Receive a text message when contact submits a form</p>
+                  <p>Receive a notification text message when a contact submits this form</p>
                 </div>
 
                 <%= hidden_field_tag "railscf_twilio[enabled]", false %>
@@ -108,7 +108,7 @@
 
               <div class="media pt-0 railscf_twilio_enabled_check">
                 <div class="media-body">
-                  <div class="has-form-text">
+                  <div class="">
                     <div class="form-group mb-0">
                       <label for="input-required">Phone Number</label>
                       <input type="text" class="form-control" name="railscf_twilio[phone]" value="<%= @form.the_settings[:railscf_twilio][:phone] rescue '' %>">
@@ -128,7 +128,7 @@
 
               <div class="media">
                 <div class="media-body">
-                  <p>When a contact completes a form on your website...</p>
+                  <p>After a contact completes and submits this form on your website...</p>
                 </div>
               </div>
 
@@ -219,10 +219,13 @@
 
               <div class="media pt-0 railscf_webhook_enabled_check">
                 <div class="media-body">
-                  <div class="form-group">
-                    <label for="input-required">Webhook URL</label>
-                    <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
-                    <div class="invalid-feedback"></div>
+                  <div class="has-form-text">
+                    <div class="form-group mb-0">
+                      <label for="input-required">Webhook URL</label>
+                      <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
+                      <div class="invalid-feedback"></div>                      
+                    </div>
+                    <small class="form-text">For more information on setting up this integration contact support.</small>
                   </div>
                 </div>
               </div>

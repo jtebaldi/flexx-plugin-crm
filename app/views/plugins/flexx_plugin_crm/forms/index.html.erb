@@ -7,7 +7,7 @@
 
 <header class="header">
   <div class="header-info">
-    <h2 class="header-title">Your <strong>Forms</strong> <small class="subtitle">Listed below are all of the forms currently available on your website. Click on any form's name to see more details and edit settings.</small></h2>
+    <h2 class="header-title">Your <strong>Forms</strong> <small class="subtitle">Listed below are all of the forms that have been created on your website. Click on any form's name to see more details and edit settings.</small></h2>
   </div>
 </header>
 
@@ -16,10 +16,10 @@
     <% @forms.each do |form| %>
       <div class="col-md-6 col-xl-4">
         <div class="card website-form hover-shadow-4">
-          <a href="<%= edit_admin_form_path(form.id) %>" class="card-header">
+          <a href="<%= edit_admin_form_path(form.id) %>" class="card-header hover-info">
             <h4 class="card-title"><strong><%= form.name %></strong> <small class="subtitle"><%= form.description %></small></h4>            
             <ul class="card-controls">
-              <li><i class="fas fa-sliders-h fs-16  "></i></li>
+              <li><i class="fas fa-sliders-h fs-16"></i></li>
             </ul>
           </a>
 
