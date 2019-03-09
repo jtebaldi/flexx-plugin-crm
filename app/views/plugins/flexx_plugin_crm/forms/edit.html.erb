@@ -1,0 +1,320 @@
+<style>
+  .form-actions .avatar { border: 2px solid #fff; box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); }
+  .form-actions .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
+  .pagination > * { margin-right: 10px; font-weight: 400; }
+</style>
+
+<script>
+  // Enables/Disables input fields associated with switch
+  function toggleDisableInput(checkboxElem) {
+    if (checkboxElem.checked) {
+      $(checkboxElem).parent().parent().find('.avatar').addClass("active");
+      $('.' + checkboxElem.id).find('div.form-group, div.form-group .form-control button').removeClass("disabled");
+      $('.' + checkboxElem.id).find('input').prop('required', true);
+    } else {
+      $(checkboxElem).parent().parent().find('.avatar').removeClass("active");
+      $('.' + checkboxElem.id).find('div.form-group, div.form-group .form-control button').addClass("disabled");
+      $('.' + checkboxElem.id).find('input').prop('required', false);
+    }
+  }
+
+  $(document).ready(function(){
+    // Intially disables all input fields if switch is off
+    $('.setting-switch:checkbox:not(:checked)').each(function () {
+      $('.' + this.id).find('div.form-group').addClass("disabled");
+    });
+
+    // Show "save changes" bar on input change
+    $('form :input').on('change input', function() {
+      $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+    });
+  });
+</script>
+
+<%= render 'next/partials/breadcrumb', link: admin_forms_path(), page: 'Website Forms' %>
+
+<header class="header no-border">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title"><strong><%= @form.name %></strong> <small class="subtitle"><%= @form.description %></small></h2>
+    </div>
+  </div>
+  <div class="header-action">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tab-settings" role="tab">Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab-responses" role="tab">Responses <small>(<%= @forms.count %>)</small></a>
+      </li>
+    </ul>
+  </div>
+</header>
+<%= form_tag admin_form_path(@form.id), method: :patch do %>
+  <%= render 'next/partials/save_changes', form_id: @form.id %>
+  <div class="main-content">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-settings" role="tabpanel">
+        <div class="row">
+
+          <div class="col-lg-5">
+
+            <div class="card form-type-combine form-actions">
+              <h4 class="card-title">Notifications</h4>
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_mail').try(:[], 'to').present? ? 'active' : '' %>" title="Email Notification" data-provide="tooltip"><i class="far fa-envelope"></i></span>
+                <div class="media-body">
+                  <p><strong>Email</strong></p>
+                  <p>Receive an email notification when a contact submits this form.</p>
+                </div>
+              </div>
+
+              <div class="media pt-0 pb-0">
+                <div class="media-body">
+                  <div class="has-form-text">
+                    <div class="form-group mb-0">
+                      <label for="input">Email address(es)</label>
+                      <input type="text" class="form-control" name="railscf_mail[to]" value="<%= @form.the_settings[:railscf_mail][:to] rescue '' %>">
+                    </div>
+                    <small class="form-text">Separate multiple email addresses with a comma.</small>
+                  </div>
+                  <div class="has-form-text mt-10">
+                    <div class="form-group mb-0">
+                      <label for="input">Subject</label>
+                      <input type="text" class="form-control" name="railscf_mail[subject]" value="<%= @form.the_settings[:railscf_mail][:subject] rescue '' %>">
+                    </div>
+                    <small class="form-text">This is the subject of the notification email you'll receive.</small>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_twilio').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="SMS Notification" data-provide="tooltip"><i class="fas fa-mobile-alt"></i></span>
+                <div class="media-body">
+                  <p><strong>Text Message</strong></p>
+                  <p>Receive a notification text message when a contact submits this form</p>
+                </div>
+
+                <%= hidden_field_tag "railscf_twilio[enabled]", false %>
+
+                <label class="switch">
+                  <%= check_box_tag "railscf_twilio[enabled]", true, (@form.the_settings[:railscf_twilio][:enabled] == "true" rescue false), id: "railscf_twilio_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_twilio_enabled_check').attr('checked', !$('#railscf_twilio_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 railscf_twilio_enabled_check">
+                <div class="media-body">
+                  <div class="">
+                    <div class="form-group mb-0">
+                      <label for="input-required">Phone Number</label>
+                      <input type="text" class="form-control" name="railscf_twilio[phone]" value="<%= @form.the_settings[:railscf_twilio][:phone] rescue '' %>">
+                      <div class="invalid-feedback"></div>
+                    </div>
+                    <small class="form-text">*Note: Only a single SMS-ready number can be notified.</small>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="card form-type-combine form-actions">
+              <h4 class="card-title">Actions</h4>
+
+              <div class="media">
+                <div class="media-body">
+                  <p>After a contact completes and submits this form on your website...</p>
+                </div>
+              </div>
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_redirect').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Page Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
+                <div class="media-body">
+                  <p><strong>Redirect</strong></p>
+                  <p>The contact will be redirected from the form page to the URL listed.</p>
+                </div>
+
+                <%= hidden_field_tag "railscf_redirect[enabled]", false %>
+
+                <label class="switch">
+                  <%= check_box_tag "railscf_redirect[enabled]", true, (@form.the_settings[:railscf_redirect][:enabled] == "true" rescue false), id: "railscf_redirect_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_redirect_enabled_check').attr('checked', !$('#railscf_redirect_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 pb-0 railscf_redirect_enabled_check">
+                <div class="media-body">
+                  <div class="has-form-text">
+                    <div class="form-group mb-0">
+                      <label>URL</label>
+                      <input type="text" class="form-control" name="railscf_redirect[url]" value="<%= @form.the_settings[:railscf_redirect][:url] rescue '' %>">
+                      <div class="invalid-feedback"></div>
+                    </div>
+                    <small class="form-text">This can be any URL on your site or an external domain. Use full web address. ie) https://www.flexxgym.com/thank-you</small>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_response').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span>
+                <div class="media-body">
+                  <p><strong>Email Response</strong></p>
+                  <p>Select a stock message to be sent automatically as confirmation of form completion.</p>
+                </div>
+
+                <%= hidden_field_tag "railscf_response[enabled]", false %>
+
+                <label class="switch">
+                  <%= check_box_tag "railscf_response[enabled]", true, (@form.the_settings[:railscf_response][:enabled] == "true" rescue false), id: "railscf_response_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_response_enabled_check').attr('checked', !$('#railscf_response_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 railscf_response_enabled_check">
+                <div class="media-body">
+                  <div class="form-group mb-0">
+                    <label>Stock Email</label>
+                    <select name="railscf_response[stock_id]" id="stock-email-select-field" class="form-control" data-provide="selectpicker">
+                      <option>None</option>
+                      <% rich_text_stocks.each do |row| %>
+                        <option value="<%= row.id %>" <%= 'selected' if @form.the_settings.try(:[], 'railscf_response').try(:[], 'stock_id') == row.id.to_s %>><%= row.name %></option>
+                      <% end %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="media pt-0 railscf_response_enabled_check">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">From</label>
+                    <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'railscf_response[from]', value: @form.the_settings.try(:[], 'railscf_response').try(:[], 'from') } %>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_webhook').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+                <div class="media-body">
+                  <p><strong>Zapier</strong> Webhook</p>
+                  <p>The contact information will be sent via Zapier's webhook.</p>
+                </div>
+
+                <%= hidden_field_tag "railscf_webhook[enabled]", false %>
+
+                <label class="switch">
+                  <%= check_box_tag "railscf_webhook[enabled]", true, (@form.the_settings[:railscf_webhook][:enabled] == "true" rescue false), id: "railscf_webhook_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_webhook_enabled_check').attr('checked', !$('#railscf_webhook_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 railscf_webhook_enabled_check">
+                <div class="media-body">
+                  <div class="has-form-text">
+                    <div class="form-group mb-0">
+                      <label for="input-required">Webhook URL</label>
+                      <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
+                      <div class="invalid-feedback"></div>                      
+                    </div>
+                    <small class="form-text">For more information on setting up this integration contact support.</small>
+                  </div>
+                </div>
+              </div>
+
+              <!--
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span>
+                <div class="media-body">
+                  <p><strong>Recipes</strong></p>
+                  <p>These recipes will be automatically applied to contact.</p>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch-indicator"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0">
+                <div class="media-body">
+                  <div class="form-group">
+                    <label for="input-required">Recipes</label>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+              -->
+
+            </div>
+          </div>
+
+        </div>
+      </div> <!-- End Settings tab -->
+
+      <div class="tab-pane" id="tab-responses" role="tabpanel">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <header class="card-header">
+                <h4 class="card-title"><strong>Form</strong> submissions</h4>
+                <%# <div class="card-header-actions">
+                  <a href="#" class="btn btn-sm btn-label btn-default"><label><i class="ti-download"></i></label>Download CSV</a>
+                </div> %>
+              </header>
+
+              <div class="card-body">
+                <p>Note: Currently all form submissions, including archived and deleted contacts, are listed.</p>
+
+                <div class="table-responsive-sm">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="hidden"></th>
+                        <% @op_fields.each do |f| %>
+                          <th><%= f[:label].to_s.translate %></th>
+                        <% end %>
+                        <th><%= t('.created_at', default: 'Submitted') %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @forms.each do |form| %>
+                        <% value = (JSON.parse(form.settings).to_sym rescue form.value) %>
+                        <tr>
+                          <th class="hidden" scope="row"></th>
+                          <% @op_fields.each do |default| %>
+                            <% cid = default[:cid].to_sym %>
+                            <% if default[:field_type] == "file" %>
+                                <td data-label="<%= default[:label].to_s.translate %>"><%= link_to(value[:fields][cid], value[:fields][cid]) %></td>
+                            <% elsif default[:field_type] == "radio" || default[:field_type] == "checkboxes" %>
+                                <td data-label="<%= default[:label].to_s.translate %>"><%= value[:fields][cid].map { |f| f.to_s.translate }.join(', ') if value[:fields][cid].present? %></td>
+                            <% else %>
+                                <td data-label="<%= default[:label].to_s.translate %>"><%= value[:fields][cid] %></td>
+                            <% end %>
+                          <% end %>
+                          <td data-label=""><%= value[:created_at].to_datetime.strftime('%m/%d/%Y - %I:%M %p') %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <!-- <%= raw cama_do_pagination(@forms) %> -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Responses tab -->
+    </div>
+  </div>
+<% end %>
