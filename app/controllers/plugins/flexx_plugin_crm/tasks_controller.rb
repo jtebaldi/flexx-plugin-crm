@@ -108,6 +108,7 @@ module Plugins::FlexxPluginCrm
       case params[:refresh_panel]
       when 'contact-detail'
         @contact = @task.contact
+        @feed_activities = ActivityFeedService.list_activities(feed_name: 'contact', feed_id: @contact.id)
       when 'tasks-dashboard'
         @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
         @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
