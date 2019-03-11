@@ -97,9 +97,9 @@ function newTouchpoint(e) {
 
   var form = $('#new-contact-task-form');
 
-  form.find('select[name="new_contact_task[task_type]"]').val(e.data.type);
-  form.find('input[name="new_contact_task[title]"]').val(e.data.title);
-  form.find('input[name="new_contact_task[touchpoint]"]').val('true');
+  form.find('select[name="task[task_type]"]').val(e.data.type);
+  form.find('input[name="task[title]"]').val(e.data.title);
+  form.find('input[name="task[touchpoint]"]').val('true');
 
   form.submit();
 }

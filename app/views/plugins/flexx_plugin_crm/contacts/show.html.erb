@@ -559,11 +559,11 @@
 
   <div class="quickview-body">
     <%= form_tag admin_create_contact_task_path(id: @contact.id, format: :js), method: :post, remote: true, authenticity_token: true, id: 'new-contact-task-form', class: 'form-type-combine' do %>
-      <input type="hidden" name="new_contact_task[touchpoint]" value="">
+      <input type="hidden" name="task[touchpoint]" value="">
       <div class="card-body">
         <div class="form-group">
           <label for="select">Type</label>
-          <select class="form-control" name="new_contact_task[task_type]">
+          <select class="form-control" name="task[task_type]">
             <option value="phone_call">Phone call</option>
             <option value="email">Email</option>
             <option value="message">Text</option>
@@ -573,21 +573,46 @@
         </div>
         <div class="form-group col-12">
           <label>Date / Time</label>
-          <input class="form-control datetimepicker" type="text" name="new_contact_task[due_date]">
+          <input class="form-control datetimepicker" type="text" name="task[due_date]">
         </div>
         <br>
         <h6 class="text-light fw-300">Details</h6>
         <div class="form-groups-attached">
           <div class="form-group">
             <label>Task title</label>
-            <input class="form-control" type="text" name="new_contact_task[title]">
+            <input class="form-control" type="text" name="task[title]">
           </div>
           <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" rows="6" name="new_contact_task[details]"></textarea>
+            <textarea class="form-control" rows="6" name="task[details]"></textarea>
+          </div>
+        </div>
+
+        <div class="pull-right">
+          <span class="pr-12">Assign to: </span>
+          <div class="avatar-list">
+          </div>
+          <button type="button" class="avatar avatar-add" data-assign="staff" data-target="#modal-assign-staff"></button>
+        </div>
+      </div>
+
+      <div id="modal-assign-staff" class="modal fade" tabindex="-1" style="background-color:#7f7f7f;" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Assign staff</h5>
+              <button class="close" type="button" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <%= render 'plugins/flexx_plugin_crm/tasks/owners' %>
+              <div class="text-right">
+                <button type="button" class="btn btn-bold btn-pure btn-primary" data-dismiss="modal">Done</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
     <% end %>
   </div>
   <footer class="quickview-footer flex-row-reverse">

@@ -101,28 +101,5 @@ app.ready(function() {
 
   });
 
-  $('[data-assign="staff"]').click((e) => {
-    $(e.target.dataset.target).modal({ backdrop: false });
-  });
-
-  $('#modal-assign-staff [data-dismiss="modal"]').click((e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    $(e.target).closest('.modal').modal('hide');
-  });
-
-  $('#modal-assign-staff a.media').click((e) => {
-    setTimeout(()=> {
-      var $form = $(e.target).closest('form');
-      var $assignTo = $form.find('.avatar-list');
-      var staff = '';
-      $form.find('[name="task[owner_ids][]"]:checked').each((i, elm) => {
-        var av = $(elm).closest('a').find('.avatar').html();
-        staff += `<span class="avatar bg-dark">${av}</span>`
-      });
-      $assignTo.html(staff);
-    });
-  });
-
   observeTaskPanelForCKEditor();
 });
