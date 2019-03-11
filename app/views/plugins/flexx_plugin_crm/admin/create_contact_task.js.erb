@@ -9,6 +9,7 @@ $('#contact-open-tasks-panel').fadeIn();
 quickview.close($('#qv-add-task'));
 
 <% if params[:new_contact_task].try(:[], :touchpoint).present? %>
+  $('.touchpoint').removeClass('disabled');
   $('#modal-new-touchpoint').modal('hide');
   quickview.toggle('#qv_view_task', '/admin/next/task_card/<%= @task.id %>/view-contact-tasks-panels');
 <% end %>

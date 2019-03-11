@@ -93,6 +93,8 @@ var taglist = new Bloodhound({
 });
 
 function newTouchpoint(e) {
+  $('.touchpoint').addClass('disabled');
+
   var form = $('#new-contact-task-form');
 
   form.find('select[name="new_contact_task[task_type]"]').val(e.data.type);
