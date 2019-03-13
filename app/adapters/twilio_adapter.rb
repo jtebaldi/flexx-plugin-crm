@@ -28,6 +28,6 @@ class TwilioAdapter
   end
 
   def status_callback_url(site)
-    Rails.application.routes.url_helpers.twilio_status_admin_webhooks_url(host: site.get_domain)
+    Rails.application.routes.url_helpers.twilio_status_admin_webhooks_url(host: site.get_domain, protocol: 'https://')
   end
 end
