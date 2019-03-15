@@ -5,6 +5,8 @@
   .website-form .avatar-list .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
 </style>
 
+<%= render 'next/partials/breadcrumb', link: admin_next_website_root_path(), page: 'Website' %>
+
 <header class="header">
   <div class="header-info">
     <h2 class="header-title">Your <strong>Forms</strong> <small class="subtitle">Listed below are all of the forms that have been created on your website. Click on any form's name to see more details and edit settings.</small></h2>
@@ -46,6 +48,7 @@
                   <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_redirect').try(:[], 'enabled') == 'true' %>" title="Page Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
                   <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_response').try(:[], 'enabled') == 'true' %>" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span>                  
                   <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_webhook').try(:[], 'enabled') == 'true' %>" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
+                  <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_tags').try(:[], 'enabled') == 'true' %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
                   <!-- <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span> -->
                 </div>
               </div>

@@ -205,7 +205,7 @@
               <div class="media">
                 <span class="avatar <%= @form.the_settings.try(:[], 'railscf_webhook').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
                 <div class="media-body">
-                  <p><strong>Zapier</strong> Webhook</p>
+                  <p><strong>Zapier Webhook</strong></p>
                   <p>The contact information will be sent via Zapier's webhook.</p>
                 </div>
 
@@ -217,7 +217,7 @@
                 </label>
               </div>
 
-              <div class="media pt-0 railscf_webhook_enabled_check">
+              <div class="media pt-0 pb-0 railscf_webhook_enabled_check">
                 <div class="media-body">
                   <div class="has-form-text">
                     <div class="form-group mb-0">
@@ -226,6 +226,37 @@
                       <div class="invalid-feedback"></div>                      
                     </div>
                     <small class="form-text">For more information on setting up this integration contact support.</small>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="hr-sm">
+
+              <div class="media">
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_tags').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
+                <div class="media-body">
+                  <p><strong>Apply Tags</strong></p>
+                  <p>The contact will have the tag(s) listed applied to their record.</p>
+                </div>
+
+                <!-- <%= hidden_field_tag "railscf_tags[enabled]", false %> -->
+
+                <label class="switch">
+                  <!-- <input type="checkbox" id="railscf_tags_enabled_check" class='setting-switch hidden' onchange='toggleDisableInput(this)'> -->
+                  <%= check_box_tag "railscf_tags[enabled]", true, (@form.the_settings[:railscf_tags][:enabled] == "true" rescue false), id: "railscf_tags_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
+                  <span class="switch-indicator" onclick="$('#railscf_tags_enabled_check').attr('checked', !$('#railscf_tags_enabled_check').attr('checked'))"></span>
+                </label>
+              </div>
+
+              <div class="media pt-0 railscf_tags_enabled_check">
+                <div class="media-body">
+                  <div class="has-form-text">
+                    <div class="form-group mb-0">
+                      <label for="input-required">Applied Tags</label>
+                      <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
+                      <div class="invalid-feedback"></div>                      
+                    </div>
+                    <small class="form-text">Remeber to press return/enter after typing the tag.</small>
                   </div>
                 </div>
               </div>
