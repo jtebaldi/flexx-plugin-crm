@@ -56,6 +56,7 @@ Rails.application.routes.draw do
           collection do
             get :with_email
             get :with_mobile
+            post :mass_action
           end
         end
 

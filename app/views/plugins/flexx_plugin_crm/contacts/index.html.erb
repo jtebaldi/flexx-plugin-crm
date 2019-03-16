@@ -19,47 +19,6 @@
       }
     });
   });
-  
-  function selectedContactsCount() {
-    var checkedCount = $("input:checkbox.contact-checkbox:checked").length;
-    return checkedCount;
-  }
-
-  function archiveContacts() {
-    var totalChecked = selectedContactsCount();
-    swal({
-      title: 'Archive ' + totalChecked + ' contacts',
-      text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, archive them!',
-      cancelButtonText: 'Nevermind'
-    }).then((result) => {
-      if (result.value) {
-
-        // TO DO: Set all contacts selected to archived
-
-      } else {
-        return;
-      }
-    })
-  }
-
-  $(document).ready(function(){
-    // Intially hide mass action button group
-    $('#mass_action_btns').hide();
-    // Conditionally show/hide mass action button group if any contact is selected    
-    $('.contact-checkbox').change(function() {
-      // Need to delay checkbox check to account for short lag after Select All is unchecked
-      setTimeout(function() { 
-        if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
-          $('#mass_action_btns').show();
-        } else {
-          $('#mass_action_btns').hide();
-        }
-       }, 10);        
-    });        
-  });
 </script>
 
 <style>
@@ -140,8 +99,8 @@
     <div id="mass_action_btns" class="btn-group mr-15">
       <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Actions</button>
       <div class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag">Tag</a>
-        <div class="dropdown-divider"></div>
+        <!-- <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag">Tag</a>
+        <div class="dropdown-divider"></div> -->
         <a class="dropdown-item" href="#" onclick="archiveContacts()">Archive All</a>
       </div>
     </div>
@@ -164,62 +123,65 @@
         </tr>
       </thead>
       <tbody id="contact-list">
-        <% @active_contacts.each do |contact| %>
-          <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.strip %>" data-lname="<%= contact.last_name.strip %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
-            <td class="pl-20 pt-25 d-none d-md-table-cell">
-              <div class="custom-control custom-checkbox">
-                <input id="<%= contact.id %>" type="checkbox" class="custom-control-input contact-checkbox">
-                <label class="custom-control-label"></label>
-              </div>
-            </td>
-            <td>
-              <div class="media">
-                <a href="<%= admin_contact_path(contact.id) %>" class="avatar avatar-lg"><%= contact.initials %></a>
-                <div class="media-body">
-                  <h6 class="lh-1"><a href="<%= admin_contact_path(contact.id) %>"><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></a></h6>
-                  <small class="<%= 'text-info' unless contact.pending_tasks_count == 0 %>">
-                    <%=
-                      case contact.pending_tasks_count
-                      when 0
-                        'No pending tasks'
-                      when 1
-                        '1 pending task'
-                      else
-                        "#{contact.pending_tasks_count} pending tasks"
-                      end
-                    %>
-                  </small>
+        <%= form_tag mass_action_admin_contacts_path, method: :post, id: 'mass-action-form' do %>
+          <input type="hidden" name="mass_action" id="mass-action-option" value="">
+          <% @active_contacts.each do |contact| %>
+            <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.try(:strip) %>" data-lname="<%= contact.last_name.try(:strip) %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
+              <td class="pl-20 pt-25 d-none d-md-table-cell">
+                <div class="custom-control custom-checkbox">
+                  <input id="<%= contact.id %>" type="checkbox" name="contact_ids[]" value="<%= contact.id %>" class="custom-control-input contact-checkbox">
+                  <label class="custom-control-label"></label>
                 </div>
-              </div>
-            </td>
-            <td class="pt-25 d-none d-xl-table-cell">
-              <% contact.all_tags_list.first(3).each do |tag| %>
-                <span class="badge badge-secondary ml-0"><%= tag %></span>
-              <% end %>
-              <% if contact.all_tags_list.count > 3 %>
-                <div class="dropdown table-action" style="display: inline-block;">
-                  <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-gray ml-0">+<%= (contact.all_tags_list.count - 3 ) %></span></span>
-                  <div class="dropdown-menu dropdown-menu-right p-2">
-                    <% contact.all_tags_list.drop(3).each do |tag| %>
-                      <span class="badge badge-secondary ml-0"><%= tag %></span>
-                    <% end %>
+              </td>
+              <td>
+                <div class="media">
+                  <a href="<%= admin_contact_path(contact.id) %>" class="avatar avatar-lg"><%= contact.initials %></a>
+                  <div class="media-body">
+                    <h6 class="lh-1"><a href="<%= admin_contact_path(contact.id) %>"><%= contact.print_name %> | <span class="text-<%= contact.sales_stage %>"><%= contact.sales_stage.capitalize %></a></h6>
+                    <small class="<%= 'text-info' unless contact.pending_tasks_count == 0 %>">
+                      <%=
+                        case contact.pending_tasks_count
+                        when 0
+                          'No pending tasks'
+                        when 1
+                          '1 pending task'
+                        else
+                          "#{contact.pending_tasks_count} pending tasks"
+                        end
+                      %>
+                    </small>
                   </div>
                 </div>
-              <% end %>
-            </td>
-            <td class="pt-25 d-none d-md-table-cell">
-              <small><%= contact.created_at.strftime('%b %d %Y') %></small>
-            </td>
-            <td class="text-right table-actions pt-25">
-              <div class="dropdown table-action">
-                <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>"><i class="ti-menu-alt"></i> Details</a>
-                  <a class="dropdown-item" href="#"><i class="ti-trash"></i> Archive</a>
+              </td>
+              <td class="pt-25 d-none d-xl-table-cell">
+                <% contact.all_tags_list.first(3).each do |tag| %>
+                  <span class="badge badge-secondary ml-0"><%= tag %></span>
+                <% end %>
+                <% if contact.all_tags_list.count > 3 %>
+                  <div class="dropdown table-action" style="display: inline-block;">
+                    <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-gray ml-0">+<%= (contact.all_tags_list.count - 3 ) %></span></span>
+                    <div class="dropdown-menu dropdown-menu-right p-2">
+                      <% contact.all_tags_list.drop(3).each do |tag| %>
+                        <span class="badge badge-secondary ml-0"><%= tag %></span>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </td>
+              <td class="pt-25 d-none d-md-table-cell">
+                <small><%= contact.created_at.strftime('%b %d %Y') %></small>
+              </td>
+              <td class="text-right table-actions pt-25">
+                <div class="dropdown table-action">
+                  <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>"><i class="ti-menu-alt"></i> Details</a>
+                    <a class="dropdown-item" href="#"><i class="ti-trash"></i> Archive</a>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>

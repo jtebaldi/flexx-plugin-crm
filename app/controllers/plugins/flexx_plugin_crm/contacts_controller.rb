@@ -81,6 +81,15 @@ module Plugins::FlexxPluginCrm
       render json: current_site.contacts.joins(:phonenumbers).where(phonenumbers: { phone_type: 'mobile' }).map { |c| { name: "#{c.print_name}", value: c.id } }
     end
 
+    def mass_action
+      case params[:mass_action]
+      when 'archive'
+        current_site.contacts.where(id: params[:contact_ids]).update_all(sales_stage: :archived)
+      end
+
+      redirect_to action: :index
+    end
+
     private
 
     def load_records

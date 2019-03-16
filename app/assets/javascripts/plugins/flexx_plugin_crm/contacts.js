@@ -102,6 +102,30 @@ function newTouchpoint(e) {
   form.submit();
 }
 
+function selectedContactsCount() {
+  var checkedCount = $("input:checkbox.contact-checkbox:checked").length;
+  return checkedCount;
+}
+
+function archiveContacts() {
+  var totalChecked = selectedContactsCount();
+  swal({
+    title: 'Archive ' + totalChecked + ' contacts',
+    text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, archive them!',
+    cancelButtonText: 'Nevermind'
+  }).then((result) => {
+    if (result.value) {
+      $('#mass-action-option').val('archive');
+      $('#mass-action-form').submit();
+    } else {
+      return;
+    }
+  })
+}
+
 app.ready(function() {
   taglist.initialize();
 
@@ -215,4 +239,18 @@ app.ready(function() {
       }
     });
   });
+
+  // Intially hide mass action button group
+  $('#mass_action_btns').hide();
+  // Conditionally show/hide mass action button group if any contact is selected    
+  $('.contact-checkbox').change(function() {
+    // Need to delay checkbox check to account for short lag after Select All is unchecked
+    setTimeout(function() { 
+      if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
+        $('#mass_action_btns').show();
+      } else {
+        $('#mass_action_btns').hide();
+      }
+     }, 10);        
+  });    
 });
