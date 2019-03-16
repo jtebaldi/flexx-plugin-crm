@@ -8,6 +8,7 @@ module Plugins::FlexxPluginCrm
 
     def index
       @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
+      @tags = current_site.owned_tags.order(:name)
     end
 
     def create
@@ -78,6 +79,15 @@ module Plugins::FlexxPluginCrm
 
     def with_mobile
       render json: current_site.contacts.joins(:phonenumbers).where(phonenumbers: { phone_type: 'mobile' }).map { |c| { name: "#{c.print_name}", value: c.id } }
+    end
+
+    def mass_action
+      case params[:mass_action]
+      when 'archive'
+        current_site.contacts.where(id: params[:contact_ids]).update_all(sales_stage: :archived)
+      end
+
+      redirect_to action: :index
     end
 
     private
