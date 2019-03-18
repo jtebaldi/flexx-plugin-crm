@@ -128,6 +128,25 @@ function archiveContacts() {
   })
 }
 
+function archiveSingleContact(id) {
+  swal({
+    title: 'Archive contact',
+    text: 'This will permanently remove all pending tasks and hide this contact from your view. Are you sure you want to archive?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, archive it!',
+    cancelButtonText: 'Nevermind'
+  }).then((result) => {
+    if (result.value) {
+      $('#mass-action-contact-id').val(id);
+      $('#mass-action-option').val('archive');
+      $('#mass-action-form').submit();
+    } else {
+      return;
+    }
+  })
+}
+
 app.ready(function() {
   taglist.initialize();
 
@@ -244,15 +263,15 @@ app.ready(function() {
 
   // Intially hide mass action button group
   $('#mass_action_btns').hide();
-  // Conditionally show/hide mass action button group if any contact is selected    
+  // Conditionally show/hide mass action button group if any contact is selected
   $('.contact-checkbox').change(function() {
     // Need to delay checkbox check to account for short lag after Select All is unchecked
-    setTimeout(function() { 
+    setTimeout(function() {
       if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
         $('#mass_action_btns').show();
       } else {
         $('#mass_action_btns').hide();
       }
-     }, 10);        
-  });    
+     }, 10);
+  });
 });

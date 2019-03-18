@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   scope PluginRoutes.system_info["relative_url_root"] do
     scope :admin, as: 'admin', path: PluginRoutes.system_info['admin_path_name'] do
       scope :next do
-        get 'contact_card/:id', controller: 'plugins/flexx_plugin_crm/admin', action: :contact_card
         get 'contacts/:id/remove_contact_task/:task_id', controller: 'plugins/flexx_plugin_crm/admin', action: :remove_contact_task, as: :remove_contact_task
         post 'contacts/:id/update_contact_status', controller: 'plugins/flexx_plugin_crm/admin', action: :update_contact_status, as: :update_contact_status
         post 'contacts/:id/tasks', controller: 'plugins/flexx_plugin_crm/admin', action: :create_contact_task, as: :create_contact_task
@@ -50,8 +49,12 @@ Rails.application.routes.draw do
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do
           get 'add_task_recipe/:task_recipe_id', action: :add_task_recipe, as: :add_task_recipe
-          get :email_validate, on: :member
-          get :phone_validate, on: :member
+
+          member do
+            get :email_validate
+            get :phone_validate
+            get :card
+          end
 
           collection do
             get :with_email
@@ -73,6 +76,7 @@ Rails.application.routes.draw do
             post :create_message
             post :create_message_blast
           end
+
           member do
             get :edit_email
             patch :update_email

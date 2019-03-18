@@ -5,12 +5,6 @@ module Plugins::FlexxPluginCrm
 
     layout "layouts/flexx_next_admin"
 
-    def contact_card
-      @contact = current_site.contacts.find(params[:id])
-
-      render partial: "contact_card"
-    end
-
     def remove_contact_task
       @contact = current_site.contacts.find(params[:id])
       @contact.tasks.find(params[:task_id]).destroy

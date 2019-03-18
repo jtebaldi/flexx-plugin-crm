@@ -90,6 +90,12 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :index
     end
 
+    def card
+      @contact = current_site.contacts.find(params[:id])
+
+      render partial: 'contact_card'
+    end
+
     private
 
     def load_records

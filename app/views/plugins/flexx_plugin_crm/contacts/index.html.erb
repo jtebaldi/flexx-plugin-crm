@@ -76,7 +76,7 @@
 
       <div class="dropdown">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
-        <div class="dropdown-menu">            
+        <div class="dropdown-menu">
           <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'desc')">Newest</a>
           <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'asc')">Oldest</a>
           <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-fname', 'asc')">First Name</a>
@@ -86,7 +86,7 @@
 
       <div class="dropdown">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
-        <div class="dropdown-menu">            
+        <div class="dropdown-menu">
           <a class="dropdown-item" href="#" data-contacts-filter="none">All</a>
           <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
           <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
@@ -127,6 +127,7 @@
       <tbody id="contact-list">
         <%= form_tag mass_action_admin_contacts_path, method: :post, id: 'mass-action-form' do %>
           <input type="hidden" name="mass_action" id="mass-action-option" value="">
+          <input type="hidden" name="contact_ids[]" id="mass-action-contact-id" value="">
           <% @active_contacts.each do |contact| %>
             <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.try(:strip) %>" data-lname="<%= contact.last_name.try(:strip) %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
               <td class="pl-20 pt-25 d-none d-md-table-cell">
@@ -173,17 +174,17 @@
               <td class="pt-25 d-none d-md-table-cell">
                 <small><%= contact.created_at.strftime('%b %d %Y') %></small>
               </td>
-              <!--
+
               <td class="text-right table-actions pt-25">
                 <div class="dropdown table-action">
                   <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#qv-user-details" data-toggle="quickview" data-url="contact_card/<%= contact.id %>"><i class="ti-menu-alt"></i> Details</a>
-                    <a class="dropdown-item" href="#"><i class="ti-trash"></i> Archive</a>
+                    <!-- <a class="dropdown-item" href="#qv-user-details" data-toggle="quickview" data-url="<%= card_admin_contact_path(contact.id) %>"><i class="ti-menu-alt"></i> Details</a> -->
+                    <a class="dropdown-item" href="#" onclick="archiveSingleContact(<%= contact.id %>)"><i class="ti-trash"></i> Archive</a>
                   </div>
                 </div>
               </td>
-              -->
+
             </tr>
           <% end %>
         <% end %>
@@ -288,7 +289,7 @@
       </div>
 
       <label>Highlights</label>
-      <div class="form-group form-type-fill">            
+      <div class="form-group form-type-fill">
         <textarea class="form-control px-15" placeholder="Include any details you may want to remember about the contact." rows="6" name="contact[highlights]"></textarea>
       </div>
 
