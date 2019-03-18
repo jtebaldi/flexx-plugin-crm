@@ -147,10 +147,23 @@ function archiveSingleContact(id) {
   })
 }
 
+function cancelBulkTagging() {
+  $('.typeahead-tags').tagsinput('removeAll');
+}
+
 app.ready(function() {
   taglist.initialize();
 
   $('#typeahed-tags').tagsinput({
+    typeaheadjs: {
+      name: 'taglist',
+      source: taglist.ttAdapter(),
+      displayKey: 'name',
+      valueKey: 'name'
+    }
+  });
+
+  $('.typeahead-tags').tagsinput({
     typeaheadjs: {
       name: 'taglist',
       source: taglist.ttAdapter(),
@@ -274,4 +287,9 @@ app.ready(function() {
       }
      }, 10);
   });
+
+  $('#modal-bulk-tag').on('show.bs.modal', function () {
+    var totalChecked = selectedContactsCount();
+    document.getElementById("tag-contact-num").textContent = totalChecked;
+  })
 });
