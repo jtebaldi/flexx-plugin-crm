@@ -35,6 +35,7 @@ module Plugins::FlexxPluginCrm::MainHelper
   def flexx_plugin_crm_on_contact_form_after_submit(args)
     add_activity_feed args
     send_stock_email_response args
+    apply_tags_to_contact args
   end
 
   private
@@ -77,5 +78,11 @@ module Plugins::FlexxPluginCrm::MainHelper
       recipients_list: args[:form_received].contact_id,
       send_at: Time.current
     })
+  end
+
+  def apply_tags_to_contact(args)
+    return unless args[:form].the_settings.try(:[], 'railscf_tags').try(:[], 'list').present?
+
+    args[:form].site.tag(args[:form_received].contact, with: args[:form].the_settings[:railscf_tags][:list], on: :tags)
   end
 end

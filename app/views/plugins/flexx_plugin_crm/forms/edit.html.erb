@@ -1,35 +1,12 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms' %>
+<% end %>
+
 <style>
   .form-actions .avatar { border: 2px solid #fff; box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); }
   .form-actions .avatar.active { color: #15c377; background-color: #e3fcf2; border-color: #15c377; }
   .pagination > * { margin-right: 10px; font-weight: 400; }
 </style>
-
-<script>
-  // Enables/Disables input fields associated with switch
-  function toggleDisableInput(checkboxElem) {
-    if (checkboxElem.checked) {
-      $(checkboxElem).parent().parent().find('.avatar').addClass("active");
-      $('.' + checkboxElem.id).find('div.form-group, div.form-group .form-control button').removeClass("disabled");
-      $('.' + checkboxElem.id).find('input').prop('required', true);
-    } else {
-      $(checkboxElem).parent().parent().find('.avatar').removeClass("active");
-      $('.' + checkboxElem.id).find('div.form-group, div.form-group .form-control button').addClass("disabled");
-      $('.' + checkboxElem.id).find('input').prop('required', false);
-    }
-  }
-
-  $(document).ready(function(){
-    // Intially disables all input fields if switch is off
-    $('.setting-switch:checkbox:not(:checked)').each(function () {
-      $('.' + this.id).find('div.form-group').addClass("disabled");
-    });
-
-    // Show "save changes" bar on input change
-    $('form :input').on('change input', function() {
-      $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
-    });
-  });
-</script>
 
 <%= render 'next/partials/breadcrumb', link: admin_forms_path(), page: 'Website Forms' %>
 
@@ -223,7 +200,7 @@
                     <div class="form-group mb-0">
                       <label for="input-required">Webhook URL</label>
                       <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
-                      <div class="invalid-feedback"></div>                      
+                      <div class="invalid-feedback"></div>
                     </div>
                     <small class="form-text">For more information on setting up this integration contact support.</small>
                   </div>
@@ -233,28 +210,20 @@
               <hr class="hr-sm">
 
               <div class="media">
-                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_tags').try(:[], 'enabled') == 'true' ? 'active' : '' %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
+                <span class="avatar <%= @form.the_settings.try(:[], 'railscf_tags').try(:[], 'list').present? ? 'active' : '' %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
                 <div class="media-body">
                   <p><strong>Apply Tags</strong></p>
                   <p>The contact will have the tag(s) listed applied to their record.</p>
                 </div>
-
-                <!-- <%= hidden_field_tag "railscf_tags[enabled]", false %> -->
-
-                <label class="switch">
-                  <!-- <input type="checkbox" id="railscf_tags_enabled_check" class='setting-switch hidden' onchange='toggleDisableInput(this)'> -->
-                  <%= check_box_tag "railscf_tags[enabled]", true, (@form.the_settings[:railscf_tags][:enabled] == "true" rescue false), id: "railscf_tags_enabled_check", class: 'setting-switch hidden', onchange: 'toggleDisableInput(this)' %>
-                  <span class="switch-indicator" onclick="$('#railscf_tags_enabled_check').attr('checked', !$('#railscf_tags_enabled_check').attr('checked'))"></span>
-                </label>
               </div>
 
               <div class="media pt-0 railscf_tags_enabled_check">
                 <div class="media-body">
                   <div class="has-form-text">
                     <div class="form-group mb-0">
-                      <label for="input-required">Applied Tags</label>
-                      <input type="text" class="form-control" name="railscf_webhook[url]" value="<%= @form.the_settings[:railscf_webhook][:url] rescue '' %>">
-                      <div class="invalid-feedback"></div>                      
+                      <label for="input">Applied Tags</label>
+                      <input type="text" id="typeahed-tags" class="form-control" name="railscf_tags[list]" value="<%= @form.the_settings[:railscf_tags][:list] rescue '' %>">
+                      <div class="invalid-feedback"></div>
                     </div>
                     <small class="form-text">Remeber to press return/enter after typing the tag.</small>
                   </div>

@@ -19,7 +19,7 @@
       <div class="col-md-6 col-xl-4">
         <div class="card website-form hover-shadow-4">
           <a href="<%= edit_admin_form_path(form.id) %>" class="card-header hover-info">
-            <h4 class="card-title"><strong><%= form.name %></strong> <small class="subtitle"><%= form.description %></small></h4>            
+            <h4 class="card-title"><strong><%= form.name %></strong> <small class="subtitle"><%= form.description %></small></h4>
             <ul class="card-controls">
               <li><i class="fas fa-sliders-h fs-16"></i></li>
             </ul>
@@ -46,9 +46,9 @@
                 <label class="mr-10">Actions</label>
                 <div class="avatar-list">
                   <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_redirect').try(:[], 'enabled') == 'true' %>" title="Page Redirect" data-provide="tooltip"><i class="fas fa-retweet"></i></span>
-                  <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_response').try(:[], 'enabled') == 'true' %>" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span>                  
+                  <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_response').try(:[], 'enabled') == 'true' %>" title="Email Response" data-provide="tooltip"><i class="far fa-paper-plane"></i></span>
                   <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_webhook').try(:[], 'enabled') == 'true' %>" title="Zapier" data-provide="tooltip"><i class="far fa-share-square"></i></span>
-                  <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_tags').try(:[], 'enabled') == 'true' %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
+                  <span class="avatar <%= 'active' if form.the_settings.try(:[], 'railscf_tags').try(:[], 'list').present? %>" title="Tags" data-provide="tooltip"><i class="fas fa-tags"></i></span>
                   <!-- <span class="avatar" title="Recipe" data-provide="tooltip"><i class="ti-layout-list-thumb"></i></span> -->
                 </div>
               </div>
