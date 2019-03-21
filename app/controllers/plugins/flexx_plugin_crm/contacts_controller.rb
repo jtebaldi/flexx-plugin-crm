@@ -85,6 +85,15 @@ module Plugins::FlexxPluginCrm
       case params[:mass_action]
       when 'archive'
         current_site.contacts.where(id: params[:contact_ids]).update_all(sales_stage: :archived)
+      when 'tags'
+        current_site.contacts.where(id: params[:contact_ids]).each do |contact|
+          tag_list = contact.all_tags_list
+
+          tag_list -= params[:remove_tags].split(',') if params[:remove_tags].present?
+          tag_list += params[:add_tags].split(',') if params[:add_tags].present?
+
+          current_site.tag(contact, with: tag_list, on: :tags)
+        end
       end
 
       redirect_to action: :index

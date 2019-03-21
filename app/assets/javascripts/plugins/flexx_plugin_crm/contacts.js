@@ -151,6 +151,14 @@ function cancelBulkTagging() {
   $('.typeahead-tags').tagsinput('removeAll');
 }
 
+function bulkUpdateTags() {
+  $('#mass-action-option').val('tags');
+  $('#mass-action-add-tags').val($('#bulk-add-tags-field').val());
+  $('#mass-action-remove-tags').val($('#bulk-remove-tags-field').val());
+
+  $('#mass-action-form').submit();
+}
+
 app.ready(function() {
   taglist.initialize();
 

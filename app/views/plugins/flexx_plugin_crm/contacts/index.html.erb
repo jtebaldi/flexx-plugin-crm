@@ -136,6 +136,8 @@
         <%= form_tag mass_action_admin_contacts_path, method: :post, id: 'mass-action-form' do %>
           <input type="hidden" name="mass_action" id="mass-action-option" value="">
           <input type="hidden" name="contact_ids[]" id="mass-action-contact-id" value="">
+          <input type="hidden" name="add_tags" id="mass-action-add-tags" value="">
+          <input type="hidden" name="remove_tags" id="mass-action-remove-tags" value="">
           <% @active_contacts.each do |contact| %>
             <tr class="shadow-1" data-name="<%= contact.print_name %>" data-fname="<%= contact.first_name.try(:strip) %>" data-lname="<%= contact.last_name.try(:strip) %>" data-added-on="<%= contact.created_at.to_i %>" data-sales-stage="<%= contact.sales_stage %>">
               <td class="pl-20 pt-25 d-none d-md-table-cell">
@@ -338,24 +340,22 @@
 
           </div>
           <div class="col-sm-8">
-            <form class="py-20">
-              <h4>Updating <span id="tag-contact-num" class="text-info"></span> contacts</h4>
-              <p>Simply type new or existing tags in the corresponding field below to bulk add or remove tags for your selected contacts. Remember to press return/enter after each tag.</p>
-              <label>Add these tags...</label>
-              <div class="form-group bulk-add">
-                <input type="text" class="typeahead-tags" name="">
-              </div>
-              <label>Remove these tags...</label>
-              <div class="form-group bulk-remove">
-                <input type="text" class="typeahead-tags" name="">
-              </div>
-            </form>
+            <h4>Updating <span id="tag-contact-num" class="text-info"></span> contacts</h4>
+            <p>Simply type new or existing tags in the corresponding field below to bulk add or remove tags for your selected contacts. Remember to press return/enter after each tag.</p>
+            <label>Add these tags...</label>
+            <div class="form-group bulk-add">
+              <input type="text" id="bulk-add-tags-field" class="typeahead-tags" name="">
+            </div>
+            <label>Remove these tags...</label>
+            <div class="form-group bulk-remove">
+              <input type="text" id="bulk-remove-tags-field" class="typeahead-tags" name="">
+            </div>
           </div>
         </div>
       </div>
       <div class="modal-footer bt-1">
         <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal" onclick="cancelBulkTagging();">Cancel</button>
-        <button type="button" class="btn btn-bold btn-primary">Update Tags</button>
+        <button type="button" class="btn btn-bold btn-primary" onclick="bulkUpdateTags()">Update Tags</button>
       </div>
     </div>
   </div>
