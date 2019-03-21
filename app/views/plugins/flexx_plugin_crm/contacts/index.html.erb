@@ -31,7 +31,15 @@
   .contact-table tr:hover { background-color: #e3f3fc; }
   .contact-table tr.active { background-color: #e3f3fc; }
 
-  @media only screen and (max-width: 768px) { #mass_action_btns { display: none; } }
+  /* Bulk tagging modal */
+  .current-tags { height: 275px; }
+  .bulk-add .badge { color: #fff !important; background-color: #15c377 !important; }
+  .bulk-remove .badge { color: #fff !important; background-color: #f96868 !important; }
+
+  @media only screen and (max-width: 768px) {
+    #mass_action_btns { display: none; }
+    .current-tags { height: 100%; }
+  }
 </style>
 
 <header class="header">
@@ -97,11 +105,13 @@
     </div>
 
     <div id="mass_action_btns" class="btn-group mr-15">
-      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Bulk Actions</button>
-      <div class="dropdown-menu dropdown-menu-right">
-        <!-- <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag">Tag</a>
-        <div class="dropdown-divider"></div> -->
-        <a class="dropdown-item" href="#" onclick="archiveContacts()">Archive</a>
+      <div class="dropdown dropdown-lg">
+        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Bulk Actions</button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag"><i class="fas fa-tags"></i> Manage Tags</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" onclick="archiveContacts()"><i class="fas fa-archive"></i> Archive</a>
+        </div>
       </div>
     </div>
   </header>
@@ -306,44 +316,46 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Bulk Tag Contacts</h4>
+        <h4 class="modal-title" id="myModalLabel">Manage Contact Tags</h4>
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body py-0">
         <div class="row">
-          <div class="col-4 pl-0">
-            <div class="media-list media-list-xs media-list-hover media-list-divided scrollable br-2" style="height: 350px;">
-              <header class="media-list-header b-0">
-                <form class="lookup lookup-lg w-100 bb-1 border-light">
-                  <input class="w-100 no-radius no-border py-20" type="text" placeholder="Search tags..." data-provide="media-search">
-                </form>
+          <div class="col-sm-4 pl-0">
+            <div class="card mb-0">
+              <header class="card-header">
+                <h5 class="card-title"><small class="subtitle">For reference, these are tags currently being used on your contacts.</small></h5>
               </header>
 
-              <% @tags.each do |tag| %>
-                <a class="media media-single" href="#">
-                  <span class="badge badge-pill badge-secondary"><%= tag.name %></span>
-                </a>
-              <% end %>
-
+              <div class="card-body p-2 scrollable current-tags">
+                <% @tags.each do |tag| %>
+                  <span class="badge badge-pill badge-secondary m-1"><%= tag.name %></span>
+                <% end %>
+              </div>
             </div>
+
           </div>
-          <div class="col-8">
+          <div class="col-sm-8">
             <form class="py-20">
-              <p>Select existing tag(s) from the list or type new ones.</p>
-              <label>Tags</label>
-              <div class="form-group">
-                <input type="text" id="typeahed-tags" name="">
-                <small class="form-text">Press enter after typing tag</small>
+              <h4>Updating <span id="tag-contact-num" class="text-info"></span> contacts</h4>
+              <p>Simply type new or existing tags in the corresponding field below to bulk add or remove tags for your selected contacts. Remember to press return/enter after each tag.</p>
+              <label>Add these tags...</label>
+              <div class="form-group bulk-add">
+                <input type="text" class="typeahead-tags" name="">
+              </div>
+              <label>Remove these tags...</label>
+              <div class="form-group bulk-remove">
+                <input type="text" class="typeahead-tags" name="">
               </div>
             </form>
           </div>
         </div>
       </div>
       <div class="modal-footer bt-1">
-        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-bold btn-primary">Tag 12 Contacts</button>
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal" onclick="cancelBulkTagging();">Cancel</button>
+        <button type="button" class="btn btn-bold btn-primary">Update Tags</button>
       </div>
     </div>
   </div>
