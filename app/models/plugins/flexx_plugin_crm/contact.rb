@@ -21,7 +21,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message', dependent: :destroy
   has_many :contact_forms, class_name: 'Plugins::CamaContactForm::CamaContactForm', dependent: :destroy
 
-  validates :email, presence: true, uniqueness: { scope: :site_id }
+  validates :email, uniqueness: { scope: :site_id }, if: Proc.new { |c| c.email.present? }
 
   scope :active, -> { where.not(sales_stage: :archived) }
 
@@ -83,11 +83,11 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
           labels: {
             action: 'created',
             action_type: 'Contact',
-            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'    
+            actor: self.created_by.present? ? self.created_by_user.print_name : 'Form'
           },
           message: "New contact created - #{self.print_name}",
           url: admin_contact_path(self.id),
-          to: ["system:#{self.site_id}"]          
+          to: ["system:#{self.site_id}"]
         }
       }
     else

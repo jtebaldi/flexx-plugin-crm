@@ -23,14 +23,14 @@
       $('.nav-tabs #contact_details_link').tab('show');
       setTimeout(function() {
         $('#phone_field').focus();
-      }, 1000);       
+      }, 1000);
     });
 
     // $('#edit_tags').click(function(){
     //   $('.nav-tabs #contact_details_link').tab('show');
     //   setTimeout(function() {
     //     $('#typeahed-tags').focus();
-    //   }, 1000);       
+    //   }, 1000);
     // });
 
   });
@@ -46,13 +46,13 @@
 
   input[type=radio].hide-control { display: none; }
 
-  @media (max-width: 576px) { 
+  @media (max-width: 576px) {
     .xs-text-center { text-align: center; }
     .hidden-xs { display: none; }
 
     #header_contact_name { margin-top: 15px; margin-bottom: 20px !important; }
 
-    #action_buttons { margin-top: 30px; }  
+    #action_buttons { margin-top: 30px; }
     #action_buttons button:not(:first-child) { margin-right: 8px; margin-left: 8px; }
     #action_buttons button:first-child { margin-right: 8px; }
   }
@@ -82,15 +82,15 @@
           </div>
         </div>
       </div>
-      <div class="media align-items-center px-0 py-30 ml-10 bg-white">        
+      <div class="media align-items-center px-0 py-30 ml-10 bg-white">
         <span class="d-none d-sm-block avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;border-radius: 6px;"><%= @contact.initials %></span>
-        <div class="media-body">          
-          <div class="row">          
-            <div class="col-md-6 xs-text-center">              
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-6 xs-text-center">
               <span class="d-sm-none avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;border-radius: 6px;"><%= @contact.initials %></span>
               <h2 id="header_contact_name" class="header-title pt-10 mb-0">
                 <strong><%= @contact.print_name %></strong><span class="text-fade"> | </span>
-                <a href="#" data-toggle="modal" data-target="#update_status_modal" class="fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>" style="border-bottom: dotted .5px;"><%= @contact.sales_stage.humanize %></a>                
+                <a href="#" data-toggle="modal" data-target="#update_status_modal" class="fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>" style="border-bottom: dotted .5px;"><%= @contact.sales_stage.humanize %></a>
               </h2>
               <div id="action_buttons" class="xs-text-center mt-10 mb-20">
                 <% if @contact.email.present? %>
@@ -101,10 +101,10 @@
                 <% end %>
                 <% if @contact.phonenumbers.present? %>
                   <button id='new-phone-call-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline touchpoint" data-provide="tooltip" data-placement="top" title="Log Call"><i class="fa fa-phone"></i></button>
-                <% end %>                
+                <% end %>
                 <button id='new-meeting-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline touchpoint" data-provide="tooltip" data-placement="top" title="Log Meeting"><i class="fa fa-calendar"></i></button>
                 <button id='new-general-touchpoint' class="btn btn-square btn-round btn-info btn-lg btn-outline hidden-xs touchpoint" data-provide="tooltip" data-placement="top" title="Log Note"><i class="ti-notepad"></i></button>
-              </div>              
+              </div>
             </div>
             <div class="col-md-6">
               <div class="flex-grow pt-10">
@@ -115,8 +115,8 @@
                   <i class="fa fa-fw fa-phone w-30px"></i> <%= @contact.phonenumbers.first.number if @contact.phonenumbers.present? %>
                   <% unless @contact.phonenumbers.present? %>
                     <small><a id="add_phone" href="#" class="alert-link">add a number</a></small>
-                  <% end %>  
-                </div>   
+                  <% end %>
+                </div>
                 <div class="">
                 <% @contact.all_tags_list.each do |tag| %>
                   <span class="badge badge-info ml-0"><%= tag %></span>
@@ -124,7 +124,7 @@
               </div>
               </div>
             </div>
-          </div>    
+          </div>
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@
 
   <div class="header-action" style="background-color: #EDEEF2;">
     <ul class="nav nav-tabs nav-justified nav-tabs-info" style="width: 100%; flex-wrap: wrap;">
-      
+
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#tab_activity">Activity</a>
       </li>
@@ -151,15 +151,15 @@
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
         </div>
-      </div>      
+      </div>
     </ul>
   </div>
 </header>
 
-<div class="main-content">  
+<div class="main-content">
 
     <div id="contact-main-tabs" class="tab-content <%= @contact.sales_stage.downcase %>">
-      
+
       <div class="tab-pane fade active show" id="tab_activity">
         <div class="row">
           <div class="col-lg-6">
@@ -167,7 +167,7 @@
             <div class="card">
               <header class="card-header">
                 <h4 class="card-title">Upcoming <strong>tasks</strong></h4>
-                <div class="card-header-actions">    
+                <div class="card-header-actions">
                   <% unless @contact.sales_stage.downcase == "archived" %> <a href="#qv-add-task" data-toggle="quickview" class="btn btn-sm btn-label btn-warning"><label><i class="ti-plus"></i></label>Create task</a>
                   <% end %>
                 </div>
@@ -177,7 +177,7 @@
                 <%= render partial: 'open_tasks', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </div>
             </div>
-     
+
           </div>
           <div class="col-lg-6">
             <div class="card">
@@ -189,7 +189,7 @@
                 <%= render partial: 'timeline', locals: { refresh_panel: 'view-contact-tasks-panels' } %>
               </ol>
 
-            </div>            
+            </div>
           </div>
 
           <div class="col-lg-6">
@@ -250,7 +250,7 @@
 
                 <div class="col-lg-3 col-md-6">
                   <div class="form-group require">
-                    <input class="form-control" type="email" required name="contact[email]" data-remote="/admin/next/contacts/<%= @contact.id %>/email_validate" value="<%= @contact.email %>">
+                    <input class="form-control" type="email" name="contact[email]" data-remote="/admin/next/contacts/<%= @contact.id %>/email_validate" value="<%= @contact.email %>">
                     <label class="required">Email</label>
                     <div class="invalid-feedback"></div>
                   </div>
@@ -299,7 +299,7 @@
                 </div>
               <% end %>
             <% else %>
-              <div class="row">                
+              <div class="row">
                 <div class="col-lg-3 col-md-6">
                   <div class="form-group">
                     <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
@@ -320,12 +320,12 @@
                 </div>
                 <div class="col-lg-2 col-md-3 text-center">
                   <button class="btn btn-sm btn-info btn-outline mt-10" data-add="phone" type="button">Add Phone</button>
-                </div>                
+                </div>
               </div>
             <% end %>
 
           </div>
-          
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -411,7 +411,7 @@
           </div>
 
           <label>Highlights</label>
-          <div class="form-group form-type-fill">            
+          <div class="form-group form-type-fill">
             <textarea class="form-control px-15" placeholder="Include any details you may want to remember about the contact." rows="6" name="contact[highlights]"><%= @contact.highlights %></textarea>
           </div>
 
@@ -499,8 +499,8 @@
             <div class="card">
               <header class="card-header">
                 <h5 class="card-title">Available <strong>recipes</strong></h5>
-                <div class="card-header-actions">    
-                  <a href="<%= admin_recipes_path() %>" class="btn btn-sm btn-label btn-default"><label><i class="ti-arrow-right"></i></label>Go to recipes</a>                
+                <div class="card-header-actions">
+                  <a href="<%= admin_recipes_path() %>" class="btn btn-sm btn-label btn-default"><label><i class="ti-arrow-right"></i></label>Go to recipes</a>
                 </div>
               </header>
               <div class="media-list media-list-hover media-list-divided">
@@ -707,7 +707,7 @@
         <!--
         <p>
           <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('archived')">Archive Contact</button>
-        </p>        
+        </p>
         <p>
           <button class="btn btn-block btn-bold border-danger text-danger btn-lg" onclick="updateSalesStage('delete')">Delete Contact</button>
         </p>
