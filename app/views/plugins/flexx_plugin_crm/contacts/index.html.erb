@@ -85,10 +85,10 @@
       <div class="dropdown">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'desc')">Newest</a>
-          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-added-on', 'asc')">Oldest</a>
-          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-fname', 'asc')">First Name</a>
-          <a class="dropdown-item" href="#" onclick="sortMe('#contact-list', 'tr', 'data-lname', 'asc')">Last Name</a>
+          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'desc' })">Newest</a>
+          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'asc' })">Oldest</a>
+          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'printName', order: 'asc' })">First Name</a>
+          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'lastName', order: 'asc' })">Last Name</a>
         </div>
       </div>
 
@@ -96,7 +96,7 @@
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
         <div class="dropdown-menu">
           <a class="dropdown-item" href="#" data-contacts-filter="none">All</a>
-          <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
+          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('search', { salesStageClass: 'lead' })">Lead</a>
           <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
           <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
         </div>
@@ -117,6 +117,8 @@
   </header>
 
   <div class="card card-transparent">
+    <div id="contacts-table" data-provide="jsgrid">
+    </div>
     <table class="table table-separated contact-table" data-provide="selectall">
       <thead>
         <tr>

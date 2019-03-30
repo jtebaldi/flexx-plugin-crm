@@ -301,3 +301,86 @@ app.ready(function() {
     document.getElementById("tag-contact-num").textContent = totalChecked;
   })
 });
+
+$("#contacts-table").jsGrid({
+  width: "100%",
+  height: "auto",
+  selecting: true,
+  paging: true,
+  pageSize: 10,
+  autoload: true,
+  controller: {
+    loadData: function(params) {
+      console.log(params)
+      var d = $.Deferred();
+
+      $.ajax({
+        url: "/admin/next/contacts",
+        dataType: "json"
+      }).done(function(response) {
+        d.resolve(response);
+      });
+      return d.promise();
+    }
+  },
+
+  fields: [
+      {
+        headerTemplate: function() {
+          return $("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); });
+        },
+        itemTemplate: function(_, item) {
+          return $("<input>").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
+            item.Selected = !item.Selected;
+            $("#contacts-table").jsGrid("updateItem", item, item);
+          });
+        },
+        align: "center",
+        width: 50,
+        sorting: false
+      },
+      { headerTemplate: function() {
+          return "";
+        },
+        itemTemplate: function(_, item) {
+         return `
+            <div class="media">
+              <a href="/admin/next/contacts/${item.id}" class="avatar avatar-lg">${item.initials}</a>
+              <div class="media-body">
+                <h6 class="lh-1"><a href="/admin/next/contacts/${item.id}">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</a></h6>
+                <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
+              </div>
+            </div>
+          `;
+        },
+        align: "left",
+        width: "100%",
+        sorting: false
+      },
+      {
+        type: "number",
+        name: "id",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "printName",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "lastName",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "salesStageClass",
+        visible: false,
+      }
+  ],
+
+  rowClick: function(row) {
+    row.item.Selected = !row.item.Selected;
+   $("#contacts-table").jsGrid("updateItem", row.item, row.item);
+  }
+});

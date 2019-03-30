@@ -7,8 +7,35 @@ module Plugins::FlexxPluginCrm
     before_action :load_records, only: [:show, :update]
 
     def index
-      @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
-      @tags = current_site.owned_tags.order(:name)
+      @active_contacts = []
+      @tags = {}
+      respond_to do |format|
+        format.html
+        format.json {
+          @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
+          @tags = current_site.owned_tags.order(:name)
+
+          render json: (@active_contacts.map do |ac|
+            {
+              id: ac.id,
+              initials: ac.initials,
+              printName: ac.print_name,
+              lastName: ac.last_name,
+              salesStage: ac.sales_stage.capitalize,
+              salesStageClass: ac.sales_stage,
+              pendingTasksClass: ('text-info' if ac.pending_tasks_count > 0),
+              pendingTasks: case ac.pending_tasks_count
+                            when 0
+                              'No pending tasks'
+                            when 1
+                              '1 pending task'
+                            else
+                              "#{ac.pending_tasks_count} pending tasks"
+                            end
+            }
+          end)
+        }
+       end
     end
 
     def create
