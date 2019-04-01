@@ -257,29 +257,17 @@ app.ready(function() {
     }
   });
 
+  window.contactListFilter = {};
+
   $('[data-contacts-filter]').click((e) => {
     $('#selected-filter').html(e.target.innerHTML);
-    var $records = $('#contact-list').children('tr');
-    if (e.target.dataset.contactsFilter === 'none') {
-      $records.removeClass('hidden');
-    } else {
-      $records.not(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).addClass('hidden');
-      $records.filter(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).removeClass('hidden');
-    }
+    window.contactListFilter.salesStage = $(e.target).data('contacts-filter');
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
   });
 
-  var $contacts = $('[data-name]');
-
   $('#contact-search').keyup((e) => {
-    $contacts.each((i, elm) => {
-      var r = new RegExp(e.target.value.toLowerCase());
-      var $elm = $(elm);
-      if (r.test($elm.data('name').toLowerCase())) {
-        $elm.removeClass('hidden');
-      } else {
-        $elm.addClass('hidden');
-      }
-    });
+    window.contactListFilter.printName = e.target.value.toLowerCase();
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
   });
 
   // Intially hide mass action button group
@@ -310,16 +298,28 @@ $("#contacts-table").jsGrid({
   pageSize: 10,
   autoload: true,
   controller: {
-    loadData: function(params) {
-      console.log(params)
+    loadData: function(filter) {
       var d = $.Deferred();
 
-      $.ajax({
-        url: "/admin/next/contacts",
-        dataType: "json"
-      }).done(function(response) {
-        d.resolve(response);
-      });
+      if (window.contactList) {
+        var regex = new RegExp(filter.printName || '', 'i');
+
+        d.resolve(window.contactList.filter(function (row){
+          return (
+            ((row.salesStageClass == filter.salesStage) || !filter.salesStage)
+            && regex.test(row.printName)
+          )
+        }));
+      } else {
+        $.ajax({
+          url: "/admin/next/contacts",
+          dataType: "json"
+        }).done(function(response) {
+          window.contactList = response;
+          d.resolve(window.contactList);
+        });
+      }
+
       return d.promise();
     }
   },
