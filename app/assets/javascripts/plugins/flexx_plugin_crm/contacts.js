@@ -268,27 +268,27 @@ app.ready(function() {
   $('#contact-search').keyup((e) => {
     window.contactListFilter.printName = e.target.value.toLowerCase();
     $('#contacts-table').jsGrid('search', window.contactListFilter);
+
+    if (selectedContacts.length > 0) {
+      selectedContacts = [];
+      $('#mass_action_btns').hide();
+      window.contactList.forEach(function(c) {
+        c.Selected = false;
+        $("#contacts-table").jsGrid("updateItem", c, c);
+      });
+    }
   });
 
   // Intially hide mass action button group
   $('#mass_action_btns').hide();
-  // Conditionally show/hide mass action button group if any contact is selected
-  $('.contact-checkbox').change(function() {
-    // Need to delay checkbox check to account for short lag after Select All is unchecked
-    setTimeout(function() {
-      if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
-        $('#mass_action_btns').show();
-      } else {
-        $('#mass_action_btns').hide();
-      }
-     }, 10);
-  });
 
   $('#modal-bulk-tag').on('show.bs.modal', function () {
     var totalChecked = selectedContactsCount();
     document.getElementById("tag-contact-num").textContent = totalChecked;
   })
 });
+
+var selectedContacts = [];
 
 $("#contacts-table").jsGrid({
   width: "100%",
@@ -312,7 +312,7 @@ $("#contacts-table").jsGrid({
         }));
       } else {
         $.ajax({
-          url: "/admin/next/contacts",
+          url: "/admin/next/contacts.json",
           dataType: "json"
         }).done(function(response) {
           window.contactList = response;
@@ -327,19 +327,27 @@ $("#contacts-table").jsGrid({
   fields: [
       {
         headerTemplate: function() {
-          return $("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); });
+          return ""; //$("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); });
         },
         itemTemplate: function(_, item) {
           return $("<input>").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
             item.Selected = !item.Selected;
-            $("#contacts-table").jsGrid("updateItem", item, item);
+
+            if (item.Selected) {
+              selectedContacts.push(item);
+            } else {
+              selectedContacts = selectedContacts.filter(function(e) { return e !== item })
+            }
+
+            selectedContacts.length > 0 ? $('#mass_action_btns').show() : $('#mass_action_btns').hide();
           });
         },
         align: "center",
         width: 50,
         sorting: false
       },
-      { headerTemplate: function() {
+      {
+        headerTemplate: function() {
           return "";
         },
         itemTemplate: function(_, item) {
@@ -355,6 +363,59 @@ $("#contacts-table").jsGrid({
         },
         align: "left",
         width: "100%",
+        sorting: false
+      },
+      {
+        headerTemplate: function() {
+          return "Tags";
+        },
+        itemTemplate: function(_, item) {
+          var result = "";
+
+          result = item.tags.slice(0,3).map(function(tag) {
+            return `
+              <span class="badge badge-secondary ml-0">${tag}</span>
+            `;
+          }).join('');
+
+          if (item.tags.length > 3) {
+            var tags_list = item.tags.slice(3).map(function(tag) {
+              return `
+                <span class="badge badge-secondary ml-0">${tag}</span>
+              `;
+            }).join('');
+
+            result = `
+              ${result}
+              <div class="dropdown table-action" style="display: inline-block;">
+                <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-gray ml-0">+${item.tags.length - 3}</span></span>
+                <div class="dropdown-menu dropdown-menu-right p-2">${tags_list}</div>
+              </div>
+            `;
+          }
+
+          return result;
+        },
+        align: "left",
+        width: "150",
+        sorting: false
+      },
+      {
+        headerTemplate: function() {
+          return "";
+        },
+        itemTemplate: function(_, item) {
+          return `
+            <div class="dropdown table-action">
+              <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#" onclick="archiveSingleContact(${item.id})"><i class="ti-trash"></i> Archive</a>
+              </div>
+            </div>
+          `;
+        },
+        align: "left",
+        width: "50",
         sorting: false
       },
       {
@@ -377,10 +438,5 @@ $("#contacts-table").jsGrid({
         name: "salesStageClass",
         visible: false,
       }
-  ],
-
-  rowClick: function(row) {
-    row.item.Selected = !row.item.Selected;
-   $("#contacts-table").jsGrid("updateItem", row.item, row.item);
-  }
+  ]
 });

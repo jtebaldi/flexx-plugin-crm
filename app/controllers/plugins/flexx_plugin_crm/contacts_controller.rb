@@ -31,7 +31,8 @@ module Plugins::FlexxPluginCrm
                               '1 pending task'
                             else
                               "#{ac.pending_tasks_count} pending tasks"
-                            end
+                            end,
+              tags: ac.all_tags_list
             }
           end)
         }
