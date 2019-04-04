@@ -104,15 +104,9 @@ function newTouchpoint(e) {
   form.submit();
 }
 
-function selectedContactsCount() {
-  var checkedCount = $("input:checkbox.contact-checkbox:checked").length;
-  return checkedCount;
-}
-
 function archiveContacts() {
-  var totalChecked = selectedContactsCount();
   swal({
-    title: 'Archive ' + totalChecked + ' contacts',
+    title: 'Archive ' + selectedContacts.length + ' contacts',
     text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
     type: 'warning',
     showCancelButton: true,
@@ -121,6 +115,7 @@ function archiveContacts() {
   }).then((result) => {
     if (result.value) {
       $('#mass-action-option').val('archive');
+      $('#mass-action-contact-id').val(selectedContacts.map((c) => c.id ));
       $('#mass-action-form').submit();
     } else {
       return;
@@ -153,6 +148,7 @@ function cancelBulkTagging() {
 
 function bulkUpdateTags() {
   $('#mass-action-option').val('tags');
+  $('#mass-action-contact-id').val(selectedContacts.map((c) => c.id ));
   $('#mass-action-add-tags').val($('#bulk-add-tags-field').val());
   $('#mass-action-remove-tags').val($('#bulk-remove-tags-field').val());
 
@@ -257,47 +253,200 @@ app.ready(function() {
     }
   });
 
-  $('[data-contacts-filter]').click((e) => {
-    $('#selected-filter').html(e.target.innerHTML);
-    var $records = $('#contact-list').children('tr');
-    if (e.target.dataset.contactsFilter === 'none') {
-      $records.removeClass('hidden');
-    } else {
-      $records.not(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).addClass('hidden');
-      $records.filter(`[data-sales-stage="${e.target.dataset.contactsFilter}"]`).removeClass('hidden');
-    }
-  });
-
-  var $contacts = $('[data-name]');
+  window.contactListFilter = {};
 
   $('#contact-search').keyup((e) => {
-    $contacts.each((i, elm) => {
-      var r = new RegExp(e.target.value.toLowerCase());
-      var $elm = $(elm);
-      if (r.test($elm.data('name').toLowerCase())) {
-        $elm.removeClass('hidden');
-      } else {
-        $elm.addClass('hidden');
-      }
-    });
+    window.contactListFilter.printName = e.target.value.toLowerCase();
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
+
+    if (selectedContacts.length > 0) {
+      selectedContacts = [];
+      $('#mass_action_btns').hide();
+      window.contactList.forEach(function(c) {
+        c.Selected = false;
+        $("#contacts-table").jsGrid("updateItem", c, c);
+      });
+    }
   });
 
   // Intially hide mass action button group
   $('#mass_action_btns').hide();
-  // Conditionally show/hide mass action button group if any contact is selected
-  $('.contact-checkbox').change(function() {
-    // Need to delay checkbox check to account for short lag after Select All is unchecked
-    setTimeout(function() {
-      if ($("input[type=checkbox].contact-checkbox").is(":checked")) {
-        $('#mass_action_btns').show();
-      } else {
-        $('#mass_action_btns').hide();
-      }
-     }, 10);
-  });
 
   $('#modal-bulk-tag').on('show.bs.modal', function () {
-    var totalChecked = selectedContactsCount();
-    document.getElementById("tag-contact-num").textContent = totalChecked;
-  })
+    document.getElementById("tag-contact-num").textContent = selectedContacts.length;
+  });
+
+  $("#sort").on('change', function(event) {
+    var field = $(this).find(':selected').data('field');
+    var order = $(this).find(':selected').data('order');
+    $('#contacts-table').jsGrid('sort', { field: field, order: order });
+  });
+
+  $("#filter").on('change', function(event) {
+    window.contactListFilter.salesStage = this.value;
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
+  });
+
+  $("#pageSize").on('change', function(event) {
+    $("#contacts-table").jsGrid("option", "pageSize", this.value);
+  });
+});
+
+var selectedContacts = [];
+
+$("#contacts-table").jsGrid({
+  width: "100%",
+  height: "auto",
+  selecting: false,
+  paging: true,
+  pageSize: 15,
+  pageButtonCount: 3,
+  pagerFormat: "{first} {prev} {pages} {next} {last}",
+  autoload: true,
+  controller: {
+    loadData: function(filter) {
+      var d = $.Deferred();
+
+      if (window.contactList) {
+        var regex = new RegExp(filter.printName || '', 'i');
+
+        d.resolve(window.contactList.filter(function (row){
+          return (
+            ((row.salesStageClass == filter.salesStage) || !filter.salesStage)
+            && regex.test(row.printName)
+          )
+        }));
+      } else {
+        $.ajax({
+          url: "/admin/next/contacts.json",
+          dataType: "json"
+        }).done(function(response) {
+          window.contactList = response;
+          d.resolve(window.contactList);
+        });
+      }
+
+      return d.promise();
+    }
+  },
+
+  fields: [
+      {
+        headerTemplate: function() {
+          return `<span class="pl-20"></span>`;
+        },
+        itemTemplate: function(_, item) {
+          return $("<input>").addClass("ml-15 contact-checkbox").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
+            item.Selected = !item.Selected;
+
+            if (item.Selected) {
+              selectedContacts.push(item);
+            } else {
+              selectedContacts = selectedContacts.filter(function(e) { return e !== item })
+            }
+
+            selectedContacts.length > 0 ? $('#mass_action_btns').show() : $('#mass_action_btns').hide();
+          });
+        },
+        align: "center",
+        width: 40,
+        sorting: false,
+        css: "d-none d-md-table-cell"
+      },
+      {
+        headerTemplate: function() {
+          return `<span class="text-fade pl-30 fs-14">General Info</span>`;
+        },
+        itemTemplate: function(_, item) {
+         return `
+            <a href="/admin/next/contacts/${item.id}" class="media">
+
+                <span class="avatar avatar-lg">${item.initials}</span>
+                <div class="media-body">
+                  <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
+                  <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
+                </div>
+
+            </a>
+          `;
+        },
+        align: "left",
+        width: "auto",
+        sorting: false
+      },
+      {
+        headerTemplate: function() {
+          return `<span class="text-fade fs-14">Tags</span>`;
+        },
+        itemTemplate: function(_, item) {
+          var result = "";
+
+          result = item.tags.slice(0,3).map(function(tag) {
+            return `
+              <span class="badge badge-secondary ml-0">${tag}</span>
+            `;
+          }).join('');
+
+          if (item.tags.length > 3) {
+            var tags_list = item.tags.slice(3).map(function(tag) {
+              return `
+                <span class="badge badge-secondary ml-0">${tag}</span>
+              `;
+            }).join('');
+
+            result = `
+              ${result}
+              <div class="dropdown table-action" style="display: inline-block;">
+                <span class="dropdown-toggle no-caret hover-primary pl-10" data-toggle="dropdown"><span class="badge badge-gray ml-0">+${item.tags.length - 3}</span></span>
+                <div class="dropdown-menu dropdown-menu-right p-2">${tags_list}</div>
+              </div>
+            `;
+          }
+
+          return result;
+        },
+        align: "left",
+        width: "auto",
+        sorting: false,
+        css: "d-none d-xl-table-cell w-350px"
+      },
+      {
+        headerTemplate: function() {
+          return "";
+        },
+        itemTemplate: function(_, item) {
+          return `
+            <div class="dropdown table-action">
+              <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#" onclick="archiveSingleContact(${item.id})"><i class="ti-trash"></i> Archive</a>
+              </div>
+            </div>
+          `;
+        },
+        align: "left",
+        width: "40",
+        sorting: false
+      },
+      {
+        type: "number",
+        name: "id",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "printName",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "lastName",
+        visible: false,
+      },
+      {
+        type: "text",
+        name: "salesStageClass",
+        visible: false,
+      }
+  ]
 });
