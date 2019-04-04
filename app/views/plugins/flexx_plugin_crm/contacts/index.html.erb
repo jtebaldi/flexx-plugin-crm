@@ -1,5 +1,6 @@
 <% content_for :js do %>
   <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/intlTelInput.min' %>
+  <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/contacts' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/intlTelInput.min' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/common' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/contacts' %>
@@ -21,27 +22,6 @@
   });
 </script>
 
-<style>
-  .badge-gray { color: #fff; }
-  #contact-list .badge { letter-spacing: .5px; }
-
-  .contact-table { table-layout: fixed; }
-  .contact-table .media-body { padding-top: 6px; }
-  .contact-table .custom-checkbox .custom-control-label:empty::after { top: 1px; }
-  .contact-table tr:hover { background-color: #e3f3fc; }
-  .contact-table tr.active { background-color: #e3f3fc; }
-
-  /* Bulk tagging modal */
-  .current-tags { height: 275px; }
-  .bulk-add .badge { color: #fff !important; background-color: #15c377 !important; }
-  .bulk-remove .badge { color: #fff !important; background-color: #f96868 !important; }
-
-  @media only screen and (max-width: 768px) {
-    #mass_action_btns { display: none; }
-    .current-tags { height: 100%; }
-  }
-</style>
-
 <header class="header">
   <div class="header-info">
     <div class="left">
@@ -56,67 +36,58 @@
 </header>
 
 <div class="main-content">
-  <div class="card card-shadowed">
-    <form class="lookup lookup-huge">
-      <input id="contact-search" class="no-radius no-border" type="text" placeholder="Start typing name...">
-    </form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-shadowed">
+        <form class="lookup lookup-huge">
+          <input id="contact-search" class="no-radius no-border" type="text" placeholder="Start typing name...">
+        </form>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-1">
+      <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16 d-block">
+
+        <div class="flexbox align-items-center action-buttons">
+          <div id="mass_action_btns" class="btn-group mr-15">
+            <div class="dropdown dropdown-lg">
+              <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Bulk Actions</button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag"><i class="fas fa-tags"></i> Manage Tags</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="archiveContacts()"><i class="fas fa-archive"></i> Archive</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'desc' })">Newest</a>
+              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'asc' })">Oldest</a>
+              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'printName', order: 'asc' })">First Name</a>
+              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'lastName', order: 'asc' })">Last Name</a>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#" data-contacts-filter="">All</a>
+              <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
+              <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
+              <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
+            </div>
+          </div>
+          <span id="selected-filter" class="badge badge-lg badge-dark">None</span>
+        </div>
+
+      </header>
+    </div>  
   </div>
 
-  <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16">
-    <div class="flexbox align-items-center row">
+  
 
-      <div class="col-sm-8 pl-0">
-        <div class="btn-group btn-group-justified hidden" data-toggle="buttons">
-          <label class="btn btn-light m-0 active">
-            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>All</input>
-          </label>
-          <label class="btn btn-light m-0">
-            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Leads</input>
-          </label>
-          <label class="btn btn-light m-0">
-            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Prospects</input>
-          </label>
-          <label class="btn btn-light m-0">
-            <input class="hide-control" type="radio" name="options" id="contacts_all" autocomplete="off" checked>Customers</input>
-          </label>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'desc' })">Newest</a>
-          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'asc' })">Oldest</a>
-          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'printName', order: 'asc' })">First Name</a>
-          <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'lastName', order: 'asc' })">Last Name</a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#" data-contacts-filter="">All</a>
-          <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
-          <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
-          <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
-        </div>
-      </div>
-      <span id="selected-filter" class="badge badge-lg badge-dark">None</span>
-    </div>
-
-    <div id="mass_action_btns" class="btn-group mr-15">
-      <div class="dropdown dropdown-lg">
-        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Bulk Actions</button>
-        <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag"><i class="fas fa-tags"></i> Manage Tags</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" onclick="archiveContacts()"><i class="fas fa-archive"></i> Archive</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="card card-transparent">
+  <div class="card card-transparent contact-list-container mt-10">
     <div id="contacts-table" data-provide="jsgrid">
     </div>
     <table class="table table-separated contact-table" data-provide="selectall">

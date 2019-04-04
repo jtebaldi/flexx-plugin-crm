@@ -1,0 +1,63 @@
+.badge-gray { color: #fff; }
+#contact-list .badge { letter-spacing: .5px; }
+
+/* Bulk tagging modal */
+.current-tags { height: 275px; }
+.bulk-add .badge { color: #fff !important; background-color: #15c377 !important; }
+.bulk-remove .badge { color: #fff !important; background-color: #f96868 !important; }
+
+@media only screen and (max-width: 768px) {
+  #mass_action_btns { display: none; }
+  .current-tags { height: 100%; }
+}
+
+.action-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  @media (max-width: 767px) { position: relative; top: 0; right: 0; }
+}
+
+#contacts-table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+
+  .media-body { padding-top: 6px; }
+  tr:hover { background-color: #e3f3fc; }
+  tr.active { background-color: #e3f3fc; }
+
+  input[type='checkbox']:after{
+    line-height: 1.5em;
+    content: '';
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-top: -4px;
+    margin-left: -4px;
+    border: 2px solid #24ade3;
+    border-radius: 10%;
+    background: #fff;
+  }
+  
+  input[type='checkbox']:checked:after {
+    width: 22px;
+    height: 22px;
+    background-color: #24ade3;
+  }
+
+  .jsgrid-align-left { text-align: left !important; }
+  .jsgrid-row, .jsgrid-alt-row {
+    background-color: #fff;
+    td { border-right: none; border-left: none; }
+    @media (max-width: 767px) { td:first-of-type, td:nth-of-type(3n) { display: none; } }
+  }
+
+  .jsgrid-cell { background-color: transparent; }
+
+  .jsgrid-header-cell, .jsgrid-grid-header {
+    background-color: #f5f6fa;
+    border: none !important;
+  }
+}

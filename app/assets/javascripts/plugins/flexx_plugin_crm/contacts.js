@@ -160,6 +160,8 @@ function bulkUpdateTags() {
 }
 
 app.ready(function() {
+  
+
   taglist.initialize();
 
   $('#typeahed-tags').tagsinput({
@@ -293,9 +295,9 @@ var selectedContacts = [];
 $("#contacts-table").jsGrid({
   width: "100%",
   height: "auto",
-  selecting: true,
+  selecting: false,
   paging: true,
-  pageSize: 10,
+  pageSize: 40,
   autoload: true,
   controller: {
     loadData: function(filter) {
@@ -327,10 +329,10 @@ $("#contacts-table").jsGrid({
   fields: [
       {
         headerTemplate: function() {
-          return ""; //$("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); });
+          return `<span class="pl-20 d-none d-md-table-cell"></span>`; //$("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); }); 
         },
         itemTemplate: function(_, item) {
-          return $("<input>").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
+          return $("<input>").addClass("ml-15 contact-checkbox").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
             item.Selected = !item.Selected;
 
             if (item.Selected) {
@@ -343,31 +345,33 @@ $("#contacts-table").jsGrid({
           });
         },
         align: "center",
-        width: 50,
+        width: 40,
         sorting: false
       },
       {
         headerTemplate: function() {
-          return "";
+          return `<span class="text-fade pl-30 fs-14">General Info</span>`;
         },
         itemTemplate: function(_, item) {
          return `
-            <div class="media">
-              <a href="/admin/next/contacts/${item.id}" class="avatar avatar-lg">${item.initials}</a>
-              <div class="media-body">
-                <h6 class="lh-1"><a href="/admin/next/contacts/${item.id}">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</a></h6>
-                <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
-              </div>
-            </div>
+            <a href="/admin/next/contacts/${item.id}" class="media">
+              
+                <span class="avatar avatar-lg">${item.initials}</span>
+                <div class="media-body">
+                  <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
+                  <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
+                </div>
+              
+            </a>
           `;
         },
         align: "left",
-        width: "100%",
+        width: "auto",
         sorting: false
       },
       {
         headerTemplate: function() {
-          return "Tags";
+          return `<span class="text-fade d-none d-xl-table-cell w-350px fs-14">Tags</span>`;
         },
         itemTemplate: function(_, item) {
           var result = "";
@@ -397,7 +401,7 @@ $("#contacts-table").jsGrid({
           return result;
         },
         align: "left",
-        width: "150",
+        width: "auto",
         sorting: false
       },
       {
@@ -415,7 +419,7 @@ $("#contacts-table").jsGrid({
           `;
         },
         align: "left",
-        width: "50",
+        width: "40",
         sorting: false
       },
       {
