@@ -297,7 +297,9 @@ $("#contacts-table").jsGrid({
   height: "auto",
   selecting: false,
   paging: true,
-  pageSize: 40,
+  pageSize: 30,
+  pageButtonCount: 3,
+  pagerFormat: "{first} {prev} {pages} {next} {last}",
   autoload: true,
   controller: {
     loadData: function(filter) {
