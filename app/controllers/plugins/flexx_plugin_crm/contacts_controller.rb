@@ -7,13 +7,12 @@ module Plugins::FlexxPluginCrm
     before_action :load_records, only: [:show, :update]
 
     def index
-      @active_contacts = []
-      @tags = {}
+      @tags = current_site.owned_tags.order(:name)
+
       respond_to do |format|
         format.html
         format.json {
           @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
-          @tags = current_site.owned_tags.order(:name)
 
           render json: (@active_contacts.map do |ac|
             {
@@ -110,11 +109,13 @@ module Plugins::FlexxPluginCrm
     end
 
     def mass_action
+      contact_ids = params[:contact_ids].split(',')
+
       case params[:mass_action]
       when 'archive'
-        current_site.contacts.where(id: params[:contact_ids]).update_all(sales_stage: :archived)
+        current_site.contacts.where(id: contact_ids).update_all(sales_stage: :archived)
       when 'tags'
-        current_site.contacts.where(id: params[:contact_ids]).each do |contact|
+        current_site.contacts.where(id: contact_ids).each do |contact|
           tag_list = contact.all_tags_list
 
           tag_list -= params[:remove_tags].split(',') if params[:remove_tags].present?

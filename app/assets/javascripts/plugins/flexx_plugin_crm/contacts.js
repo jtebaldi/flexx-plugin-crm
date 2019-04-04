@@ -104,15 +104,9 @@ function newTouchpoint(e) {
   form.submit();
 }
 
-function selectedContactsCount() {
-  var checkedCount = $("input:checkbox.contact-checkbox:checked").length;
-  return checkedCount;
-}
-
 function archiveContacts() {
-  var totalChecked = selectedContactsCount();
   swal({
-    title: 'Archive ' + totalChecked + ' contacts',
+    title: 'Archive ' + selectedContacts.length + ' contacts',
     text: 'This will permanently remove all pending tasks and hide these contacts from your view. Are you sure you want to archive?',
     type: 'warning',
     showCancelButton: true,
@@ -121,6 +115,7 @@ function archiveContacts() {
   }).then((result) => {
     if (result.value) {
       $('#mass-action-option').val('archive');
+      $('#mass-action-contact-id').val(selectedContacts.map((c) => c.id ));
       $('#mass-action-form').submit();
     } else {
       return;
@@ -153,6 +148,7 @@ function cancelBulkTagging() {
 
 function bulkUpdateTags() {
   $('#mass-action-option').val('tags');
+  $('#mass-action-contact-id').val(selectedContacts.map((c) => c.id ));
   $('#mass-action-add-tags').val($('#bulk-add-tags-field').val());
   $('#mass-action-remove-tags').val($('#bulk-remove-tags-field').val());
 
@@ -160,8 +156,6 @@ function bulkUpdateTags() {
 }
 
 app.ready(function() {
-  
-
   taglist.initialize();
 
   $('#typeahed-tags').tagsinput({
@@ -285,8 +279,7 @@ app.ready(function() {
   $('#mass_action_btns').hide();
 
   $('#modal-bulk-tag').on('show.bs.modal', function () {
-    var totalChecked = selectedContactsCount();
-    document.getElementById("tag-contact-num").textContent = totalChecked;
+    document.getElementById("tag-contact-num").textContent = selectedContacts.length;
   })
 });
 
@@ -331,7 +324,7 @@ $("#contacts-table").jsGrid({
   fields: [
       {
         headerTemplate: function() {
-          return `<span class="pl-20 d-none d-md-table-cell"></span>`; //$("<input>").attr("type", "checkbox").on("click", function() { alert("select all"); }); 
+          return `<span class="pl-20 d-none d-md-table-cell"></span>`;
         },
         itemTemplate: function(_, item) {
           return $("<input>").addClass("ml-15 contact-checkbox").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
@@ -357,13 +350,13 @@ $("#contacts-table").jsGrid({
         itemTemplate: function(_, item) {
          return `
             <a href="/admin/next/contacts/${item.id}" class="media">
-              
+
                 <span class="avatar avatar-lg">${item.initials}</span>
                 <div class="media-body">
                   <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
                   <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
                 </div>
-              
+
             </a>
           `;
         },
