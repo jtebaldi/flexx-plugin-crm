@@ -1,3 +1,8 @@
+#contacts-header {
+  margin-left: 251px;
+  @media only screen and (max-width: 768px) { margin-left: 0; }
+}
+
 .badge-gray { color: #fff; }
 #contact-list .badge { letter-spacing: .5px; }
 
@@ -9,14 +14,6 @@
 @media only screen and (max-width: 768px) {
   .jsgrid-grid-header, #mass_action_btns { display: none; }
   .current-tags { height: 100%; }
-}
-
-.action-buttons {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-
-  @media (max-width: 767px) { position: relative; top: 0; right: 0; }
 }
 
 #contacts-table {
@@ -47,11 +44,12 @@
     background-color: #24ade3;
   }
 
+  .jsgrid-grid-header, .jsgrid-grid-body { overflow-y: initial; }
+
   .jsgrid-align-left { text-align: left !important; }
   .jsgrid-row, .jsgrid-alt-row {
     background-color: #fff;
     td { border-right: none; border-left: none; }
-    @media (max-width: 767px) { td:first-of-type, td:nth-of-type(3n) { display: none; } }
   }
 
   .jsgrid-cell { background-color: transparent; }

@@ -22,7 +22,7 @@
   });
 </script>
 
-<header class="header">
+<header id="contacts-header" class="header">
   <div class="header-info">
     <div class="left">
       <h2 class="header-title">Your <strong>Contacts</strong></h2>
@@ -35,54 +35,54 @@
   </div>
 </header>
 
-<div class="main-content">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card card-shadowed">
-        <form class="lookup lookup-huge">
-          <input id="contact-search" class="no-radius no-border" type="text" placeholder="Start typing name...">
-        </form>
+<aside class="aside aside-expand-md">
+  <div class="aside-body">
+    <div class="aside-block form-type-line">
+      <p><small class="text-uppercase">List options</small></p>
+
+      <div class="form-group mt-10">
+        <label>Contacts per page</label>
+        <select class="form-control" id="pageSize">
+          <option value="15" selected="selected">15</option>
+          <option value="30">30</option>
+          <option value="60">60</option>
+        </select>
+      </div>
+
+      <div class="form-group mt-30">    
+        <label>Sort by</label>
+        <select class="form-control" id="sort">
+          <option selected="selected" data-field="id" data-order="desc">Newest</option>
+          <option data-field="id" data-order="asc">Oldest</option>
+        </select>
+      </div>
+      
+      <div class="form-group mt-30">    
+        <label>Filter by status</label>
+        <select class="form-control" id="filter">
+          <option selected="selected" value="">All</option>
+          <option value="lead">Leads</option>
+          <option value="prospect">Prospects</option>
+          <option value="customer">Customers</option>
+        </select>
+      </div>
+
+      <div id="mass_action_btns" class="text-center mt-40 b-1 p-15">
+        <p><small class="text-uppercase">Bulk Actions</small></p>
+        <button class="btn btn-label btn-info btn-block" data-toggle="modal" data-target="#modal-bulk-tag"><label><i class="fas fa-tags"></i></label> Manage Tags</button>
+        <button class="btn btn-label btn-warning btn-block mt-20" onclick="archiveContacts()"><label><i class="fas fa-archive"></i></label> Archive</button>
       </div>
     </div>
-    <div class="col-md-5 offset-md-1">
-      <header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16 d-block">
+  </div>
 
-        <div class="flexbox align-items-center action-buttons">
-          <div id="mass_action_btns" class="btn-group mr-15">
-            <div class="dropdown dropdown-lg">
-              <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">Bulk Actions</button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#modal-bulk-tag" data-toggle="modal" data-target="#modal-bulk-tag"><i class="fas fa-tags"></i> Manage Tags</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" onclick="archiveContacts()"><i class="fas fa-archive"></i> Archive</a>
-              </div>
-            </div>
-          </div>
+  <button class="aside-toggler"></button>
+</aside>
 
-          <div class="dropdown">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Sort by</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'desc' })">Newest</a>
-              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'id', order: 'asc' })">Oldest</a>
-              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'printName', order: 'asc' })">First Name</a>
-              <a class="dropdown-item" href="#" onclick="$('#contacts-table').jsGrid('sort', { field: 'lastName', order: 'asc' })">Last Name</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Filter by</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#" data-contacts-filter="">All</a>
-              <a class="dropdown-item" href="#" data-contacts-filter="lead">Lead</a>
-              <a class="dropdown-item" href="#" data-contacts-filter="prospect">Prospect</a>
-              <a class="dropdown-item" href="#" data-contacts-filter="customer">Customer</a>
-            </div>
-          </div>
-          <span id="selected-filter" class="badge badge-lg badge-dark">None</span>
-        </div>
-
-      </header>
-    </div>
+<div class="main-content">
+  <div class="card card-shadowed">
+    <form class="lookup lookup-huge">
+      <input id="contact-search" class="no-radius no-border" type="text" placeholder="Start typing name...">
+    </form>
   </div>
 
   <div class="card card-transparent contact-list-container mt-10">

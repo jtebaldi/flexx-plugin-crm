@@ -255,12 +255,6 @@ app.ready(function() {
 
   window.contactListFilter = {};
 
-  $('[data-contacts-filter]').click((e) => {
-    $('#selected-filter').html(e.target.innerHTML);
-    window.contactListFilter.salesStage = $(e.target).data('contacts-filter');
-    $('#contacts-table').jsGrid('search', window.contactListFilter);
-  });
-
   $('#contact-search').keyup((e) => {
     window.contactListFilter.printName = e.target.value.toLowerCase();
     $('#contacts-table').jsGrid('search', window.contactListFilter);
@@ -280,7 +274,22 @@ app.ready(function() {
 
   $('#modal-bulk-tag').on('show.bs.modal', function () {
     document.getElementById("tag-contact-num").textContent = selectedContacts.length;
-  })
+  });
+
+  $("#sort").on('change', function(event) {
+    var field = $(this).find(':selected').data('field');
+    var order = $(this).find(':selected').data('order');
+    $('#contacts-table').jsGrid('sort', { field: field, order: order });
+  });
+
+  $("#filter").on('change', function(event) {
+    window.contactListFilter.salesStage = this.value;
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
+  });
+
+  $("#pageSize").on('change', function(event) {
+    $("#contacts-table").jsGrid("option", "pageSize", this.value);
+  });
 });
 
 var selectedContacts = [];
@@ -290,7 +299,7 @@ $("#contacts-table").jsGrid({
   height: "auto",
   selecting: false,
   paging: true,
-  pageSize: 30,
+  pageSize: 15,
   pageButtonCount: 3,
   pagerFormat: "{first} {prev} {pages} {next} {last}",
   autoload: true,
@@ -324,7 +333,7 @@ $("#contacts-table").jsGrid({
   fields: [
       {
         headerTemplate: function() {
-          return `<span class="pl-20 d-none d-md-table-cell"></span>`;
+          return `<span class="pl-20"></span>`;
         },
         itemTemplate: function(_, item) {
           return $("<input>").addClass("ml-15 contact-checkbox").attr("type", "checkbox").prop("checked", item.Selected).on("click", function() {
@@ -341,7 +350,8 @@ $("#contacts-table").jsGrid({
         },
         align: "center",
         width: 40,
-        sorting: false
+        sorting: false,
+        css: "d-none d-md-table-cell"
       },
       {
         headerTemplate: function() {
@@ -366,7 +376,7 @@ $("#contacts-table").jsGrid({
       },
       {
         headerTemplate: function() {
-          return `<span class="text-fade d-none d-xl-table-cell w-350px fs-14">Tags</span>`;
+          return `<span class="text-fade fs-14">Tags</span>`;
         },
         itemTemplate: function(_, item) {
           var result = "";
@@ -397,7 +407,8 @@ $("#contacts-table").jsGrid({
         },
         align: "left",
         width: "auto",
-        sorting: false
+        sorting: false,
+        css: "d-none d-xl-table-cell w-350px"
       },
       {
         headerTemplate: function() {
