@@ -27,7 +27,13 @@
   .contact-details {
     a.media { padding: 6px 12px; }
     .media-body { padding-top: 14px; }
-    .avatar { border-radius: 5px; }
+    .avatar {
+      border-radius: 5px;
+
+      &.lead-stage { color: #fd7e14; border: 1px solid #fd7e14; }
+      &.prospect-stage { color: #48b0f7; border: 1px solid #48b0f7; }
+      &.customer-stage { color: #28a745; border: 1px solid #28a745; }
+    }
   }
 
   input[type='checkbox']:after{
