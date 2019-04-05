@@ -361,7 +361,7 @@ $("#contacts-table").jsGrid({
          return `
             <a href="/admin/next/contacts/${item.id}" class="media">
 
-                <span class="avatar avatar-lg">${item.initials}</span>
+                <span class="avatar avatar-xl ${item.salesStageClass}-stage">${item.initials}</span>
                 <div class="media-body">
                   <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
                   <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
@@ -372,7 +372,8 @@ $("#contacts-table").jsGrid({
         },
         align: "left",
         width: "auto",
-        sorting: false
+        sorting: false,
+        css: "contact-details"
       },
       {
         headerTemplate: function() {
@@ -383,14 +384,14 @@ $("#contacts-table").jsGrid({
 
           result = item.tags.slice(0,3).map(function(tag) {
             return `
-              <span class="badge badge-secondary ml-0">${tag}</span>
+              <span class="badge badge-secondary ml-0">${tag.name}</span>
             `;
           }).join('');
 
           if (item.tags.length > 3) {
             var tags_list = item.tags.slice(3).map(function(tag) {
               return `
-                <span class="badge badge-secondary ml-0">${tag}</span>
+                <span class="badge badge-secondary ml-0">${tag.name}</span>
               `;
             }).join('');
 

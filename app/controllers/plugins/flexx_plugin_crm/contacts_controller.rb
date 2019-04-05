@@ -12,7 +12,7 @@ module Plugins::FlexxPluginCrm
       respond_to do |format|
         format.html
         format.json {
-          @active_contacts = current_site.contacts.active.order('created_at desc', :first_name)
+          @active_contacts = current_site.contacts.active.includes(:tasks, :tags).order('created_at desc', :first_name)
 
           render json: (@active_contacts.map do |ac|
             {
@@ -21,9 +21,9 @@ module Plugins::FlexxPluginCrm
               printName: ac.print_name,
               lastName: ac.last_name,
               salesStage: ac.sales_stage.capitalize,
-              salesStageClass: ac.sales_stage,
-              pendingTasksClass: ('text-info' if ac.pending_tasks_count > 0),
-              pendingTasks: case ac.pending_tasks_count
+              salesStageClass: ac.sales_stage, 
+              pendingTasksClass: ('text-info' if ac.tasks.length > 0),
+              pendingTasks: case ac.tasks.length
                             when 0
                               'No pending tasks'
                             when 1
@@ -31,7 +31,7 @@ module Plugins::FlexxPluginCrm
                             else
                               "#{ac.pending_tasks_count} pending tasks"
                             end,
-              tags: ac.all_tags_list
+              tags: ac.tags
             }
           end)
         }
