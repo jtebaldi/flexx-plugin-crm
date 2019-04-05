@@ -361,7 +361,7 @@ $("#contacts-table").jsGrid({
          return `
             <a href="/admin/next/contacts/${item.id}" class="media">
 
-                <span class="avatar avatar-lg">${item.initials}</span>
+                <span class="avatar avatar-xl">${item.initials}</span>
                 <div class="media-body">
                   <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
                   <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
@@ -372,7 +372,8 @@ $("#contacts-table").jsGrid({
         },
         align: "left",
         width: "auto",
-        sorting: false
+        sorting: false,
+        css: "contact-details"
       },
       {
         headerTemplate: function() {
