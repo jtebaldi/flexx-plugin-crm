@@ -364,7 +364,7 @@ $("#contacts-table").jsGrid({
                 <span class="avatar avatar-xl ${item.salesStageClass}-stage">${item.initials}</span>
                 <div class="media-body">
                   <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
-                  <small class="${item.pendingTasksClass}">${item.pendingTasks}</small>
+                  <small>Added ${item.createdDate}</small>
                 </div>
 
             </a>

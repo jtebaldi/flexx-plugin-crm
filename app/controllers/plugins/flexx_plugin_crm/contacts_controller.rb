@@ -20,6 +20,7 @@ module Plugins::FlexxPluginCrm
               initials: ac.initials,
               printName: ac.print_name,
               lastName: ac.last_name,
+              createdDate: ac.created_at.strftime('%b, %d %Y'),
               salesStage: ac.sales_stage.capitalize,
               salesStageClass: ac.sales_stage, 
               pendingTasksClass: ('text-info' if ac.tasks.length > 0),
@@ -29,7 +30,7 @@ module Plugins::FlexxPluginCrm
                             when 1
                               '1 pending task'
                             else
-                              "#{ac.pending_tasks_count} pending tasks"
+                              "#{ac.tasks.length} pending tasks"
                             end,
               tags: ac.tags
             }
