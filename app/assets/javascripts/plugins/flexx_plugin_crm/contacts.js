@@ -253,6 +253,10 @@ app.ready(function() {
     }
   });
 
+  $('form :input').on('change input', function() {
+    $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+  });
+
   window.contactListFilter = {};
 
   $('#contact-search').keyup((e) => {
@@ -361,7 +365,7 @@ $("#contacts-table").jsGrid({
          return `
             <a href="/admin/next/contacts/${item.id}" class="media">
 
-                <span class="avatar avatar-xl ${item.salesStageClass}-stage">${item.initials}</span>
+                <span class="avatar avatar-xl contact ${item.salesStageClass}-stage">${item.initials}</span>
                 <div class="media-body">
                   <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</h6>
                   <small>Added ${item.createdDate}</small>

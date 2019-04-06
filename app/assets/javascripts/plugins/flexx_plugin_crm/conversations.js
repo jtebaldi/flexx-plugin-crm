@@ -115,7 +115,6 @@ app.ready(function() {
   //   wheelPropagation: false,
   //   wheelSpeed: .5,
   // });
-  // $('#conversations-thread-panel').scrollToEnd();
 
   $('#filter-unanswered').click((e) => {
     var $contacts = $('#inbox-list > a');

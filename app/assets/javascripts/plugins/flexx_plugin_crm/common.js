@@ -182,4 +182,6 @@ $(function(){
       $assignTo.html(staff);
     });
   });
+
+  $('#conversations-thread-panel, #chat-content').scrollToEnd();
 });

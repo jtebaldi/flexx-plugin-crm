@@ -1,18 +1,16 @@
 <% messages.each do |message| %>
   <% time_diff = -1 %>
   <% time_diff = ((@prev_created_at - message.created_at) / 1.hour).round unless @prev_created_at.nil? %>
+  <% if time_diff > 3 || time_diff < 0 %>
+    <p class="message-send-break"><span><time datetime="<%= message.created_at %>"><%= message.created_at.strftime('%a, %m/%d/%y %I:%M %p') %></time></span></p>
+  <% end %> 
   <div class="media media-chat pb-0 <%= 'media-chat-reverse' if message.status != 'received' %>">
     <% if message.status != 'received' %>
       <% unless current_site.users.find_by(id: message.created_by).nil? %>
         <span class="avatar" data-provide="tooltip" title="<%= current_site.users.find_by(id: message.created_by).print_name %>"><%= current_site.users.find_by(id: message.created_by).initials %></span>
       <% end %>
-    <% else %>
-      <span class="avatar"><%= @contact.initials %></span>
-    <% end %>    
-    <div class="media-body">      
-      <% if time_diff > 3 || time_diff < 0 %>
-        <p class="meta mb-0"><time datetime="<%= message.created_at %>"><%= message.created_at.strftime('%a, %m/%d/%y %I:%M %p') %></time></p>
-      <% end %>
+    <% end %>       
+    <div class="media-body">            
       <p data-provide="tooltip" title="<%= message.created_at.strftime('%m/%d %H:%I %p') %>"><%= message.message %></p>  
     </div>
   </div>

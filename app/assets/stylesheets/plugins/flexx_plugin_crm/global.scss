@@ -1,0 +1,35 @@
+// For all contact avatars
+.avatar.contact {
+  border-radius: 5px;
+
+  &.lead-stage { color: #fd7e14; border: 1px solid #fd7e14; }
+  &.prospect-stage { color: #48b0f7; border: 1px solid #48b0f7; }
+  &.customer-stage { color: #28a745; border: 1px solid #28a745; }
+}
+
+// SMS Conversations
+#conversations-thread-panel { height: 500px; max-height: 60vh; overflow-y: scroll; }
+#conversations-panel div:last-of-type, #conversations-thread-panel div:last-of-type { margin-bottom: 20px; }
+p.message-send-break {
+  width: 90%; text-align: center; border-bottom: 1px solid rgba(0,0,0,.05); line-height: 0.1em; margin: 10px auto 20px;
+
+  span { background:#fff; padding:0 10px; }
+  time { color: rgba(0,0,0,.2); }
+} 
+  
+// Save changes header bar for forms
+.save-changes-bar.header-bar {
+  position: fixed; top: 64px; z-index: 10; left: 100px;
+  @media (max-width: 991px) { left: 0; }
+}
+
+// Customizations to form-type-combine
+.form-type-combine {
+  .bootstrap-tagsinput {
+    box-shadow: none; border: none; min-height: 78px; padding: 0;
+    .twitter-typeahead { padding-left: 1px; }
+   }
+  // .form-group.with-dropdown { padding-bottom: 0; }
+  // .intl-tel-input, .bootstrap-select.form-control { top: -5px; }
+  .tt-menu { top: 10px !important; }
+}

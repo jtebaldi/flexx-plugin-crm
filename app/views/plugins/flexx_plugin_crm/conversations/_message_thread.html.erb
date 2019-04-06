@@ -1,6 +1,6 @@
 <header class="flexbox align-items-center p-12 pr-20 bg-lighter bb-1 border-light">
   <div class="media align-items-center p-0">
-    <a href="#"><span class="avatar"><%= contact.initials %></span></a>
+    <a href="#"><span class="avatar avatar-lg contact <%= contact.sales_stage %>-stage"><%= contact.initials %></span></a>
     <div class="media-body">
       <h6><a href="#"><%= contact.print_name %></a></h6>
     </div>
@@ -11,7 +11,7 @@
   </a>
 </header>
 
-<div class="scrollable flex-grow" id="conversations-thread-panel" data-provide="emoji" style="height: 500px; overflow-y: scroll;">
+<div class="scrollable flex-grow" id="conversations-thread-panel" data-provide="emoji">
   <%= render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: contact.messages.order(created_at: :asc) } %>
 </div>
 

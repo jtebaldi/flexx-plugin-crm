@@ -1,3 +1,4 @@
 $('#thread-body').html('<%= escape_javascript(render partial: 'message_thread', locals: { contact: @contact })  %>');
 $('#loading-thread').hide();
 $('#thread-body').fadeIn();
+$('#conversations-thread-panel').scrollToEnd();
