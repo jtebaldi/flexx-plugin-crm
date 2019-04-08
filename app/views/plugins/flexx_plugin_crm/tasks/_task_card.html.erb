@@ -118,7 +118,7 @@
                   <a class="text-info text-uppercase ml-10" href="<%= @task.contact && admin_contact_path(@task.contact.id) %>" data-provide="tooltip" title="View profile"><i class="ti-new-window"></i></a>
                   <span class="pull-right"><button class="btn btn-default btn-outline text-uppercase" onclick="closeHighlights();">Close</button></span>
                 </h4>
-                <p class="mt-25"><%= @task.contact && @task.contact.highlights %></p>
+                <div class="mt-25 text-left px-20"><%= @task.contact && raw(@task.contact.highlights) %></div>
               </div>
             </div>
           </div>

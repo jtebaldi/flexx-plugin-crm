@@ -292,17 +292,19 @@ app.ready(function() {
   });
 
   ClassicEditor
-    .create(document.querySelector('.h-editor'))
+    .create(document.querySelector('.h-editor'), {
+      toolbar: [ 'bold', 'italic', 'link', 'bulletedList' ]
+    })
     .then(function(editor){
       window.h_ckeditor = editor;
 
-      $('input, .ck-content').on('input change', function() {
+      $('input, .ck-content').on('keydown input change', function() {
         $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
       });
     })
     .catch(function(error){
       console.error(error);
-    });
+    });  
 });
 
 var selectedContacts = [];
