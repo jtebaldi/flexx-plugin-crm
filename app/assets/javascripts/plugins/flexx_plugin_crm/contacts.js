@@ -253,10 +253,6 @@ app.ready(function() {
     }
   });
 
-  $('form :input').on('change input', function() {
-    $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
-  });
-
   window.contactListFilter = {};
 
   $('#contact-search').keyup((e) => {
@@ -294,6 +290,19 @@ app.ready(function() {
   $("#pageSize").on('change', function(event) {
     $("#contacts-table").jsGrid("option", "pageSize", this.value);
   });
+
+  ClassicEditor
+    .create(document.querySelector('.h-editor'))
+    .then(function(editor){
+      window.h_ckeditor = editor;
+
+      $('input, .ck-content').on('input change', function() {
+        $(this).closest("form").find('.save-changes-bar').removeClass('hidden');
+      });
+    })
+    .catch(function(error){
+      console.error(error);
+    });
 });
 
 var selectedContacts = [];

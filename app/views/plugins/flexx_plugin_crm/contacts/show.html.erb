@@ -248,24 +248,24 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>First name</label>
-                    <input class="form-control" type="text" name="contact[first_name]" value="<%= @contact.first_name %>">                    
+                    <input class="form-control" type="text" name="contact[first_name]" value="<%= @contact.first_name %>">
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Last name</label>
-                    <input class="form-control" type="text" name="contact[last_name]" value="<%= @contact.last_name %>">                    
+                    <input class="form-control" type="text" name="contact[last_name]" value="<%= @contact.last_name %>">
                   </div>
                 </div>
 
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Email</label>
-                    <input id="email_field" class="form-control" type="email" name="contact[email]" data-remote="/admin/next/contacts/<%= @contact.id %>/email_validate" value="<%= @contact.email %>">                    
+                    <input id="email_field" class="form-control" type="email" name="contact[email]" data-remote="/admin/next/contacts/<%= @contact.id %>/email_validate" value="<%= @contact.email %>">
                     <div class="invalid-feedback"></div>
                   </div>
-                </div>                
+                </div>
               </div>
 
               <div id="phone-rows" data-utils-script="<%= asset_path('plugins/flexx_plugin_crm/utils.js') %>">
@@ -276,7 +276,7 @@
                         <div class="form-group with-dropdown">
                           <label>Phone</label>
                           <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="<%= phone.id %>">
-                          <input class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="<%= phone.number %>">                      
+                          <input class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="<%= phone.number %>">
                           <div class="invalid-feedback"></div>
                         </div>
                       </div>
@@ -294,7 +294,7 @@
                         <% if i == 0%>
                           <button class="btn btn-sm btn-info btn-outline my-2 h-50px w-100" data-add="phone" type="button"><i class="ti-plus"></i><i class="fas fa-phone fs-14 pl-1"></i></button>
                         <% end %>
-                      </div>                
+                      </div>
                     </div>
                   <% end %>
                 <% else %>
@@ -303,7 +303,7 @@
                       <div class="form-group with-dropdown">
                         <label>Phone</label>
                         <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
-                        <input id="phone_field" class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="">                    
+                        <input id="phone_field" class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="">
                         <div class="invalid-feedback"></div>
                       </div>
                     </div>
@@ -323,12 +323,12 @@
                   </div>
                 <% end %>
 
-              </div>  
-              
+              </div>
+
             </div>
             <div class="col-xl-6">
               <div class="row">
-                
+
                 <div class="col-12">
                   <div id="tags_field" class="form-group has-form-text">
                     <label>Tags</label>
@@ -336,28 +336,28 @@
                     <small class="form-text">Press enter after typing tag</small>
                   </div>
                 </div>
-                  
+
                 <div class="col-12">
                   <div class="form-group form-type-fill">
                     <label>Highlights</label>
-                    <textarea class="form-control px-1" placeholder="Include any details you may want to remember about the contact." rows="6" name="contact[highlights]"><%= @contact.highlights %></textarea>
+                    <textarea class="form-control px-1 h-editor" placeholder="Include any details you may want to remember about the contact." rows="6" name="contact[highlights]"><%= @contact.highlights %></textarea>
                   </div>
                 </div>
 
-              </div>              
+              </div>
             </div>
           </div>
 
           <hr>
-          
-          <div class="row">            
+
+          <div class="row">
             <div class="col-xl-6">
               <div class="row">
                 <div class="col-md-12">
                   <div class="input-group">
                     <div class="input-group-input">
                       <label>Status</label>
-                      <input type="text" class="form-control" value="<%= @contact.sales_stage.capitalize %>" readonly>                  
+                      <input type="text" class="form-control" value="<%= @contact.sales_stage.capitalize %>" readonly>
                     </div>
                     <span class="input-group-append">
                       <button class="btn btn-sm btn-info btn-outline" type="button" data-toggle="modal" data-target="#update_status_modal">Update</button>
@@ -378,9 +378,9 @@
                       <option <%= 'selected' if @contact.source == 'web_search' %> value="web_search">Web Search</option>
                       <option <%= 'selected' if @contact.source == 'website_form' %> value="website_form">Website Form</option>
                       <option <%= 'selected' if @contact.source == 'word_of_mouth' %> value="word_of_mouth">Word of mouth</option>
-                    </select>                
+                    </select>
                   </div>
-                </div> 
+                </div>
 
                 <div class="col-md-12">
                   <div class="form-group">
@@ -390,36 +390,36 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-6">              
+            <div class="col-xl-6">
               <div class="form-groups-attached">
-                <div class="form-group">                    
+                <div class="form-group">
                   <label>Street Address</label>
-                  <input class="form-control" type="text" name="contact[address1]" value="<%= @contact.address1 %>">                              
+                  <input class="form-control" type="text" name="contact[address1]" value="<%= @contact.address1 %>">
                 </div>
 
-                <div class="form-group">                    
+                <div class="form-group">
                   <label>Line 2</label>
-                  <input class="form-control" type="text" name="contact[address2]" value="<%= @contact.address2 %>">             
+                  <input class="form-control" type="text" name="contact[address2]" value="<%= @contact.address2 %>">
                 </div>
 
                 <div class="row">
-                  <div class="form-group col-md-4 col-12"> 
+                  <div class="form-group col-md-4 col-12">
                     <label>City</label>
-                    <input class="form-control" type="text" name="contact[city]" value="<%= @contact.city %>">                
+                    <input class="form-control" type="text" name="contact[city]" value="<%= @contact.city %>">
                   </div>
 
                   <div class="form-group col-md-4 col-6">
                     <label>State / Province / Region</label>
-                    <input class="form-control" type="text" name="contact[state]" value="<%= @contact.state %>">                
+                    <input class="form-control" type="text" name="contact[state]" value="<%= @contact.state %>">
                   </div>
 
                   <div class="form-group col-md-4 col-6">
                     <label>ZIP / Postal Code</label>
-                    <input class="form-control" type="text" name="contact[postal_code]" value="<%= @contact.postal_code %>">         
+                    <input class="form-control" type="text" name="contact[postal_code]" value="<%= @contact.postal_code %>">
                   </div>
                 </div>
 
-              </div>  
+              </div>
             </div>
           </div>
         </div>
@@ -431,14 +431,14 @@
           <div class="form-group with-dropdown">
             <label>Phone</label>
             <input type="hidden" name="contact[phonenumbers_attributes][][id]" value="">
-            <input class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="">            
+            <input class="form-control" type="tel" autocomplete="off" name="contact[phonenumbers_attributes][][number]" value="">
             <div class="invalid-feedback"></div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group with-dropdown">
             <label>Type</label>
-            <select class="form-control" name="contact[phonenumbers_attributes][][phone_type]">              
+            <select class="form-control" name="contact[phonenumbers_attributes][][phone_type]">
               <option value="mobile">Mobile</option>
               <option value="home">Home</option>
               <option value="other">Other</option>
