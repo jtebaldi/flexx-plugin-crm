@@ -225,6 +225,7 @@
             <button onclick="fillRecipientsField()" id="btn_send_email" class="btn btn-bold btn-w-xl btn-primary">
               <%= @email.new_record? ? 'Send Message' : 'Save Changes' %>
             </button>
+            <input type="button" onclick="$('#test_message_modal').modal('show')" value="Send Test Message" class="btn btn-bold btn-w-xl btn-secondary">
           </div>
         </div>
       <% end %>
@@ -232,3 +233,5 @@
 
   </div>
 </div>
+
+<%= render "plugins/flexx_plugin_crm/messages/send_test_message_modal" %>

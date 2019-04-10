@@ -1,4 +1,4 @@
-<select class="form-control" data-provide="selectpicker" name="<%= input_field_name %>">
+<select class="form-control" data-provide="selectpicker" name="<%= input_field_name %>" id="<%= input_field_name %>">
   <% EngageToolsService.senders_list(site: current_site).each do |row| %>
     <%
       selected = if defined?(value) && value

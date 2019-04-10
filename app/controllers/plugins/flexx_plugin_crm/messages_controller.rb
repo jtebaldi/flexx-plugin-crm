@@ -83,6 +83,10 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :sms
     end
 
+    def send_test_message
+      head :ok
+    end
+
     private
 
     def email_params

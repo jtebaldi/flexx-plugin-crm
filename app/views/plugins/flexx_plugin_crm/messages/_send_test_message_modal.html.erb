@@ -1,0 +1,28 @@
+<div class="modal fade" id="test_message_modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Send Test Message</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>To</label>
+          <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'test_email_to' } %>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Contact</label>
+          <input class="form-control" required type="text" id="test-email-contacts-field" placeholder="Start typing name...">
+          <input type="hidden" id="test-email-contact-id">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-bold btn-primary" onclick="sendTestMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
