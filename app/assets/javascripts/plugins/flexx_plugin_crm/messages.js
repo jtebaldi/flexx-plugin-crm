@@ -21,10 +21,13 @@ function pushTag(name, value) {
 }
 
 function sendTestMessage() {
+  if (!$('#test-email-contact-id').val()) {
+    return false;
+  }
   window.ckeditor.updateSourceElement();
 
   $.ajax({
-    url: '/admin/next/messages/send_test_message',
+    url: '/admin/next/messages/send_test_email',
     data: {
       contact_id: $('#test-email-contact-id').val(),
       to: $('#test_email_to').val(),

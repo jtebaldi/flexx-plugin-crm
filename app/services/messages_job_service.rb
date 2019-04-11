@@ -29,7 +29,7 @@ class MessagesJobService
 
     sg_message_id = SendgridAdapter.new(site: message.site).send_email(
       from: from,
-      to: message.email_recipients.map { |r| { email: r.to, name: r.contact.print_name } },
+      to: message.email_recipients.map { |r| { email: r.to, name: r.try(:contact).try(:print_name) } },
       subject: message.subject,
       body: message.body
     )

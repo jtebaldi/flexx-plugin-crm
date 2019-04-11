@@ -75,7 +75,7 @@ Rails.application.routes.draw do
             post :create_email
             post :create_message
             post :create_message_blast
-            post :send_test_message
+            post :send_test_email
           end
 
           member do

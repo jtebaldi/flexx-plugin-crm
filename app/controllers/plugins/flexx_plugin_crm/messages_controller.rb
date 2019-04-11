@@ -83,7 +83,20 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :sms
     end
 
-    def send_test_message
+    def send_test_email
+      contact = current_site.contacts.find(params[:contact_id])
+      subject = DynamicFieldsParserService.parse_contact(site: current_site, template: params[:subject], contact: contact)
+      message = DynamicFieldsParserService.parse_contact(site: current_site, template: params[:message], contact: contact)
+
+      current_site.emails.create!({
+        from: current_user.email,
+        recipients_list: params[:to],
+        subject: "[TEST] #{subject}",
+        body: message,
+        send_at: Time.current,
+        created_by: current_user.id
+      })
+
       head :ok
     end
 

@@ -22,7 +22,7 @@ class Plugins::FlexxPluginCrm::EmailRecipient < ActiveRecord::Base
   private
 
   def has_activity_record?
-    self.id_changed? && self.task.blank? && self.created_by.present?
+    self.id_changed? && self.task.blank? && self.created_by.present? && self.contact.present?
   end
 
   def activity_record_params
