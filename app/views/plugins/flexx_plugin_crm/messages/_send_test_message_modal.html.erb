@@ -8,20 +8,22 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label>To</label>
+        <h4>Check it out before you hit send</h4>
+        <p>See what your message blast will look like by sending it as a test email to a staff member, using a contact's information to fill any Dynamic fields.</p>
+        <div class="form-group form-type-combine">
+          <label>Send email to</label>
           <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'test_email_to' } %>
         </div>
 
-        <div class="form-group">
+        <div class="form-group form-type-combine">
           <label class="required">Contact</label>
           <input class="form-control" required type="text" id="test-email-contacts-field" placeholder="Start typing name...">
           <input type="hidden" id="test-email-contact-id">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-bold btn-primary" onclick="sendTestMessage()">Send</button>
+        <button type="button" class="btn btn-bold btn-flat btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-bold btn-primary" onclick="sendTestMessage()">Send Test Message</button>
       </div>
     </div>
   </div>

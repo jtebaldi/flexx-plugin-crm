@@ -37,6 +37,12 @@ function sendTestMessage() {
     type: 'POST'
   }).done(function() {
     $('#test_message_modal').modal('hide');
+    swal({
+      type: 'success',
+      title: 'Test message sent!',
+      showConfirmButton: false,
+      timer: 1500
+    })
   });
 }
 
