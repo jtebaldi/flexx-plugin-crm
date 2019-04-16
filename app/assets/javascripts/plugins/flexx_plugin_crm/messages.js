@@ -20,6 +20,32 @@ function pushTag(name, value) {
   $('#recipients').tagsManager('pushTag', name, false, null, false, value);
 }
 
+function sendTestMessage() {
+  if (!$('#test-email-contact-id').val()) {
+    return false;
+  }
+  window.ckeditor.updateSourceElement();
+
+  $.ajax({
+    url: '/admin/next/messages/send_test_email',
+    data: {
+      contact_id: $('#test-email-contact-id').val(),
+      to: $('#test_email_to').val(),
+      subject: $('#email_subject').val(),
+      message: $('#email_body').val()
+    },
+    type: 'POST'
+  }).done(function() {
+    $('#test_message_modal').modal('hide');
+    swal({
+      type: 'success',
+      title: 'Test message sent!',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  });
+}
+
 app.ready(function() {
   //Override the default confirm dialog by rails
   $.rails.allowAction = function(link){
@@ -85,6 +111,32 @@ app.ready(function() {
     tm.tagsManager('pushTag', d.name, false, null, false, d.value);
 
     $('#recipients').typeahead('val', '');
+  });
+
+  $('#test-email-contacts-field').typeahead({
+    hint: true,
+    highlight: true
+  },
+  {
+    name: 'contactlist',
+    displayKey: 'name',
+    valueKey: 'value',
+    source: contactlist
+  });
+
+  var clearContactId = true;
+
+  $('#test-email-contacts-field').bind('typeahead:change', function() {
+    if(clearContactId) {
+      $('#test-email-contact-id').val('');
+    } else {
+      clearContactId = true;
+    }
+  });
+
+  $('#test-email-contacts-field').bind('typeahead:selected', function(e, option) {
+    $('#test-email-contact-id').val(option.value);
+    clearContactId = false;
   });
 
   /********************************************************
