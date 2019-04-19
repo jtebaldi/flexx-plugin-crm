@@ -12,10 +12,10 @@
 
 <style>
   .custom-checkbox .custom-control-label:empty::after { top: 2px; }
-  
+
   .due-date { color: rgba(77, 82, 89, 0.7); }
   #old-pending-tasks-list .due-date { color: red; }
-  
+
   .ck-editor__editable {
     min-height: 350px;
   }
@@ -34,6 +34,7 @@
       <a class="nav-link active" data-toggle="tab" href="#tab-today">Today</a>
       <a class="nav-link" data-toggle="tab" href="#tab-upcoming">Upcoming</a>
       <a class="nav-link" data-toggle="tab" href="#tab-completed">Completed</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-stock">Stock Tasks</a>
     </nav>
     <div class="buttons">
       <button class="btn btn-primary btn-float" data-toggle="quickview" data-target="#qv-add-task"><i class="ti-plus"></i></button>
@@ -88,84 +89,13 @@
     <div class="col-md-12 col-lg-8">
       <div class="tab-content">
 
-        <div class="tab-pane fade active show" id="tab-today">
-          <div class="row">
-            <div class="col-md-12">
-              <% if @old_pending_tasks.length > 0 %>
-                <div id="old-pending-tasks-list">
-                  <h6 class="text-fade">Overdue</h6>
-                  <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
-                </div>
-              <% end %>
-              <div id="todays-tasks-list" class="mb-90">                
-                <% if @todays_tasks.length > 0 || @old_pending_tasks.length > 0 %>
-                  <h6 class="text-fade">Today</h6>
-                  <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
-                <% else %>
-                  <div class="media card-body b-1">
-                    <div class="media-body h-80px">
-                      <div class="mb-2 text-center pt-30">
-                        <span class="fs-20">All tasks complete</span>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
+        <%= render 'tab_today' %>
 
-        <div class="tab-pane fade" id="tab-upcoming">
-          <div class="row">
+        <%= render 'tab_upcoming' %>
 
-            <div class="col-md-12">
-              <div id="upcoming-tasks-list">
-                <% if @upcoming_tasks.length > 0 %>
-                  <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
-                <% else %>
-                  <div class="media card-body b-1">
-                    <div class="media-body h-100px">
-                      <div class="mb-2 text-center pt-20">
-                        <p class="fs-20">No upcoming tasks</p>
-                        <a class="btn btn-pure btn-primary" data-toggle="quickview" href="#qv-add-task" data-target="#qv-add-task">Create a task</a>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </div>
+        <%= render 'tab_completed' %>
 
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="tab-completed">
-          <div class="row">
-
-            <div class="col-md-12">
-              <div id="old-completed-tasks-list">
-                <% if @todays_completed_tasks.length > 0 %>
-                  <h6 class="text-fade">Today</h6>
-                  <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
-                <% end %>
-              </div>
-
-              <div class="<%= 'accordion' if @old_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
-                <div class="">
-                  <h4 class="card-title mb-20">
-                    <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past tasks</strong> <% if @old_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
-                  </h4>
-
-                  <div id="collapse-tasks" class="collapse">
-                    <div id="contact-open-tasks-panel">
-                      <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
+        <%= render 'tab_stock' %>
 
       </div>
     </div>

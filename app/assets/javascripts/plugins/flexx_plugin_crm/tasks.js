@@ -93,12 +93,23 @@ app.ready(function() {
   $('nav#taskNav > a').click(function(event){
     var active_tab = $(this).attr('href');
 
-    if (active_tab == "#tab-completed") {
-      $('#pendingStaff').hide();
-    } else {
-      $('#pendingStaff').show();
+    switch(active_tab) {
+      case '#tab-stock':
+        $('.buttons').hide();
+        $('#stockTasksList').show();
+        $('#pendingStaff').hide();
+        break;
+      case '#tab-completed':
+        $('.buttons').show();
+        $('#stockTasksList').hide();
+        $('#pendingStaff').hide();
+        break;
+      default:
+        $('.buttons').show();
+        $('#stockTasksList').hide();
+        $('#pendingStaff').show();
+        break;
     }
-
   });
 
   observeTaskPanelForCKEditor();

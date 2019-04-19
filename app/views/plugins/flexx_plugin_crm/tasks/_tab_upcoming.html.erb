@@ -1,0 +1,22 @@
+<div class="tab-pane fade" id="tab-upcoming">
+  <div class="row">
+
+    <div class="col-md-12">
+      <div id="upcoming-tasks-list">
+        <% if @upcoming_tasks.length > 0 %>
+          <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
+        <% else %>
+          <div class="media card-body b-1">
+            <div class="media-body h-100px">
+              <div class="mb-2 text-center pt-20">
+                <p class="fs-20">No upcoming tasks</p>
+                <a class="btn btn-pure btn-primary" data-toggle="quickview" href="#qv-add-task" data-target="#qv-add-task">Create a task</a>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

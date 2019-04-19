@@ -1,0 +1,26 @@
+<div class="tab-pane fade active show" id="tab-today">
+  <div class="row">
+    <div class="col-md-12">
+      <% if @old_pending_tasks.length > 0 %>
+        <div id="old-pending-tasks-list">
+          <h6 class="text-fade">Overdue</h6>
+          <%= render partial: 'tasks_list', locals: { tasks: @old_pending_tasks, refresh_panel: 'tasks-dashboard' } %>
+        </div>
+      <% end %>
+      <div id="todays-tasks-list" class="mb-90">
+        <% if @todays_tasks.length > 0 || @old_pending_tasks.length > 0 %>
+          <h6 class="text-fade">Today</h6>
+          <%= render partial: 'tasks_list', locals: { tasks: @todays_tasks, refresh_panel: 'tasks-dashboard' } %>
+        <% else %>
+          <div class="media card-body b-1">
+            <div class="media-body h-80px">
+              <div class="mb-2 text-center pt-30">
+                <span class="fs-20">All tasks complete</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

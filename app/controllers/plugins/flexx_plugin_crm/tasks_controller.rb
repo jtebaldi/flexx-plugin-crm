@@ -10,6 +10,7 @@ module Plugins::FlexxPluginCrm
       @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
       @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
       @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
+      @stock_tasks = current_site.stocks.unscoped.tasks
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
       }.to_json

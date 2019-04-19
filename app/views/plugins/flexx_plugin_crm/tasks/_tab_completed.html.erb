@@ -1,0 +1,28 @@
+<div class="tab-pane fade" id="tab-completed">
+  <div class="row">
+
+    <div class="col-md-12">
+      <div id="old-completed-tasks-list">
+        <% if @todays_completed_tasks.length > 0 %>
+          <h6 class="text-fade">Today</h6>
+          <%= render partial: 'tasks_list', locals: { tasks: @todays_completed_tasks, refresh_panel: '' } %>
+        <% end %>
+      </div>
+
+      <div class="<%= 'accordion' if @old_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
+        <div class="">
+          <h4 class="card-title mb-20">
+            <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past tasks</strong> <% if @old_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+          </h4>
+
+          <div id="collapse-tasks" class="collapse">
+            <div id="contact-open-tasks-panel">
+              <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
