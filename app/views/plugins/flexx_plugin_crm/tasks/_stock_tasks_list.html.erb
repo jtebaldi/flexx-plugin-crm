@@ -3,9 +3,9 @@
   <div class="media-list-body">
 
     <% current_site.stocks.unscoped.tasks.each do |st| %>
-      <div class="media media-single" onclick="">
+      <a class="media media-single" data-toggle="quickview" href="#qv_view_stock_task" data-url="<%= stock_card_admin_tasks_path(st.id) %>">
         <span class="title"><%= st.name %></span>
-      </div>
+      </a>
     <% end %>
 
   </div>

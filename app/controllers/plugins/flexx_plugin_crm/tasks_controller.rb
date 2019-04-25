@@ -132,6 +132,26 @@ module Plugins::FlexxPluginCrm
       current_site.stocks.create!(stock_task_params.merge(contents: '', created_by: current_user.id))
     end
 
+    def stock_card
+      @stock_task = current_site.stocks.unscoped.find(params[:id])
+
+      render partial: "plugins/flexx_plugin_crm/tasks/stock_card"
+    end
+
+    def update_stock
+      stock_task = current_site.stocks.unscoped.find(params[:id])
+
+      stock_task.update(stock_task_params)
+    end
+
+    def delete_stock
+      stock_task = current_site.stocks.unscoped.find(params[:id])
+
+      stock_task.destroy
+
+      render :update_stock
+    end
+
     private
 
     def task_params

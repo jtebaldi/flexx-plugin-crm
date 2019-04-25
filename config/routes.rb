@@ -35,17 +35,19 @@ Rails.application.routes.draw do
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks' do
           collection do
+            get 'stocks/:id', action: :stock_card, as: :stock_card
             post :create_stock
             post :defer_task
             post :send_task_confirmation
             patch :update_note
+            patch 'stocks/:id', action: :update_stock, as: :update_stock
             delete :delete_note
+            delete 'stocks/:id', action: :delete_stock, as: :delete_stock
           end
 
           post :create_note, on: :member
 
-          get  'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
-
+          get 'task_owners/:refresh_panel', action: :task_owners, as: :task_owners
         end
 
         resources :contacts, controller: 'plugins/flexx_plugin_crm/contacts', except: [:edit] do

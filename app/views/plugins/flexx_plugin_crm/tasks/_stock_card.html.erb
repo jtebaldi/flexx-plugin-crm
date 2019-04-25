@@ -1,0 +1,45 @@
+<header class="quickview-header">
+  <p class="quickview-title lead">Edit Stock Task</p>
+  <span class="close"><i class="ti-close"></i></span>
+</header>
+<div class="quickview-body">
+  <div class="quickview-block form-type-combine">
+
+    <%= form_tag update_stock_admin_tasks_path(@stock_task.id), method: :patch, remote: true, authenticity_token: true, id: 'update-stock-task-form', class: 'form-type-combine', style: 'width: 100%' do %>
+
+      <div class="form-groups-attached">
+        <div class="row">
+          <div class="form-group col-12">
+            <label for="select">Type</label>
+            <select class="form-control" name="stock_task[metadata][task_type]">
+              <option <%= 'selected' if @stock_task.metadata['task_type'] == 'phone_call' %> value="phone_call">Phone call</option>
+              <option <%= 'selected' if @stock_task.metadata['task_type'] == 'email' %> value="email">Email</option>
+              <option <%= 'selected' if @stock_task.metadata['task_type'] == 'message' %> value="message">Text</option>
+              <option <%= 'selected' if @stock_task.metadata['task_type'] == 'meeting' %> value="meeting">Meeting</option>
+              <option <%= 'selected' if @stock_task.metadata['task_type'] == 'general' %> value="general">General</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group require">
+          <label>Title</label>
+          <input class="form-control" type="text" name="stock_task[name]" value="<%= @stock_task.name %>" required>
+          <div class="invalid-feedback"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="textarea">Description</label>
+          <small>Optional</small>
+          <textarea class="form-control" rows="3" name="stock_task[description]"><%= @stock_task.description %></textarea>
+        </div>
+
+    <% end %>
+
+    <%= form_tag delete_stock_admin_tasks_path(@stock_task.id), method: :delete, remote: true, authenticity_token: true, id: 'delete-stock-task-form', class: 'form-type-combine', style: 'width: 100%' do %>
+    <% end %>
+  </div>
+</div>
+<footer class="quickview-footer flex-row-reverse">
+  <button class="btn btn-success" onclick="$('#update-stock-task-form').submit()">Update</button>
+  <button class="btn btn-danger" onclick="$('#delete-stock-task-form').submit()">Delete</button>
+</footer>
