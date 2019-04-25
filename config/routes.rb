@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
         resources :tasks, controller: 'plugins/flexx_plugin_crm/tasks' do
           collection do
+            post :create_stock
             post :defer_task
             post :send_task_confirmation
             patch :update_note

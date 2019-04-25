@@ -1,0 +1,12 @@
+<h5 class="card-title"><strong>Stock Tasks</strong></h5>
+<div class="media-list media-list-divided media-list-hover" data-provide="selectable">
+  <div class="media-list-body">
+
+    <% current_site.stocks.unscoped.tasks.each do |st| %>
+      <div class="media media-single" onclick="">
+        <span class="title"><%= st.name %></span>
+      </div>
+    <% end %>
+
+  </div>
+</div>
