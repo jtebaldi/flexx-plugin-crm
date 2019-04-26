@@ -1,13 +1,18 @@
 <div class="tab-pane fade" id="tab-stock">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 col-lg-4">
+      <div id="stock-tasks-list" class="card">
+        <%= render 'stock_tasks_list' %>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-8">
       <div class="card form-type-combine">
 
         <%= form_tag create_stock_admin_tasks_path, method: :post, remote: true, authenticity_token: true, id: 'stock-tasks-form', class: 'form-type-combine', style: 'width: 100%' do %>
           <input type="hidden" name="stock_task[stock_type]" value="task">
           <div class="card-body">
 
-            <h6 class="text-light fw-300">New stock task</h6>
+            <h6 class="text-light fw-300">Create a new stock task</h6>
             <div class="form-groups-attached">
               <div class="row">
                 <div class="form-group col-12">
@@ -37,8 +42,9 @@
             </div>
 
             <button class="btn btn-success">Create</button>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
-</div>
+</div>  

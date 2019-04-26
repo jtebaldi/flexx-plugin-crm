@@ -1,7 +1,48 @@
 <div class="tab-pane fade" id="tab-upcoming">
   <div class="row">
+    <div class="col-md-12 col-lg-4">
+      <div id="pendingStaff" class="card">
+        <h5 class="card-title"><strong>Staff list</strong></h5>
+        <div class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
 
-    <div class="col-md-12">
+          <header class="media media-single media-list-header" style="padding: 8px 12px;">
+            <span class="title">Select all</span>
+            <div class="custom-control custom-control-lg custom-checkbox" onclick="checkedStaff(); return false;">
+              <input type="checkbox" class="custom-control-input" name="staffAll">
+              <label class="custom-control-label"></label>
+            </div>
+          </header>
+
+          <div class="media-list-body" id="staffList">
+
+            <div class="media media-single" onclick="checkedStaff(); return false;">
+              <span class="avatar avatar-sm"><%= current_user.initials %></span>
+              <span class="title"><%= current_user.first_name %> <%= current_user.last_name %></span>
+              <div class="custom-control no-border custom-control-lg custom-checkbox">
+                <input id="<%= current_user.id %>" value="<%= current_user.id %>" name="staff" type="checkbox" class="custom-control-input" checked>
+                <label class="custom-control-label"></label>
+              </div>
+            </div>
+
+            <% current_site.users.decorate.each do |staff| %>
+              <% unless staff.id == current_user.id %>
+                <div class="media media-single" onclick="checkedStaff(); return false;">
+                  <span class="avatar avatar-sm"><%= staff.initials %></span>
+                  <span class="title"><%= staff.first_name %> <%= staff.last_name %></span>
+                  <div class="custom-control no-border custom-control-lg custom-checkbox">
+                    <input id="<%= staff.id %>" value="<%= staff.id %>" name="staff" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label"></label>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-8">
       <div id="upcoming-tasks-list">
         <% if @upcoming_tasks.length > 0 %>
           <%= render partial: 'tasks_list', locals: { tasks: @upcoming_tasks, refresh_panel: 'tasks-dashboard' } %>
@@ -17,6 +58,5 @@
         <% end %>
       </div>
     </div>
-
   </div>
-</div>
+</div>  

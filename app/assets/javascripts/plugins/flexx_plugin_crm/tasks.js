@@ -98,19 +98,16 @@ app.ready(function() {
         $('.buttons').hide();
         $('#stockTasksList').show();
         $('#pendingStaff').hide();
-        $('#stock-tasks-list').show();
         break;
       case '#tab-completed':
         $('.buttons').show();
         $('#stockTasksList').hide();
         $('#pendingStaff').hide();
-        $('#stock-tasks-list').hide();
         break;
       default:
         $('.buttons').show();
         $('#stockTasksList').hide();
         $('#pendingStaff').show();
-        $('#stock-tasks-list').hide();
         break;
     }
   });

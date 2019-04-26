@@ -34,7 +34,7 @@
       <a class="nav-link active" data-toggle="tab" href="#tab-today">Today</a>
       <a class="nav-link" data-toggle="tab" href="#tab-upcoming">Upcoming</a>
       <a class="nav-link" data-toggle="tab" href="#tab-completed">Completed</a>
-      <a class="nav-link" data-toggle="tab" href="#tab-stock">Stock Tasks</a>
+      <a class="nav-link" data-toggle="tab" href="#tab-stock">Stock Tasks <span class="badge badge-success">New</span></a>
     </nav>
     <div class="buttons">
       <button class="btn btn-primary btn-float" data-toggle="quickview" data-target="#qv-add-task"><i class="ti-plus"></i></button>
@@ -43,67 +43,12 @@
 </header>
 
 <div class="main-content">
-  <div class="row">
-    <div class="col-md-12 col-lg-4">
-      <div id="pendingStaff" class="card">
-        <h5 class="card-title"><strong>Staff list</strong></h5>
-        <div class="media-list media-list-divided media-list-hover" data-provide="selectable selectall">
-
-          <header class="media media-single media-list-header" style="padding: 8px 12px;">
-            <span class="title">Select all</span>
-            <div class="custom-control custom-control-lg custom-checkbox" onclick="checkedStaff(); return false;">
-              <input type="checkbox" class="custom-control-input" name="staffAll">
-              <label class="custom-control-label"></label>
-            </div>
-          </header>
-
-          <div class="media-list-body" id="staffList">
-
-            <div class="media media-single" onclick="checkedStaff(); return false;">
-              <span class="avatar avatar-sm"><%= current_user.initials %></span>
-              <span class="title"><%= current_user.first_name %> <%= current_user.last_name %></span>
-              <div class="custom-control no-border custom-control-lg custom-checkbox">
-                <input id="<%= current_user.id %>" value="<%= current_user.id %>" name="staff" type="checkbox" class="custom-control-input" checked>
-                <label class="custom-control-label"></label>
-              </div>
-            </div>
-
-            <% current_site.users.decorate.each do |staff| %>
-              <% unless staff.id == current_user.id %>
-                <div class="media media-single" onclick="checkedStaff(); return false;">
-                  <span class="avatar avatar-sm"><%= staff.initials %></span>
-                  <span class="title"><%= staff.first_name %> <%= staff.last_name %></span>
-                  <div class="custom-control no-border custom-control-lg custom-checkbox">
-                    <input id="<%= staff.id %>" value="<%= staff.id %>" name="staff" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label"></label>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-
-          </div>
-
-        </div>
-      </div>
-
-      <div id="stock-tasks-list" class="card hidden">
-        <%= render 'stock_tasks_list' %>
-      </div>
-    </div>
-    <div class="col-md-12 col-lg-8">
-      <div class="tab-content">
-
-        <%= render 'tab_today' %>
-
-        <%= render 'tab_upcoming' %>
-
-        <%= render 'tab_completed' %>
-
-        <%= render 'tab_stock' %>
-
-      </div>
-    </div>
-  </div>
+  <div class="tab-content">
+    <%= render 'tab_today' %>
+    <%= render 'tab_upcoming' %>
+    <%= render 'tab_completed' %>
+    <%= render 'tab_stock' %>
+  </div>   
 </div>
 
 <!-- QUICKVIEW - View task -->
