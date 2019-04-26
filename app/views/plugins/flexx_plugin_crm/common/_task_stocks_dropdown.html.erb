@@ -1,0 +1,19 @@
+<div id="stock-task-select" class="form-group">
+  <label>Use stock task</label>
+  <select id="stock-task-select-field" class="form-control" data-provide="selectpicker">
+    <option>None</option>
+    <% task_stocks.each_with_index do |row, i| %>
+      <option value="<%= i %>"><%= row.name %></option>
+    <% end %>
+  </select>
+</div>
+
+<script>
+  var task_stocks = <%= task_stocks.pluck(:name, :description, :metadata).to_json.html_safe %>;
+
+  $('#stock-task-select-field').on('change', function(e) {
+    $('select[name="task[task_type]"]').val(task_stocks[e.target.value][2].task_type);
+    $('input[name="task[title]"]').val(task_stocks[e.target.value][0]);
+    $('textarea[name="task[details]"]').val(task_stocks[e.target.value][1]);
+  });
+</script>

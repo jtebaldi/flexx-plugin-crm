@@ -120,6 +120,10 @@
     <%= form_tag admin_tasks_path, method: :post, authenticity_token: true, id: 'new-task-form', class: 'form-type-combine' do %>
 
       <div class="card-body">
+        <div class="mt-30">
+          <%= render partial: 'plugins/flexx_plugin_crm/common/task_stocks_dropdown' %>
+        </div>
+
         <div class="input-group">
           <div class="input-group-input require">
             <label class="required">Contact</label>

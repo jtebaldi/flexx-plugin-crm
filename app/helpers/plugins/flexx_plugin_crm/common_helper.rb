@@ -44,4 +44,8 @@ module Plugins::FlexxPluginCrm::CommonHelper
   def rich_text_stocks
     current_site.stocks.rich_texts.order(:name)
   end
+
+  def task_stocks
+    current_site.stocks.unscoped.tasks.order(:name)
+  end
 end
