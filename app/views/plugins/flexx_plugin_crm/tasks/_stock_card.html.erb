@@ -1,5 +1,5 @@
 <header class="quickview-header">
-  <p class="quickview-title lead">Edit Stock Task</p>
+  <p class="quickview-title lead"><strong>Edit</strong>s Stock Task</p>
   <span class="close"><i class="ti-close"></i></span>
 </header>
 <div class="quickview-body">
@@ -32,8 +32,51 @@
           <small>Optional</small>
           <textarea class="form-control" rows="3" name="stock_task[description]"><%= @stock_task.description %></textarea>
         </div>
+      </div>
 
     <% end %>
+
+    <hr>
+
+    <div class="form-groups-attached">
+      <p><%= @stock_task.inspect %></p>
+
+      <div class="row">
+        <% unless (!current_site.users.find_by(id: @stock_task.created_by).nil? || @stock_task.created_by == 1) %>
+          <div class="form-group col-6">
+            <label>Created by</label>
+            <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.created_by).first_name %>" readonly="">
+          </div>
+        <% end %>
+        <% if @stock_task.updated_by.nil? %>
+          <% unless (!current_site.users.find_by(id: @stock_task.created_by).nil? || @stock_task.created_by == 1) %>
+            <div class="form-group col-6">
+              <label>Updated by</label>
+              <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.created_by).first_name %>" readonly="">
+            </div>
+          <% end %>
+        <% else %>
+          <% unless (!current_site.users.find_by(id: @stock_task.updated_by).nil? || @stock_task.updated_by == 1) %>
+            <div class="form-group col-6">
+              <label>Updated by</label>
+              <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.updated_by).first_name %>" readonly="">
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-6">
+          <label>Created</label>
+          <input type="text" class="form-control" value="<%= @stock_task.created_at.strftime('%m/%d/%Y - %I:%M %p') %>" readonly="">
+        </div>
+        <div class="form-group col-6">
+          <label>Updated</label>
+          <input type="text" class="form-control" value="<%= @stock_task.updated_at.strftime('%m/%d/%Y - %I:%M %p') %>" readonly="">
+        </div>
+      </div>      
+
+    </div>
 
     <%= form_tag delete_stock_admin_tasks_path(@stock_task.id), method: :delete, remote: true, authenticity_token: true, id: 'delete-stock-task-form', class: 'form-type-combine', style: 'width: 100%' do %>
     <% end %>

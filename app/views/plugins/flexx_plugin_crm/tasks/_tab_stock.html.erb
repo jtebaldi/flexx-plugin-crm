@@ -1,18 +1,16 @@
 <div class="tab-pane fade" id="tab-stock">
   <div class="row">
-    <div class="col-md-12 col-lg-4">
-      <div id="stock-tasks-list" class="card">
-        <%= render 'stock_tasks_list' %>
-      </div>
-    </div>
-    <div class="col-md-12 col-lg-8">
-      <div class="card form-type-combine">
+    <div class="col-lg-6 col-md-12">
+      <h4 class="text-center">Have a task you create often? Save it as a stock task!</h4>
+      <p class="lead text-fade text-center">This will allow you to quickly pre-fill the tasks details when adding a new task to a contact.</p>
+
+      <div class="card form-type-combine">        
 
         <%= form_tag create_stock_admin_tasks_path, method: :post, remote: true, authenticity_token: true, id: 'stock-tasks-form', class: 'form-type-combine', style: 'width: 100%' do %>
           <input type="hidden" name="stock_task[stock_type]" value="task">
           <div class="card-body">
 
-            <h6 class="text-light fw-300">Create a new stock task</h6>
+            <h6 class="text-light fw-300">Create a stock task</h6>
             <div class="form-groups-attached">
               <div class="row">
                 <div class="form-group col-12">
@@ -46,5 +44,18 @@
         <% end %>
       </div>
     </div>
+    <div class="col-lg-6 col-md-12">
+      <div id="stock-tasks-list" class="card">
+        <header class="card-header">
+          <h4 class="card-title"><strong>Stock Tasks</strong> List <br><small>Click on a task to view/edit details</small></h4>
+          <div class="card-header-actions">
+          </div>
+        </header>
+
+        <div class="pt-20 px-20 scrollable" style="max-height: 400px;">
+          <%= render 'stock_tasks_list' %>
+        </div>
+      </div>
+    </div>    
   </div>
 </div>  

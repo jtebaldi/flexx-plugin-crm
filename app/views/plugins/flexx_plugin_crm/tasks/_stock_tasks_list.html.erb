@@ -1,12 +1,22 @@
-<h5 class="card-title"><strong>Stock Tasks</strong></h5>
-<div class="media-list media-list-divided media-list-hover" data-provide="selectable">
-  <div class="media-list-body">
-
-    <% current_site.stocks.unscoped.tasks.each do |st| %>
-      <a class="media media-single" data-toggle="quickview" href="#qv_view_stock_task" data-url="<%= stock_card_admin_tasks_path(st.id) %>">
-        <span class="title"><%= st.name %></span>
-      </a>
-    <% end %>
-
+<% current_site.stocks.unscoped.tasks.each do |st| %>
+  <div class="card b-1 hover-shadow-2 mb-20">
+    <a class="media card-body" data-toggle="quickview" href="#qv_view_stock_task" data-url="<%= stock_card_admin_tasks_path(st.id) %>">
+      <div class="media-left d-none d-sm-block">
+          <div class="br-1 text-light">
+            <ul class="list-unstyled text-center mb-0 mr-20">
+              <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: st.metadata['task_type']) %>"></i></li>
+            </ul>
+          </div>
+      </div>
+      <div class="media-body">
+        <div class="">
+          <span class="fs-16 pr-16"><%= st.name %></span>
+        </div>
+        <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= st.description %></p>
+      </div>
+      <div class="media-right text-right d-none d-md-block">
+        <span class="text-fade fs-10">Updated <%= st.updated_at.strftime('%m/%d/%Y') %></span>
+      </div>
+    </a>
   </div>
-</div>
+<% end %>
