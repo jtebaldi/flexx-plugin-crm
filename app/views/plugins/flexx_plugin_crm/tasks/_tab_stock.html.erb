@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-6 col-md-12">
       <h4 class="text-center">Have a task you create often? Save it as a stock task!</h4>
-      <p class="lead text-fade text-center">This will allow you to quickly pre-fill the tasks details when adding a new task to a contact.</p>
+      <p class="lead text-fade text-center">This will allow you to quickly pre-fill details when adding a new task to a contact.</p>
 
       <div class="card form-type-combine">        
 
@@ -45,14 +45,14 @@
       </div>
     </div>
     <div class="col-lg-6 col-md-12">
-      <div id="stock-tasks-list" class="card">
+      <div class="card">
         <header class="card-header">
           <h4 class="card-title"><strong>Stock Tasks</strong> List <br><small>Click on a task to view/edit details</small></h4>
           <div class="card-header-actions">
           </div>
         </header>
 
-        <div class="pt-20 px-20 scrollable" style="max-height: 400px;">
+        <div id="stock-tasks-list" class="pt-20 px-20 scrollable" style="max-height: 600px;">
           <%= render 'stock_tasks_list' %>
         </div>
       </div>

@@ -140,7 +140,7 @@ module Plugins::FlexxPluginCrm
 
     def update_stock
       stock_task = current_site.stocks.unscoped.find(params[:id])
-
+      stock_task.updated_by = current_user.id
       stock_task.update(stock_task_params)
     end
 
@@ -166,7 +166,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def stock_task_params
-      params.require(:stock_task).permit(:stock_type, :name, :description, :contents, :created_by, metadata: :task_type)
+      params.require(:stock_task).permit(:stock_type, :name, :description, :contents, :created_by, :updated_by, metadata: :task_type)
     end
   end
 end

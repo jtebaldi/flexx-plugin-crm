@@ -1,5 +1,5 @@
 <header class="quickview-header">
-  <p class="quickview-title lead"><strong>Edit</strong>s Stock Task</p>
+  <p class="quickview-title lead"><strong>Edit</strong> stock task</p>
   <span class="close"><i class="ti-close"></i></span>
 </header>
 <div class="quickview-body">
@@ -39,40 +39,35 @@
     <hr>
 
     <div class="form-groups-attached">
-      <p><%= @stock_task.inspect %></p>
 
       <div class="row">
-        <% unless (!current_site.users.find_by(id: @stock_task.created_by).nil? || @stock_task.created_by == 1) %>
+        <% unless (current_site.users.find_by(id: @stock_task.created_by).nil?) %>
           <div class="form-group col-6">
             <label>Created by</label>
-            <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.created_by).first_name %>" readonly="">
+            <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.created_by).first_name %> <%= current_site.users.find_by(id: @stock_task.created_by).last_name %>" readonly="">
+          </div>
+          <div class="form-group col-6">
+            <label>Updated by</label>
+            <% if @stock_task.updated_by.nil? %>
+              <input type="text" class="form-control" value="-" readonly="">
+            <% else %>
+              <% unless (current_site.users.find_by(id: @stock_task.updated_by).nil?) %>
+                <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.updated_by).first_name %> <%= current_site.users.find_by(id: @stock_task.updated_by).last_name %>" readonly="">
+              <% end %>
+            <% end %>
           </div>
         <% end %>
-        <% if @stock_task.updated_by.nil? %>
-          <% unless (!current_site.users.find_by(id: @stock_task.created_by).nil? || @stock_task.created_by == 1) %>
-            <div class="form-group col-6">
-              <label>Updated by</label>
-              <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.created_by).first_name %>" readonly="">
-            </div>
-          <% end %>
-        <% else %>
-          <% unless (!current_site.users.find_by(id: @stock_task.updated_by).nil? || @stock_task.updated_by == 1) %>
-            <div class="form-group col-6">
-              <label>Updated by</label>
-              <input type="text" class="form-control" value="<%= current_site.users.find_by(id: @stock_task.updated_by).first_name %>" readonly="">
-            </div>
-          <% end %>
-        <% end %>
+
       </div>
 
       <div class="row">
         <div class="form-group col-6">
-          <label>Created</label>
+          <label>Created at</label>
           <input type="text" class="form-control" value="<%= @stock_task.created_at.strftime('%m/%d/%Y - %I:%M %p') %>" readonly="">
         </div>
         <div class="form-group col-6">
-          <label>Updated</label>
-          <input type="text" class="form-control" value="<%= @stock_task.updated_at.strftime('%m/%d/%Y - %I:%M %p') %>" readonly="">
+          <label>Updated at</label>
+          <input type="text" class="form-control" value="<%= @stock_task.updated_by.nil? ? '-' : @stock_task.updated_at.strftime('%m/%d/%Y - %I:%M %p') %>" readonly="">
         </div>
       </div>      
 
