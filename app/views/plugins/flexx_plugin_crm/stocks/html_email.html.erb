@@ -1,0 +1,34 @@
+<header style="margin-left: 251px" class="header">
+  <div class="header-info">
+    <div class="left">
+      <h2 class="header-title">HTML <strong>Stocks</strong></h2>
+    </div>
+  </div>
+</header>
+
+<aside class="aside aside-expand-md">
+  <div class="aside-body">
+  </div>
+</aside>
+
+<div class="main-content is-container">
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var obj = $.contentbuilder({
+            container: '.main-content',
+            snippetData: '/email-blocks/snippetlist.html',
+            rowFormat: '<div><table align="center" class="container float-center"><tbody><tr><td><table class="row"><tbody><tr>' +
+                '</tr></tbody></table></td></tr></tbody></table></div>',
+            cellFormat: '<th class="small-12 large-12 columns first last"><table><tbody><tr><th>' +
+                '</th></tr></tbody></table></th>',
+            customTags: [["First Name", "{%first_name%}"],
+                ["Last Name", "{%last_name%}"],
+                ["Email", "{%email%}"]],
+            emailMode: true,
+            absolutePath:true
+        });
+    });
+
+</script>

@@ -91,7 +91,11 @@ Rails.application.routes.draw do
         resources :conversations, controller: 'plugins/flexx_plugin_crm/conversations', only: [:index, :show, :create] do
         end
 
-        resources :stocks, controller: 'plugins/flexx_plugin_crm/stocks'
+        resources :stocks, controller: 'plugins/flexx_plugin_crm/stocks' do
+          collection do
+            get :html_email
+          end
+        end
 
         resources :webhooks, controller: 'plugins/flexx_plugin_crm/webhooks', only: [] do
           collection do
