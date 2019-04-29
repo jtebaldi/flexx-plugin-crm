@@ -1,3 +1,11 @@
 .ck-editor__editable {
   min-height: 350px;
 }
+
+// --------------------------- HTML Content Builder custom
+
+.is-container {
+  table.row { margin: 0; }
+}
+
+.is-pop { max-width: 92%; }

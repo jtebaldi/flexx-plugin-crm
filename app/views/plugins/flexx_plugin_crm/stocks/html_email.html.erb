@@ -1,28 +1,37 @@
-<header style="margin-left: 251px" class="header">
-  <div class="header-info">
-    <div class="left">
-      <h2 class="header-title">HTML <strong>Stocks</strong></h2>
-    </div>
-  </div>
-</header>
+<% content_for :css do %>
+  <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/stocks', media: 'all' %>
+<% end %>
 
-<aside class="aside aside-expand-md">
+<aside class="aside aside-lg aside-expand-md">
   <div class="aside-body">
   </div>
 </aside>
 
-<div class="main-content is-container">
+<div class="main-content">
+  <h2 class=""><strong>HTML Email</strong> Creator</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card card-shadowed">
+        <header class="card-header">
+          <h6 class="card-title card-title-bold">Edit your email</h6>
+          <a class="btn btn-sm btn-flat btn-info" href="#">Preview</a>
+        </header>
+        <div class="card-body">
+          <div class="is-container">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
 </div>
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         var obj = $.contentbuilder({
-            container: '.main-content',
+            container: '.is-container',
             snippetData: '/email-blocks/snippetlist.html',
-            rowFormat: '<div><table align="center" class="container float-center"><tbody><tr><td><table class="row"><tbody><tr>' +
-                '</tr></tbody></table></td></tr></tbody></table></div>',
-            cellFormat: '<th class="small-12 large-12 columns first last"><table><tbody><tr><th>' +
-                '</th></tr></tbody></table></th>',
+            rowFormat: '<div class="row"></div>',
+            cellFormat: '<div class="col-md-12"></div>',
             customTags: [["First Name", "{%first_name%}"],
                 ["Last Name", "{%last_name%}"],
                 ["Email", "{%email%}"]],
