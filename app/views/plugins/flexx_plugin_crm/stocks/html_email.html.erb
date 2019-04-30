@@ -4,6 +4,51 @@
 
 <aside class="aside aside-lg aside-expand-md">
   <div class="aside-body">
+    <div class="aside-block">
+      <a class="btn btn-block btn-info" href="#">Start from template</a>
+      <hr>
+      <form class="form-type-combine">
+        <p><small class="text-uppercase">Stock Details</small></p>
+        <div class="form-groups-attached">
+          <div class="row mr-0 ml-0">
+            <div class="form-group col-6">
+              <label>Type</label>
+              <p class="form-control-plaintext">HTML</p>
+            </div>
+            <div class="form-group text-center pt-20 col-6">
+              <label>Important? </label>
+              <label class="toggler toggler-yellow fs-16" style="cursor:pointer;">
+                <%= check_box_tag 'stock[starred]' %>
+                <i class="fa fa-star"></i>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-normal">Name</label>
+            <input type="text" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label for="textarea">Description</label>
+            <small>Optional</small>
+            <textarea class="form-control" rows="3" name=""></textarea>
+          </div>
+        </div>
+        <hr>
+        <p><small class="text-uppercase">Email Details</small></p>
+        <div class="form-groups-attached">
+          <div class="form-group">
+            <label for="input-normal">Subject</label>
+            <input type="text" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label for="input-normal">Preview text</label>
+            <input type="text" class="form-control" value="">
+          </div>
+        </div>
+      </form>
+      <hr>
+      <a class="btn btn-sm btn-block btn-outline btn-info" href="#">Save as template</a>
+    </div>
   </div>
 </aside>
 
