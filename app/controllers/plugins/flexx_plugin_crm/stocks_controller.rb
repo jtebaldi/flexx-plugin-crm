@@ -2,6 +2,8 @@ module Plugins::FlexxPluginCrm
   class StocksController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
+    protect_from_forgery except: :snippet_list
+
     layout "layouts/flexx_next_admin"
 
     def index
@@ -44,6 +46,13 @@ module Plugins::FlexxPluginCrm
     def destroy
       current_site.stocks.find(params[:id]).destroy
       redirect_to action: :index
+    end
+
+    def snippet_list
+      respond_to do |format|
+        format.html { render layout: "layouts/blank" }
+        format.js
+      end
     end
 
     private
