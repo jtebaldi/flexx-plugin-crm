@@ -2,7 +2,7 @@ module Plugins::FlexxPluginCrm
   class StocksController < Plugins::FlexxPluginCrm::ApplicationController
     include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
 
-    protect_from_forgery except: :snippet_list
+    protect_from_forgery except: :html_snippet_list
 
     layout "layouts/flexx_next_admin"
 
@@ -48,7 +48,7 @@ module Plugins::FlexxPluginCrm
       redirect_to action: :index
     end
 
-    def snippet_list
+    def html_snippet_list
       respond_to do |format|
         format.html { render layout: "layouts/blank" }
         format.js

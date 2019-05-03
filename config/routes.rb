@@ -94,7 +94,7 @@ Rails.application.routes.draw do
         resources :stocks, controller: 'plugins/flexx_plugin_crm/stocks' do
           collection do
             get :html_email
-            get :snippet_list
+            get :html_snippet_list
           end
         end
 
