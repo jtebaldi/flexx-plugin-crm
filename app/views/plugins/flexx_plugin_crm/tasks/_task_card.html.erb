@@ -187,23 +187,23 @@
   <% unless @task.done? %>
     <% case @task.task_type %>
     <% when 'email', 'message' %>
-      <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); completeTask()">Send and complete</button>
+      <div class="btn-group dropup">
+        <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); completeTask()">Send and complete</button>
+        <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <button class="btn btn-info btn-outline text-uppercase btn-block" onclick="openScheduleTaskModal(<%= @task.id %>);">Schedule</button>
+          <button class="btn btn-warning btn-outline btn-block text-uppercase" onclick="">Save</button>
+        </div>
+      </div>            
     <% when 'phone_call', 'meeting' %>
       <button class="btn btn-success text-uppercase" onclick="completeTask(true)">Complete</button>
     <% else %>
       <button class="btn btn-success text-uppercase" onclick="completeTask()">Complete</button>
     <% end %>
-    <!--<div class="btn-group">
-      <button class="btn btn-success" onclick="$('#update-task-form').submit();">Save</button>
-      <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"></button>
-      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: top, left; top: 36px; left: 79px;">
-        <a class="dropdown-item" style="display: block !important" onclick="$('#update-task-form').submit();" href="#">Save</a>
-        <a class="dropdown-item" style="display: block !important" onclick="$('#task-status').val('done'); $('#update-task-form').submit();" href="#">Save and mark as done</a>
-      </div>-->
     </div>
   <% end %>
   <!-- <button class="btn btn-light" onclick="closeTaskView(this)">Close</button> -->
-  <% unless @task.done? %>
+  <% unless @task.done? %>    
     <a data-params="refresh_panel=<%= params[:refresh_panel] %>" data-remote="true" data-confirm="Are you sure you want to delete this task?" data-method="delete" href="<%= admin_task_path(@task.id) %>" class="btn btn-danger btn-outline"><i class='ti-trash'></i></a>
   <% end %>
 </footer>

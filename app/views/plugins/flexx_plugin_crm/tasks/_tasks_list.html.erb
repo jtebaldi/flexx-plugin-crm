@@ -37,6 +37,9 @@
     <% unless row.done? %>
       <footer class="card-footer flexbox align-items-center">
         <div>
+          <!-- Need to add conditional for if task is scheduled - modal that opens should display currently scheduled date time -->
+          <!-- Need the date displayed to be the actual date time -->
+          <a href="#modal-schedule-task-message" class="text-lighter" data-toggle="modal" ><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday May 24, 11:30 pm</a>
           <% unless row.notes.empty? %>
             <span class="text-lighter">
               <i class="fa fa-comment mr-1"></i><span><%= row.notes.count %></span>

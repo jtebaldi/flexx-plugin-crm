@@ -12,6 +12,6 @@
 </div>
 <% unless @task.done? %>
   <div class="col-4">
-    <button class="btn btn-square btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-alarm-clock"></i></button>
+    <button class="btn btn-outline btn-warning" data-provide="tooltip" title="Defer Task" onclick="deferTask(<%= @task.id %>, '<%= @task.due_date.strftime('%m/%d/%Y - %I:%M %p') %>')"><i class="ti-calendar"></i></button>
   </div>
 <% end %>
