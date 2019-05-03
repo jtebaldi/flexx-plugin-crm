@@ -6,7 +6,7 @@ module Plugins::FlexxPluginCrm
     def twilio_inbound
       return head :not_found unless current_site.get_option('twilio_campaigns_number') == params["To"]
 
-      contact = current_site.phonenumbers.find_by("LENGTH(number) >= 7 AND POSITION(number IN ?) > 0", params["From"]).try(:contact)
+      contact = current_site.phonenumbers.joins(:contact).find_by("LENGTH(number) >= 7 AND POSITION(number IN ?) > 0 AND contacts.sales_stage != ?", params["From"], :archived).try(:contact)
 
       current_site.messages.create(
         contact_id: contact.try(:id),
