@@ -17,6 +17,7 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
   has_many :task_owners, class_name: 'Plugins::FlexxPluginCrm::TaskOwner'
   has_many :owners, class_name: user_class_name, through: :task_owners
 
+  has_one :email, class_name: 'Plugins::FlexxPluginCrm::Email'
   has_one :email_recipient, class_name: 'Plugins::FlexxPluginCrm::EmailRecipient'
   has_one :message, class_name: 'Plugins::FlexxPluginCrm::Message'
 
@@ -53,6 +54,15 @@ class Plugins::FlexxPluginCrm::Task < ActiveRecord::Base
 
   def cancel
     self.notes.new(details: "Task cancelled.")
+  end
+
+  def scheduled_to
+    case self.task_type
+    when 'email'
+      self.email.try(:send_at) unless self.email.try(:aasm_state) == 'sent'
+    when 'message'
+      self.message.try(:send_at) unless self.message.try(:aasm_state) == 'sent'
+    end
   end
 
   private

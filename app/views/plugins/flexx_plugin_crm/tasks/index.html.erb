@@ -48,7 +48,7 @@
     <%= render 'tab_upcoming' %>
     <%= render 'tab_completed' %>
     <%= render 'tab_stock' %>
-  </div>   
+  </div>
 </div>
 
 <!-- QUICKVIEW - View task -->
@@ -171,30 +171,7 @@
 </div>
 
 <!-- MODAL: Schedule message task -->
-<div class="modal modal-center fade" id="modal-schedule-task-message" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Schedule task message</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Select a date and time</label>
-          <input class="form-control datetimepicker" type="text" name="">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
-        <!-- Need to add condition to show/hide cancel scheduling button if message has already been scheduled -->
-        <button type="button" class="btn btn-bold btn-secondary" data-dismiss="modal">Cancel Scheduling</button>
-        <button id="set-task-schedule" type="button" class="btn btn-bold btn-success" onclick="">Schedule</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: 'plugins/flexx_plugin_crm/tasks/schedule_modal' %>
 
 <!-- MODAL: Send Confirmation -->
 <div class="modal modal-center fade" id="modal-send-confirmation" tabindex="-1">

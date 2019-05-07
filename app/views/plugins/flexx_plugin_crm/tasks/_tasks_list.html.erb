@@ -4,14 +4,14 @@
       <div class="media-left d-none d-sm-block">
         <% if row.done? %>
           <span class="avatar avatar-xl no-radius" style="background-color: #fff;"><i class="ti-check-box fs-60 text-success"></i></span>
-        <% else %>   
+        <% else %>
           <div class="br-1 text-light">
             <ul class="list-unstyled text-center mb-0 mr-20">
               <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: row.task_type) %>"></i></li>
               <li><small class="due-date fw-300"><%= row.due_date.today? ? 'Today' : row.due_date.strftime('%m/%d') %> <%= row.due_date.strftime('%I:%M%p') %></small></li>
             </ul>
           </div>
-        <% end %>        
+        <% end %>
       </div>
       <div class="media-body">
         <div class="<%= 'mt-10' unless row.details.present? %>">
@@ -39,19 +39,24 @@
         <div>
           <!-- Need to add conditional for if task is scheduled - modal that opens should display currently scheduled date time -->
           <!-- Need the date displayed to be the actual date time -->
-          <a href="#modal-schedule-task-message" class="text-lighter" data-toggle="modal" ><span class="text-cyan fw-400" style="padding-right:8px;"><i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>Friday May 24, 11:30 pm</a>
+          <% if row.scheduled_to.present? %>
+            <a href="#modal-schedule-task-message" class="text-lighter" data-toggle="modal" >
+              <span class="text-cyan fw-400" style="padding-right:8px;">
+                <i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>
+                <%= row.scheduled_to.strftime('%A %B %d, %I:%M %P') %>
+            </a>
+          <% end %>
           <% unless row.notes.empty? %>
             <span class="text-lighter">
               <i class="fa fa-comment mr-1"></i><span><%= row.notes.count %></span>
-              <!--<i class="ti-comment-alt mr-1"></i><span><%= row.notes.count %></span>-->
             </span>
           <% end %>
           <!--
-          <span class="card-hover-show pl-20">            
+          <span class="card-hover-show pl-20">
             <% if row.task_type == 'meeting' && row.confirmed_at.nil? && !row.done? %>
               <button class="btn btn-xs fs-10 btn-bold btn-info" onclick="sendConfirmation(<%= row.id %>)">Ask Confirmation</button>
             <% end %>
-            
+
             <% unless row.done? %>
               <button class="btn btn-xs fs-10 btn-bold btn-warning" onclick="deferTask(<%= row.id %>, '<%= row.due_date.localtime.strftime('%m/%d/%Y - %I:%M %p') %>')">Defer Task</button>
               <a class="btn btn-xs fs-10 btn-bold btn-danger ml-15" data-params="refresh_panel=<%= refresh_panel %>" data-remote="true" data-method="delete" href="<%= admin_task_path(row.id) %>">Remove</a>
