@@ -28,6 +28,24 @@ function completeTask(ask) {
   }
 }
 
+function completeMessageTaskConfirmation() {
+  swal({
+    title: 'Send message',
+    text: 'Are you sure you want to send message and complete task?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Send and complete!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.value) {
+      submitTaskSendMessageForm();
+      completeTask();
+    } else {
+      return;
+    }
+  })
+}
+
 function updateNotesCounter(taskId, $notes) {
   var $task = $('[data-open-task="' + taskId + '"]');
   var $commentsCounter = $task.find('.fa.fa-comment.mr-1').parent();
