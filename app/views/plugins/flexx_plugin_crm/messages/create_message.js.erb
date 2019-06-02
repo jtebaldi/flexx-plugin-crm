@@ -15,6 +15,7 @@
   $('#contact-conversations-text-spinner').toggleClass('hidden');
   $("#conversations-send-message-form :input").prop("readonly", false);
   $('#conversations-panel').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/contacts/conversations', locals: { messages: @contact.messages.order(created_at: :asc) })  %>');
+  $('#chat-content').scrollToEnd();
 <% when 'conversations-thread-panel' %>
   $('#conversations-send-message-form')[0].reset();
   $('#conversations-text-message').toggleClass('disabled');
