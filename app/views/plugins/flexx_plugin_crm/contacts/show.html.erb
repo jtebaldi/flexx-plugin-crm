@@ -33,6 +33,12 @@
       }, 500);
     });
 
+    $('#open_conversations').click(function(){
+      setTimeout(function() {
+        $('#chat-content').scrollToEnd();
+      }, 250);
+    });
+
     // $('#edit_tags').click(function(){
     //   $('.nav-tabs #contact_details_link').tab('show');
     //   setTimeout(function() {
@@ -156,7 +162,7 @@
         <a id="contact_details_link" class="nav-link" data-toggle="tab" href="#tab_contact_details">Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#tab_conversations">SMS</a>
+        <a id="open_conversations" class="nav-link" data-toggle="tab" href="#tab_conversations">SMS</a>
       </li>
       <li class="nav-item d-none d-sm-block">
         <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
