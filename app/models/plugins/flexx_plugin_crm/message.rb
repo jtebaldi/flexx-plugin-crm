@@ -56,7 +56,7 @@ class Plugins::FlexxPluginCrm::Message < ActiveRecord::Base
           verb: 'message_received',
           object: "Message:#{self.id}",
           message: "A new message was received from #{self.contact.print_name}.",
-          url: admin_contact_path(self.contact_id)
+          url: "#{admin_contact_path(self.contact_id)}#sms"
         }
       }
     end

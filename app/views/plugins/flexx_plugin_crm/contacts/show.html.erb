@@ -39,6 +39,15 @@
       }, 250);
     });
 
+    var hash = window.location.hash.substr(1);
+    if (hash == 'sms') {
+      $('.nav-tabs #open_conversations').tab('show');
+      setTimeout(function() {
+        $('#chat-content').scrollToEnd();
+        $('#contact-conversations-text-message').focus();
+      }, 250);      
+    }
+
     // $('#edit_tags').click(function(){
     //   $('.nav-tabs #contact_details_link').tab('show');
     //   setTimeout(function() {
