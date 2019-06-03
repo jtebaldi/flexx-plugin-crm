@@ -16,12 +16,12 @@
 </div>
 
 <footer class="publisher">
-  <span class="avatar"><%= current_user.initials %></span>
+  <span class="avatar align-self-start"><%= current_user.initials %></span>
   <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%', onsubmit: 'submitConversationsSendMessageForm()' do %>
     <input type="hidden" class="form-control" name="message[contact_id]" value="<%= contact.id %>">
     <input type="hidden" class="form-control" name="refresh_panel" value="conversations-thread-panel">
-    <textarea name="message[body]" style="width: 80%" id="conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something"></textarea>
-    <div class="gap-items btn-group pull-right mr-10 dropup">
+    <textarea name="message[body]" id="conversations-text-message" data-provide="maxlength" maxlength=320 class="publisher-input auto-expand" style="width: 85%;" rows="1" placeholder="Write something"></textarea>
+    <div class="gap-items align-self-end btn-group pull-right mr-10 dropup">
       <%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %>
       <button class="publisher-btn" id="conversations-text-button" type="submit"><i class="fa fa-paper-plane"></i></button>
       <div id="conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
