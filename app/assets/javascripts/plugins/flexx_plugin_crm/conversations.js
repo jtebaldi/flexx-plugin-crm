@@ -36,7 +36,7 @@ function submitConversationsSendMessageForm() {
   $('#conversations-text-button').toggleClass('hidden');
   $('#conversations-text-spinner').toggleClass('hidden');
   $('#conversations-send-message-form :input').prop('readonly', true);
-  $('#conversations-send-message-form').submit();
+  // $('#conversations-send-message-form').submit();
 }
 
 function submitConversationsSendNewMessageForm(e) {
@@ -49,7 +49,7 @@ function submitConversationsSendNewMessageForm(e) {
   $('#conversations-text-new-message').toggleClass('disabled');
   $('#conversations-text-new-send-button').toggleClass('disabled');
   $('#conversations-text-new-cancel-button').toggleClass('disabled');
-  $('#conversations-text-new-spinner').toggleClass('invisible');
+  $('#conversations-text-new-spinner').toggleClass('hidden');
 }
 
 app.ready(function() {

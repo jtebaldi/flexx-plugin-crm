@@ -183,5 +183,5 @@ $(function(){
     });
   });
 
-  $('#conversations-thread-panel, #chat-content').scrollToEnd();
+  $('#conversations-thread-panel').scrollToEnd();  
 });

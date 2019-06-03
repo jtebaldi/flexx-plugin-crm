@@ -33,6 +33,21 @@
       }, 500);
     });
 
+    $('#open_conversations').click(function(){
+      setTimeout(function() {
+        $('#chat-content').scrollToEnd();
+      }, 250);
+    });
+
+    var hash = window.location.hash.substr(1);
+    if (hash == 'sms') {
+      $('.nav-tabs #open_conversations').tab('show');
+      setTimeout(function() {
+        $('#chat-content').scrollToEnd();
+        $('#contact-conversations-text-message').focus();
+      }, 250);      
+    }
+
     // $('#edit_tags').click(function(){
     //   $('.nav-tabs #contact_details_link').tab('show');
     //   setTimeout(function() {
@@ -156,7 +171,7 @@
         <a id="contact_details_link" class="nav-link" data-toggle="tab" href="#tab_contact_details">Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#tab_conversations">SMS</a>
+        <a id="open_conversations" class="nav-link" data-toggle="tab" href="#tab_conversations">SMS</a>
       </li>
       <li class="nav-item d-none d-sm-block">
         <a class="nav-link" href="#tab_recipes_campaigns" data-toggle="tab">Campaigns & Recipes</a>
@@ -479,21 +494,17 @@
                 <% end %>
                 <% if @contact.phonenumbers.mobile.present? %>
                   <footer class="publisher">
-                    <span class="avatar"><%= current_user.initials %></span>
+                    <span class="avatar align-self-start"><%= current_user.initials %></span>
                     <%= form_tag create_message_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'conversations-send-message-form', class: 'form-type-combine', style: 'width: 100%' do %>
                       <input type="hidden" class="form-control" name="message[contact_id]" value="<%= @contact.id %>">
                       <input type="hidden" class="form-control" name="refresh_panel" value="contact-conversations-panel">
-                      <input name="message[body]" style="width: 90%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 data-placement="centered-right" class="publisher-input" rows="1" placeholder="Write something">
-                      <div class="gap-items btn-group pull-right mr-10 dropup">
-                        <div><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
+                      <textarea name="message[body]" style="width: 85%" id="contact-conversations-text-message" data-provide="maxlength" maxlength=320 class="publisher-input auto-expand" rows="1" placeholder="Write something"></textarea>
+                      <div class="gap-items align-self-end btn-group pull-right mr-10 dropup">
+                        <%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %>
+                        <button class="publisher-btn" id="contact-conversations-text-button"><i class="fa fa-paper-plane"></i></button>
+                        <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
                       </div>
                     <% end %>
-                    <div class="gap-items">
-                      <a class="publisher-btn" id="contact-conversations-text-button" href="#" onclick="$('#conversations-send-message-form').submit()"><i class="fa fa-paper-plane"></i></a>
-                    </div>
-                    <div class="gap-items">
-                      <div id="contact-conversations-text-spinner" style="margin-left: 10px" class="spinner-circle-shadow hidden"></div>
-                    </div>
                   </footer>
                 <% end %>
               </div>
