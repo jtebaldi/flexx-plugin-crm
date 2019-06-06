@@ -11,7 +11,10 @@ class EngageToolsService
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
-    recipients.uniq.each{ |r| result.concat(find_email(recipient: r, site: site)) }
+    recipients.uniq.each do |r| 
+      email = find_email(recipient: r, site: site)
+      result.concat(email) if email.present?
+    end
 
     result.uniq
   end
@@ -126,13 +129,15 @@ class EngageToolsService
     if recipient.to_i > 0
       contact = Plugins::FlexxPluginCrm::Contact.find_by(id: recipient)
 
-      [[contact.id, contact.email]] if contact.present?
+      if contact.present? && contact.email.present?
+        [[contact.id, contact.email]]
+      end
     elsif recipient =~ URI::MailTo::EMAIL_REGEXP
       [[nil, recipient]]
     elsif CONTACT_GROUPS.has_key?(recipient)
-      site.contacts.send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
+      site.contacts.where.not(email: [nil, ""]).send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else
-      site.contacts.tagged_with(recipient).pluck(:id, :email)
+      site.contacts.where.not(email: [nil, ""]).tagged_with(recipient).pluck(:id, :email)
     end
   end
 

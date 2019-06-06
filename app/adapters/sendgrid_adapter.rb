@@ -61,10 +61,12 @@ class SendgridAdapter
   def send_email(from:, to:, subject:, body:, send_at: nil)
     personalizations = Array.new.tap do |p|
       to.each do |t|
-        p << {
-          to: [t],
-          substitutions: dynamic_fields(t[:email])
-        }
+        if t[:email].present?
+          p << {
+            to: [t],
+            substitutions: dynamic_fields(t[:email])
+          }
+        end
       end
     end
 
