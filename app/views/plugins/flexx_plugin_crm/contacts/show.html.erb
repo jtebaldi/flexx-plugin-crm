@@ -45,7 +45,7 @@
       setTimeout(function() {
         $('#chat-content').scrollToEnd();
         $('#contact-conversations-text-message').focus();
-      }, 250);      
+      }, 250);
     }
 
     // $('#edit_tags').click(function(){
@@ -137,8 +137,13 @@
             <div class="col-md-6">
               <div class="flex-grow pt-10">
                 <div class="fs-16 mb-15">
-                  <i class="fa fa-fw fa-envelope w-30px"></i> <%= @contact.email %>
-                  <% unless @contact.email.present? %>
+                  <i class="fa fa-fw fa-envelope w-30px"></i>
+                  <% if @contact.email.present? %>
+                    <%= @contact.email %>
+                    <% unless @contact.valid_email? %>
+                      <span class="badge badge-danger"><%= @contact.email_status.humanize %></span>
+                    <% end %>
+                  <% else %>
                     <small><a id="add_email" href="#" class="alert-link">add an email address</a></small>
                   <% end %>
                 </div>

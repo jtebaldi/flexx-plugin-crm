@@ -65,6 +65,11 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
     CamaleonCms::User.find_by(id: self.updated_by)
   end
 
+  def valid_email?
+    # thanks joe!
+    self.email? && %w(bounce dropped marked_as_spam unsubscribe).include?(@contact.email_status)
+  end
+
   private
 
   def has_activity_record?

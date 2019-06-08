@@ -30,17 +30,27 @@ class SendgridEventsService
           email.increment!(:unsubscribed_count) if recipient.unsubscribed_at.nil?
           recipient.unsubscribed_at = Time.current
             recipient.status = p[:event]
+            recipient.contact.email_status = p[:event]
         when 'bounce'
           if recipient.bounced_at.nil?
             recipient.bounced_at = Time.current
             recipient.status = p[:event]
+            recipient.contact.email_status = p[:event]
           end
           email.increment!(:bounced_count)
+        when 'dropped'
+          recipient.status = p[:event]
+          recipient.contact.email_status = p[:event]
+          email.increment!(:dropped_count)
+        when 'spamreport'
+          recipient.status = 'marked_as_spam'
+          recipient.contact.email_status = 'marked_as_spam'
+          email.increment!(:spam_count)
         end
 
         recipient.save
+        recipient.contact.save
       end
     end
   end
 end
-

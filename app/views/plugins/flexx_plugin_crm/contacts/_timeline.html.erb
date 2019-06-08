@@ -17,8 +17,12 @@
             <span class="ml-10 text-gray fw-400"><i class="fa fa-envelope" style="padding-right:3px;"></i> Delivered</span>
           <% elsif activity.object.status == 'unsubscribe' %>
             <span class="ml-10 text-pink fw-400"><i class="fa fa-thumbs-down" style="padding-right:3px;"></i> Unsubscribed</span>
-          <% elsif activity.object.status == 'bounced' %>
+          <% elsif activity.object.status == 'bounce' %>
             <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Bounced</span>
+          <% elsif activity.object.status == 'dropped' %>
+            <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Dropped</span>
+          <% elsif activity.object.status == 'marked_as_spam' %>
+            <span class="ml-10 text-danger fw-400"><i class="fa fa-exclamation-circle" style="padding-right:3px;"></i> Marked as spam</span>
           <% else %>
             <span class="ml-10 text-warning fw-400"><i class="fa fa-paper-plane" style="padding-right:3px;"></i> Sent</span>
           <% end %>
