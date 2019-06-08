@@ -78,14 +78,14 @@ RSpec.describe "Plugins::FexxPluginCrm::WebhooksController", type: :request do
       @email.reload
       expect(@email.unsubscribed_count).to eq 1
       recipient = @email.email_recipients.find_by_to('test1@mail.net')
-      expect(recipient.status).to eq 'unsubscribe'
+      expect(recipient.status).to eq 'unsubscribed'
       expect(recipient.unsubscribed_at).not_to be_nil 
 
       post sendgrid_events_admin_webhooks_path, open_json, { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
       @email.reload
       recipient = @email.email_recipients.find_by_to('test1@mail.net')
       expect(recipient.unsubscribed_at).not_to be_nil
-      expect(recipient.status).to eq 'unsubscribe'
+      expect(recipient.status).to eq 'unsubscribed'
     end
 
     it "bounce event" do
