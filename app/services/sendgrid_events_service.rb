@@ -29,8 +29,8 @@ class SendgridEventsService
         when 'unsubscribe'
           email.increment!(:unsubscribed_count) if recipient.unsubscribed_at.nil?
           recipient.unsubscribed_at = Time.current
-            recipient.status = p[:event]
-            recipient.contact.email_status = p[:event]
+            recipient.status = 'unsubscribed'
+            recipient.contact.email_status = 'unsubscribed'
         when 'bounce'
           if recipient.bounced_at.nil?
             recipient.bounced_at = Time.current

@@ -67,7 +67,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   def valid_email?
     # thanks joe!
-    self.email? && %w(bounce dropped marked_as_spam unsubscribe).include?(@contact.email_status)
+    self.email? && %w(bounce dropped marked_as_spam unsubscribed).exclude?(self.email_status)
   end
 
   private
