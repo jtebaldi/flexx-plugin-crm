@@ -22,3 +22,7 @@
     </div>
   </div>
 </div>
+<%= form_tag '', method: :patch, remote: true, authenticity_token: true, id: 'update-scheduling-form' do %>
+  <input type="hidden" id="update-scheduling-task-id" name="task_id">
+  <input type="hidden" id="update-scheduling-datetime" name="schedule_to">
+<% end %>

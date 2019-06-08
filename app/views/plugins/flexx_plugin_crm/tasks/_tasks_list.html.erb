@@ -37,10 +37,8 @@
     <% unless row.done? %>
       <footer class="card-footer flexbox align-items-center">
         <div>
-          <!-- Need to add conditional for if task is scheduled - modal that opens should display currently scheduled date time -->
-          <!-- Need the date displayed to be the actual date time -->
           <% if row.scheduled_to.present? %>
-            <a href="#modal-schedule-task-message" class="text-lighter" data-toggle="modal" >
+            <a href="#modal-schedule-task-message" class="text-lighter" data-toggle="modal" onclick="updateScheduling(<%= row.id %>, '<%= row.scheduled_to.strftime('%m/%d/%Y - %I:%M %p') %>')">
               <span class="text-cyan fw-400" style="padding-right:8px;">
                 <i class="ti-time" style="padding-right:3px;"></i> Scheduled</span>
                 <%= row.scheduled_to.strftime('%A %B %d, %I:%M %P') %>

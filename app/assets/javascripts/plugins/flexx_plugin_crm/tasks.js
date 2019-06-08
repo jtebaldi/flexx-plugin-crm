@@ -59,6 +59,12 @@ function checkedStaff() {
   }, 50);
 }
 
+function updateScheduling(id, value) {
+  $('#update-scheduling-task-id').val(id);
+  $('#update-scheduling-task-datetime').val(value);
+
+  $('#update-scheduling-form').submit();
+}
 app.ready(function() {
   contactlist.initialize();
 
