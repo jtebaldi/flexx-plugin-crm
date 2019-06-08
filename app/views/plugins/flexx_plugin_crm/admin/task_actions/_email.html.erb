@@ -13,7 +13,7 @@
     </div>
 
     <br>
-    <div class="form-groups-attached">
+    <div class="form-groups-attached mb-0">
 
       <div class="form-group">
         <label>To</label>
@@ -31,11 +31,13 @@
         <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'email[from]' } %>
       </div>
 
-      <div class="form-group">
+      <!-- Add "border-success" class when message has been saved -->
+      <div class="form-group border-success">
         <label>Message</label>
         <textarea name="email[body]" class="form-control editor" rows="10"></textarea>
       </div>
 
     </div>
+    <a href="#" class="btn btn-success btn-pure pr-1 fs-16" data-provide="tooltip" title="Save Message"><i class="fa fa-check"></i></a><span class="form-text text-success mt-2" style="display:inline-block;">Message autosaved at 2:34pm</small>
   </div>
 <% end %>
