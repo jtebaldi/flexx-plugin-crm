@@ -52,5 +52,40 @@ module Plugins::FlexxPluginCrm
 
       head :no_content
     end
+
+    def zap_new_contact
+      if request.headers['X-FLEXX-WEBHOOK'] == 'zapier' && request.headers['Content-Type'] == 'application/json'
+        data = JSON.parse(request.body.read)
+        source = if request.headers['X-LEAD-SOURCE'].present?
+          request.headers['X-LEAD-SOURCE']
+        else
+          "Zapier"
+        end
+      end
+  
+      if data['email'].present?
+        contact = current_site.contacts.find_or_create_by email: data['email'] do |c|
+          c.first_name =  data['first_name']
+          c.last_name = data['last_name']
+          c.email = data['email']
+          c.source = source
+        end
+
+        if data['phonenumber'].present?
+          number = if data['phonenumber'] !~ /^\+/ && data['phonenumber'].length == 10
+            '+1' + data['phonenumber']
+          else
+            data['phonenumber']
+          end
+    
+          contact.phonenumbers.find_or_create_by number: number do |p|
+            p.site = current_site
+          end
+        end
+      end
+  
+      render nothing: true
+    end
+
   end
 end
