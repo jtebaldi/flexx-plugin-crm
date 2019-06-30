@@ -22,7 +22,7 @@ module Plugins::FlexxPluginCrm
               lastName: ac.last_name,
               createdDate: ac.created_at.strftime('%b, %d %Y'),
               salesStage: ac.sales_stage.capitalize,
-              salesStageClass: ac.sales_stage, 
+              salesStageClass: ac.sales_stage,
               pendingTasksClass: ('text-info' if ac.tasks.length > 0),
               pendingTasks: case ac.tasks.length
                             when 0

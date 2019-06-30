@@ -78,6 +78,23 @@ module Plugins::FlexxPluginCrm::MainHelper
       recipients_list: args[:form_received].contact_id,
       send_at: Time.current
     })
+
+    activity_record_params = {
+      feed_name: 'contact',
+      feed_id: args[:form_received].contact_id,
+      args: {
+        actor: 'system',
+        verb: 'sent',
+        object: "Stock:#{stock_email.id}",
+        labels: {
+          action: 'sent automatically',
+          action_type: 'Stock message',
+          actor: 'System (as confirmation of form completion)'
+        }
+      }
+    }
+
+    ActivityFeedWorker.perform_async(activity_record_params.to_json)
   end
 
   def apply_tags_to_contact(args)
