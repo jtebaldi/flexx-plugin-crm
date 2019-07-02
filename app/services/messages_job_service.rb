@@ -40,7 +40,7 @@ class MessagesJobService
   def self.send_message(message)
     result = TwilioAdapter.new.send_sms(message: message)
 
-    if result.error_code.zero?
+    if result.error_code.nil?
       message.update!(aasm_state: :sent, sid: result.sid)
     else
       message.update!(aasm_state: :error)
