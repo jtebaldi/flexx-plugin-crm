@@ -282,8 +282,13 @@ app.ready(function() {
     $('#contacts-table').jsGrid('sort', { field: field, order: order });
   });
 
-  $("#filter").on('change', function(event) {
+  $("#statusFilter").on('change', function(event) {
     window.contactListFilter.salesStage = this.value;
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
+  });
+
+  $("#tagFilter").on('change', function(event) {
+    window.contactListFilter.tags = this.value;
     $('#contacts-table').jsGrid('search', window.contactListFilter);
   });
 
