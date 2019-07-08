@@ -9,6 +9,9 @@ module Plugins::FlexxPluginCrm
       @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
       @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
       @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
+      
+      # Only included last 7 days of completed tasks to avoid timeout on tasks index
+      @last7_completed_tasks = current_site.tasks.done.old.where('created_at >= ?', 1.week.ago).order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets

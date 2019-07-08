@@ -17,15 +17,15 @@
         <% end %>
       </div>
 
-      <div class="<%= 'accordion' if @old_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
+      <div class="<%= 'accordion' if @last7_completed_tasks.length > 0 %> accordion-connected" id="accordion-tasks">
         <div class="">
           <h4 class="card-title mb-20">
-            <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past completed tasks</strong> <% if @old_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
+            <a class='collapsed' data-toggle="collapse" data-parent="#accordion-tasks" href="#collapse-tasks"><strong>Past completed tasks</strong> <% if @last7_completed_tasks.length > 0 %><span class="pull-right"><small>Click to view</small></span><% end %></a>
           </h4>
 
           <div id="collapse-tasks" class="collapse">
             <div id="contact-open-tasks-panel">
-              <%= render partial: 'tasks_list', locals: { tasks: @old_completed_tasks, refresh_panel: '' } %>
+              <%= render partial: 'tasks_list', locals: { tasks: @last7_completed_tasks, refresh_panel: '' } %>
             </div>
           </div>
         </div>
