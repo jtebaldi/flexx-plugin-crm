@@ -18,7 +18,7 @@ module Plugins::FlexxPluginCrm::CommonHelper
     case activity_object
     when Plugins::FlexxPluginCrm::Message
       'sms'
-    when Plugins::FlexxPluginCrm::EmailRecipient
+    when Plugins::FlexxPluginCrm::EmailRecipient, Plugins::FlexxPluginCrm::Stock
       'envelope'
     when Plugins::FlexxPluginCrm::Task
       task_type_icon(task_type: activity_object.task_type)
