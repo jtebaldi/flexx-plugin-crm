@@ -309,7 +309,7 @@ app.ready(function() {
     })
     .catch(function(error){
       console.error(error);
-    });  
+    });
 });
 
 var selectedContacts = [];
@@ -331,10 +331,15 @@ $("#contacts-table").jsGrid({
         var regex = new RegExp(filter.printName || '', 'i');
 
         d.resolve(window.contactList.filter(function (row){
-          return (
-            ((row.salesStageClass == filter.salesStage) || !filter.salesStage)
-            && regex.test(row.printName)
-          )
+          if (filter.salesStage && row.salesStageClass != filter.salesStage) {
+            return false;
+          }
+
+          if (filter.tags && (row.tags.length == 0 || !row.tags.find((tag) => tag.name == filter.tags))) {
+            return false;
+          }
+
+          return regex.test(row.printName);
         }));
       } else {
         $.ajax({
