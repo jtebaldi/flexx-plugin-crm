@@ -111,14 +111,14 @@
         </div>
       </div>
       <div class="media align-items-center px-0 py-30 ml-10 bg-white">
-        <span class="d-none d-sm-block contact avatar avatar-xxl avatar-bordered <%= @contact.sales_stage.downcase %>-stage fs-28" style="line-height: 92px;"><%= @contact.initials %></span>
+        <span class="d-none d-sm-block contact avatar avatar-xxl avatar-bordered <%= @contact.sales_stage.downcase %>-stage fs-28" style="line-height: 92px;" id="initials-box"><%= @contact.initials %></span>
         <div class="media-body">
           <div class="row">
             <div class="col-md-6 xs-text-center">
               <span class="d-sm-none avatar avatar-xxl avatar-bordered card-<%= @contact.sales_stage.downcase %>" style="line-height: 88px;border-radius: 6px;"><%= @contact.initials %></span>
               <h2 id="header_contact_name" class="header-title pt-10 mb-0">
                 <strong><%= @contact.print_name %></strong><span class="text-fade"> | </span>
-                <a href="#" data-toggle="modal" data-target="#update_status_modal" class="fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>" style="border-bottom: dotted .5px;"><%= @contact.sales_stage.humanize %></a>
+                <a href="#" data-toggle="modal" data-target="#update_status_modal" class="fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>" style="border-bottom: dotted .5px;" id="sales-stage-label"><%= @contact.sales_stage.humanize %></a>
               </h2>
               <div id="action_buttons" class="xs-text-center mt-10 mb-20">
                 <% if @contact.email.present? %>
