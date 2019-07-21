@@ -8,10 +8,6 @@
 <% end %>
 
 <script>
-  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
-</script>
-
-<script>
   document.addEventListener('DOMContentLoaded', function () {
     $("#timing_detail").hide();
     var rad = document.newTextBlast.timingOptions;
@@ -165,9 +161,20 @@
 
             <div class="form-group">
               <label>Message</label>
-              <textarea class="form-control" name="message_blast[message]" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+              <textarea class="form-control" id="message-blast-message" name="message_blast[message]" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true"></textarea>
+              <button class="btn btn-sm btn-bold btn-yellow dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" type="button"><i class="ti-wand"></i></button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <h6 class="dropdown-header" style="padding: 5px 12px;">Contact</h6>
+                <% @dynamic_fields.each do |df| %>
+                  <% if df.first == '-' %>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header" style="padding: 5px 12px;">Snippets</h6>
+                  <% else %>
+                    <a style="padding: 0px 10px;" href="#" class="dropdown-item" data-dynamic-field="<%= df.last %>"><%= df.first %></a>
+                  <% end %>
+                <% end %>
+              </div>
             </div>
-
           </div>
           <div class="flexbox pull-right">
             <button onclick="fillRecipientsField()" id="btn_send_text" class="btn btn-bold btn-w-xl btn-primary">Send Message</button>
