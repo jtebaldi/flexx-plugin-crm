@@ -29,6 +29,18 @@
       <div class="card">
         <div class="card-body">
           <div class="flexbox">
+            <h5>Tasks Stats</h5>
+          </div>
+
+          <canvas id="tasks_stats" style="height: 250px; width: 100%"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="flexbox">
             <h5>Tasks</h5>
             <span class="float-right"><a class="btn btn-xs btn-primary" href="/admin/next/tasks">View</a></span>
           </div>
@@ -124,3 +136,47 @@
 
 <!-- MODAL - Contact form modal -->
 <%= render 'plugins/flexx_plugin_crm/common/contact_form_modal' %>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {4
+    new Chart('tasks_stats', {
+      type: 'line',
+      data: {
+        labels: <%= @tasks_stats[:created].keys.to_json.html_safe %>,
+        datasets: [
+          {
+            label: "Created",
+            fill: false,
+            backgroundColor: "#36a2eb",
+            borderColor: "#36a2eb",
+            borderWidth: 3,
+            pointRadius: 0,
+            data: <%= @tasks_stats[:created].values.to_json.html_safe %>
+          },
+          {
+            label: "Completed",
+            fill: false,
+            borderColor: "#ff6384",
+            backgroundColor: "#ff6384",
+            borderWidth: 3,
+            pointRadius: 0,
+            data: <%= @tasks_stats[:completed].values.to_json.html_safe %>
+          }
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              stepSize: 1
+            }
+          }]
+        }
+      }
+    });
+  });
+</script>
