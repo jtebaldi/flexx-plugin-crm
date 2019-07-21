@@ -171,4 +171,11 @@ app.ready(function() {
     .catch(function(error){
       console.error(error);
     });
+
+    $(document).on('click', '[data-dynamic-field]', (e) => {
+      var $input = $(e.target).closest('form').find('#message-blast-message');
+      var pos = $input[0].selectionStart;
+      var text = $input.val();
+      $input.val(`${text.substr(0, pos)}{{${e.target.dataset.dynamicField}}}${text.substr(pos, text.length)}`);
+    });
 })

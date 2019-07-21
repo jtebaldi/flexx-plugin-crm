@@ -26,9 +26,7 @@ module Plugins::FlexxPluginCrm
     end
 
     def new_sms
-      @dynamic_fields = {
-        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
-      }.to_json
+      @dynamic_fields = df_defaults + [['-', '']] + df_snippets
       @contacts = current_site.contacts.order(:first_name, :last_name)
       @tags = current_site.owned_tags.order(:name)
     end
