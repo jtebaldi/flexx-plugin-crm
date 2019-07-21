@@ -282,8 +282,13 @@ app.ready(function() {
     $('#contacts-table').jsGrid('sort', { field: field, order: order });
   });
 
-  $("#filter").on('change', function(event) {
+  $("#statusFilter").on('change', function(event) {
     window.contactListFilter.salesStage = this.value;
+    $('#contacts-table').jsGrid('search', window.contactListFilter);
+  });
+
+  $("#tagFilter").on('change', function(event) {
+    window.contactListFilter.tags = this.value;
     $('#contacts-table').jsGrid('search', window.contactListFilter);
   });
 
@@ -304,7 +309,7 @@ app.ready(function() {
     })
     .catch(function(error){
       console.error(error);
-    });  
+    });
 });
 
 var selectedContacts = [];
@@ -326,10 +331,15 @@ $("#contacts-table").jsGrid({
         var regex = new RegExp(filter.printName || '', 'i');
 
         d.resolve(window.contactList.filter(function (row){
-          return (
-            ((row.salesStageClass == filter.salesStage) || !filter.salesStage)
-            && regex.test(row.printName)
-          )
+          if (filter.salesStage && row.salesStageClass != filter.salesStage) {
+            return false;
+          }
+
+          if (filter.tags && (row.tags.length == 0 || !row.tags.find((tag) => tag.name == filter.tags))) {
+            return false;
+          }
+
+          return regex.test(row.printName);
         }));
       } else {
         $.ajax({
