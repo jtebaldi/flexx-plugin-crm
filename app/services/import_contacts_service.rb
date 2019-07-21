@@ -28,7 +28,7 @@ class ImportContactsService
 
   def find_or_create_by_email(row)
     contact = @site.contacts.find_or_create_by email: row['email'] do |c|
-      c.attributes = row.to_hash.except('phonenumber')
+      c.attributes = row.to_hash.except('phonenumber', 'tags')
       c.birthday = Time.strptime row['birthday'], '%Y/%m/%d' if row['birthday'].present?
       c.created_by = @user.id
     end
@@ -44,6 +44,8 @@ class ImportContactsService
         p.site = @site
       end
     end
+
+    add_tags_to_contact(contact, row['tags']) unless row['tags'].blank?
   end
 
   def find_or_create_by_phone(row)
@@ -54,13 +56,19 @@ class ImportContactsService
     end
 
     if @site.phonenumbers.find_by(number: number).blank?
-      new_contact = @site.contacts.new(row.to_hash.except('phonenumber'))
+      new_contact = @site.contacts.new(row.to_hash.except('phonenumber', 'tags'))
       new_contact.birthday = Time.strptime row['birthday'], '%Y/%m/%d' if row['birthday'].present?
       new_contact.created_by = @user.id
 
       new_contact.save!(validate: false)
 
       new_contact.phonenumbers.create!(number: number, site_id: @site.id)
+
+      add_tags_to_contact(new_contact, row['tags']) unless row['tags'].blank?
     end
+  end
+
+  def add_tags_to_contact(contact, tags)
+    @site.tag(contact, with: tags, on: :tags)
   end
 end
