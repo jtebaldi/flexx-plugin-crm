@@ -1,6 +1,8 @@
 $('#update_status_modal').modal('hide');
 <% if @contact && @contact.sales_stage != 'archived' %>
   $('#sales-stage-label').html('<%= @contact.sales_stage.humanize %>');
+  $('#sales-stage-label').attr('class', 'fw-400 fs-18 text-uppercase text-<%= @contact.sales_stage.downcase %>');
+  $('#initials-box').attr('class', 'd-none d-sm-block contact avatar avatar-xxl avatar-bordered <%= @contact.sales_stage.downcase %>-stage fs-28');
 <% else %>
   window.location = '<%= admin_contacts_path %>';
 <% end %>
