@@ -12,8 +12,8 @@
   var task_stocks = <%= task_stocks.pluck(:name, :description, :metadata).to_json.html_safe %>;
 
   $('#stock-task-select-field').on('change', function(e) {
-    $('select[name="task[task_type]"]').val(task_stocks[e.target.value][2].task_type);
-    $('input[name="task[title]"]').val(task_stocks[e.target.value][0]);
-    $('textarea[name="task[details]"]').val(task_stocks[e.target.value][1]);
+    $('select[name="task[task_type]"], select[name="task_recipe_direction[task_type]"]').val(task_stocks[e.target.value][2].task_type);
+    $('input[name="task[title]"], input[name="task_recipe_direction[title]"]').val(task_stocks[e.target.value][0]);
+    $('textarea[name="task[details]"], textarea[name="task_recipe_direction[details]"]').val(task_stocks[e.target.value][1]);
   });
 </script>
