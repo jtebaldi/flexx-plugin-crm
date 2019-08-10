@@ -89,6 +89,9 @@ Rails.application.routes.draw do
         end
 
         resources :conversations, controller: 'plugins/flexx_plugin_crm/conversations', only: [:index, :show, :create] do
+          collection do
+            patch :mark_contact_messages_read
+          end
         end
 
         resources :stocks, controller: 'plugins/flexx_plugin_crm/stocks'
