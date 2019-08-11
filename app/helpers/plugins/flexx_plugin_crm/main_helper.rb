@@ -88,7 +88,7 @@ module Plugins::FlexxPluginCrm::MainHelper
         object: "Stock:#{stock_email.id}",
         labels: {
           action: 'sent automatically',
-          action_type: 'Stock message',
+          action_type: "Stock message - #{stock_email.name} -",
           actor: 'System (as confirmation of form completion)'
         }
       }
