@@ -29,5 +29,12 @@ module Plugins::FlexxPluginCrm
         format.js
       end
     end
+
+    def mark_contact_messages_read
+      @contact = current_site.contacts.find(params[:contact_id])
+      EngageToolsService.mark_contact_messages_read(contact: @contact)
+
+      head :ok
+    end
   end
 end

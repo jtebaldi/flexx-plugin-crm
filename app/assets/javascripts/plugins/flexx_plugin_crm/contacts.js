@@ -155,6 +155,14 @@ function bulkUpdateTags() {
   $('#mass-action-form').submit();
 }
 
+function markContactMessagesRead(contact_id) {
+  $.ajax({
+    url: '/admin/next/conversations/mark_contact_messages_read',
+    data: { contact_id: contact_id },
+    type: 'PATCH'
+  });
+}
+
 app.ready(function() {
   taglist.initialize();
 
