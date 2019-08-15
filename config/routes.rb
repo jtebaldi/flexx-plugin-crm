@@ -100,6 +100,7 @@ Rails.application.routes.draw do
             post :twilio_confirmation
             post :sendgrid_events
             post :sendgrid_parse
+            post :zap_new_contact
           end
         end
 

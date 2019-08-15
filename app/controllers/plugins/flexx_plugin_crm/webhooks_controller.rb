@@ -52,5 +52,39 @@ module Plugins::FlexxPluginCrm
 
       head :no_content
     end
+
+    def zap_new_contact
+      if request.headers['X-FLEXX-WEBHOOK'] == 'zapier' && request.headers['Content-Type'] == 'application/json'
+        # data = JSON.parse(request.body.read)
+        source = request.headers['X-LEAD-SOURCE'] || "Zapier"
+      end
+
+      # Need to return a notifcation to zapier if and email isn't present
+      # something like -> return head :bad_request if params[:email].blank?
+  
+      if params[:email].present?
+        contact = current_site.contacts.find_or_create_by email: params[:email] do |c|
+          c.first_name =  params[:first_name]
+          c.last_name = params[:last_name]
+          c.email = params[:email]
+          c.source = source
+        end
+
+        if params[:phonenumber].present?
+          number = if params[:phonenumber] !~ /^\+/ && params[:phonenumber].length == 10
+            '+1' + params[:phonenumber]
+          else
+            params[:phonenumber]
+          end
+    
+          contact.phonenumbers.find_or_create_by number: number do |p|
+            p.site = current_site
+          end
+        end
+      end
+  
+      head :ok
+    end
+
   end
 end
