@@ -9,13 +9,6 @@ function sendConfirmation(taskId) {
   $('#modal-send-confirmation').modal('show');
 }
 
-function submitTaskSendMessageForm() {
-  $('#task-send-text-message').toggleClass('disabled');
-  $('#task-send-text-button').toggleClass('hidden');
-  $('#task-send-text-spinner').toggleClass('hidden'); try { ckeditor.updateSourceElement(); } catch(err) { } finally { $('#task-send-message-form').submit();
-  }
-}
-
 /**
  *
  * @param {Boolean} ask true if we need to confirm phone or meeting task comletion without notes.
@@ -183,5 +176,5 @@ $(function(){
     });
   });
 
-  $('#conversations-thread-panel').scrollToEnd();  
+  $('#conversations-thread-panel').scrollToEnd();
 });
