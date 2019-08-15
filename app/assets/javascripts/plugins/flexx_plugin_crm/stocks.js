@@ -39,6 +39,12 @@ function insertDynamicField(textareaInput, mergeField) {
     $(textareaInput).val(textBefore + mergeField + textAfter);
 }
 
+function validateStockLabel(e) {
+  console.log(e.key)
+  if (e.key != 'Shift' && e.key != 'Tab' && e.key.match(/[^a-z_\-]/gi))
+    e.preventDefault();
+}
+
 app.ready(function() {
   var observer = new MutationObserver(function () {
     ClassicEditor

@@ -37,7 +37,7 @@
 
             <div class="form-group require">
               <label>Snippet Code</label>
-              <input class="form-control" type="text" name="stock[label]" value="<%= stock.label %>" data-snippet-code required>
+              <input class="form-control" type="text" id="stockLabel" name="stock[label]" value="<%= stock.label %>" data-snippet-code required>
               <div class="invalid-feedback"></div>
             </div>
 
@@ -75,3 +75,7 @@
   <button class="btn btn-success" onclick="saveSnippetStock()" id="snippet-stock-save">Save</button>
   <button class="btn btn-default" onclick="closeSnippetStock(this)" id="snippet-stock-cancel" >Cancel</button>
 </footer>
+
+<script>
+  $('#stockLabel').on('keydown', validateStockLabel);
+</script>
