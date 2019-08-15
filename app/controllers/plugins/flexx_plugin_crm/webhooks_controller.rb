@@ -59,7 +59,8 @@ module Plugins::FlexxPluginCrm
         source = request.headers['X-LEAD-SOURCE'] || "Zapier"
       end
 
-      return head :bad_request if params[:email].blank?
+      # Need to return a notifcation to zapier if and email isn't present
+      # something like -> return head :bad_request if params[:email].blank?
   
       if params[:email].present?
         contact = current_site.contacts.find_or_create_by email: params[:email] do |c|
