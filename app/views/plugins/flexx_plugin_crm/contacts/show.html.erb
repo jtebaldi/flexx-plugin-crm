@@ -405,6 +405,9 @@
                       <option <%= 'selected' if @contact.source == 'web_search' %> value="web_search">Web Search</option>
                       <option <%= 'selected' if @contact.source == 'website_form' %> value="website_form">Website Form</option>
                       <option <%= 'selected' if @contact.source == 'word_of_mouth' %> value="word_of_mouth">Word of mouth</option>
+                      <% unless ['email', 'other', 'partner', 'pr_advertising', 'referral', 'social_media', 'web_search', 'website_form', 'word_of_mouth'].include? @contact.source %>
+                        <option selected value="<%= @contact.source %>"><%= @contact.source %></option>
+                      <% end %>
                     </select>
                   </div>
                 </div>
