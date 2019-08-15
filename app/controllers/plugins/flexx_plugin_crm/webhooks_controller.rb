@@ -55,27 +55,25 @@ module Plugins::FlexxPluginCrm
 
     def zap_new_contact
       if request.headers['X-FLEXX-WEBHOOK'] == 'zapier' && request.headers['Content-Type'] == 'application/json'
-        data = JSON.parse(request.body.read)
-        source = if request.headers['X-LEAD-SOURCE'].present?
-          request.headers['X-LEAD-SOURCE']
-        else
-          "Zapier"
-        end
+        # data = JSON.parse(request.body.read)
+        source = request.headers['X-LEAD-SOURCE'] || "Zapier"
       end
+
+      return head :bad_request if params[:email].blank?
   
-      if data['email'].present?
-        contact = current_site.contacts.find_or_create_by email: data['email'] do |c|
-          c.first_name =  data['first_name']
-          c.last_name = data['last_name']
-          c.email = data['email']
+      if params[:email].present?
+        contact = current_site.contacts.find_or_create_by email: params[:email] do |c|
+          c.first_name =  params[:first_name]
+          c.last_name = params[:last_name]
+          c.email = params[:email]
           c.source = source
         end
 
-        if data['phonenumber'].present?
-          number = if data['phonenumber'] !~ /^\+/ && data['phonenumber'].length == 10
-            '+1' + data['phonenumber']
+        if params[:phonenumber].present?
+          number = if params[:phonenumber] !~ /^\+/ && params[:phonenumber].length == 10
+            '+1' + params[:phonenumber]
           else
-            data['phonenumber']
+            params[:phonenumber]
           end
     
           contact.phonenumbers.find_or_create_by number: number do |p|
@@ -84,7 +82,7 @@ module Plugins::FlexxPluginCrm
         end
       end
   
-      render nothing: true
+      head :ok
     end
 
   end
