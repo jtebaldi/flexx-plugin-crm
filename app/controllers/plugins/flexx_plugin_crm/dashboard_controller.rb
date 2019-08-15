@@ -7,8 +7,13 @@ module Plugins::FlexxPluginCrm
       @todays_tasks = current_site.tasks.pending.due_today.order('due_date asc').includes(:contact, :owners)
       @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
       @forms_completed = current_site.contact_forms.includes(:contact)
-                                     .where.not(contacts: { id: nil, sales_stage: "archived" }, parent_id: nil)                                     
+                                     .where.not(contacts: { id: nil, sales_stage: "archived" }, parent_id: nil)
                                      .order(created_at: :desc)
+
+      @tasks_stats = {
+        created: current_site.tasks.group_by_day(:created_at, last: 7, format: "%b %d").count,
+        completed: current_site.tasks.done.group_by_day(:updated_at, last: 7, format: "%b %d").count
+      }
     end
 
     def settings
