@@ -1,0 +1,2 @@
+$('#conversations-panel').html('<%= escape_javascript(render partial: 'conversations', locals: { messages: @contact.messages.order(created_at: :asc) })  %>');
+$('#chat-content').scrollToEnd();
