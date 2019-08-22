@@ -46,6 +46,6 @@ module Plugins::FlexxPluginCrm::CommonHelper
   end
 
   def task_stocks
-    current_site.stocks.unscoped.tasks.order(:name)
+    current_site.stocks.tasks.order(:name)
   end
 end

@@ -10,7 +10,7 @@ class Plugins::FlexxPluginCrm::Stock < ActiveRecord::Base
   scope :snippets, -> { where(stock_type: 'snippet') }
   scope :rich_texts, -> { where(stock_type: 'rich_text') }
   scope :htmls, -> { where(stock_type: 'html') }
-  scope :tasks, -> { where(stock_type: 'task') }
+  scope :tasks, -> { unscope(where: :stock_type).where(stock_type: 'task') }
 
   def created_by_user
     self.class.user_class.find(created_by)

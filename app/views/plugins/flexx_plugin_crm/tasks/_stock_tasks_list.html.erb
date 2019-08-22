@@ -1,24 +1,22 @@
-<% current_site.stocks.unscoped.tasks.each do |st| %>
-  <% unless st.site_id != current_site.id %>
-    <div class="card b-1 hover-shadow-2 mb-20">
-      <a class="media card-body" data-toggle="quickview" href="#qv_view_stock_task" data-url="<%= stock_card_admin_tasks_path(st.id) %>">
-        <div class="media-left d-none d-sm-block">
-            <div class="br-1 text-light">
-              <ul class="list-unstyled text-center mb-0 mr-20">
-                <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: st.metadata['task_type']) %>"></i></li>
-              </ul>
-            </div>
-        </div>
-        <div class="media-body">
-          <div class="">
-            <span class="fs-16 pr-16"><%= st.name %></span>
+<% current_site.stocks.tasks.each do |st| %>
+  <div class="card b-1 hover-shadow-2 mb-20">
+    <a class="media card-body" data-toggle="quickview" href="#qv_view_stock_task" data-url="<%= stock_card_admin_tasks_path(st.id) %>">
+      <div class="media-left d-none d-sm-block">
+          <div class="br-1 text-light">
+            <ul class="list-unstyled text-center mb-0 mr-20">
+              <li><i class="fs-25 text-fade fa fa-<%= task_type_icon(task_type: st.metadata['task_type']) %>"></i></li>
+            </ul>
           </div>
-          <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= st.description %></p>
+      </div>
+      <div class="media-body">
+        <div class="">
+          <span class="fs-16 pr-16"><%= st.name %></span>
         </div>
-        <div class="media-right text-right d-none d-md-block">
-          <span class="text-fade fs-10">Updated <%= st.updated_at.strftime('%m/%d/%Y') %></span>
-        </div>
-      </a>
-    </div>
-  <% end %>
+        <p class="fs-13 fw-300 text-fade text-truncate" style="max-width: 500px;"><%= st.description %></p>
+      </div>
+      <div class="media-right text-right d-none d-md-block">
+        <span class="text-fade fs-10">Updated <%= st.updated_at.strftime('%m/%d/%Y') %></span>
+      </div>
+    </a>
+  </div>
 <% end %>

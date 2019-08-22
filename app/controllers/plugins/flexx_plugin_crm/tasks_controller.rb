@@ -9,7 +9,7 @@ module Plugins::FlexxPluginCrm
       @todays_completed_tasks = current_site.tasks.done.done_today.order('updated_at desc').includes(:contact, :owners)
       @upcoming_tasks = current_site.tasks.pending.upcoming.order('due_date asc').includes(:contact, :owners)
       @old_pending_tasks = current_site.tasks.pending.old.order('due_date asc').includes(:contact, :owners)
-      
+
       # Only included last 7 days of completed tasks to avoid timeout on tasks index
       @last7_completed_tasks = current_site.tasks.done.old.where('created_at >= ?', 1.week.ago).order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
       @old_completed_tasks = current_site.tasks.done.old.order('updated_at desc').includes(:contact, :owners) - @todays_completed_tasks
@@ -136,19 +136,19 @@ module Plugins::FlexxPluginCrm
     end
 
     def stock_card
-      @stock_task = current_site.stocks.unscoped.find(params[:id])
+      @stock_task = current_site.stocks.tasks.find(params[:id])
 
       render partial: "plugins/flexx_plugin_crm/tasks/stock_card"
     end
 
     def update_stock
-      stock_task = current_site.stocks.unscoped.find(params[:id])
+      stock_task = current_site.stocks.tasks.find(params[:id])
       stock_task.updated_by = current_user.id
       stock_task.update(stock_task_params)
     end
 
     def delete_stock
-      stock_task = current_site.stocks.unscoped.find(params[:id])
+      stock_task = current_site.stocks.tasks.find(params[:id])
 
       stock_task.destroy
 
