@@ -4,7 +4,7 @@
   }
 </style>
 
-<%= form_tag create_email_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine pt-0' do %>
+<%= form_tag create_email_admin_messages_path(format: :js), method: :post, remote: true, authenticity_token: true, id: 'task-send-message-form', class: 'quickview-block form-type-combine pt-0', 'data-toggle': 'validator' do %>
   <input type="hidden" name="email[task_id]" value="<%= task.id %>">
   <div class="card-body">
 
@@ -23,7 +23,7 @@
 
       <div class="form-group">
         <label>Subject</label>
-        <input class="form-control" type="text" name="email[subject]">
+        <input class="form-control" type="text" name="email[subject]" required>
       </div>
 
       <div class="form-group">
@@ -39,3 +39,19 @@
     </div>
   </div>
 <% end %>
+
+<script>
+$('#task-send-message-form').validator().on('submit', function (e) {
+  if (e.isDefaultPrevented()) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  else {
+    try {
+      ckeditor.updateSourceElement();
+    } finally {
+      completeTask();
+    }
+  }
+});
+</script>

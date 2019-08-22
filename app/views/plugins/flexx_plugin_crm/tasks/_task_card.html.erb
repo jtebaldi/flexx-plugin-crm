@@ -191,7 +191,7 @@
   <% unless @task.done? %>
     <% case @task.task_type %>
     <% when 'email', 'message' %>
-      <button class="btn btn-success text-uppercase" onclick="submitTaskSendMessageForm(); completeTask()">Send and complete</button>
+      <button class="btn btn-success text-uppercase" onclick="$('#task-send-message-form').submit()">Send and complete</button>
     <% when 'phone_call', 'meeting' %>
       <button class="btn btn-success text-uppercase" onclick="completeTask(true)">Complete</button>
     <% else %>
