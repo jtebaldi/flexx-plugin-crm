@@ -18,7 +18,7 @@ module Plugins::FlexxPluginCrm
       @form = current_site.contact_forms.find(params[:id])
       settings = @form.settings.present? ? JSON.parse(@form.settings) : {}
 
-      settings["railscf_mail"] = params[:railscf_mail]
+      settings["railscf_mail"].merge!(params[:railscf_mail])
       settings["railscf_twilio"] = params[:railscf_twilio]
       settings["railscf_redirect"] = params[:railscf_redirect]
       settings["railscf_webhook"] = params[:railscf_webhook]
