@@ -39,6 +39,17 @@ function insertDynamicField(textareaInput, mergeField) {
     $(textareaInput).val(textBefore + mergeField + textAfter);
 }
 
+function validateStockLabel(e) {  
+  var stocklabel = $('#stockLabel');
+  
+  if (e.key == ' ') {    
+    stocklabel.val(stocklabel.val() + "_");
+    e.preventDefault();
+  } else if (e.key != 'Shift' && e.key != 'Tab' && e.key.match(/[^a-z0-9_\-]/gi)) {
+    e.preventDefault();
+  }
+}
+
 app.ready(function() {
   var observer = new MutationObserver(function () {
     ClassicEditor
@@ -58,20 +69,20 @@ app.ready(function() {
       custom: {
         'snippet-code': ($elm) => {
           if (['contact_email', 'contact_first_name', 'contact_last_name'].includes($elm.val())) {
-            return 'The code is reserver for system snippet.';
+            return 'The code is reserved for system snippet.';
           }
         },
         'snippet-name': ($elm) => {
           if (['E-mail', 'First Name', 'Last Name'].includes($elm.val())) {
             return 'The name is reserved for system snippet.';
-          }
+          }          
         }
       }
     }).on('submit', (e) => {
       if (e.isDefaultPrevented()) {
         e.stopPropagation();
       } else {
-
+        
       }
     });
   });
