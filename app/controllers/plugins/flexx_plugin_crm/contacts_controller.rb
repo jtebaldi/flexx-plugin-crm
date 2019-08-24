@@ -135,6 +135,10 @@ module Plugins::FlexxPluginCrm
       render partial: 'contact_card'
     end
 
+    def refresh_conversations
+      @contact = current_site.contacts.find(params[:id])
+    end
+
     private
 
     def load_records
