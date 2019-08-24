@@ -11,6 +11,11 @@
   window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
 </script>
 
+<style>
+  .invalid-feedback ul { margin-bottom: 0; }
+  .form-groups-attached > div:not(:last-child).has-danger, .form-groups-attached > div:not(:last-child) .form-group.has-danger { border-bottom: 1px solid #f96868; }
+</style>
+
 <header class="header">
   <%= render 'next/partials/breadcrumb', link: '/admin/next/contacts', page: 'CRM' %>
   <div class="header-info">
