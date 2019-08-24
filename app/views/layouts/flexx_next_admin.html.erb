@@ -99,10 +99,6 @@
                                             "</button>" +
                                             "<a href='" + row.url + "' class='alert-link'><i class='fas fa-sms mr-10'></i>" + row.message + "</a>" +
                                           "</div>");
-
-          if(row.verb == 'message_received') {
-            $(document).trigger('messageReceived', [row]);
-          }
         });
       }
 

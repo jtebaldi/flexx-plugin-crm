@@ -57,7 +57,6 @@ Rails.application.routes.draw do
             get :email_validate
             get :phone_validate
             get :card
-            get :refresh_conversations
           end
 
           collection do

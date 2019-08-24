@@ -48,18 +48,17 @@
       }, 250);
     }
 
-    $(document).on('messageReceived', function(e, row) {
-      var contact_id = row.actor.split(':')[1];
-      if (contact_id == '<%= @contact.id %>') {
-        $.ajax({
-        url: '<%= refresh_conversations_admin_contact_path(@contact.id) %>',
-        type: 'GET'
-      });
-      }
-     });
+    // $('#edit_tags').click(function(){
+    //   $('.nav-tabs #contact_details_link').tab('show');
+    //   setTimeout(function() {
+    //     $('#tags_field .bootstrap-tagsinput').focus();
+    //   }, 500);
+    // });
+
   });
 
   window.dynamic_fields = <%= { flexxdynamicfields: @dynamic_fields }.to_json.html_safe %>;
+
 </script>
 
 <style>
