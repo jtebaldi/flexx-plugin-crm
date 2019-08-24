@@ -21,7 +21,7 @@
         <input type="hidden" id="recipient_id" name="email[recipients_list]" value="<%= task.contact && task.contact.id %>" readonly>
       </div>
 
-      <div class="form-group">
+      <div class="form-group require">
         <label>Subject</label>
         <input class="form-control" type="text" name="email[subject]" required>
       </div>
@@ -31,9 +31,9 @@
         <%= render partial: 'plugins/flexx_plugin_crm/common/email_senders_dropdown', locals: { input_field_name: 'email[from]' } %>
       </div>
 
-      <div class="form-group">
+      <div class="form-group require">
         <label>Message</label>
-        <textarea name="email[body]" class="form-control editor" rows="10"></textarea>
+        <textarea name="email[body]" class="form-control editor" rows="10" required></textarea>
       </div>
 
     </div>

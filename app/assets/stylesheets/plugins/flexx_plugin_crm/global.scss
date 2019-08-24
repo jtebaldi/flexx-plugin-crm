@@ -33,3 +33,8 @@ p.message-send-break {
   // .intl-tel-input, .bootstrap-select.form-control { top: -5px; }
   .tt-menu { top: 10px !important; }
 }
+
+// Displays red bottom border on invalid fields and removes extra spacing from invalid text
+.invalid-feedback ul { margin-bottom: 0; }
+
+.form-groups-attached > div:not(:last-child).has-danger, .form-groups-attached > div:not(:last-child) .form-group.has-danger { border-bottom: 1px solid #f96868; }
