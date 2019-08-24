@@ -50,6 +50,16 @@ function validateStockLabel(e) {
   }
 }
 
+function isLabelValueValid() {
+  var input = $('#stockLabel').val();
+  var regex = new RegExp("^[a-zA-Z0-9_\-]+$");
+  if(regex.test(input)) {    
+    return true;
+  } else {
+    return false;
+  }
+}
+
 app.ready(function() {
   var observer = new MutationObserver(function () {
     ClassicEditor
@@ -69,7 +79,9 @@ app.ready(function() {
       custom: {
         'snippet-code': ($elm) => {
           if (['contact_email', 'contact_first_name', 'contact_last_name'].includes($elm.val())) {
-            return 'The code is reserved for system snippet.';
+            return 'The code is reserved for system snippet.'
+          } else if (isLabelValueValid() === false) {
+            return 'Please limit the code characters to letters, numbers, undescores and/or hyphens.'
           }
         },
         'snippet-name': ($elm) => {
