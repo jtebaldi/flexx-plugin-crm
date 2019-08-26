@@ -17,7 +17,7 @@
       <div class="publisher publisher-multi">
         <img class="publisher-avatar avatar avatar-md" src="<%= current_site.get_option("icon") %>" alt="...">
         <label for="textarea" class="pl-10">SMS Message</label>
-        <textarea name="message[body]" id="task-send-text-message" class="publisher-input auto-expand w-100 pt-10" rows="6" minlegth="1" maxlength="320" data-provide="maxlength" data-alwaysShow="true" placeholder="Type message here..."></textarea>
+        <textarea name="message[body]" id="task-send-text-message" class="publisher-input auto-expand w-100 pt-10" rows="6" maxlength="320" data-provide="maxlength" data-alwaysShow="true" placeholder="Type message here..."></textarea>
         <div style="text-align: right;"><%= render 'plugins/flexx_plugin_crm/admin/task_actions/dynamic_fields' %></div>
       </div>
     <% end %>
@@ -28,3 +28,15 @@
     -->
   </div>
 <% end %>
+
+<script>
+$('#task-send-message-form').validator().on('submit', function (e) {
+  if (e.isDefaultPrevented()) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  else {
+    completeTask();
+  }
+});
+</script>
