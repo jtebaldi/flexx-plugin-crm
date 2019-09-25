@@ -16,6 +16,21 @@ module Plugins::FlexxPluginCrm
     end
 
     def show
+      @campaign = current_site.automated_campaigns.find(params[:id])
+      @available_contact_forms = current_site.
+                                  contact_forms.
+                                  select(:id, :name).
+                                  where(parent_id: nil).
+                                  order(:name)
+    end
+
+    def create_step
+    end
+
+    def destroy_step
+    end
+
+    def associate_form
     end
 
     private

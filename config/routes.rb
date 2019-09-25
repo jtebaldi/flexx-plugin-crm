@@ -121,6 +121,10 @@ Rails.application.routes.draw do
         end
 
         resources :campaigns, controller: 'plugins/flexx_plugin_crm/campaigns' do
+          get :toggle
+          post :associate_form
+          post :create_step
+          delete 'destroy_step/:id', action: :destroy_step, as: :destroy_step
         end
 
         scope :import, controller: 'plugins/flexx_plugin_crm/import' do

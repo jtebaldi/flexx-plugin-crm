@@ -1,0 +1,15 @@
+<% @campaign.ordered_steps.each do |step| %>
+  <li class="timeline-block">
+    <div class="timeline-point">
+      <span class="badge badge-ring badge-primary"></span>
+    </div>
+    <div class="timeline-content">
+      <%= link_to admin_campaign_destroy_step_path(@campaign, step), class: 'float-right', method: :delete, data: {
+        confirm: 'Removing a campaign step will not the affect previous contacts who have had this campaign applied.' } do %>
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+      <% end %>
+      <time datetime="2018"><%= step.distance_of_time_from_now() %></time>
+      <p><%= step.task_type.humanize %> (<%= step.title %>)</p>
+    </div>
+  </li>
+<% end %>

@@ -1,0 +1,6 @@
+<div class="buttons">
+  <a class="btn btn-warning btn-float btn-sm" href="#" title="Edit title or description" data-provide="tooltip" data-placement="top"><i class="ti-pencil"></i></a>
+  <a class="btn btn-<%= @campaign.paused ? 'success' : 'secondary' %> btn-float" href="<%= admin_campaign_toggle_path(@campaign.id) %>" data-remote="true">
+    <i class="ti-control-<%= @campaign.paused ? 'play' : 'pause' %>"></i>
+  </a>
+</div>
