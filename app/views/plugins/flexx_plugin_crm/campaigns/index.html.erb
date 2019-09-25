@@ -1,0 +1,126 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/campaigns' %>
+<% end %>
+
+<header class="header">
+  <div class="header-info">
+    <h2 class="header-title">Your <strong>Campaigns</strong></h2>
+  </div>
+  <div class="header-action">
+    <div class="buttons">
+      <button class="btn btn-primary btn-float" data-toggle="modal" data-target="#modal_new_campaign"><i class="ti-plus"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="main-content">
+
+  <p class="lead text-center text-fade">Active campaigns</p>
+  <% @active_campaigns.each do |campaign| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <a class="media card-body" href="<%= admin_campaign_path(campaign.id) %>">
+
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= campaign.title %></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><% campaign.description %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+            <% campaign.cama_contact_forms.each do |form| %>
+              <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+            <% end %>
+          </p>
+          <span class="text-fade fs-12">Total tasks: <strong><%= campaign.directions.count %></strong></span>
+        </div>
+      </a>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Created on:</strong>
+          <span><%= campaign.created_at.strftime('%b, %d %Y') %></span>
+        </div>
+        <div class="card-hover-show">
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-campaign-overview" data-url="campaign_card/<%= campaign.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger campaign-delete" href="<%= admin_campaign_path(id: campaign.id) %>" data-method="delete">Delete</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+  <br>
+  <div class="divider text-uppercase fw-500">Drafts</div>
+
+  <% @paused_campaigns.each do |campaign| %>
+    <div class="card b-1 hover-shadow-2 mb-20">
+      <a class="media card-body" href="<%= admin_campaign_path(campaign.id) %>">
+
+        <div class="media-body">
+          <div class="mb-2">
+            <span class="fs-20 pr-16"><%= campaign.title %></span>
+          </div>
+          <small class="fs-16 fw-300 ls-1"><% campaign.description %></small>
+        </div>
+
+        <div class="media-right text-right d-none d-md-block">
+          <p class="fs-14 text-fade mb-12">
+            <% campaign.cama_contact_forms.each do |form| %>
+              <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
+            <% end %>
+          </p>
+          <span class="text-fade fs-12">Total tasks: <strong><%= campaign.directions.count %></strong></span>
+        </div>
+      </a>
+      <footer class="card-footer flexbox align-items-center">
+        <div>
+          <strong>Created on:</strong>
+          <span><%= campaign.created_at.strftime('%b, %d %Y') %></span>
+        </div>
+        <div class="card-hover-show">
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-campaign-overview" data-url="campaign_card/<%= campaign.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-danger campaign-delete" href="<%= admin_campaign_path(campaign.id) %>" data-method="delete">Delete</a>
+        </div>
+      </footer>
+    </div>
+  <% end %>
+</div>
+
+<div id="qv-campaign-overview" class="quickview quickview-xxl backdrop-light"></div>
+
+<div class="modal modal-top fade" id="modal_new_campaign" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New campaign</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_tag admin_campaigns_path, method: :post, id: "new-task-campaign-form", class: "card form-type-combine" do %>
+          <div class="card-body">
+            <div class="form-groups-attached">
+              <div class="form-group">
+                <label>campaign Name</label>
+                <input class="form-control" type="text" name="task_campaign[title]">
+              </div>
+              <div class="form-group">
+                <label for="textarea">campaign description</label>
+                <textarea class="form-control" id="textarea" rows="6" name="task_campaign[description]"></textarea>
+              </div>
+
+            </div>
+          </div>
+        <% end %>
+        <div class="text-center">
+          <p>(You can update this later)</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div id="new-task-campaign-spinner" class="spinner-circle-shadow hidden"></div>
+        <button id="new-task-campaign-cancel" type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="new-task-campaign-continue" class="btn btn-primary" onclick="submitNewTaskcampaignForm()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

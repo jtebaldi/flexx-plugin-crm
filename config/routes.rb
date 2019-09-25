@@ -120,6 +120,9 @@ Rails.application.routes.draw do
           get '/(:tab)', action: :index, on: :collection, as: :index
         end
 
+        resources :campaigns, controller: 'plugins/flexx_plugin_crm/campaigns' do
+        end
+
         scope :import, controller: 'plugins/flexx_plugin_crm/import' do
           get '/', action: :index, as: :import
           post :contacts, as: :import_contacts
