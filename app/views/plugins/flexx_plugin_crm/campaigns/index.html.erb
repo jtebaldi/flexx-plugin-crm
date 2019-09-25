@@ -97,16 +97,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <%= form_tag admin_campaigns_path, method: :post, id: "new-task-campaign-form", class: "card form-type-combine" do %>
+        <%= form_tag admin_campaigns_path, method: :post, id: "new-campaign-form", class: "card form-type-combine" do %>
           <div class="card-body">
             <div class="form-groups-attached">
               <div class="form-group">
-                <label>campaign Name</label>
-                <input class="form-control" type="text" name="task_campaign[title]">
+                <label>Campaign Name</label>
+                <input class="form-control" type="text" name="campaign[name]">
               </div>
               <div class="form-group">
-                <label for="textarea">campaign description</label>
-                <textarea class="form-control" id="textarea" rows="6" name="task_campaign[description]"></textarea>
+                <label for="textarea">Campaign Description</label>
+                <textarea class="form-control" id="textarea" rows="6" name="campaign[description]"></textarea>
               </div>
 
             </div>
@@ -117,9 +117,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div id="new-task-campaign-spinner" class="spinner-circle-shadow hidden"></div>
-        <button id="new-task-campaign-cancel" type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
-        <button id="new-task-campaign-continue" class="btn btn-primary" onclick="submitNewTaskcampaignForm()">Continue</button>
+        <div id="new-campaign-spinner" class="spinner-circle-shadow hidden"></div>
+        <button id="new-campaign-cancel" type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="new-campaign-continue" class="btn btn-primary" onclick="submitNewCampaignForm()">Continue</button>
       </div>
     </div>
   </div>
