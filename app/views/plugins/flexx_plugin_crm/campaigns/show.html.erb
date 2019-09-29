@@ -1,4 +1,5 @@
 <% content_for :js do %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/campaigns' %>
 <% end %>
 
@@ -42,22 +43,8 @@
     <div class="col-md-6" id="new-campaign-step-panel">
       <div class="card">
         <h4 class="card-title"><strong>New step</strong></h4>
-        <%= form_tag admin_campaign_create_step_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'campaignStep', id: 'new-campaign-step-form', class: 'form-type-combine' do %>
+        <%= form_tag admin_campaign_create_step_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'campaignStep', id: 'new-campaign-step-form', class: 'form-type-combine', 'data-toggle': 'validator' do %>
           <div class="card-body">
-            <div class="mt-30">
-              <%= render partial: 'plugins/flexx_plugin_crm/common/task_stocks_dropdown' %>
-            </div>
-            <div class="form-group">
-              <label for="select">Type</label>
-              <select id="type-select" class="form-control" name="campaign_step[task_type]">
-                <option value="phone_call">Phone call</option>
-                <option value="email">Email</option>
-                <option value="message">Text</option>
-                <option value="meeting">Meeting</option>
-                <option value="general">General</option>
-              </select>
-            </div>
-
             <h6 class="text-light fw-300">Timing</h6>
             <div class="no-border text-center">
               <div class="btn-group" data-toggle="buttons">
@@ -94,9 +81,9 @@
               </div>
 
               <div id="stock-email-select" class="form-group">
-                <label>Use stock email</label>
-                <select id="stock-email-select-field" class="form-control" data-provide="selectpicker">
-                  <option>Please choose an option</option>
+                <label class="required">Use stock email</label>
+                <select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
+                  <option value="">Please choose an option</option>
                   <% rich_text_stocks.each_with_index do |row, i| %>
                     <option value="<%= i %>"><%= row.name %></option>
                   <% end %>

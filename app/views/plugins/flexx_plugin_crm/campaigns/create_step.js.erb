@@ -1,0 +1,11 @@
+clearNewCampaignStepForm();
+
+$('#new-campaign-step-add').toggleClass('disabled');
+$('#new-campaign-step-cancel').toggleClass('disabled');
+$('#new-campaign-step-spinner').toggleClass('hidden');
+
+$('#campaign-steps-panel').hide();
+
+$('#campaign-steps-panel').html('<%= escape_javascript(render partial: 'steps')  %>');
+
+$('#campaign-steps-panel').fadeIn();
