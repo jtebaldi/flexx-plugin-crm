@@ -6,7 +6,8 @@ class Plugins::FlexxPluginCrm::AutomatedCampaign < ActiveRecord::Base
   has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignStep'
   belongs_to :site, class_name: 'CamaleonCms::Site'
 
-  scope :active, -> { where(archived: false) }
+  scope :active, -> { where(archived: false, paused: false) }
+  scope :paused, -> { where(paused: true, archived: false) }
 
   def ordered_steps
     steps.sort_by { |row| row.due_on_value.send(row.due_on_unit).to_i }

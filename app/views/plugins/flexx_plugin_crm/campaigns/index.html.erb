@@ -22,7 +22,7 @@
 
         <div class="media-body">
           <div class="mb-2">
-            <span class="fs-20 pr-16"><%= campaign.title %></span>
+            <span class="fs-20 pr-16"><%= campaign.name %></span>
           </div>
           <small class="fs-16 fw-300 ls-1"><% campaign.description %></small>
         </div>
@@ -57,7 +57,7 @@
 
         <div class="media-body">
           <div class="mb-2">
-            <span class="fs-20 pr-16"><%= campaign.title %></span>
+            <span class="fs-20 pr-16"><%= campaign.name %></span>
           </div>
           <small class="fs-16 fw-300 ls-1"><% campaign.description %></small>
         </div>
@@ -68,7 +68,7 @@
               <span class="badge badge-success text-uppercase no-radius ls-1 opacity-75"><%= form.name %></span>
             <% end %>
           </p>
-          <span class="text-fade fs-12">Total tasks: <strong><%= campaign.directions.count %></strong></span>
+          <span class="text-fade fs-12">Total steps: <strong><%= campaign.steps.count %></strong></span>
         </div>
       </a>
       <footer class="card-footer flexbox align-items-center">
@@ -77,7 +77,7 @@
           <span><%= campaign.created_at.strftime('%b, %d %Y') %></span>
         </div>
         <div class="card-hover-show">
-          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-campaign-overview" data-url="campaign_card/<%= campaign.id %>" data-toggle="quickview">Quickview</a>
+          <a class="btn btn-xs fs-10 btn-bold btn-info" href="#qv-campaign-overview" data-url="<%= admin_campaign_card_path(campaign.id) %>" data-toggle="quickview">Quickview</a>
           <a class="btn btn-xs fs-10 btn-bold btn-danger campaign-delete" href="<%= admin_campaign_path(campaign.id) %>" data-method="delete">Delete</a>
         </div>
       </footer>

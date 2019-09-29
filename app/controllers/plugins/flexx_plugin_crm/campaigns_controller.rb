@@ -3,8 +3,8 @@ module Plugins::FlexxPluginCrm
     layout "layouts/flexx_next_admin"
 
     def index
-      @active_campaigns = Array.new
-      @paused_campaigns = Array.new
+      @active_campaigns = current_site.automated_campaigns.active
+      @paused_campaigns = current_site.automated_campaigns.paused
     end
 
     def create
@@ -31,6 +31,12 @@ module Plugins::FlexxPluginCrm
     end
 
     def associate_form
+    end
+
+    def card
+      @campaign = current_site.automated_campaigns.find(params[:campaign_id])
+
+      render partial: "card"
     end
 
     private

@@ -1,0 +1,29 @@
+<header class="quickview-header">
+  <p class="quickview-title lead"><strong><%= @campaign.name %></strong></p>
+  <span class="close"><i class="ti-close"></i></span>
+</header>
+
+<div class="quickview-body">
+  <div class="quickview-block">
+    <ol class="timeline timeline-activity timeline-point-sm timeline-content-right w-100 py-20 pr-20">
+      <% @campaign.ordered_steps.each do |step| %>
+        <li class="timeline-block">
+          <div class="timeline-point">
+            <span class="badge badge-ring badge-primary"></span>
+          </div>
+          <div class="timeline-content">
+            <time datetime="2018"><%= distance_of_time_in_words(Time.now, Time.now + step.due_on_value.send(step.due_on_unit)) %></time>
+            <p><%= step.task_type.humanize %></p>
+            <%= step.name %>
+            <br/><%= step.details %>
+          </div>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+</div>
+
+<footer class="quickview-footer">
+  <a href="<%= admin_campaign_path(@campaign.id) %>" class="btn btn-primary">Edit</a>
+  <button class="btn btn-secondary" data-dismiss="quickview">Close</button>
+</footer>
