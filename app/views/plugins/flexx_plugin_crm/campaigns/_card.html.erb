@@ -13,9 +13,7 @@
           </div>
           <div class="timeline-content">
             <time datetime="2018"><%= distance_of_time_in_words(Time.now, Time.now + step.due_on_value.send(step.due_on_unit)) %></time>
-            <p><%= step.task_type.humanize %></p>
             <%= step.name %>
-            <br/><%= step.details %>
           </div>
         </li>
       <% end %>

@@ -1,4 +1,6 @@
 class Plugins::FlexxPluginCrm::AutomatedCampaignStep < ActiveRecord::Base
+  include ActionView::Helpers::DateHelper
+
   self.table_name = 'automated_campaign_steps'
 
   belongs_to :automated_campaign, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign'

@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="col-md-6" id="new-campaign-step-panel">
+    <div class="col-md-6" id="new-campaign-step-panel" style="display: none">
       <div class="card">
         <h4 class="card-title"><strong>New step</strong></h4>
         <%= form_tag admin_campaign_create_step_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'campaignStep', id: 'new-campaign-step-form', class: 'form-type-combine', 'data-toggle': 'validator' do %>

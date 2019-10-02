@@ -44,15 +44,21 @@ $('document').ready(function(){
       e.preventDefault();
     });
 
-    $('#new-campaign-step-form').validator().on('submit', function (e) {
-      if (e.isDefaultPrevented()) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      else {
-        $('#new-campaign-step-add').toggleClass('disabled');
-        $('#new-campaign-step-cancel').toggleClass('disabled');
-        $('#new-campaign-step-spinner').toggleClass('invisible');
-      }
-    });
+  $('#new-campaign-step-form').validator().on('submit', function (e) {
+    if (e.isDefaultPrevented()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    else {
+      $('#new-campaign-step-add').toggleClass('disabled');
+      $('#new-campaign-step-cancel').toggleClass('disabled');
+      $('#new-campaign-step-spinner').toggleClass('invisible');
+    }
+  });
+
+  $('#new-campaign-step-add-button').on('click', function(e) {
+    $('#new-campaign-step-panel').toggle();
+    $('#new-campaign-step-add-button').toggleClass('btn-primary btn-warning disabled');
+    $("#new-campaign-step-add-button > i").toggleClass('ti-plus ti-more');
+  });
 });
