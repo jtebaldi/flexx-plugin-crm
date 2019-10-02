@@ -7,10 +7,6 @@ function submitNewCampaignForm() {
 }
 
 function addNewCampaignStep() {
-  if($("#new-campaign-step-form input[name='timingOptions']:checked").val() == 'immediate') {
-    $("#new-campaign-step-form input[name='new_task_recipe_direction[due_on_value]']").val('0');
-  }
-
   $('#new-campaign-step-form').submit();
 }
 
@@ -40,6 +36,9 @@ $('document').ready(function(){
       $('#new-campaign-step-immediate-button').addClass('btn-info');
       $('#new-campaign-step-schedule-button').removeClass('btn-info');
       $('#new-campaign-step-timming-panel').hide();
+
+      $("#new-campaign-step-form input[name='campaign_step[due_on_value]']").val('');
+      $("#new-campaign-step-form select[name='campaign_step[due_on_unit]']").prop('selectedIndex', 0);
 
       e.preventDefault();
     });

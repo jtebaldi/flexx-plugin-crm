@@ -24,6 +24,16 @@ module Plugins::FlexxPluginCrm
                                   order(:name)
     end
 
+    def destroy
+      current_site.automated_campaigns.find(params[:id]).update!(
+        archived: true,
+        archived_by: current_user.id,
+        archived_at: Time.current
+      )
+
+      redirect_to action: :index
+    end
+
     def create_step
       @campaign = current_site.automated_campaigns.find(params[:campaign_id])
 

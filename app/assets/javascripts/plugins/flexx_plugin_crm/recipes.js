@@ -11,10 +11,6 @@ function addNewRecipeDirection() {
   $('#new-recipe-direction-cancel').toggleClass('disabled');
   $('#new-recipe-direction-spinner').toggleClass('invisible');
 
-  if($("#new-recipe-direction-form input[name='timingOptions']:checked").val() == 'immediate') {
-    $("#new-recipe-direction-form input[name='new_task_recipe_direction[due_on_value]']").val('0');
-  }
-
   $('#new-recipe-direction-form').submit();
 }
 
@@ -43,6 +39,9 @@ $('document').ready(function(){
       $('#new-recipe-direction-immediate-button').addClass('btn-info');
       $('#new-recipe-direction-schedule-button').removeClass('btn-info');
       $('#new-recipe-direction-timming-panel').hide();
+
+      $("#new-campaign-step-form input[name='new_task_recipe_direction[due_on_value]']").val('');
+      $("#new-campaign-step-form select[name='new_task_recipe_direction[due_on_unit]']").prop('selectedIndex', 0);
 
       e.preventDefault();
     });
