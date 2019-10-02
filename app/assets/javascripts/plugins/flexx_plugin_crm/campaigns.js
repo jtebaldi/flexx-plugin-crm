@@ -60,4 +60,8 @@ $('document').ready(function(){
     $('#new-campaign-step-add-button').toggleClass('btn-primary btn-warning disabled');
     $("#new-campaign-step-add-button > i").toggleClass('ti-plus ti-more');
   });
+
+  $(document).on('rendered.bs.select', '#update-campaign-associated-forms', function(e) {
+    $('#update-campaign-form').trigger('submit.rails');
+  });
 });

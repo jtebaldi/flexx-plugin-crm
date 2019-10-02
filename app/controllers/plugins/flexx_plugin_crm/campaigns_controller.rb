@@ -52,6 +52,11 @@ module Plugins::FlexxPluginCrm
     end
 
     def associate_form
+      campaign = current_site.automated_campaigns.find(params[:campaign_id])
+      campaign.cama_contact_forms.clear
+      campaign.cama_contact_forms << current_site.contact_forms.where(id: params[:campaign][:cama_contact_form_ids])
+
+      head :ok
     end
 
     def card
