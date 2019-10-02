@@ -37,6 +37,8 @@ module Plugins::FlexxPluginCrm
     end
 
     def destroy_step
+      current_site.automated_campaigns.find(params[:campaign_id]).steps.find(params[:id]).destroy
+      redirect_to admin_campaign_path(params[:campaign_id])
     end
 
     def associate_form
@@ -46,6 +48,19 @@ module Plugins::FlexxPluginCrm
       @campaign = current_site.automated_campaigns.find(params[:campaign_id])
 
       render partial: "card"
+    end
+
+    def toggle
+      @campaign = current_site.automated_campaigns.find(params[:campaign_id])
+
+      @campaign.update(
+        paused: !@campaign.paused,
+        paused_by: !@campaign.paused ? current_user.id : nil,
+        paused_at: !@campaign.paused ? Time.current : nil)
+
+      respond_to do |format|
+        format.js
+      end
     end
 
     private
