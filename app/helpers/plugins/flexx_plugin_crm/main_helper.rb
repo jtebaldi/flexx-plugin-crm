@@ -36,6 +36,7 @@ module Plugins::FlexxPluginCrm::MainHelper
     add_activity_feed args
     send_stock_email_response args
     apply_tags_to_contact args
+    apply_campaigns_to_contact args
   end
 
   private
@@ -101,5 +102,9 @@ module Plugins::FlexxPluginCrm::MainHelper
     return unless args[:form].the_settings.try(:[], 'railscf_tags').try(:[], 'list').present?
 
     args[:form].site.tag(args[:form_received].contact, with: args[:form].the_settings[:railscf_tags][:list], on: :tags)
+  end
+
+  def apply_campaigns_to_contact(args)
+    AutomatedCampaignService.apply_form_campaigns(form: args[:form_received]) if args[:form_received].contact.present?
   end
 end

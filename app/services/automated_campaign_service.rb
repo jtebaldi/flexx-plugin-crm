@@ -1,6 +1,6 @@
 class AutomatedCampaignService
-  def self.apply_campaigns(contact:)
-    contact.cama_contact_form.automated_campaigns.active.each { |campaign| apply_campaign(contact: contact, campaign: campaign) }
+  def self.apply_form_campaigns(form:)
+    form.automated_campaigns.active.each { |campaign| apply_campaign(contact: form.contact, campaign: campaign) }
   end
 
   def self.apply_campaign(contact:, campaign:)
