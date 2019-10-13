@@ -1,18 +1,17 @@
 class AutomatedCampaignService
-  def self.apply_form_campaigns(form:)
-    form.automated_campaigns.active.each { |campaign| apply_campaign(contact: form.contact, campaign: campaign) }
+  def self.apply_form_campaigns(form:, contact:)
+    form.automated_campaigns.active.each do |campaign|
+      apply_campaign(contact: contact, campaign: campaign) unless contact.subscribed_campaigns.include?(campaign)
+    end
   end
 
   def self.apply_campaign(contact:, campaign:)
-    campaign.steps.active.each do |step|
-      contact.automated_campaign_jobs.create(
-        site_id: contact.site_id,
-        automated_campaign_id: campaign.id,
+    subscription = campaign.subscriptions.create(contact_id: contact.id)
+
+    campaign.ordered_steps.each do |step|
+      subscription.steps.create(
         automated_campaign_step_id: step.id,
-        send_to: contact.email,
-        send_at: Time.current + step.due_on_value.send(step.due_on_unit),
-        message: step.message,
-        status_changed_at: Time.current
+        send_at: Time.now + step.due_on_value.send(step.due_on_unit)
       )
     end
   end

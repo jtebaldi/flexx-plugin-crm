@@ -4,6 +4,7 @@ class Plugins::FlexxPluginCrm::AutomatedCampaign < ActiveRecord::Base
   has_many :automated_campaign_to_contact_form_associations, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignToContactFormAssociation'
   has_many :cama_contact_forms, class_name: 'Plugins::CamaContactForm::CamaContactForm', through: :automated_campaign_to_contact_form_associations
   has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignStep'
+  has_many :subscriptions, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscription'
   belongs_to :site, class_name: 'CamaleonCms::Site'
 
   scope :active, -> { where(archived: false, paused: false) }

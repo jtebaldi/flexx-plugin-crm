@@ -105,6 +105,6 @@ module Plugins::FlexxPluginCrm::MainHelper
   end
 
   def apply_campaigns_to_contact(args)
-    AutomatedCampaignService.apply_form_campaigns(form: args[:form_received]) if args[:form_received].contact.present?
+    AutomatedCampaignService.apply_form_campaigns(form: args[:form], contact: args[:form_received].contact) if args[:form_received].contact.present?
   end
 end
