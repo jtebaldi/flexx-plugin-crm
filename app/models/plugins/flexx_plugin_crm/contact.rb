@@ -14,7 +14,7 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   belongs_to :site, class_name: 'CamaleonCms::Site'
   belongs_to :cama_contact_form, class_name: 'Plugins::CamaContactForm::CamaContactForm'
-  has_many :automated_campaign_jobs, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignJob', dependent: :destroy
+
   has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent, dependent: :destroy
   has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber', dependent: :destroy
   has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
