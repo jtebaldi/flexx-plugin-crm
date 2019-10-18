@@ -14,4 +14,12 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
     state :running, initial: true
     state :paused, :finished, :deleted
   end
+
+  def ordered_steps
+    steps.sort_by { |row| row.due_on_value.send(row.due_on_unit).to_i }
+  end
+
+  def ordered_scheduled_steps
+    steps.scheduleds.order(:send_at)
+  end
 end

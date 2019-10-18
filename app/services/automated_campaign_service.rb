@@ -15,4 +15,12 @@ class AutomatedCampaignService
       )
     end
   end
+
+  def self.update_next_step(subscription:)
+    if subscription.ordered_scheduled_steps.count > 0
+      subscription.update(next_step: subscription.ordered_scheduled_steps.first.id)
+    else
+      subscription.done!
+    end
+  end
 end
