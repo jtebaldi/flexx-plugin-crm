@@ -20,7 +20,7 @@ class AutomatedCampaignService
     if subscription.ordered_scheduled_steps.count > 0
       subscription.update(next_step: subscription.ordered_scheduled_steps.first.id)
     else
-      subscription.done!
+      subscription.update(aasm_state: :finished)
     end
   end
 end

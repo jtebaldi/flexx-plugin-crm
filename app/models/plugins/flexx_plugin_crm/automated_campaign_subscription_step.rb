@@ -5,10 +5,10 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep < ActiveRecord:
 
   self.table_name = 'automated_campaign_subscription_steps'
 
-  after_save :update_subscription_next_step
+  after_commit :update_subscription_next_step
 
   belongs_to :subscription, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscription', foreign_key: :automated_campaign_subscription_id
-  belongs_to :campaign_step, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignStep'
+  belongs_to :campaign_step, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignStep', foreign_key: :automated_campaign_step
 
   scope :scheduleds, -> { where(aasm_state: :scheduled) }
 
@@ -20,7 +20,6 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep < ActiveRecord:
   private
 
   def update_subscription_next_step
-    byebug
     AutomatedCampaignService.update_next_step(subscription: self.subscription)
   end
 end
