@@ -18,6 +18,29 @@ class MessagesJobService
     end
   end
 
+  def self.queue_campaigns
+    active_campaigns = Plugins::FlexxPluginCrm::AutomatedCampaign.active.pluck(:id)
+    subscriptions = Plugins::FlexxPluginCrm::AutomatedCampaignSubscription.running
+      .includes(:campaign)
+      .where(automated_campaign_id: active_campaigns)
+      .where('next_send_at <= ?', Time.current)
+
+    subscriptions.each do |s|
+      site = s.campaign.site
+      step = Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep.find(s.next_step)
+
+      site.emails.create!({
+        from: site.custom_field_values.find_by_custom_field_slug('business_email'),
+        recipients_list: s.contact_id,
+        subject: step.campaign_step.stock.metadata["subject"],
+        body: step.campaign_step.stock.contents,
+        send_at: step.send_at
+      })
+
+      step.update!(aasm_state: :done)
+    end
+  end
+
   def self.send_email(message)
     sender = message.site.users.find_by(email: message.from)
 

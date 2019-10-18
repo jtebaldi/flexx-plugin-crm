@@ -8,7 +8,9 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
   belongs_to :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
   belongs_to :campaign, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', foreign_key: :automated_campaign_id
 
-  has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep'
+  has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep', dependent: :destroy
+
+  scope :running, -> { where(aasm_state: :running) }
 
   aasm do
     state :running, initial: true

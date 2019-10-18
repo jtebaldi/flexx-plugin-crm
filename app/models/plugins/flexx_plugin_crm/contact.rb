@@ -17,10 +17,10 @@ class Plugins::FlexxPluginCrm::Contact < ActiveRecord::Base
 
   has_many :notes, class_name: 'Plugins::FlexxPluginCrm::Note', as: :parent, dependent: :destroy
   has_many :phonenumbers, class_name: 'Plugins::FlexxPluginCrm::Phonenumber', dependent: :destroy
-  has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task'
+  has_many :tasks, class_name: 'Plugins::FlexxPluginCrm::Task', dependent: :destroy
   has_many :messages, class_name: 'Plugins::FlexxPluginCrm::Message', dependent: :destroy
   has_many :contact_forms, class_name: 'Plugins::CamaContactForm::CamaContactForm', dependent: :destroy
-  has_many :campaign_subscriptions, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscription'
+  has_many :campaign_subscriptions, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscription', dependent: :destroy
   has_many :subscribed_campaigns, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', through: :campaign_subscriptions, source: :campaign, foreign_key: :automated_campaign_id
 
   validates :email, uniqueness: { scope: :site_id }, if: Proc.new { |c| c.email.present? }
