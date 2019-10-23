@@ -30,7 +30,7 @@ class MessagesJobService
       step = Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep.find(s.next_step)
 
       site.emails.create!({
-        from: site.custom_field_values.find_by_custom_field_slug('business_email'),
+        from: site.custom_field_values.find_by_custom_field_slug('business_email').value,
         recipients_list: s.contact_id,
         subject: step.campaign_step.stock.metadata["subject"],
         body: step.campaign_step.stock.contents,
