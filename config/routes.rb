@@ -125,6 +125,8 @@ Rails.application.routes.draw do
           get :toggle
           post :associate_form
           post :create_step
+          post '/subscribe/:contact_id', action: :subscribe, as: :subscribe
+          delete '/remove/:contact_id', action: :remove, as: :remove
           delete 'destroy_step/:id', action: :destroy_step, as: :destroy_step
         end
 

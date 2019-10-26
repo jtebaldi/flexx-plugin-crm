@@ -141,7 +141,7 @@ module Plugins::FlexxPluginCrm
       @contact = current_site.contacts.find(params[:id])
       @feed_activities = ActivityFeedService.list_activities(feed_name: 'contact', feed_id: @contact.id)
       @automated_campaigns = current_site.automated_campaigns.active
-      @subscribed_campaigns = []
+      @subscribed_campaigns = @contact.subscribed_campaigns
       @available_recipes = TaskRecipe.active.where(site_id: current_site.id).order(:title)
       @dynamic_fields = df_defaults + [['-', '']] + df_snippets
     end

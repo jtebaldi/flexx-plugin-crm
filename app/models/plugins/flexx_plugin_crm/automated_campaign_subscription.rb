@@ -11,10 +11,11 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
   has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep', dependent: :destroy
 
   scope :running, -> { where(aasm_state: :running) }
+  scope :ended, -> { where(aasm_state: [:finished, :unsubscribed]) }
 
   aasm do
     state :running, initial: true
-    state :paused, :finished, :deleted
+    state :paused, :finished, :deleted, :unsubscribed
   end
 
   def ordered_steps

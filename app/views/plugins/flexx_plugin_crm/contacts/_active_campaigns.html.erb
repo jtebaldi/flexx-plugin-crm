@@ -1,0 +1,14 @@
+<% @automated_campaigns.each do |campaign| %>
+  <div class="media align-items-center">
+    <div class="media-body">
+      <p><strong><%= campaign.name %></strong></p>
+    </div>
+    <div>
+      <% if @subscribed_campaigns.include?(campaign) %>
+        <a class="btn btn-sm btn-danger" href="#">Remove</a>
+      <% else %>
+        <a class="btn btn-sm btn-twitter btn-outline" href="<%= admin_campaign_subscribe_path(campaign_id: campaign.id, contact_id: @contact.id) %>" data-remote="true" data-method="post">Add to list</a>
+      <% end %>
+    </div>
+  </div>
+<% end %>

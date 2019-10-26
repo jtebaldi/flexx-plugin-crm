@@ -548,20 +548,23 @@
 
           <div class="col-lg-6">
             <div class="card">
-              <h5 class="card-title text-fade">Active <strong>Campaigns</strong><span class="pull-right"><small>Coming soon</small></span></h5>
+              <h5 class="card-title text-fade">Active <strong>Campaigns</strong></h5>
+              <div class="media-list media-list-hover media-list-divided" id="active-campaigns">
+                <%= render partial: 'active_campaigns' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <h5 class="card-title text-fade">Finished <strong>Campaigns</strong></h5>
               <div class="media-list media-list-hover media-list-divided">
-                <% @automated_campaigns.each do |campaign| %>
+                <% @contact.campaign_subscriptions.ended do |subscription| %>
                   <div class="media align-items-center">
                     <div class="media-body">
-                      <p><strong><%= campaign.name %></strong></p>
+                      <p><strong><%= subscription.campaign.name %></strong></p>
                     </div>
-                    <div>
-                      <% if @subscribed_campaigns.include?(campaign.id) %>
-                        <a class="btn btn-sm btn-twitter" href="#">Added</a>
-                      <% else %>
-                        <a class="btn btn-sm btn-twitter btn-outline" href="#">Add to list</a>
-                      <% end %>
-                    </div>
+                    <div><%= subscription.campaign.aasm_state.humanize %></div>
                   </div>
                 <% end %>
               </div>
