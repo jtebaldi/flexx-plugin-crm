@@ -14,4 +14,14 @@ class Plugins::FlexxPluginCrm::AutomatedCampaign < ActiveRecord::Base
   def ordered_steps
     steps.sort_by { |row| row.due_on_value.send(row.due_on_unit).to_i }
   end
+
+  def remove(contact:, deleted_by:)
+    subscription = self.subscriptions.find_by(contact_id: contact.id)
+
+    subscription.update!(
+      aasm_state: :deleted,
+      deleted_by: deleted_by.id,
+      deleted_at: Time.now
+    )
+  end
 end

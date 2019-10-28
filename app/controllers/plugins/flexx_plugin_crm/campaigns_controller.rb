@@ -79,16 +79,27 @@ module Plugins::FlexxPluginCrm
     end
 
     def subscribe
-      contact = current_site.contacts.find(params[:contact_id])
+      @contact = current_site.contacts.find(params[:contact_id])
       campaign = current_site.automated_campaigns.find(params[:campaign_id])
 
-      AutomatedCampaignService.apply_campaign(contact: contact, campaign: campaign)
+      AutomatedCampaignService.apply_campaign(contact: @contact, campaign: campaign)
 
       @automated_campaigns = current_site.automated_campaigns.active
-      @subscribed_campaigns = contact.subscribed_campaigns
+      @subscribed_campaigns = @contact.subscribed_campaigns
+
+      render partial: 'update_active_campaigns'
     end
 
     def remove
+      @contact = current_site.contacts.find(params[:contact_id])
+      campaign = current_site.automated_campaigns.find(params[:campaign_id])
+
+      campaign.remove(contact: @contact, deleted_by: current_user)
+
+      @automated_campaigns = current_site.automated_campaigns.active
+      @subscribed_campaigns = @contact.subscribed_campaigns
+
+      render partial: 'update_active_campaigns'
     end
 
     private
