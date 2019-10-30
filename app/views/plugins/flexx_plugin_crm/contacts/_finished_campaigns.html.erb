@@ -1,0 +1,8 @@
+<% @contact.campaign_subscriptions.ended.each do |subscription| %>
+  <div class="media align-items-center">
+    <div class="media-body">
+      <p><strong><%= subscription.campaign.name %></strong></p>
+    </div>
+    <div><%= subscription.aasm_state.humanize %></div>
+  </div>
+<% end %>

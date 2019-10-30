@@ -13,7 +13,7 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
   has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep', dependent: :destroy
 
   scope :running, -> { where(aasm_state: :running) }
-  scope :ended, -> { where(aasm_state: [:finished, :unsubscribed]) }
+  scope :ended, -> { where.not(aasm_state: :running) }
 
   aasm do
     state :running, initial: true
