@@ -102,6 +102,39 @@ module Plugins::FlexxPluginCrm
       render partial: 'update_campaigns_list'
     end
 
+    def subscribers
+      respond_to do |format|
+        format.json {
+          @subscribers = current_site.automated_campaigns.find(params[:campaign_id]).subscriptions.includes(:contact)
+
+          render json: (@subscribers.map do |s|
+            ac = s.contact
+            {
+              id: ac.id,
+              initials: ac.initials,
+              printName: ac.print_name,
+              lastName: ac.last_name,
+              createdDate: s.created_at.strftime('%b, %d %Y'),
+              salesStage: ac.sales_stage.capitalize,
+              salesStageClass: ac.sales_stage,
+              pendingTasksClass: ('text-info' if ac.tasks.length > 0),
+              pendingTasks: case ac.tasks.length
+                            when 0
+                              'No pending tasks'
+                            when 1
+                              '1 pending task'
+                            else
+                              "#{ac.tasks.length} pending tasks"
+                            end,
+              tags: ac.tags,
+              subscriptionStatus: s.aasm_state.humanize,
+              nextStep: s.running? ? s.next_step.campaign_step.name : ''
+            }
+          end)
+        }
+       end
+    end
+
     private
 
     def campaign_params

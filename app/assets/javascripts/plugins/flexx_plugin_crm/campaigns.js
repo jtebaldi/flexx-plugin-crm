@@ -19,7 +19,6 @@ function clearNewCampaignStepForm() {
   $('#new-campaign-step-panel').fadeOut();
 }
 
-
 $('document').ready(function(){
 
   $('#new-campaign-step-schedule-button').length &&
@@ -61,7 +60,106 @@ $('document').ready(function(){
     $("#new-campaign-step-add-button > i").toggleClass('ti-plus ti-more');
   });
 
-  $(document).on('rendered.bs.select', '#update-campaign-associated-forms', function(e) {
+  $(document).on('changed.bs.select', '#update-campaign-associated-forms', function(e) {
     $('#update-campaign-form').trigger('submit.rails');
+  });
+
+  $("#subscribers-table").jsGrid({
+    width: "100%",
+    height: "auto",
+    selecting: false,
+    paging: true,
+    pageSize: 15,
+    pageButtonCount: 3,
+    pagerFormat: "{first} {prev} {pages} {next} {last}",
+    autoload: true,
+    controller: {
+      loadData: function(filter) {
+        var d = $.Deferred();
+
+        if (window.contactList) {
+          var regex = new RegExp(filter.printName || '', 'i');
+
+          d.resolve(window.contactList.filter(function (row){
+            if (filter.salesStage && row.salesStageClass != filter.salesStage) {
+              return false;
+            }
+
+            if (filter.tags && (row.tags.length == 0 || !row.tags.find((tag) => tag.name == filter.tags))) {
+              return false;
+            }
+
+            return regex.test(row.printName);
+          }));
+        } else {
+          loadSubscribers(d);
+        }
+
+        return d.promise();
+      }
+    },
+
+    fields: [
+        {
+          headerTemplate: function() {
+            return `<span class="text-fade pl-30 fs-14">General Info</span>`;
+          },
+          itemTemplate: function(_, item) {
+           return `
+              <a href="/admin/next/contacts/${item.id}" class="media">
+
+                  <span class="avatar avatar-xl contact ${item.salesStageClass}-stage">${item.initials}</span>
+                  <div class="media-body">
+                    <h6 class="lh-1">${item.printName} | <span class="text-${item.salesStageClass}">${item.salesStage}</span></h6>
+                    <small>Added ${item.createdDate}</small>
+                    <h6>${item.subscriptionStatus} ${item.nextStep ? '| Next step: ' + item.nextStep : ''}</h6>
+                  </div>
+              </a>
+            `;
+          },
+          align: "left",
+          width: "auto",
+          sorting: false,
+          css: "contact-details"
+        },
+        {
+          headerTemplate: function() {
+            return "";
+          },
+          itemTemplate: function(_, item) {
+            return `
+              <div class="dropdown table-action">
+                <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#" onclick="archiveSingleContact(${item.id})"><i class="ti-trash"></i> Archive</a>
+                </div>
+              </div>
+            `;
+          },
+          align: "left",
+          width: "40",
+          sorting: false
+        },
+        {
+          type: "number",
+          name: "id",
+          visible: false,
+        },
+        {
+          type: "text",
+          name: "printName",
+          visible: false,
+        },
+        {
+          type: "text",
+          name: "lastName",
+          visible: false,
+        },
+        {
+          type: "text",
+          name: "salesStageClass",
+          visible: false,
+        }
+    ]
   });
 });

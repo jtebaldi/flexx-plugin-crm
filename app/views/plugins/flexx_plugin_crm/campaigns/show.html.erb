@@ -3,6 +3,18 @@
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/campaigns' %>
 <% end %>
 
+<script>
+  window.loadSubscribers = function (d) {
+    $.ajax({
+      url: "<%= params[:id] %>/subscribers.json",
+      dataType: "json"
+    }).done(function(response) {
+      window.contactList = response;
+      d.resolve(window.contactList);
+    });
+  }
+</script>
+
 <header class="header">
   <div class="header-bar header-inverse bg-info">
     <a href="/admin/next/campaigns" style="color: #fff;"><i class="ti-arrow-left"></i> Back to campaigns list</a>
@@ -18,112 +30,144 @@
     </div>
   </div>
 
-  <div id="campaign-header-actions" class="header-action">
+  <div id="campaign-header-actions" class="header-action" style="background-color: #EDEEF2;">
+    <ul class="nav nav-tabs nav-justified nav-tabs-info" style="width: 100%; flex-wrap: wrap;">
+
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tab_details">Details</a>
+      </li>
+      <li class="nav-item">
+        <a id="contact_details_link" class="nav-link" data-toggle="tab" href="#tab_subscribers">Subscribed Contacts</a>
+      </li>
+    </ul>
     <%= render partial: 'header_actions' %>
   </div>
 </header>
 
 <div class="main-content">
-  <div class="row">
+  <div class="tab-content">
+    <div class="tab-pane fade active show" id="tab_details">
+      <div class="row">
 
-    <div class="col-md-6">
-      <div class="card">
-        <h4 class="card-title"><strong>Steps</strong></h4>
-        <ol id="campaign-steps-panel" class="timeline timeline-activity timeline-point-sm timeline-content-right w-100 py-20 pr-20">
-          <%= render partial: 'steps' %>
-        </ol>
-        <div class="card-footer text-center">
-          <div class="fab">
-            <button id="new-campaign-step-add-button" class="btn btn-float" title="Add new step" data-provide="tooltip" data-placement="top"><i class="ti-plus"></i></button>
+        <div class="col-md-6">
+          <div class="card">
+            <h4 class="card-title"><strong>Steps</strong></h4>
+            <ol id="campaign-steps-panel" class="timeline timeline-activity timeline-point-sm timeline-content-right w-100 py-20 pr-20">
+              <%= render partial: 'steps' %>
+            </ol>
+            <div class="card-footer text-center">
+              <div class="fab">
+                <button id="new-campaign-step-add-button" class="btn btn-float" title="Add new step" data-provide="tooltip" data-placement="top"><i class="ti-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" id="new-campaign-step-panel" style="display: none">
+          <div class="card">
+            <h4 class="card-title"><strong>New step</strong></h4>
+            <%= form_tag admin_campaign_create_step_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'campaignStep', id: 'new-campaign-step-form', class: 'form-type-combine', 'data-toggle': 'validator' do %>
+              <div class="card-body">
+                <h6 class="text-light fw-300">Timing</h6>
+                <div class="no-border text-center">
+                  <div class="btn-group" data-toggle="buttons">
+                    <button class="btn btn-lg btn-info" id="new-campaign-step-immediate-button">Immediate</button>
+                    <button class="btn btn-lg" id="new-campaign-step-schedule-button">Schedule</button>
+                  </div>
+                </div>
+
+                <div id="new-campaign-step-timming-panel" class="form-groups-attached" style="display: none">
+                  <br/>
+                  <div class="row">
+                    <div class="form-group col-6">
+                      <label>After</label>
+                      <input class="form-control" type="text" name="campaign_step[due_on_value]">
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label for="select">Time unit</label>
+                      <select class="form-control" name="campaign_step[due_on_unit]">
+                        <option value="minutes">minute(s)</option>
+                        <option value="hours">hour(s)</option>
+                        <option value="days">day(s)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <h6 class="text-light fw-300">Details</h6>
+                <div class="form-groups-attached">
+
+                  <div class="form-group">
+                    <label>Title for reference</label>
+                    <input class="form-control" type="text" name="campaign_step[name]">
+                  </div>
+
+                  <div id="stock-email-select" class="form-group">
+                    <label class="required">Use stock email</label>
+                    <select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
+                      <option value="">Please choose an option</option>
+                      <% rich_text_stocks.each_with_index do |row| %>
+                        <option value="<%= row.id %>"><%= row.name %></option>
+                      <% end %>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            <% end %>
+            <footer class="card-footer modal-footer text-right">
+              <div id="new-campaign-step-spinner" class="spinner-circle-shadow hidden"></div>
+              <button class="btn btn-secondary" id="new-campaign-step-cancel" onclick="clearNewCampaignStepForm()">Cancel</button>
+              <button class="btn btn-primary" id="new-campaign-step-add" onclick="addNewCampaignStep()">Add</button>
+            </footer>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <h4 class="card-title"><strong>Associated forms</strong> (optional)</h4>
+
+            <div class="card-body form-type-combine">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>Use the list on the right to select forms associated with the campaign. Any site visitor submitting that form will have the steps on this list automatically applied.</p>
+                </div>
+                <div class="col-md-6">
+                  <hr class="d-md-none">
+                  <div class="form-group">
+                    <h5>Forms</h5>
+                    <%= form_tag admin_campaign_associate_form_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, id: 'update-campaign-form', class: 'form-type-combine' do %>
+                      <select id="update-campaign-associated-forms" name="campaign[cama_contact_form_ids][]" data-provide="selectpicker" data-width="100%" multiple title="Choose one or more forms...">
+                        <%= options_from_collection_for_select(@available_contact_forms, 'id', 'name', @campaign.cama_contact_form_ids) %>
+                      </select>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="tab-pane fade" id="tab_subscribers">
+      <div class="main-content">
+        <div class="card card-shadowed">
+          <form class="lookup lookup-huge">
+            <input id="contact-search" class="no-radius no-border" type="text" placeholder="Start typing name...">
+          </form>
+        </div>
 
-    <div class="col-md-6" id="new-campaign-step-panel" style="display: none">
-      <div class="card">
-        <h4 class="card-title"><strong>New step</strong></h4>
-        <%= form_tag admin_campaign_create_step_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, authenticity_token: true, name: 'campaignStep', id: 'new-campaign-step-form', class: 'form-type-combine', 'data-toggle': 'validator' do %>
-          <div class="card-body">
-            <h6 class="text-light fw-300">Timing</h6>
-            <div class="no-border text-center">
-              <div class="btn-group" data-toggle="buttons">
-                <button class="btn btn-lg btn-info" id="new-campaign-step-immediate-button">Immediate</button>
-                <button class="btn btn-lg" id="new-campaign-step-schedule-button">Schedule</button>
-              </div>
-            </div>
-
-            <div id="new-campaign-step-timming-panel" class="form-groups-attached" style="display: none">
-              <br/>
-              <div class="row">
-                <div class="form-group col-6">
-                  <label>After</label>
-                  <input class="form-control" type="text" name="campaign_step[due_on_value]">
-                </div>
-
-                <div class="form-group col-6">
-                  <label for="select">Time unit</label>
-                  <select class="form-control" name="campaign_step[due_on_unit]">
-                    <option value="minutes">minute(s)</option>
-                    <option value="hours">hour(s)</option>
-                    <option value="days">day(s)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <br>
-            <h6 class="text-light fw-300">Details</h6>
-            <div class="form-groups-attached">
-
-              <div class="form-group">
-                <label>Title for reference</label>
-                <input class="form-control" type="text" name="campaign_step[name]">
-              </div>
-
-              <div id="stock-email-select" class="form-group">
-                <label class="required">Use stock email</label>
-                <select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
-                  <option value="">Please choose an option</option>
-                  <% rich_text_stocks.each_with_index do |row| %>
-                    <option value="<%= row.id %>"><%= row.name %></option>
-                  <% end %>
-                </select>
-              </div>
-
-            </div>
-          </div>
-        <% end %>
-        <footer class="card-footer modal-footer text-right">
-          <div id="new-campaign-step-spinner" class="spinner-circle-shadow hidden"></div>
-          <button class="btn btn-secondary" id="new-campaign-step-cancel" onclick="clearNewCampaignStepForm()">Cancel</button>
-          <button class="btn btn-primary" id="new-campaign-step-add" onclick="addNewCampaignStep()">Add</button>
-        </footer>
-      </div>
-    </div>
-
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <h4 class="card-title"><strong>Associated forms</strong> (optional)</h4>
-
-        <div class="card-body form-type-combine">
-          <div class="row">
-            <div class="col-md-6">
-              <p>Use the list on the right to select forms associated with the campaign. Any site visitor submitting that form will have the steps on this list automatically applied.</p>
-            </div>
-            <div class="col-md-6">
-              <hr class="d-md-none">
-              <div class="form-group">
-                <h5>Forms</h5>
-                <%= form_tag admin_campaign_associate_form_path(campaign_id: @campaign.id, format: :js), method: :post, remote: true, id: 'update-campaign-form', class: 'form-type-combine' do %>
-                  <select id="update-campaign-associated-forms" name="campaign[cama_contact_form_ids][]" data-provide="selectpicker" data-width="100%" multiple title="Choose one or more forms...">
-                    <%= options_from_collection_for_select(@available_contact_forms, 'id', 'name', @campaign.cama_contact_form_ids) %>
-                  </select>
-                <% end %>
-              </div>
-            </div>
-          </div>
+        <div class="card card-transparent contact-list-container mt-10">
+          <div id="subscribers-table" data-provide="jsgrid"></div>
+          <%= form_tag mass_action_admin_contacts_path, method: :post, id: 'mass-action-form' do %>
+            <input type="hidden" name="mass_action" id="mass-action-option" value="">
+            <input type="hidden" name="contact_ids" id="mass-action-contact-id" value="">
+            <input type="hidden" name="add_tags" id="mass-action-add-tags" value="">
+            <input type="hidden" name="remove_tags" id="mass-action-remove-tags" value="">
+          <% end %>
         </div>
       </div>
     </div>

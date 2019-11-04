@@ -122,6 +122,7 @@ Rails.application.routes.draw do
 
         resources :campaigns, controller: 'plugins/flexx_plugin_crm/campaigns' do
           get :card
+          get :subscribers
           get :toggle
           post :associate_form
           post :create_step

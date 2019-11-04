@@ -9,6 +9,7 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
 
   belongs_to :contact, class_name: 'Plugins::FlexxPluginCrm::Contact'
   belongs_to :campaign, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaign', foreign_key: :automated_campaign_id
+  belongs_to :next_step, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep', foreign_key: :next_step
 
   has_many :steps, class_name: 'Plugins::FlexxPluginCrm::AutomatedCampaignSubscriptionStep', dependent: :destroy
 
