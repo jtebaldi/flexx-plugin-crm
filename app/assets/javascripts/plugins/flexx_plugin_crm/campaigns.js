@@ -127,14 +127,19 @@ $('document').ready(function(){
             return "";
           },
           itemTemplate: function(_, item) {
-            return `
-              <div class="dropdown table-action">
-                <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#" onclick="archiveSingleContact(${item.id})"><i class="ti-trash"></i> Archive</a>
+            if (item.subscriptionStatus == 'Running') {
+              return `
+                <div class="dropdown table-action">
+                  <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown"><i class="ti-more-alt rotate-90"></i></span>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" onclick="removeSubscriber(${item.id})"><i class="ti-trash"></i> Remove</a>
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            }
+            else {
+              return "";
+            }
           },
           align: "left",
           width: "40",

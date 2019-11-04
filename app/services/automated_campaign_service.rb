@@ -19,7 +19,7 @@ class AutomatedCampaignService
   def self.update_next_step(subscription:)
     if subscription.ordered_scheduled_steps.count > 0
       next_step = subscription.ordered_scheduled_steps.first
-      subscription.update(next_step: next_step.id, next_send_at: next_step.send_at)
+      subscription.update(next_step: next_step, next_send_at: next_step.send_at)
     else
       subscription.update(aasm_state: :finished)
     end

@@ -99,7 +99,11 @@ module Plugins::FlexxPluginCrm
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = @contact.subscribed_campaigns
 
-      render partial: 'update_campaigns_list'
+      if params[:head_only].present?
+        head :ok
+      else
+        render partial: 'update_campaigns_list'
+      end
     end
 
     def subscribers

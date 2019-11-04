@@ -13,6 +13,16 @@
       d.resolve(window.contactList);
     });
   }
+
+  function removeSubscriber(id) {
+    $.ajax({
+      url: `<%= params[:id] %>/remove/${id}?head_only=1`,
+      method: "DELETE"
+    }).done(function(response) {
+      window.contactList = undefined;
+      $("#subscribers-table").jsGrid("loadData");
+    });
+  }
 </script>
 
 <header class="header">
