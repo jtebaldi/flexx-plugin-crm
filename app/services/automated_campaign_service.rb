@@ -5,8 +5,8 @@ class AutomatedCampaignService
     end
   end
 
-  def self.apply_campaign(contact:, campaign:)
-    subscription = campaign.subscriptions.create(contact_id: contact.id)
+  def self.apply_campaign(contact:, campaign:, created_by: nil)
+    subscription = campaign.subscriptions.create(contact_id: contact.id, created_by: created_by)
 
     campaign.ordered_steps.each do |step|
       subscription.steps.create(

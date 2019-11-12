@@ -1,0 +1,26 @@
+$('#edit-campaign-step-panel').html('<%= escape_javascript(render partial: 'edit_step')  %>');
+$('#new-campaign-step-add-button').addClass('btn-primary btn-warning disabled');
+$("#new-campaign-step-add-button > i").addClass('ti-more');
+$("#new-campaign-step-add-button > i").removeClass('ti-plus');
+$('#edit-campaign-step-panel').show();
+
+$('#edit-campaign-step-schedule-button').length &&
+  $('#edit-campaign-step-schedule-button').on('click', function(e) {
+    $('#edit-campaign-step-immediate-button').removeClass('btn-info');
+    $('#edit-campaign-step-schedule-button').addClass('btn-info');
+    $('#edit-campaign-step-timming-panel').show();
+
+    e.preventDefault();
+  });
+
+$('#edit-campaign-step-immediate-button').length &&
+  $('#edit-campaign-step-immediate-button').on('click', function(e) {
+    $('#edit-campaign-step-immediate-button').addClass('btn-info');
+    $('#edit-campaign-step-schedule-button').removeClass('btn-info');
+    $('#edit-campaign-step-timming-panel').hide();
+
+    $("#edit-campaign-step-form input[name='campaign_step[due_on_value]']").val('');
+    $("#edit-campaign-step-form select[name='campaign_step[due_on_unit]']").prop('selectedIndex', 0);
+
+    e.preventDefault();
+  });

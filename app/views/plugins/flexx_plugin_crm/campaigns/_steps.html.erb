@@ -9,7 +9,12 @@
         <i class="fa fa-trash-o" aria-hidden="true"></i>
       <% end %>
       <time datetime="2018"><%= step.distance_of_time_from_now() %></time>
-      <p><%= step.name %></p>
+      <p>
+        <%= step.name %>
+        <a href="<%= admin_campaign_edit_step_path(campaign_id: @campaign.id, step_id: step.id) %>" data-remote="true">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </a>
+      </p>
     </div>
   </li>
 <% end %>

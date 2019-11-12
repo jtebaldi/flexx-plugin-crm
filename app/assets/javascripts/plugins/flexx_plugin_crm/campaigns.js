@@ -17,6 +17,19 @@ function clearNewCampaignStepForm() {
   $("#new-campaign-step-add-button > i").toggleClass('ti-plus ti-more');
 
   $('#new-campaign-step-panel').fadeOut();
+
+  $('#new-campaign-step-add').toggleClass('disabled');
+  $('#new-campaign-step-cancel').toggleClass('disabled');
+  $('#new-campaign-step-spinner').toggleClass('hidden');
+}
+
+function clearEditCampaignStepPanel() {
+  $('#edit-campaign-step-panel').fadeOut();
+  $('#edit-campaign-step-panel').html('');
+}
+
+function updateCampaignStep() {
+  $('#update-campaign-step-form').submit();
 }
 
 $('document').ready(function(){

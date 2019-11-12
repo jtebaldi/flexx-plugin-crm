@@ -42,12 +42,28 @@ module Plugins::FlexxPluginCrm
       @campaign.steps.create!(campaign_step_params)
 
       respond_to do |format|
-        format.js
+        format.js { render partial: 'refresh_steps_panel' }
+      end
+    end
+
+    def edit_step
+      @campaign = current_site.automated_campaigns.find(params[:campaign_id])
+      @step = @campaign.steps.find(params[:step_id])
+    end
+
+    def update_step
+      @campaign = current_site.automated_campaigns.find(params[:campaign_id])
+      step = @campaign.steps.find(params[:step_id])
+
+      step.update(campaign_step_params)
+
+      respond_to do |format|
+        format.js { render partial: 'refresh_steps_panel' }
       end
     end
 
     def destroy_step
-      current_site.automated_campaigns.find(params[:campaign_id]).steps.find(params[:id]).destroy
+      current_site.automated_campaigns.find(params[:campaign_id]).steps.find(params[:step_id]).destroy
       redirect_to admin_campaign_path(params[:campaign_id])
     end
 
@@ -82,7 +98,7 @@ module Plugins::FlexxPluginCrm
       @contact = current_site.contacts.find(params[:contact_id])
       campaign = current_site.automated_campaigns.find(params[:campaign_id])
 
-      AutomatedCampaignService.apply_campaign(contact: @contact, campaign: campaign)
+      AutomatedCampaignService.apply_campaign(contact: @contact, campaign: campaign, created_by: current_user.id)
 
       @automated_campaigns = current_site.automated_campaigns.active
       @subscribed_campaigns = @contact.subscribed_campaigns

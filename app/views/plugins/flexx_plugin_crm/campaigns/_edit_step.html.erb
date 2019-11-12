@@ -1,0 +1,58 @@
+<div class="card">
+  <h4 class="card-title"><strong>Edit Step</strong></h4>
+  <%= form_tag admin_campaign_update_step_path(campaign_id: @campaign.id, step_id: @step.id, format: :js), method: :patch, remote: true, authenticity_token: true, name: 'campaignStep', id: 'update-campaign-step-form', class: 'form-type-combine', 'data-toggle': 'validator' do %>
+    <div class="card-body">
+      <h6 class="text-light fw-300">Timing</h6>
+      <div class="no-border text-center">
+        <div class="btn-group" data-toggle="buttons">
+          <button class="btn btn-lg <%= 'btn-info' if @step.due_on_value == 0 %>" id="edit-campaign-step-immediate-button">Immediate</button>
+          <button class="btn btn-lg <%= 'btn-info' if @step.due_on_value > 0 %>" id="edit-campaign-step-schedule-button">Schedule</button>
+        </div>
+      </div>
+
+      <div id="edit-campaign-step-timming-panel" class="form-groups-attached" style="<%= 'display: none' unless @step.due_on_value > 0 %>">
+        <br/>
+        <div class="row">
+          <div class="form-group col-6">
+            <label>After</label>
+            <input class="form-control" type="text" name="campaign_step[due_on_value]" value="<%= @step.due_on_value %>">
+          </div>
+
+          <div class="form-group col-6">
+            <label for="select">Time unit</label>
+            <select class="form-control" name="campaign_step[due_on_unit]">
+              <option value="minutes" <%= 'selected' if @step.due_on_unit == 'minutes' %>>minute(s)</option>
+              <option value="hours" <%= 'selected' if @step.due_on_unit == 'hours' %>>hour(s)</option>
+              <option value="days" <%= 'selected' if @step.due_on_unit == 'days' %>>day(s)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br>
+      <h6 class="text-light fw-300">Details</h6>
+      <div class="form-groups-attached">
+
+        <div class="form-group">
+          <label>Title for reference</label>
+          <input class="form-control" type="text" name="campaign_step[name]" value="<%= @step.name %>">
+        </div>
+
+        <div id="stock-email-select" class="form-group">
+          <label class="required">Use stock email</label>
+          <select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
+            <option value="">Please choose an option</option>
+            <% rich_text_stocks.each do |row| %>
+              <option value="<%= row.id %>" <%= 'selected' if @step.stock_id == row.id %>><%= row.name %></option>
+            <% end %>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+  <footer class="card-footer modal-footer text-right">
+    <div id="edit-campaign-step-spinner" class="spinner-circle-shadow hidden"></div>
+    <button class="btn btn-secondary" id="edit-campaign-step-cancel" onclick="clearEditCampaignStepPanel()">Cancel</button>
+    <button class="btn btn-primary" id="edit-campaign-step-add" onclick="updateCampaignStep()">Update</button>
+  </footer>
+</div>

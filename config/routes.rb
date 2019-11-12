@@ -122,13 +122,15 @@ Rails.application.routes.draw do
 
         resources :campaigns, controller: 'plugins/flexx_plugin_crm/campaigns' do
           get :card
+          get '/steps/:step_id', action: :edit_step, as: :edit_step
           get :subscribers
           get :toggle
+          patch '/steps/:step_id', action: :update_step, as: :update_step
           post :associate_form
           post :create_step
           post '/subscribe/:contact_id', action: :subscribe, as: :subscribe
           delete '/remove/:contact_id', action: :remove, as: :remove
-          delete 'destroy_step/:id', action: :destroy_step, as: :destroy_step
+          delete '/steps/:step_id', action: :destroy_step, as: :destroy_step
         end
 
         scope :import, controller: 'plugins/flexx_plugin_crm/import' do

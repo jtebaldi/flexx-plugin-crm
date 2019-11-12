@@ -15,6 +15,7 @@ class Plugins::FlexxPluginCrm::AutomatedCampaignSubscription < ActiveRecord::Bas
 
   scope :running, -> { where(aasm_state: :running) }
   scope :ended, -> { where.not(aasm_state: :running) }
+  scope :not_ended, -> { where.not(aasm_state: [:finished, :deleted, :unsubscribed]) }
 
   aasm do
     state :running, initial: true
