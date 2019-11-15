@@ -58,7 +58,7 @@ class SendgridAdapter
   # @param body [String]
   # @paran send_at [String]
   # @return [String, NillClass] message id
-  def send_email(from:, to:, subject:, body:, send_at: nil)
+  def send_email(from:, to:, subject:, body:, send_at: nil, show_unsubscribe: false)
     personalizations = Array.new.tap do |p|
       to.each do |t|
         if t[:email].present?
@@ -91,6 +91,7 @@ class SendgridAdapter
     }
 
     params[:send_at] = send_at if send_at.present?
+    params[:asm] = { group_id: ENV['UNSUBSCRIBE_GROUP_ID'].to_i } if show_unsubscribe
 
     response = sg.client.mail._("send").post(request_body: params)
 

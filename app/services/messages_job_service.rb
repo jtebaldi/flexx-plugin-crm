@@ -34,7 +34,9 @@ class MessagesJobService
         recipients_list: s.contact_id,
         subject: step.campaign_step.stock.metadata["subject"],
         body: step.campaign_step.stock.contents,
-        send_at: step.send_at
+        send_at: step.send_at,
+        automated_campaign_subscription_id: s.id,
+        automated_campaign_subscription_step_id: step.id
       })
 
       step.update!(aasm_state: :done)
@@ -54,7 +56,8 @@ class MessagesJobService
       from: from,
       to: message.email_recipients.map { |r| { email: r.to, name: r.try(:contact).try(:print_name) } },
       subject: message.subject,
-      body: message.body
+      body: message.body,
+      show_unsubscribe: message.automated_campaign_subscription_id.present?
     )
 
     message.update!(aasm_state: :sent, sg_message_id: sg_message_id)
