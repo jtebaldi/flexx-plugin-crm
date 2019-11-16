@@ -32,6 +32,18 @@ function updateCampaignStep() {
   $('#update-campaign-step-form').submit();
 }
 
+function saveRichTextStock() {
+  if ($('#rich-text-stock-form')[0].checkValidity()) {
+    $('#rich-text-stock-save').toggleClass('disabled');
+    $('#rich-text-stock-cancel').toggleClass('disabled');
+    $('#rich-text-stock-spinner').toggleClass('invisible');
+  }
+
+  window.ckeditor.updateSourceElement();
+
+  $('#rich-text-stock-form').submit();
+}
+
 $('document').ready(function(){
 
   $('#new-campaign-step-schedule-button').length &&
@@ -57,6 +69,7 @@ $('document').ready(function(){
 
   $('#new-campaign-step-form').validator().on('submit', function (e) {
     if (e.isDefaultPrevented()) {
+      console.log(2222)
       e.preventDefault();
       e.stopPropagation();
     }
@@ -179,5 +192,43 @@ $('document').ready(function(){
           visible: false,
         }
     ]
+  });
+
+  var observer = new MutationObserver(function () {
+    ClassicEditor
+    .create(document.querySelector('.editor'), window.dynamic_fields)
+    .then(function(editor){
+      window.ckeditor = editor;
+    })
+    .catch(function(error){
+      console.error(error);
+    });
+  });
+
+  observer.observe(document.getElementById('qv-stock'), { childList: true });
+
+  $('#qv-stock').on('qv.loaded', () => {
+    $('#snippet-stock-form').validator({
+      custom: {
+        'snippet-code': ($elm) => {
+          if (['contact_email', 'contact_first_name', 'contact_last_name'].includes($elm.val())) {
+            return 'The code is reserved for system snippet.'
+          } else if (isLabelValueValid() === false) {
+            return 'Please limit the code characters to letters, numbers, undescores and/or hyphens.'
+          }
+        },
+        'snippet-name': ($elm) => {
+          if (['E-mail', 'First Name', 'Last Name'].includes($elm.val())) {
+            return 'The name is reserved for system snippet.';
+          }
+        }
+      }
+    }).on('submit', (e) => {
+      if (e.isDefaultPrevented()) {
+        e.stopPropagation();
+      } else {
+
+      }
+    });
   });
 });

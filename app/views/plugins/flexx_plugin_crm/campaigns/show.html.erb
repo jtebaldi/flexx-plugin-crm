@@ -1,7 +1,16 @@
 <% content_for :js do %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/forms_validator' %>
   <%= javascript_include_tag 'plugins/flexx_plugin_crm/campaigns' %>
+  <%= javascript_include_tag 'plugins/flexx_plugin_next_admin/ckeditor' %>
 <% end %>
+
+<% content_for :css do %>
+  <%= stylesheet_link_tag 'plugins/flexx_plugin_crm/stocks', media: 'all' %>
+<% end %>
+
+<script>
+  window.dynamic_fields = <%= @dynamic_fields.html_safe %>;
+</script>
 
 <script>
   window.loadSubscribers = function (d) {
@@ -116,16 +125,11 @@
                   </div>
 
                   <div id="stock-email-select" class="form-group">
-                    <label class="required">Use stock email</label>
-                    <select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
-                      <option value="">Please choose an option</option>
-                      <% rich_text_stocks.each_with_index do |row| %>
-                        <option value="<%= row.id %>"><%= row.name %></option>
-                      <% end %>
-                    </select>
+                    <%= render partial: 'stock_email_select' %>
                   </div>
 
                 </div>
+                <a href="#" data-toggle="quickview" data-target="#qv-stock" data-url="<%= new_admin_stock_path(stock_type: 'rich_text', refresh_panel: 'campaigns') %>">Create a new stock email</a>
               </div>
             <% end %>
             <footer class="card-footer modal-footer text-right">
@@ -185,3 +189,5 @@
     </div>
   </div>
 </div>
+
+<div id="qv-stock" class="quickview quickview-xxl backdrop-dark"></div>

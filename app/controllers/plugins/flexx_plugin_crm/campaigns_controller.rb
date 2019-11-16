@@ -1,5 +1,7 @@
 module Plugins::FlexxPluginCrm
   class CampaignsController < Plugins::FlexxPluginCrm::ApplicationController
+    include Plugins::FlexxPluginCrm::Concerns::HasDynamicFields
+
     layout "layouts/flexx_next_admin"
 
     def index
@@ -22,6 +24,9 @@ module Plugins::FlexxPluginCrm
                                   select(:id, :name).
                                   where(parent_id: nil).
                                   order(:name)
+      @dynamic_fields = {
+        flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
+      }.to_json
     end
 
     def destroy

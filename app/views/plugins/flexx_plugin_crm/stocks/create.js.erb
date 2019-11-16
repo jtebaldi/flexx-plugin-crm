@@ -13,6 +13,12 @@
 
 quickview.close($('#qv-stock'));
 
-$('#stock-list-panel').html('<%= escape_javascript(render partial: 'card_list', locals: { stocks: @stocks }) %>');
+<% if params[:refresh_panel] == 'campaigns' %>
+  $('#stock-email-select').html('<%= escape_javascript(render partial: 'plugins/flexx_plugin_crm/campaigns/stock_email_select') %>');
 
-window.shuffleInstance = new Shuffle($(document).find('[data-shuffle="list"]'));
+  $('#new-campaign-step-form').validator('update');
+<% else %>
+  $('#stock-list-panel').html('<%= escape_javascript(render partial: 'card_list', locals: { stocks: @stocks }) %>');
+
+  window.shuffleInstance = new Shuffle($(document).find('[data-shuffle="list"]'));
+<% end %>

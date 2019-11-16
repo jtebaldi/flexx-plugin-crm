@@ -10,6 +10,7 @@
       <% form_method = stock.persisted? ? :patch : :post %>
       <%= form_tag form_path, method: form_method, remote: true, authenticity_token: true, id: 'rich-text-stock-form', class: 'form-type-combine', style: 'width: 100%', data: { provide: 'validation' } do %>
         <input type="hidden" name="stock[stock_type]" value="rich_text">
+        <input type="hidden" name="refresh_panel" value="<%= params[:refresh_panel] %>">
         <div class="card-body">
 
           <h6 class="text-light fw-300">Details</h6>

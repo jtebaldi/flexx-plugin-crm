@@ -1,0 +1,7 @@
+<label class="required">Use stock email</label>
+<select id="stock-email-select-field" name="campaign_step[stock_id]" class="form-control required" data-provide="selectpicker" required="true">
+  <option value="">Please choose an option</option>
+  <% rich_text_stocks.each_with_index do |row| %>
+    <option value="<%= row.id %>"><%= row.name %></option>
+  <% end %>
+</select>
