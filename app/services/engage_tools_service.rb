@@ -11,7 +11,7 @@ class EngageToolsService
 
     recipients = recipients_list.gsub('___', ' ').split(',')
 
-    recipients.uniq.each do |r| 
+    recipients.uniq.each do |r|
       email = find_email(recipient: r, site: site)
       result.concat(email) if email.present?
     end
@@ -135,9 +135,9 @@ class EngageToolsService
     elsif recipient =~ URI::MailTo::EMAIL_REGEXP
       [[nil, recipient]]
     elsif CONTACT_GROUPS.has_key?(recipient)
-      site.contacts.where.not(email: [nil, ""]).send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
+      site.contacts.active.where.not(email: [nil, ""]).send(CONTACT_GROUPS[recipient]).pluck(:id, :email)
     else
-      site.contacts.where.not(email: [nil, ""]).tagged_with(recipient).pluck(:id, :email)
+      site.contacts.active.where.not(email: [nil, ""]).tagged_with(recipient).pluck(:id, :email)
     end
   end
 
@@ -146,6 +146,12 @@ class EngageToolsService
       mobile = site.phonenumbers.mobile.find_by(contact_id: recipient)
 
       return [[mobile.contact, mobile.number]] if mobile.present?
+    elsif recipient == 'All Contacts'
+      site.phonenumbers.mobile.
+        select('DISTINCT ON (contact_id) contact_id, number').
+        joins(:contact).
+        where.not(contacts: { sales_stage: 'archived' })
+        map { |r| [r.contact, r.number] }
     elsif CONTACT_GROUPS.has_key?(recipient)
       site.phonenumbers.mobile.
         select('DISTINCT ON (contact_id) contact_id, number').
@@ -156,7 +162,7 @@ class EngageToolsService
       site.phonenumbers.mobile.
         select('DISTINCT ON (contact_id) contact_id, number').
         joins(:contact).
-        where(contact_id: site.contacts.tagged_with(recipient).pluck(:id)).
+        where(contact_id: site.contacts.active.tagged_with(recipient).pluck(:id)).
         map { |r| [r.contact, r.number] }
     end
   end
