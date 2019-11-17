@@ -27,6 +27,7 @@ module Plugins::FlexxPluginCrm
       @dynamic_fields = {
         flexxdynamicfields: df_defaults + [['-', '']] + df_snippets
       }.to_json
+      @reports = AutomatedCampaignReportsService.generate(campaign: @campaign)
     end
 
     def destroy

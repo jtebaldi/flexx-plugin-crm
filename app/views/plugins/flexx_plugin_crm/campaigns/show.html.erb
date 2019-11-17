@@ -52,12 +52,9 @@
   <div id="campaign-header-actions" class="header-action" style="background-color: #EDEEF2;">
     <ul class="nav nav-tabs nav-justified nav-tabs-info" style="width: 100%; flex-wrap: wrap;">
 
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#tab_details">Details</a>
-      </li>
-      <li class="nav-item">
-        <a id="contact_details_link" class="nav-link" data-toggle="tab" href="#tab_subscribers">Subscribed Contacts</a>
-      </li>
+      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_details">Details</a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_subscribers">Subscribed Contacts</a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_reports">Reports</a></li>
     </ul>
     <%= render partial: 'header_actions' %>
   </div>
@@ -184,6 +181,63 @@
             <input type="hidden" name="add_tags" id="mass-action-add-tags" value="">
             <input type="hidden" name="remove_tags" id="mass-action-remove-tags" value="">
           <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="tab_reports">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <h4 class="card-title"><strong>Overview</h4>
+            <div class="card card-body text-center">
+              <div class="row">
+                <div class="col-3">
+                  <div class="fs-40 fw-100"><%= @reports[:subscribed] %></div>
+                  <div>Subscribed</div>
+                </div>
+                <div class="col-3">
+                  <div class="fs-40 fw-100"><%= @reports[:running] %></div>
+                  <div>Running</div>
+                </div>
+                <div class="col-3">
+                  <div class="fs-40 fw-100"><%= @reports[:ended] %></div>
+                  <div>Ended</div>
+                </div>
+                <div class="col-3">
+                  <div class="fs-40 fw-100 text-warning"><%= @reports[:unsubscribed] %></div>
+                  <div>Unsubscribed</div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-body text-center">
+              <div class="row">
+                <div class="col-2">
+                  <div class="fs-40 fw-100"><%= @reports[:emails_sent] %></div>
+                  <div>Sent</div>
+                </div>
+                <div class="col-2">
+                  <div class="fs-40 fw-100 text-info"><%= @reports[:emails_opened] %></div>
+                  <div>Opened</div>
+                </div>
+                <div class="col-2">
+                  <div class="fs-40 fw-100 text-success"><%= @reports[:emails_clicked] %></div>
+                  <div>Clicked</div>
+                </div>
+                <div class="col-2">
+                  <div class="fs-40 fw-100 text-danger"><%= @reports[:emails_bounced] %></div>
+                  <div>Bounced</div>
+                </div>
+                <div class="col-2">
+                  <div class="fs-40 fw-100 text-warning"><%= @reports[:emails_dropped] %></div>
+                  <div>Dropped</div>
+                </div>
+                <div class="col-2">
+                  <div class="fs-40 fw-100 text-warning"><%= @reports[:emails_spam] %></div>
+                  <div>Reported Spam</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
