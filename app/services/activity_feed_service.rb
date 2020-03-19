@@ -91,8 +91,8 @@ class ActivityFeedService
       end
       contact = parse_actor(group_split[1])
 
-      result.message = "#{prefix} #{suffix} received from #{contact.print_name}."
-      result.url = admin_contact_path(contact.id)
+      result.message = "#{prefix} #{suffix} received from #{contact.present? ? contact.print_name : 'unknow'}."
+      result.url = contact.present? ? admin_contact_path(contact.id) : '#'
     when 'message_sent'
       if activities['activity_count'] == 1
         prefix = 'A SMS Blast was'
