@@ -22,15 +22,17 @@
       </div>
     </div>
 
-    <div class="col-md-6 col-xl-4">
-      <div class="card hover-shadow-4">
-        <a href="/admin/settings/theme" class="card-body text-center hover-info">
-          <i class="far fa-edit fs-90 text-dark"></i>
-          <h5 class="m-1 mt-20">Edit Your Site</h5>
-          <p>Update the content on your website</p>
-        </a>
+    <% unless current_user.role == 'crm-only' %>
+      <div class="col-md-6 col-xl-4">
+        <div class="card hover-shadow-4">
+          <a href="/admin/settings/theme" class="card-body text-center hover-info">
+            <i class="far fa-edit fs-90 text-dark"></i>
+            <h5 class="m-1 mt-20">Edit Your Site</h5>
+            <p>Update the content on your website</p>
+          </a>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="col-md-6 col-xl-4">
       <div class="card hover-shadow-4">
