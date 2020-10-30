@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.2.10"
   s.add_dependency "sendgrid-ruby", "~> 5.2.0"
   s.add_dependency "sidekiq", "~> 5.2.2"
+  s.add_dependency "sidekiq-throttled", "~> 0.13.0"
   s.add_dependency "stream-ruby", "~> 3.1.0"
   s.add_dependency "timezone", "~> 1.0"
   s.add_dependency "twilio-ruby", "~> 5.10", ">= 5.10.5"
