@@ -27,12 +27,18 @@ class MessagesJobService
       { email: message.from, name: message.site.name }
     end
 
-    sg_message_id = SendgridAdapter.new(site: message.site).send_email(
-      from: from,
-      to: message.email_recipients.map { |r| { email: r.to, name: r.try(:contact).try(:print_name) } },
-      subject: message.subject,
-      body: message.body
-    )
+    sg_message_id = ""
+
+    message.email_recipients.each_slice(ENV.fetch('SENDGRID_RECIPIENTS_THRESHOLD', '900').to_i) do |recipients|
+      sg_id = SendgridAdapter.new(site: message.site).send_email(
+        from: from,
+        to: recipients.map { |r| { email: r.to, name: r.try(:contact).try(:print_name) } },
+        subject: message.subject,
+        body: message.body
+      )
+
+      sg_message_id = sg_message_id.blank? ? sg_id : "#{sg_message_id}|#{sg_id}"
+    end
 
     message.update!(aasm_state: :sent, sg_message_id: sg_message_id)
   end
