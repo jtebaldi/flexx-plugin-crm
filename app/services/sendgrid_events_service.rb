@@ -4,7 +4,7 @@ class SendgridEventsService
       index = p[:sg_message_id].index('.filter')
       message_id = p[:sg_message_id][0, index]
 
-      email = Plugins::FlexxPluginCrm::Email.find_by(sg_message_id: message_id)
+      email = Plugins::FlexxPluginCrm::Email.find_by("sg_message_id like ?", "%#{message_id}%")
       recipient = email.email_recipients.find_by(to: p[:email]) if email
 
       if recipient
